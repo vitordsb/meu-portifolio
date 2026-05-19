@@ -59,7 +59,7 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 lg:pt-8 pb-12">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
       <div className="relative z-10 container">
-        <div className="flex flex-col-reverse md:flex-row md:items-center gap-10 md:gap-16 animate-fade-in">
+        <div className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-16 animate-fade-in">
 
           {/* ── Texto ── */}
           <div className="flex-1 text-center md:text-left">
