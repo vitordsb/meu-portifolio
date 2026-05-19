@@ -1,0 +1,1 @@
+ALTER TABLE `freelance_work` ADD `tags` json;

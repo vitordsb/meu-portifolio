@@ -1,0 +1,237 @@
+import { eq, asc } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/mysql2";
+import {
+  users, projects, certificates, skills, freelanceWork, timelineEvents,
+  type InsertUser, type InsertProject, type InsertCertificate,
+  type InsertSkill, type InsertFreelanceWork, type InsertTimelineEvent,
+} from "../drizzle/schema";
+
+let _db: ReturnType<typeof drizzle> | null = null;
+
+export async function getDb() {
+  if (!_db && process.env.DATABASE_URL) {
+    try {
+      _db = drizzle(process.env.DATABASE_URL);
+    } catch (e) {
+      console.warn("[DB] Connection failed:", e);
+    }
+  }
+  return _db;
+}
+
+// ── Users ────────────────────────────────────────────────────────────────────
+export async function upsertUser(user: InsertUser): Promise<void> {
+  if (!user.openId) throw new Error("openId required");
+  const db = await getDb();
+  if (!db) return console.warn("[DB] upsertUser skipped — no db");
+
+  const values: InsertUser = { openId: user.openId };
+  const updateSet: Record<string, unknown> = {};
+  for (const field of ["name", "email", "loginMethod"] as const) {
+    if (user[field] !== undefined) { values[field] = user[field]; updateSet[field] = user[field]; }
+  }
+  if (user.lastSignedIn) { values.lastSignedIn = user.lastSignedIn; updateSet.lastSignedIn = user.lastSignedIn; }
+  if (user.role) { values.role = user.role; updateSet.role = user.role; }
+  else if (user.openId === process.env.OWNER_OPEN_ID) { values.role = "admin"; updateSet.role = "admin"; }
+  if (!values.lastSignedIn) values.lastSignedIn = new Date();
+  if (Object.keys(updateSet).length === 0) updateSet.lastSignedIn = new Date();
+
+  await db.insert(users).values(values).onDuplicateKeyUpdate({ set: updateSet });
+}
+
+export async function getUserByOpenId(openId: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const res = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  return res[0];
+}
+
+export async function getUserByUsername(username: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const res = await db.select().from(users).where(eq(users.username, username)).limit(1);
+  return res[0];
+}
+
+// ── Projects ─────────────────────────────────────────────────────────────────
+export async function getAllProjects() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(projects).orderBy(projects.createdAt);
+}
+
+export async function createProject(data: InsertProject) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.insert(projects).values(data);
+}
+
+export async function updateProject(id: number, data: Partial<InsertProject>) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.update(projects).set(data).where(eq(projects.id, id));
+}
+
+export async function deleteProject(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.delete(projects).where(eq(projects.id, id));
+}
+
+// ── Competencies (derived from project + certificate tags) ───────────────────
+export async function getCompetencies() {
+  const db = await getDb();
+  if (!db) return [];
+  const [allProjects, allCerts, allFreelance] = await Promise.all([
+    db.select({ tags: projects.tags }).from(projects),
+    db.select({ tags: certificates.tags }).from(certificates),
+    db.select({ tags: freelanceWork.tags }).from(freelanceWork),
+  ]);
+  const freq: Record<string, number> = {};
+  for (const p of [...allProjects, ...allCerts, ...allFreelance]) {
+    if (Array.isArray(p.tags)) {
+      for (const tag of p.tags) freq[tag] = (freq[tag] ?? 0) + 1;
+    }
+  }
+  const max = Math.max(1, ...Object.values(freq));
+  return Object.entries(freq)
+    .map(([tag, count]) => ({ tag, count, percentage: Math.round((count / max) * 100) }))
+    .sort((a, b) => b.count - a.count);
+}
+
+// ── Certificates ──────────────────────────────────────────────────────────────
+export async function getAllCertificates() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(certificates).orderBy(certificates.createdAt);
+}
+
+export async function createCertificate(data: InsertCertificate) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.insert(certificates).values(data);
+}
+
+export async function updateCertificate(id: number, data: Partial<InsertCertificate>) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.update(certificates).set(data).where(eq(certificates.id, id));
+}
+
+export async function deleteCertificate(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.delete(certificates).where(eq(certificates.id, id));
+}
+
+// ── Skills ───────────────────────────────────────────────────────────────────
+export async function getAllSkills() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(skills).orderBy(skills.createdAt);
+}
+
+export async function createSkill(data: InsertSkill) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.insert(skills).values(data);
+}
+
+export async function updateSkill(id: number, data: Partial<InsertSkill>) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.update(skills).set(data).where(eq(skills.id, id));
+}
+
+export async function deleteSkill(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.delete(skills).where(eq(skills.id, id));
+}
+
+// ── Freelance Work ────────────────────────────────────────────────────────────
+export async function getAllFreelanceWork() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(freelanceWork).orderBy(freelanceWork.displayOrder, freelanceWork.createdAt);
+}
+
+export async function createFreelanceWork(data: InsertFreelanceWork) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.insert(freelanceWork).values(data);
+}
+
+export async function updateFreelanceWork(id: number, data: Partial<InsertFreelanceWork>) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.update(freelanceWork).set(data).where(eq(freelanceWork.id, id));
+}
+
+export async function deleteFreelanceWork(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.delete(freelanceWork).where(eq(freelanceWork.id, id));
+}
+
+// ── Timeline Events ───────────────────────────────────────────────────────────
+export async function getAllTimelineEvents() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(timelineEvents).orderBy(asc(timelineEvents.sortDate));
+}
+
+export async function createTimelineEvent(data: InsertTimelineEvent) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.insert(timelineEvents).values(data);
+}
+
+export async function updateTimelineEvent(id: number, data: Partial<InsertTimelineEvent>) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.update(timelineEvents).set(data).where(eq(timelineEvents.id, id));
+}
+
+export async function deleteTimelineEvent(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.delete(timelineEvents).where(eq(timelineEvents.id, id));
+}
+
+// ── GitHub Repos ──────────────────────────────────────────────────────────────
+export type GithubRepo = {
+  id: number; name: string; description: string; htmlUrl: string;
+  language: string; stars: number; topics: string[]; updatedAt: string;
+};
+
+export async function getGithubRepos(): Promise<GithubRepo[]> {
+  const username = process.env.GITHUB_USERNAME;
+  if (!username) return [];
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${username}/repos?type=public&sort=updated&per_page=100`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+          ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+        },
+        next: { revalidate: 3600 },
+      }
+    );
+    if (!res.ok) return [];
+    const data = (await res.json()) as Record<string, unknown>[];
+    return data
+      .filter((r) => !r.fork)
+      .map((r) => ({
+        id: r.id as number, name: r.name as string,
+        description: (r.description ?? "") as string,
+        htmlUrl: r.html_url as string, language: (r.language ?? "") as string,
+        stars: r.stargazers_count as number,
+        topics: (r.topics ?? []) as string[],
+        updatedAt: r.updated_at as string,
+      }));
+  } catch {
+    return [];
+  }
+}
