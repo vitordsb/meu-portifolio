@@ -414,7 +414,7 @@ const skillSeeds: SkillSeed[] = [
   // BaaS / Cloud
   { title: "Supabase",         category: "Cloud & BaaS",     iconSlug: "supabase",         level: 4, projects: ["girob2b","mtcprop-members","bioathos"] },
   { title: "Firebase",         category: "Cloud & BaaS",     iconSlug: "firebase",         level: 3, projects: [] },
-  { title: "AWS",              category: "Cloud & BaaS",     iconSlug: "amazonaws",        level: 3, projects: [] },
+  { title: "AWS",              category: "Cloud & BaaS",     iconSlug: null,               level: 3, projects: [] },
   { title: "Vercel",           category: "Cloud & BaaS",     iconSlug: "vercel",           level: 4, projects: ["arqdoor","zuptos","mtcprop-members","girob2b"] },
   // DevOps
   { title: "Docker",           category: "DevOps",           iconSlug: "docker",           level: 4, projects: ["arqdoor","mtcprop-members","egp-iot"] },
@@ -424,7 +424,7 @@ const skillSeeds: SkillSeed[] = [
   { title: "GitLab",           category: "DevOps",           iconSlug: "gitlab",           level: 3, projects: [] },
   // Quality
   { title: "Jest",             category: "Qualidade",        iconSlug: "jest",             level: 3, projects: [] },
-  { title: "SEO",              category: "Qualidade",        iconSlug: "googlesearch",     level: 4, projects: ["florenza","egp-iot","jma"] },
+  { title: "SEO",              category: "Qualidade",        iconSlug: "googlesearchconsole", level: 4, projects: ["florenza","egp-iot","jma"] },
   // Design / Process
   { title: "Figma",            category: "Design & Processo",iconSlug: "figma",            level: 4, projects: ["arqdoor","zuptos","mtcprop-members"] },
   { title: "UI/UX",            category: "Design & Processo",iconSlug: null,               level: 4, projects: ["arqdoor","zuptos","mtcprop-members","florenza"] },
@@ -432,7 +432,7 @@ const skillSeeds: SkillSeed[] = [
   { title: "Kanban",           category: "Design & Processo",iconSlug: null,               level: 4, projects: [] },
   // AI tooling
   { title: "Claude Code",      category: "IA & Tooling",     iconSlug: "anthropic",        level: 5, projects: ["arqdoor","zuptos","mtcprop-members","egp-iot"] },
-  { title: "Codex",            category: "IA & Tooling",     iconSlug: "openai",           level: 4, projects: [] },
+  { title: "Codex",            category: "IA & Tooling",     iconSlug: null,               level: 4, projects: [] },
   { title: "Gemini",           category: "IA & Tooling",     iconSlug: "googlegemini",     level: 3, projects: [] },
   { title: "MCP Agents",       category: "IA & Tooling",     iconSlug: null,               level: 3, projects: [] },
 ];

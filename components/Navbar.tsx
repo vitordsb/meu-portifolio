@@ -3,11 +3,32 @@
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Moon, Sun, Globe, Menu, X } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Globe,
+  Menu,
+  X,
+  Home,
+  User,
+  Briefcase,
+  Code2,
+  Award,
+  Mail,
+  Github,
+  PanelLeftClose,
+  PanelLeftOpen,
+  type LucideIcon,
+} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
-export default function Navbar() {
+interface NavbarProps {
+  collapsed?: boolean;
+  onToggle?: () => void;
+}
+
+export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
@@ -29,20 +50,21 @@ export default function Navbar() {
     }
   }, [router]);
 
-  const links = [
-    { href: "/", label: t("nav.home") },
-    { href: "/about", label: t("nav.about") },
-    { href: "/autonomo", label: t("nav.autonomo") },
-    { href: "/skills", label: t("nav.skills") },
-    { href: "/certificates", label: t("nav.certificates") },
-    { href: "/contact", label: t("nav.contact") },
+  type NavLink = { href: string; label: string; icon: LucideIcon };
+  const links: NavLink[] = [
+    { href: "/", label: t("nav.home"), icon: Home },
+    { href: "/about", label: t("nav.about"), icon: User },
+    { href: "/autonomo", label: t("nav.autonomo"), icon: Briefcase },
+    { href: "/skills", label: t("nav.skills"), icon: Code2 },
+    { href: "/certificates", label: t("nav.certificates"), icon: Award },
+    { href: "/contact", label: t("nav.contact"), icon: Mail },
   ];
 
   const externalLinks = [
-    { href: "https://github.com/vitordsb", label: t("nav.github") },
+    { href: "https://github.com/vitordsb", label: t("nav.github"), icon: Github },
   ];
 
-  const Logo = (
+  const LogoFull = (
     <Link
       href="/"
       onClick={handleLogoClick}
@@ -54,24 +76,35 @@ export default function Navbar() {
     </Link>
   );
 
-  const Controls = (
-    <div className="flex gap-2 items-center">
-      <button
-        onClick={toggleTheme}
-        className="p-2 border border-border hover:border-accent transition"
-        title={theme === "light" ? t("common.theme.dark") : t("common.theme.light")}
-      >
-        {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
-      </button>
-      <button
-        onClick={() => setLanguage(language === "pt" ? "en" : "pt")}
-        className="p-2 border border-border hover:border-accent transition flex items-center gap-1 text-xs font-bold"
-        title={t("common.language")}
-      >
-        <Globe size={14} />
-        {language.toUpperCase()}
-      </button>
-    </div>
+  const LogoMini = (
+    <Link
+      href="/"
+      onClick={handleLogoClick}
+      className="font-mono font-black tracking-tighter hover:text-accent transition select-none text-xl flex justify-center"
+      title="vitordsb"
+    >
+      <span className="text-accent">&lt;/&gt;</span>
+    </Link>
+  );
+
+  const ThemeBtn = (
+    <button
+      onClick={toggleTheme}
+      className="p-2 border border-border hover:border-accent transition"
+      title={theme === "light" ? t("common.theme.dark") : t("common.theme.light")}
+    >
+      {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
+    </button>
+  );
+  const LangBtn = (
+    <button
+      onClick={() => setLanguage(language === "pt" ? "en" : "pt")}
+      className="p-2 border border-border hover:border-accent transition flex items-center gap-1 text-xs font-bold"
+      title={t("common.language")}
+    >
+      <Globe size={14} />
+      {language.toUpperCase()}
+    </button>
   );
 
   const isActive = (href: string) =>
@@ -79,12 +112,13 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ─── Mobile topbar (< lg) ─────────────────────────────────────────── */}
+      {/* ─── Mobile topbar (< lg) — sem botão de colapsar ─────────────────── */}
       <nav className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
         <div className="container flex items-center justify-between py-4">
-          {Logo}
+          {LogoFull}
           <div className="flex gap-2 items-center">
-            {Controls}
+            {ThemeBtn}
+            {LangBtn}
             <button
               className="p-2 border border-border hover:border-accent transition"
               onClick={() => setMobileOpen((v) => !v)}
@@ -102,11 +136,12 @@ export default function Navbar() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`text-sm font-bold hover:text-accent transition ${
+                  className={`text-sm font-bold hover:text-accent transition flex items-center gap-3 ${
                     isActive(l.href) ? "text-accent" : ""
                   }`}
                   onClick={() => setMobileOpen(false)}
                 >
+                  <l.icon size={16} />
                   {l.label}
                 </Link>
               ))}
@@ -116,8 +151,9 @@ export default function Navbar() {
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-bold hover:text-accent transition flex items-center gap-2"
+                  className="text-sm font-bold hover:text-accent transition flex items-center gap-3"
                 >
+                  <l.icon size={16} />
                   {l.label} ↗
                 </a>
               ))}
@@ -126,23 +162,47 @@ export default function Navbar() {
         )}
       </nav>
 
-      {/* ─── Desktop sidebar (lg+) ────────────────────────────────────────── */}
-      <aside className="hidden lg:flex fixed top-0 left-0 bottom-0 z-50 w-60 bg-background border-r border-border flex-col">
-        <div className="px-6 py-6 border-b border-border">{Logo}</div>
+      {/* ─── Desktop sidebar (lg+) ─ com toggle colapsa/expande ───────────── */}
+      <aside
+        className={`hidden lg:flex fixed top-0 left-0 bottom-0 z-50 bg-background border-r border-border flex-col transition-[width] duration-200 ${
+          collapsed ? "w-16" : "w-60"
+        }`}
+      >
+        {/* Header com logo + botão de toggle */}
+        <div
+          className={`border-b border-border flex items-center ${
+            collapsed ? "px-2 py-4 flex-col gap-3" : "px-4 py-4 justify-between gap-2"
+          }`}
+        >
+          {collapsed ? LogoMini : LogoFull}
+          {onToggle && (
+            <button
+              onClick={onToggle}
+              className="p-2 border border-border hover:border-accent transition shrink-0"
+              title={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+              aria-label={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+            >
+              {collapsed ? <PanelLeftOpen size={14} /> : <PanelLeftClose size={14} />}
+            </button>
+          )}
+        </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-6">
+        {/* Links */}
+        <nav className="flex-1 overflow-y-auto px-2 py-6">
           <ul className="flex flex-col gap-1">
             {links.map((l) => (
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className={`block px-3 py-2 text-xs font-bold tracking-wider border-l-2 transition ${
+                  title={collapsed ? l.label : undefined}
+                  className={`flex items-center gap-3 px-3 py-2 text-xs font-bold tracking-wider border-l-2 transition ${
                     isActive(l.href)
                       ? "border-accent text-accent bg-accent/5"
                       : "border-transparent hover:border-accent hover:text-accent"
-                  }`}
+                  } ${collapsed ? "justify-center" : ""}`}
                 >
-                  {l.label}
+                  <l.icon size={16} className="shrink-0" />
+                  {!collapsed && <span>{l.label}</span>}
                 </Link>
               </li>
             ))}
@@ -153,17 +213,27 @@ export default function Navbar() {
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block px-3 py-2 text-xs font-bold tracking-wider border-l-2 border-transparent hover:border-accent hover:text-accent transition"
+                  title={collapsed ? l.label : undefined}
+                  className={`flex items-center gap-3 px-3 py-2 text-xs font-bold tracking-wider border-l-2 border-transparent hover:border-accent hover:text-accent transition ${
+                    collapsed ? "justify-center" : ""
+                  }`}
                 >
-                  {l.label} ↗
+                  <l.icon size={16} className="shrink-0" />
+                  {!collapsed && <span>{l.label} ↗</span>}
                 </a>
               ))}
             </li>
           </ul>
         </nav>
 
-        <div className="px-4 py-4 border-t border-border flex items-center gap-2">
-          {Controls}
+        {/* Controls */}
+        <div
+          className={`border-t border-border ${
+            collapsed ? "px-2 py-3 flex flex-col gap-2 items-center" : "px-4 py-4 flex items-center gap-2"
+          }`}
+        >
+          {ThemeBtn}
+          {LangBtn}
         </div>
       </aside>
     </>
