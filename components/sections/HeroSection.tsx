@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -8,7 +8,18 @@ import profilePic from "@/app/(public)/images/vitu.jpeg";
 
 interface Particle { x: number; y: number; size: number; speedX: number; speedY: number; }
 
-export default function HeroSection() {
+// Arredonda pra baixo no múltiplo dado (default 10).
+// Ex: 34 → 30, 78 → 70, 7 → 0 (mas mostramos "0+" só se realmente vazio).
+function roundDownTo(n: number, step = 10): number {
+  return Math.max(0, Math.floor(n / step) * step);
+}
+
+interface HeroSectionProps {
+  certCount?: number;
+  projectCount?: number;
+}
+
+export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSectionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const { t } = useLanguage();
@@ -47,13 +58,29 @@ export default function HeroSection() {
     return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animId); };
   }, []);
 
+  // Stats dinâmicos:
+  //   - Projetos: contagem exata (+1 a cada novo projeto). Ex: 15+, 16+, 17+
+  //   - Certificados: arredonda em múltiplos de 10. Ex: 30+, 50+, 70+
+  // Fallback (0): mostra placeholder pra não exibir "0+".
+  const projectsValue = projectCount > 0 ? `${projectCount}+` : "15+";
+  const certsValue = certCount > 0 ? `${roundDownTo(certCount, 10)}+` : "50+";
+
   const stats = [
     { value: "+4", label: t("hero.stats.years") },
-    { value: "15+", label: t("hero.stats.projects") },
-    { value: "50+", label: t("hero.stats.certs") },
+    { value: projectsValue, label: t("hero.stats.projects") },
+    { value: certsValue, label: t("hero.stats.certs") },
   ];
 
   const clientNames = ["ZUPTOS", "ARQDOOR", "MTCPROP", "EGP", "FLORENZA", "ZYNTA"];
+
+  // Highlight cycles esquerda → direita, a cada 2s, em loop
+  const [highlightIdx, setHighlightIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHighlightIdx((i) => (i + 1) % clientNames.length);
+    }, 2000);
+    return () => clearInterval(id);
+  }, [clientNames.length]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 lg:pt-8 pb-12">
@@ -124,18 +151,25 @@ export default function HeroSection() {
             {t("hero.clients")}
           </p>
           <div className="flex flex-wrap items-center justify-center md:justify-between gap-y-4">
-            {clientNames.map((name, i) => (
-              <div key={name} className="flex items-center">
-                <span className="font-black text-base md:text-lg tracking-[0.15em] text-muted-foreground/60 hover:text-accent transition cursor-default">
-                  {name}
-                </span>
-                {i < clientNames.length - 1 && (
-                  <span className="hidden md:inline mx-6 lg:mx-8 text-muted-foreground/30 select-none">
-                    ·
+            {clientNames.map((name, i) => {
+              const isActive = i === highlightIdx;
+              return (
+                <div key={name} className="flex items-center">
+                  <span
+                    className={`font-black text-base md:text-lg tracking-[0.15em] transition-colors duration-500 cursor-default hover:text-accent ${
+                      isActive ? "text-accent" : "text-muted-foreground/60"
+                    }`}
+                  >
+                    {name}
                   </span>
-                )}
-              </div>
-            ))}
+                  {i < clientNames.length - 1 && (
+                    <span className="hidden md:inline mx-6 lg:mx-8 text-muted-foreground/30 select-none">
+                      ·
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

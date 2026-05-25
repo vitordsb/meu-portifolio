@@ -9,33 +9,35 @@ import {
   createProject, updateProject, deleteProject,
   createCertificate, updateCertificate, deleteCertificate,
   createSkill, updateSkill, deleteSkill,
-  createFreelanceWork, updateFreelanceWork, deleteFreelanceWork,
   createTimelineEvent, updateTimelineEvent, deleteTimelineEvent,
   logout,
 } from "@/lib/actions";
 import TagSelector from "./TagSelector";
 
-type Tab = "projects" | "certificates" | "skills" | "freelance" | "timeline";
+type Tab = "projects" | "certificates" | "skills" | "timeline" | "analytics";
 
 type ProjectForm = {
   title: string; company: string; description: string; category: string;
+  slug: string; period: string; featured: boolean;
   coverImageUrl: string; liveLink: string; repositoryLink: string; tags: string[];
 };
 type CertForm = { name: string; description: string; category: string; link: string; tags: string[] };
-type SkillForm = { title: string; category: string; iconUrl: string };
-type FreelanceForm = {
-  company: string; role: string; description: string;
-  period: string; website: string; companyLogoUrl: string; tags: string[]; displayOrder: string;
+type SkillForm = {
+  title: string; category: string; iconUrl: string;
+  level: string; projectSlugs: string[];
 };
 type TimelineForm = {
   dateLabel: string; sortDate: string; title: string;
   description: string; category: string; icon: string;
 };
 
-const emptyProject: ProjectForm = { title: "", company: "", description: "", category: "", coverImageUrl: "", liveLink: "", repositoryLink: "", tags: [] };
+const emptyProject: ProjectForm = {
+  title: "", company: "", description: "", category: "",
+  slug: "", period: "", featured: false,
+  coverImageUrl: "", liveLink: "", repositoryLink: "", tags: [],
+};
 const emptyCert: CertForm = { name: "", description: "", category: "", link: "", tags: [] };
-const emptySkill: SkillForm = { title: "", category: "", iconUrl: "" };
-const emptyFreelance: FreelanceForm = { company: "", role: "", description: "", period: "", website: "", companyLogoUrl: "", tags: [], displayOrder: "0" };
+const emptySkill: SkillForm = { title: "", category: "", iconUrl: "", level: "3", projectSlugs: [] };
 const emptyTimeline: TimelineForm = { dateLabel: "", sortDate: "", title: "", description: "", category: "", icon: "" };
 
 interface Props {
@@ -43,11 +45,11 @@ interface Props {
   initialProjects: Project[];
   initialCertificates: Certificate[];
   initialSkills: Skill[];
-  initialFreelance: FreelanceWork[];
+  initialFreelance: FreelanceWork[]; // mantido por compat — não renderiza mais aba
   initialTimeline: TimelineEvent[];
 }
 
-export default function AdminPanel({ user, initialProjects, initialCertificates, initialSkills, initialFreelance, initialTimeline }: Props) {
+export default function AdminPanel({ user, initialProjects, initialCertificates, initialSkills, initialTimeline }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState<Tab>("projects");
@@ -57,7 +59,6 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const [projectForm, setProjectForm] = useState<ProjectForm>(emptyProject);
   const [certForm, setCertForm] = useState<CertForm>(emptyCert);
   const [skillForm, setSkillForm] = useState<SkillForm>(emptySkill);
-  const [freelanceForm, setFreelanceForm] = useState<FreelanceForm>(emptyFreelance);
   const [timelineForm, setTimelineForm] = useState<TimelineForm>(emptyTimeline);
 
   const run = (fn: () => Promise<void>) =>
@@ -69,7 +70,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const openNew = () => {
     setEditingId(null);
     setProjectForm(emptyProject); setCertForm(emptyCert);
-    setSkillForm(emptySkill); setFreelanceForm(emptyFreelance);
+    setSkillForm(emptySkill);
     setTimelineForm(emptyTimeline);
     setShowNewForm(true);
   };
@@ -80,11 +81,11 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   };
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: "projects", label: "PROJETOS" },
+    { id: "projects", label: "PROJETOS / AUTÔNOMO" },
     { id: "certificates", label: "CERTIFICADOS" },
     { id: "skills", label: "SKILLS" },
-    { id: "freelance", label: "FREELANCER" },
     { id: "timeline", label: "TIMELINE" },
+    { id: "analytics", label: "ANALYTICS" },
   ];
 
   const f = (placeholder: string, value: string, onChange: (v: string) => void, type = "text") => (
@@ -102,20 +103,43 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const ProjectFormBody = ({ isNew }: { isNew: boolean }) => (
     <form onSubmit={(e) => {
       e.preventDefault();
-      const d = { title: projectForm.title, company: projectForm.company, description: projectForm.description, category: projectForm.category, coverImageUrl: projectForm.coverImageUrl || undefined, liveLink: projectForm.liveLink || undefined, repositoryLink: projectForm.repositoryLink || undefined, tags: projectForm.tags.length ? projectForm.tags : undefined };
+      const d = {
+        title: projectForm.title,
+        company: projectForm.company,
+        description: projectForm.description,
+        category: projectForm.category,
+        slug: projectForm.slug || undefined,
+        period: projectForm.period || undefined,
+        featured: projectForm.featured,
+        coverImageUrl: projectForm.coverImageUrl || undefined,
+        liveLink: projectForm.liveLink || undefined,
+        repositoryLink: projectForm.repositoryLink || undefined,
+        tags: projectForm.tags.length ? projectForm.tags : undefined,
+      };
       run(() => isNew ? createProject(d) : updateProject(editingId!, d));
       closeForm(); if (isNew) setProjectForm(emptyProject);
     }} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {f("Título *", projectForm.title, (v) => setProjectForm((p) => ({ ...p, title: v })))}
-        {f("Empresa *", projectForm.company, (v) => setProjectForm((p) => ({ ...p, company: v })))}
-        {f("Categoria *", projectForm.category, (v) => setProjectForm((p) => ({ ...p, category: v })))}
+        {f("Empresa / Cliente *", projectForm.company, (v) => setProjectForm((p) => ({ ...p, company: v })))}
+        {f("Categoria * (SaaS, Landing Page, Marketplace…)", projectForm.category, (v) => setProjectForm((p) => ({ ...p, category: v })))}
+        {f("Slug (ex: arqdoor) — usado pra referência de skills", projectForm.slug, (v) => setProjectForm((p) => ({ ...p, slug: v })))}
+        {f("Período (ex: Abr/2025 — Hoje)", projectForm.period, (v) => setProjectForm((p) => ({ ...p, period: v })))}
         {f("URL da Imagem de Capa", projectForm.coverImageUrl, (v) => setProjectForm((p) => ({ ...p, coverImageUrl: v })))}
-        {f("Link do Site", projectForm.liveLink, (v) => setProjectForm((p) => ({ ...p, liveLink: v })), "url")}
+        {f("Link do Site (público)", projectForm.liveLink, (v) => setProjectForm((p) => ({ ...p, liveLink: v })), "url")}
         {f("Link do Repositório", projectForm.repositoryLink, (v) => setProjectForm((p) => ({ ...p, repositoryLink: v })), "url")}
       </div>
       {a("Descrição *", projectForm.description, (v) => setProjectForm((p) => ({ ...p, description: v })))}
-      <TagSelector label="COMPETÊNCIAS / TAGS" placeholder="Ex: React, TypeScript…" selected={projectForm.tags} onChange={(tags) => setProjectForm((p) => ({ ...p, tags }))} />
+      <label className="flex items-center gap-2 text-sm font-bold cursor-pointer">
+        <input
+          type="checkbox"
+          checked={projectForm.featured}
+          onChange={(e) => setProjectForm((p) => ({ ...p, featured: e.target.checked }))}
+          className="w-4 h-4 accent-accent"
+        />
+        DESTAQUE (aparece na home + topo da /autonomo)
+      </label>
+      <TagSelector label="STACK / TAGS" placeholder="Ex: React, TypeScript…" selected={projectForm.tags} onChange={(tags) => setProjectForm((p) => ({ ...p, tags }))} />
       <div className="flex gap-3">
         <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
         <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
@@ -147,39 +171,28 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const SkillFormBody = ({ isNew }: { isNew: boolean }) => (
     <form onSubmit={(e) => {
       e.preventDefault();
-      const d = { title: skillForm.title, category: skillForm.category || undefined, iconUrl: skillForm.iconUrl || undefined };
+      const d = {
+        title: skillForm.title,
+        category: skillForm.category || undefined,
+        iconUrl: skillForm.iconUrl || undefined,
+        level: parseInt(skillForm.level) || 3,
+        projectSlugs: skillForm.projectSlugs.length ? skillForm.projectSlugs : undefined,
+      };
       run(() => isNew ? createSkill(d) : updateSkill(editingId!, d));
       closeForm(); if (isNew) setSkillForm(emptySkill);
     }} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {f("Título *", skillForm.title, (v) => setSkillForm((p) => ({ ...p, title: v })))}
-        {f("Categoria (opcional)", skillForm.category, (v) => setSkillForm((p) => ({ ...p, category: v })))}
-        {f("URL do Ícone (opcional)", skillForm.iconUrl, (v) => setSkillForm((p) => ({ ...p, iconUrl: v })))}
+        {f("Categoria", skillForm.category, (v) => setSkillForm((p) => ({ ...p, category: v })))}
+        {f("URL do Ícone (ex: https://cdn.simpleicons.org/react)", skillForm.iconUrl, (v) => setSkillForm((p) => ({ ...p, iconUrl: v })))}
+        {f("Nível (1=básico, 5=especialista)", skillForm.level, (v) => setSkillForm((p) => ({ ...p, level: v })), "number")}
       </div>
-      <div className="flex gap-3">
-        <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
-        <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
-      </div>
-    </form>
-  );
-
-  const FreelanceFormBody = ({ isNew }: { isNew: boolean }) => (
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      const d = { company: freelanceForm.company, description: freelanceForm.description, role: freelanceForm.role || undefined, period: freelanceForm.period || undefined, website: freelanceForm.website || undefined, companyLogoUrl: freelanceForm.companyLogoUrl || undefined, tags: freelanceForm.tags.length ? freelanceForm.tags : undefined, displayOrder: parseInt(freelanceForm.displayOrder) || 0 };
-      run(() => isNew ? createFreelanceWork(d) : updateFreelanceWork(editingId!, d));
-      closeForm(); if (isNew) setFreelanceForm(emptyFreelance);
-    }} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {f("Empresa *", freelanceForm.company, (v) => setFreelanceForm((p) => ({ ...p, company: v })))}
-        {f("Cargo / Papel (ex: Dev Frontend)", freelanceForm.role, (v) => setFreelanceForm((p) => ({ ...p, role: v })))}
-        {f("Período (ex: Jan 2024 – Mar 2024)", freelanceForm.period, (v) => setFreelanceForm((p) => ({ ...p, period: v })))}
-        {f("Site da empresa (URL)", freelanceForm.website, (v) => setFreelanceForm((p) => ({ ...p, website: v })), "url")}
-        {f("Logo da empresa (URL)", freelanceForm.companyLogoUrl, (v) => setFreelanceForm((p) => ({ ...p, companyLogoUrl: v })))}
-        {f("Ordem de exibição (0 = primeiro)", freelanceForm.displayOrder, (v) => setFreelanceForm((p) => ({ ...p, displayOrder: v })), "number")}
-      </div>
-      {a("Descrição do que foi desenvolvido * (sem revelar código)", freelanceForm.description, (v) => setFreelanceForm((p) => ({ ...p, description: v })))}
-      <TagSelector label="TECNOLOGIAS USADAS (contribuem para competências)" placeholder="Ex: React, Node.js, PostgreSQL…" selected={freelanceForm.tags} onChange={(tags) => setFreelanceForm((p) => ({ ...p, tags }))} />
+      <TagSelector
+        label="PROJETOS ONDE USA (slugs — ex: arqdoor, zuptos)"
+        placeholder="Digite o slug do projeto…"
+        selected={skillForm.projectSlugs}
+        onChange={(slugs) => setSkillForm((p) => ({ ...p, projectSlugs: slugs }))}
+      />
       <div className="flex gap-3">
         <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
         <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
@@ -261,26 +274,70 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         {/* Top bar */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-black">
-            {activeTab === "projects" && "PROJETOS"}
+            {activeTab === "projects" && "PROJETOS / AUTÔNOMO"}
             {activeTab === "certificates" && "CERTIFICADOS"}
             {activeTab === "skills" && "SKILLS"}
-            {activeTab === "freelance" && "CLIENTES FREELANCER"}
             {activeTab === "timeline" && "LINHA DO TEMPO"}
+            {activeTab === "analytics" && "ANALYTICS"}
           </h2>
-          <button onClick={openNew} className="btn-brutalist-accent flex items-center gap-2 px-5 py-2 text-sm">
-            <Plus size={18} />ADICIONAR
-          </button>
+          {activeTab !== "analytics" && (
+            <button onClick={openNew} className="btn-brutalist-accent flex items-center gap-2 px-5 py-2 text-sm">
+              <Plus size={18} />ADICIONAR
+            </button>
+          )}
         </div>
 
         {/* ── NEW item form (top, only when editingId is null) ── */}
         {showNewForm && editingId === null && activeTab === "projects" && formCard("NOVO PROJETO", <ProjectFormBody isNew />)}
         {showNewForm && editingId === null && activeTab === "certificates" && formCard("NOVO CERTIFICADO", <CertFormBody isNew />)}
         {showNewForm && editingId === null && activeTab === "skills" && formCard("NOVA SKILL", <SkillFormBody isNew />)}
-        {showNewForm && editingId === null && activeTab === "freelance" && formCard("NOVO CLIENTE FREELANCER", <FreelanceFormBody isNew />)}
         {showNewForm && editingId === null && activeTab === "timeline" && formCard("NOVO MARCO NA LINHA DO TEMPO", <TimelineFormBody isNew />)}
 
         {/* ── LISTS ── */}
         <div className="space-y-3">
+
+          {/* ANALYTICS — link pro painel da Vercel + instruções */}
+          {activeTab === "analytics" && (
+            <div className="space-y-4">
+              <div className="card-brutalist border-accent">
+                <h3 className="font-black text-base mb-2">📊 Vercel Analytics</h3>
+                <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                  O tracker já está instrumentado no <code className="px-1 bg-muted">app/layout.tsx</code>.
+                  Os dados aparecem no painel da Vercel — visitantes únicos,
+                  páginas mais acessadas, origem (referrer), país, dispositivo.
+                </p>
+                <a
+                  href="https://vercel.com/vitordsb/vitor-portfolio/analytics"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-brutalist-accent inline-flex items-center gap-2 px-5 py-2 text-sm"
+                >
+                  ABRIR DASHBOARD ↗
+                </a>
+              </div>
+
+              <div className="card-brutalist">
+                <h3 className="font-black text-base mb-3">Como ativar (uma vez)</h3>
+                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside leading-relaxed">
+                  <li>Faça deploy do projeto na Vercel (basta conectar o repo).</li>
+                  <li>No dashboard da Vercel, vá em <strong>Project → Analytics</strong>.</li>
+                  <li>Clique em <strong>Enable</strong>. Free tier cobre 2.500 eventos/mês.</li>
+                  <li>Dados começam a aparecer ~1min após a primeira visita.</li>
+                </ol>
+              </div>
+
+              <div className="card-brutalist">
+                <h3 className="font-black text-base mb-3">Métricas que valem acompanhar</h3>
+                <ul className="text-sm text-muted-foreground space-y-2 leading-relaxed">
+                  <li>• <strong>Páginas mais visitadas</strong> — qual seção converte mais visitas</li>
+                  <li>• <strong>Cliques em /autonomo → /contact</strong> — se o portfolio gera contato</li>
+                  <li>• <strong>Referrers</strong> — LinkedIn, GitHub, busca direta</li>
+                  <li>• <strong>Países</strong> — define se vale subir conteúdo EN</li>
+                  <li>• <strong>Bounce no /</strong> — se o hero segura ou perde a atenção</li>
+                </ul>
+              </div>
+            </div>
+          )}
 
           {/* PROJECTS */}
           {activeTab === "projects" && initialProjects.map((p) =>
@@ -289,8 +346,23 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
               : (
                 <div className="card-brutalist flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-black text-base mb-1">{p.title}</h4>
-                    <p className="text-xs text-muted-foreground">{p.company} · {p.category}</p>
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <h4 className="font-black text-base">{p.title}</h4>
+                      {p.featured && (
+                        <span className="text-[9px] font-mono font-bold bg-accent text-background px-2 py-0.5 tracking-widest">
+                          DESTAQUE
+                        </span>
+                      )}
+                      {p.slug && (
+                        <span className="text-[10px] font-mono text-muted-foreground">
+                          /{p.slug}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {p.company} · {p.category}
+                      {p.period && <> · {p.period}</>}
+                    </p>
                     {Array.isArray(p.tags) && p.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-2">
                         {p.tags.map((t) => <span key={t} className="tag-badge">{t}</span>)}
@@ -298,7 +370,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                     )}
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(p.id); setProjectForm({ title: p.title, company: p.company, description: p.description, category: p.category, coverImageUrl: p.coverImageUrl ?? "", liveLink: p.liveLink ?? "", repositoryLink: p.repositoryLink ?? "", tags: Array.isArray(p.tags) ? p.tags : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
+                    <button onClick={() => { setShowNewForm(false); setEditingId(p.id); setProjectForm({ title: p.title, company: p.company, description: p.description, category: p.category, slug: p.slug ?? "", period: p.period ?? "", featured: !!p.featured, coverImageUrl: p.coverImageUrl ?? "", liveLink: p.liveLink ?? "", repositoryLink: p.repositoryLink ?? "", tags: Array.isArray(p.tags) ? p.tags : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
                     <button onClick={() => run(() => deleteProject(p.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
@@ -340,7 +412,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                     <div><h4 className="font-black text-base">{s.title}</h4>{s.category && <p className="text-xs text-muted-foreground">{s.category}</p>}</div>
                   </div>
                   <div className="flex gap-2">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(s.id); setSkillForm({ title: s.title, category: s.category ?? "", iconUrl: s.iconUrl ?? "" }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
+                    <button onClick={() => { setShowNewForm(false); setEditingId(s.id); setSkillForm({ title: s.title, category: s.category ?? "", iconUrl: s.iconUrl ?? "", level: String(s.level ?? 3), projectSlugs: Array.isArray(s.projectSlugs) ? s.projectSlugs : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
                     <button onClick={() => run(() => deleteSkill(s.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
@@ -369,30 +441,6 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                   <div className="flex gap-2 shrink-0">
                     <button onClick={() => { setShowNewForm(false); setEditingId(tl.id); setTimelineForm({ dateLabel: tl.dateLabel, sortDate: tl.sortDate, title: tl.title, description: tl.description ?? "", category: tl.category ?? "", icon: tl.icon ?? "" }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
                     <button onClick={() => run(() => deleteTimelineEvent(tl.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
-                  </div>
-                </div>
-              )
-            }</Fragment>
-          )}
-
-          {/* FREELANCE */}
-          {activeTab === "freelance" && initialFreelance.map((fw) =>
-            <Fragment key={fw.id}>{editingId === fw.id
-              ? formCard("EDITAR CLIENTE", <FreelanceFormBody isNew={false} />)
-              : (
-                <div className="card-brutalist flex items-start justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <h4 className="font-black text-base mb-1">{fw.company}</h4>
-                    {fw.role && <p className="text-xs text-accent mb-1">{fw.role}</p>}
-                    {fw.period && <p className="text-xs text-muted-foreground mb-1">{fw.period}</p>}
-                    <p className="text-xs text-foreground/70 line-clamp-2">{fw.description}</p>
-                    {Array.isArray(fw.tags) && fw.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">{fw.tags.map((t) => <span key={t} className="tag-badge">{t}</span>)}</div>
-                    )}
-                  </div>
-                  <div className="flex gap-2 shrink-0">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(fw.id); setFreelanceForm({ company: fw.company, role: fw.role ?? "", description: fw.description, period: fw.period ?? "", website: fw.website ?? "", companyLogoUrl: fw.companyLogoUrl ?? "", tags: Array.isArray(fw.tags) ? fw.tags : [], displayOrder: String(fw.displayOrder) }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
-                    <button onClick={() => run(() => deleteFreelanceWork(fw.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
               )

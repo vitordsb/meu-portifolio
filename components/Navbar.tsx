@@ -14,8 +14,12 @@ import {
   Briefcase,
   Code2,
   Award,
+  FileText,
   Mail,
   Github,
+  Linkedin,
+  MessageCircle,
+  AtSign,
   PanelLeftClose,
   PanelLeftOpen,
   type LucideIcon,
@@ -57,11 +61,15 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
     { href: "/autonomo", label: t("nav.autonomo"), icon: Briefcase },
     { href: "/skills", label: t("nav.skills"), icon: Code2 },
     { href: "/certificates", label: t("nav.certificates"), icon: Award },
+    { href: "/cv", label: "CV", icon: FileText },
     { href: "/contact", label: t("nav.contact"), icon: Mail },
   ];
 
   const externalLinks = [
+    { href: "https://www.linkedin.com/in/vitordsb", label: "LinkedIn", icon: Linkedin },
     { href: "https://github.com/vitordsb", label: t("nav.github"), icon: Github },
+    { href: "https://wa.me/5511939572807", label: "WhatsApp", icon: MessageCircle },
+    { href: "mailto:vitordsb2019@gmail.com", label: "Email", icon: AtSign },
   ];
 
   const LogoFull = (

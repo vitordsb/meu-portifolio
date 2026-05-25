@@ -1,157 +1,5 @@
-import type {
-  Project,
-  Certificate,
-  Skill,
-  FreelanceWork,
-  TimelineEvent,
-} from "../drizzle/schema";
-
-// Curated portfolio content. Source of truth for what's shown publicly.
-// Admin (DB) entries are merged on top of these.
-// Negative IDs avoid collision with auto-increment DB rows.
-
-const now = new Date();
-
-// ── Projects (featured + portfolio) ─────────────────────────────────────────
-// Os 3 primeiros são exibidos como "Featured" na home.
-export const hardcodedProjects: Project[] = [
-  {
-    id: -101,
-    title: "ArqDoor",
-    company: "Cliente · SaaS para Arquitetos",
-    category: "SaaS / Marketplace",
-    description:
-      "Plataforma que formaliza a relação entre arquitetos e clientes: propostas, contratos em PDF, comunicação, pagamentos e dashboard do profissional. Atuei no front-end (React + Vite + TypeScript) cobrindo fluxos públicos, autenticação, área logada e jornadas comerciais.",
-    coverImageUrl: "/projects/arqdoor.png",
-    coverImageKey: null,
-    liveLink: "https://arqdoor.com",
-    repositoryLink: null,
-    tags: ["React", "TypeScript", "Vite", "Tailwind CSS", "Radix UI", "TanStack Query"],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -102,
-    title: "Zuptos",
-    company: "Cliente · Plataforma de Infoprodutos",
-    category: "SaaS / E-commerce",
-    description:
-      "Plataforma de criação e venda de infoprodutos (e-books e cursos online). Construí interfaces e fluxos de venda com foco em conversão, dashboards de produtor com gráficos (Recharts), filtros, jornada gamificada do afiliado, checkouts editáveis e padronização visual com Tailwind + Radix UI.",
-    coverImageUrl: "/projects/zuptos.png",
-    coverImageKey: null,
-    liveLink: "https://app.zuptos.com.br",
-    repositoryLink: null,
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Radix UI", "Recharts"],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -103,
-    title: "MTCprop — Área de Membros",
-    company: "Cliente · Prop Trading",
-    category: "SaaS / Members Area",
-    description:
-      "Área de membros para traders da MTCprop: dashboard com planos, certificados, benefícios, financeiro, gamificação e academy. Front-end em Next.js 16 (App Router) + Tailwind v4, back-end NestJS 11 + Prisma. Auth e dados via Supabase com Postgres compartilhado entre dashboard interno e área pública.",
-    coverImageUrl: "/projects/mtcprop-members.png",
-    coverImageKey: null,
-    liveLink: "https://app.mtcprop.com.br",
-    repositoryLink: null,
-    tags: ["Next.js 16", "NestJS", "Supabase", "Prisma", "Tailwind v4", "TypeScript"],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -104,
-    title: "Girob2b",
-    company: "Startup própria",
-    category: "Marketplace B2B",
-    description:
-      "Plataforma B2B para conectar fornecedores e compradores. Construí toda a stack — landing, autenticação, dashboards de cotação, gestão de leads — em Next.js + Supabase com foco em conversão e tempo de resposta comercial.",
-    coverImageUrl: null,
-    coverImageKey: null,
-    liveLink: null,
-    repositoryLink: null,
-    tags: ["Next.js", "React", "TypeScript", "Supabase", "Tailwind CSS", "Postgres"],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -105,
-    title: "EGP — Plataforma IoT de Segurança",
-    company: "EGP Equipamentos Eletrônicos",
-    category: "Mobile + IoT",
-    description:
-      "Plataforma proprietária de controle remoto de equipamentos de segurança (alarmes, portões, fechaduras) via app mobile. App em React Native + Expo, backend Node.js + Fastify + Drizzle + Postgres, bridge MQTT com firmware ESP32. Substituiu integração com API de terceiros.",
-    coverImageUrl: null,
-    coverImageKey: null,
-    liveLink: null,
-    repositoryLink: null,
-    tags: ["React Native", "Expo", "Fastify", "Drizzle", "Postgres", "MQTT"],
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -106,
-    title: "Instituto Florenza",
-    company: "Cliente",
-    category: "Site institucional",
-    description:
-      "Site institucional em WordPress com tema custom: foco em apresentação da marca, captação de leads e otimização SEO. Performance e identidade visual como prioridades.",
-    coverImageUrl: null,
-    coverImageKey: null,
-    liveLink: null,
-    repositoryLink: null,
-    tags: ["WordPress", "PHP", "SEO", "Landing Page"],
-    createdAt: now,
-    updatedAt: now,
-  },
-];
-
-// ── Freelance / Experiência profissional ────────────────────────────────────
-export const hardcodedFreelance: FreelanceWork[] = [
-  {
-    id: -201,
-    company: "Zuptos",
-    companyLogoUrl: null,
-    role: "Desenvolvedor Front-end · Next.js / React / Tailwind",
-    description:
-      "Plataforma de infoprodutos (e-books e cursos online). Construí interfaces e fluxos de venda focados em conversão, organizei componentes reutilizáveis e padronizei a identidade visual da plataforma com Tailwind CSS.",
-    period: "Nov/2025 — Abr/2026",
-    website: null,
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Design System"],
-    displayOrder: 1,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -202,
-    company: "ArqDoor",
-    companyLogoUrl: null,
-    role: "Desenvolvedor Front-end · React / TypeScript / Vite",
-    description:
-      "Atuei na construção e evolução da plataforma — autenticação, áreas pública e logada, dashboard do prestador, fluxo de convites e propostas avulsas com geração de links compartilháveis e contrato em PDF.",
-    period: "Abr/2025 — Abr/2026 (1 ano 1 mês)",
-    website: null,
-    tags: ["React", "TypeScript", "Vite", "Dashboard", "PDF"],
-    displayOrder: 2,
-    createdAt: now,
-    updatedAt: now,
-  },
-  {
-    id: -203,
-    company: "EGP Ind. e Com. de Equipamentos Eletrônicos",
-    companyLogoUrl: null,
-    role: "Desenvolvedor Full-Stack · React / Node",
-    description:
-      "Sistemas internos (React + Node.js), site institucional, estratégia de SEO/Google Ads, contribuição no design e estruturação do app mobile e materiais visuais alinhados à identidade da marca.",
-    period: "Ago/2023 — Abr/2025 (1 ano 9 meses)",
-    website: null,
-    tags: ["React", "Node.js", "SEO", "Full-Stack"],
-    displayOrder: 3,
-    createdAt: now,
-    updatedAt: now,
-  },
-];
+// Curated portfolio content — usado APENAS pelo seed inicial (scripts/seed-portfolio.ts).
+// Em runtime, o site lê tudo do banco. Editar/criar registros pelo /admin.
 
 // ── Trabalhos consolidados (Autônomo) ───────────────────────────────────────
 // Source of truth única pra página /autonomo. Une projetos próprios + clientes.
@@ -437,23 +285,21 @@ const skillSeeds: SkillSeed[] = [
   { title: "MCP Agents",       category: "IA & Tooling",     iconSlug: null,               level: 3, projects: [] },
 ];
 
-export type SkillMeta = Skill & {
-  iconSlug: string | null;
+// Dados puros do seed — sem id/timestamps (são preenchidos pelo DB).
+export type SkillSeedExport = {
+  title: string;
+  category: string;
+  iconUrl: string | null;
   level: 1 | 2 | 3 | 4 | 5;
-  projects: string[]; // slugs
+  projectSlugs: string[];
 };
 
-export const hardcodedSkills: SkillMeta[] = skillSeeds.map((s, i) => ({
-  id: -300 - i,
+export const hardcodedSkills: SkillSeedExport[] = skillSeeds.map((s) => ({
   title: s.title,
-  iconUrl: s.iconSlug ? `https://cdn.simpleicons.org/${s.iconSlug}` : null,
-  iconKey: null,
   category: s.category,
-  createdAt: now,
-  updatedAt: now,
-  iconSlug: s.iconSlug,
+  iconUrl: s.iconSlug ? `https://cdn.simpleicons.org/${s.iconSlug}` : null,
   level: s.level,
-  projects: s.projects,
+  projectSlugs: s.projects,
 }));
 
 // ── Certificates ────────────────────────────────────────────────────────────
@@ -824,34 +670,19 @@ const certSeeds: CertSeed[] = [
   },
 ];
 
-export const hardcodedCertificates: Certificate[] = certSeeds.map((c, i) => ({
-  id: -400 - i,
+export type CertificateSeedExport = {
+  name: string;
+  description: string;
+  category: string;
+  tags: string[] | null;
+};
+
+export const hardcodedCertificates: CertificateSeedExport[] = certSeeds.map((c) => ({
   name: c.name,
   description: `${c.issuer}${c.description ? " — " + c.description : ""}`,
   category: c.category,
-  link: null,
-  fileUrl: null,
-  fileKey: null,
   tags: c.tags ?? null,
-  createdAt: now,
-  updatedAt: now,
 }));
-
-// ── Competencies (manual, derivado da experiência real) ─────────────────────
-export const hardcodedCompetencies: { tag: string; count: number; percentage: number }[] = [
-  { tag: "React / Next.js", count: 7, percentage: 100 },
-  { tag: "TypeScript", count: 6, percentage: 92 },
-  { tag: "Tailwind CSS", count: 5, percentage: 85 },
-  { tag: "Node.js / Express", count: 4, percentage: 70 },
-  { tag: "PostgreSQL / MySQL", count: 4, percentage: 65 },
-  { tag: "Supabase / Firebase", count: 3, percentage: 60 },
-  { tag: "UI/UX & Design System", count: 4, percentage: 70 },
-  { tag: "Docker / CI/CD", count: 3, percentage: 55 },
-  { tag: "AWS / Vercel", count: 3, percentage: 55 },
-  { tag: "SEO & Performance", count: 3, percentage: 60 },
-  { tag: "Scrum / Kanban", count: 4, percentage: 70 },
-  { tag: "Clean Architecture / SOLID", count: 3, percentage: 60 },
-];
 
 // ── About / Bio (extraído do LinkedIn) ──────────────────────────────────────
 export const aboutContent = {
@@ -1094,17 +925,22 @@ const timelineSeeds: TimelineSeed[] = [
   },
 ];
 
-const epoch = new Date(2023, 0, 1);
-export const hardcodedTimeline: TimelineEvent[] = timelineSeeds.map((t, i) => ({
-  id: -500 - i,
+export type TimelineSeedExport = {
+  dateLabel: string;
+  sortDate: string;
+  title: string;
+  description: string;
+  category: string;
+  icon: string;
+};
+
+export const hardcodedTimeline: TimelineSeedExport[] = timelineSeeds.map((t) => ({
   dateLabel: t.dateLabel,
   sortDate: t.sortDate,
   title: t.title,
   description: t.description,
   category: t.category,
   icon: t.icon,
-  createdAt: epoch,
-  updatedAt: epoch,
 }));
 
 // ── Hero / Stack destacada ──────────────────────────────────────────────────

@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
+// Base URL pra OG/Twitter images. Setar NEXT_PUBLIC_SITE_URL no deploy.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  title: "Vitor de Souza Barreto | Full-Stack Developer",
+  metadataBase: new URL(siteUrl),
+  title: "Vitor de Souza Barreto | Engenheiro de Software",
   description:
-    "Full-Stack Developer transformando desafios de negócio em soluções web de alta performance, escalabilidade e impacto mensurável.",
+    "Engenheiro de Software transformando desafios de negócio em soluções web de alta performance, escalabilidade e impacto mensurável.",
   openGraph: {
-    title: "Vitor de Souza Barreto | Full-Stack Developer",
+    title: "Vitor de Souza Barreto | Engenheiro de Software",
     description: "Portfolio profissional — projetos, competências e trabalho freelancer.",
     type: "website",
   },
@@ -18,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" suppressHydrationWarning>
       <body>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

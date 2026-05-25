@@ -1,4 +1,4 @@
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   users, projects, certificates, skills, freelanceWork, timelineEvents,
@@ -104,6 +104,20 @@ export async function getAllCertificates() {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(certificates).orderBy(certificates.createdAt);
+}
+
+export async function getCertificateCount(): Promise<number> {
+  const db = await getDb();
+  if (!db) return 0;
+  const res = await db.select({ value: count() }).from(certificates);
+  return res[0]?.value ?? 0;
+}
+
+export async function getProjectCount(): Promise<number> {
+  const db = await getDb();
+  if (!db) return 0;
+  const res = await db.select({ value: count() }).from(projects);
+  return res[0]?.value ?? 0;
 }
 
 export async function createCertificate(data: InsertCertificate) {

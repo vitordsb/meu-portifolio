@@ -29,6 +29,20 @@
       "when": 1773953606916,
       "tag": "0003_overconfident_rage",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1779717535044,
+      "tag": "0004_slim_namorita",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1779722936746,
+      "tag": "0005_purple_doctor_doom",
+      "breakpoints": true
     }
   ]
 }

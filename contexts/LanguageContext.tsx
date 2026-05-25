@@ -26,10 +26,10 @@ export const translations = {
       admin: "ADMIN",
     },
     hero: {
-      tag: "[ DESENVOLVEDOR ]",
+      tag: "[ ENGENHEIRO DE SOFTWARE ]",
       name: "VITOR DE\nSOUZA BARRETO",
       description:
-        "Full-Stack Developer transformando desafios de negócio em soluções web de alta performance, escalabilidade e impacto mensurável.",
+        "Engenheiro de Software transformando desafios de negócio em soluções web de alta performance, escalabilidade e impacto mensurável.",
       cta1: "VER PROJETOS",
       cta2: "ENTRAR EM CONTATO",
       stack: "[ STACK PRINCIPAL ]",
@@ -151,10 +151,10 @@ export const translations = {
       admin: "ADMIN",
     },
     hero: {
-      tag: "[ DEVELOPER ]",
+      tag: "[ SOFTWARE ENGINEER ]",
       name: "VITOR DE\nSOUZA BARRETO",
       description:
-        "Full-Stack Developer turning business challenges into high-performance web solutions with scalability and measurable impact.",
+        "Software Engineer turning business challenges into high-performance web solutions with scalability and measurable impact.",
       cta1: "VIEW PROJECTS",
       cta2: "GET IN TOUCH",
       stack: "[ MAIN STACK ]",

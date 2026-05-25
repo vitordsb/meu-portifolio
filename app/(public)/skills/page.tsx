@@ -1,17 +1,17 @@
-import { getAllSkills } from "@/lib/db";
-import { hardcodedSkills } from "@/lib/portfolio-data";
+import { getAllSkills, getAllProjects } from "@/lib/db";
 import SkillsSection from "@/components/sections/SkillsSection";
 
 export const metadata = { title: "Skills | Vitor Barreto" };
 export const revalidate = 0;
 
 export default async function SkillsPage() {
-  const fromDb = await getAllSkills().catch(() => []);
-  // hardcoded vem com meta (level + projects). DB ainda é Skill cru.
-  const skills = [...hardcodedSkills, ...fromDb];
+  const [skills, projects] = await Promise.all([
+    getAllSkills().catch(() => []),
+    getAllProjects().catch(() => []),
+  ]);
   return (
     <main className="pt-20 lg:pt-0 min-h-screen bg-background text-foreground">
-      <SkillsSection skills={skills} />
+      <SkillsSection skills={skills} projects={projects} />
     </main>
   );
 }

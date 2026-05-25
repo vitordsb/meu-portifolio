@@ -3,11 +3,23 @@
 import { useMemo, useState } from "react";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useLanguage, translations } from "@/contexts/LanguageContext";
-import type { Skill } from "@/drizzle/schema";
-import { allWork, type SkillMeta } from "@/lib/portfolio-data";
+import type { Skill, Project } from "@/drizzle/schema";
 
-// Aceita tanto SkillMeta (com level/projects) quanto Skill cru (DB).
-type AnySkill = Skill | SkillMeta;
+const ALL = "__all__";
+
+// Ordem canônica das categorias quando filtro = TODOS.
+// Categorias fora desta lista vão pro fim (alfabético).
+const CATEGORY_ORDER = [
+  "Frontend",
+  "Backend",
+  "Banco de Dados",
+  "Estado & Padrões",
+  "Cloud & BaaS",
+  "DevOps",
+  "Qualidade",
+  "Design & Processo",
+  "IA & Tooling",
+];
 
 const levelLabel: Record<number, { pt: string; en: string }> = {
   1: { pt: "Iniciante", en: "Beginner" },
@@ -17,21 +29,20 @@ const levelLabel: Record<number, { pt: string; en: string }> = {
   5: { pt: "Especialista", en: "Expert" },
 };
 
-function isMeta(s: AnySkill): s is SkillMeta {
-  return "level" in s && "projects" in s;
-}
-
-// Sentinel — não depende do idioma, sobrevive a re-hydration.
-const ALL = "__all__";
-
-export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
+export default function SkillsSection({
+  skills,
+  projects,
+}: {
+  skills: Skill[];
+  projects: Project[];
+}) {
   const { t, language } = useLanguage();
   const catL10n = translations[language].skills.categories as Record<string, string>;
   const allLabel = language === "pt" ? "Todos" : "All";
   const [active, setActive] = useState<string>(ALL);
 
   const byCategory = useMemo(() => {
-    const grouped: Record<string, AnySkill[]> = {};
+    const grouped: Record<string, Skill[]> = {};
     skills.forEach((s) => {
       const cat = s.category || "Outros";
       if (!grouped[cat]) grouped[cat] = [];
@@ -40,21 +51,34 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
     return grouped;
   }, [skills]);
 
-  const categories = useMemo(() => Object.keys(byCategory), [byCategory]);
+  const categories = useMemo(() => {
+    const keys = Object.keys(byCategory);
+    return keys.sort((a, b) => {
+      const ia = CATEGORY_ORDER.indexOf(a);
+      const ib = CATEGORY_ORDER.indexOf(b);
+      // Não listadas vão pro fim
+      const ra = ia === -1 ? CATEGORY_ORDER.length : ia;
+      const rb = ib === -1 ? CATEGORY_ORDER.length : ib;
+      if (ra !== rb) return ra - rb;
+      return a.localeCompare(b);
+    });
+  }, [byCategory]);
 
   const filteredEntries = useMemo(() => {
-    if (active === ALL) return Object.entries(byCategory);
-    return Object.entries(byCategory).filter(([cat]) => cat === active);
-  }, [byCategory, active]);
+    // Usa a ordem definida em `categories` (canônica) pra renderizar
+    const ordered = categories.map((cat) => [cat, byCategory[cat]] as const);
+    if (active === ALL) return ordered;
+    return ordered.filter(([cat]) => cat === active);
+  }, [byCategory, categories, active]);
 
-  // Mapa slug → título do projeto (pra mostrar nomes amigáveis no hover)
-  const workTitleBySlug = useMemo(() => {
+  // Lookup slug → título do projeto
+  const titleBySlug = useMemo(() => {
     const m: Record<string, string> = {};
-    allWork.forEach((w) => {
-      m[w.slug] = w.title;
-    });
+    for (const p of projects) {
+      if (p.slug) m[p.slug] = p.title;
+    }
     return m;
-  }, []);
+  }, [projects]);
 
   return (
     <section id="skills" className="py-16 bg-background">
@@ -65,7 +89,7 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
           <p className="text-sm text-muted-foreground">{t("skills.empty")}</p>
         )}
 
-        {/* Filtro por categoria */}
+        {/* Filtro */}
         {categories.length > 0 && (
           <div className="mb-8 flex flex-wrap gap-2">
             <button
@@ -106,7 +130,15 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
               )}
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
                 {catSkills.map((skill) => {
-                  const meta = isMeta(skill) ? skill : null;
+                  const level = skill.level ?? 3;
+                  const projectSlugs = Array.isArray(skill.projectSlugs)
+                    ? skill.projectSlugs
+                    : [];
+                  const projectTitles = projectSlugs
+                    .map((slug) => titleBySlug[slug])
+                    .filter(Boolean);
+                  const lvl = levelLabel[level] ?? levelLabel[3];
+
                   const card = (
                     <div className="card-brutalist text-center hover:bg-accent hover:text-background transition group p-3 cursor-default">
                       {skill.iconUrl ? (
@@ -126,16 +158,6 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
                     </div>
                   );
 
-                  // Sem meta? Só renderiza o card sem hover-popup
-                  if (!meta) {
-                    return <div key={skill.id}>{card}</div>;
-                  }
-
-                  const lvl = levelLabel[meta.level];
-                  const projectTitles = meta.projects
-                    .map((slug) => workTitleBySlug[slug])
-                    .filter(Boolean);
-
                   return (
                     <HoverCard.Root key={skill.id} openDelay={120} closeDelay={80}>
                       <HoverCard.Trigger asChild>{card}</HoverCard.Trigger>
@@ -146,7 +168,6 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
                           sideOffset={8}
                           className="z-50 w-72 card-brutalist border-accent shadow-lg animate-in fade-in zoom-in-95"
                         >
-                          {/* Header */}
                           <div className="flex items-center gap-3 mb-3">
                             {skill.iconUrl && (
                               /* eslint-disable-next-line @next/next/no-img-element */
@@ -162,20 +183,19 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
                               </h4>
                               {skill.category && (
                                 <p className="text-[10px] font-mono text-accent tracking-widest uppercase">
-                                  {skill.category}
+                                  {catL10n[skill.category] ?? skill.category}
                                 </p>
                               )}
                             </div>
                           </div>
 
-                          {/* Level (1-5) */}
                           <div className="mb-3">
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                                 {language === "pt" ? "Nível" : "Level"}
                               </span>
                               <span className="text-[10px] font-bold text-accent">
-                                {lvl[language]} · {meta.level}/5
+                                {lvl[language]} · {level}/5
                               </span>
                             </div>
                             <div className="flex gap-1">
@@ -183,14 +203,13 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
                                 <div
                                   key={i}
                                   className={`flex-1 h-1.5 ${
-                                    i <= meta.level ? "bg-accent" : "bg-muted"
+                                    i <= level ? "bg-accent" : "bg-muted"
                                   }`}
                                 />
                               ))}
                             </div>
                           </div>
 
-                          {/* Projects */}
                           <div>
                             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
                               {language === "pt"
@@ -200,10 +219,7 @@ export default function SkillsSection({ skills }: { skills: AnySkill[] }) {
                             {projectTitles.length > 0 ? (
                               <div className="flex flex-wrap gap-1">
                                 {projectTitles.map((title) => (
-                                  <span
-                                    key={title}
-                                    className="tag-badge text-[10px]"
-                                  >
+                                  <span key={title} className="tag-badge text-[10px]">
                                     {title}
                                   </span>
                                 ))}

@@ -71,6 +71,7 @@ export async function loginWithPassword(
 // ── Projects ─────────────────────────────────────────────────────────────────
 type ProjectInput = {
   title: string; company: string; description: string; category: string;
+  slug?: string; period?: string; featured?: boolean;
   coverImageUrl?: string; liveLink?: string; repositoryLink?: string; tags?: string[];
 };
 
@@ -116,7 +117,10 @@ export async function deleteCertificate(id: number) {
 }
 
 // ── Skills ───────────────────────────────────────────────────────────────────
-type SkillInput = { title: string; category?: string; iconUrl?: string };
+type SkillInput = {
+  title: string; category?: string; iconUrl?: string;
+  level?: number; projectSlugs?: string[];
+};
 
 export async function createSkill(data: SkillInput) {
   await assertAdmin();

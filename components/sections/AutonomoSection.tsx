@@ -3,29 +3,29 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ExternalLink, Lock, Mail } from "lucide-react";
-import { allWork, type Work } from "@/lib/portfolio-data";
+import type { Project } from "@/drizzle/schema";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ALL = "__all__";
 
-export default function AutonomoSection() {
+export default function AutonomoSection({ projects }: { projects: Project[] }) {
   const { t } = useLanguage();
   const allLabel = t("autonomo.all");
 
   const categories = useMemo(() => {
-    const set = new Set<string>(allWork.map((w) => w.category));
+    const set = new Set<string>(projects.map((p) => p.category));
     return [ALL, ...Array.from(set)];
-  }, []);
+  }, [projects]);
 
   const [active, setActive] = useState<string>(ALL);
 
-  const featured = useMemo(() => allWork.filter((w) => w.featured), []);
-  const filtered = useMemo<Work[]>(() => {
-    if (active === ALL) return allWork;
-    return allWork.filter((w) => w.category === active);
-  }, [active]);
+  const featured = useMemo(() => projects.filter((p) => p.featured), [projects]);
+  const filtered = useMemo<Project[]>(() => {
+    if (active === ALL) return projects;
+    return projects.filter((p) => p.category === active);
+  }, [projects, active]);
 
-  const subtitle = t("autonomo.subtitle").replace("{count}", String(allWork.length));
+  const subtitle = t("autonomo.subtitle").replace("{count}", String(projects.length));
   const allTag = t("autonomo.allTag").replace("{count}", String(filtered.length));
 
   return (
@@ -54,23 +54,27 @@ export default function AutonomoSection() {
         </div>
 
         {/* Featured (com cover image grande) */}
-        <div className="mb-14">
-          <p className="text-[10px] font-mono text-muted-foreground tracking-widest mb-4">
-            {t("autonomo.featured")}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featured.map((w) => (
-              <WorkCard key={w.slug} work={w} large t={t} />
-            ))}
+        {featured.length > 0 && (
+          <div className="mb-14">
+            <p className="text-[10px] font-mono text-muted-foreground tracking-widest mb-4">
+              {t("autonomo.featured")}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {featured.map((w) => (
+                <WorkCard key={w.id} project={w} large t={t} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Category filter */}
         <div className="mb-6 flex flex-wrap gap-2">
           {categories.map((cat) => {
             const isAll = cat === ALL;
             const label = isAll ? allLabel : cat;
-            const count = isAll ? allWork.length : allWork.filter((w) => w.category === cat).length;
+            const count = isAll
+              ? projects.length
+              : projects.filter((p) => p.category === cat).length;
             return (
               <button
                 key={cat}
@@ -94,7 +98,7 @@ export default function AutonomoSection() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((w) => (
-            <WorkCard key={w.slug} work={w} large={false} t={t} />
+            <WorkCard key={w.id} project={w} large={false} t={t} />
           ))}
         </div>
       </div>
@@ -102,7 +106,16 @@ export default function AutonomoSection() {
   );
 }
 
-function WorkCard({ work, large, t }: { work: Work; large: boolean; t: (k: string) => string }) {
+function WorkCard({
+  project,
+  large,
+  t,
+}: {
+  project: Project;
+  large: boolean;
+  t: (k: string) => string;
+}) {
+  const tags = Array.isArray(project.tags) ? project.tags : [];
   return (
     <article
       className={`card-brutalist hover:border-accent transition flex flex-col ${
@@ -111,11 +124,11 @@ function WorkCard({ work, large, t }: { work: Work; large: boolean; t: (k: strin
     >
       {large && (
         <div className="aspect-video overflow-hidden border-b border-border bg-muted">
-          {work.coverImageUrl ? (
+          {project.coverImageUrl ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
-              src={work.coverImageUrl}
-              alt={work.title}
+              src={project.coverImageUrl}
+              alt={project.title}
               className="w-full h-full object-cover object-top hover:scale-105 transition duration-500"
             />
           ) : (
@@ -128,7 +141,7 @@ function WorkCard({ work, large, t }: { work: Work; large: boolean; t: (k: strin
                 }}
               />
               <span className="relative font-black text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
-                {work.title}
+                {project.title}
               </span>
             </div>
           )}
@@ -138,7 +151,7 @@ function WorkCard({ work, large, t }: { work: Work; large: boolean; t: (k: strin
       <div className={`${large ? "p-5" : ""} flex flex-col flex-1`}>
         <div className="flex items-start justify-between gap-2 mb-2">
           <p className="text-[10px] font-mono text-accent tracking-widest">
-            {work.category.toUpperCase()}
+            {project.category.toUpperCase()}
           </p>
           <span
             title={t("autonomo.privateTitle")}
@@ -154,12 +167,12 @@ function WorkCard({ work, large, t }: { work: Work; large: boolean; t: (k: strin
             large ? "text-lg" : "text-base"
           } leading-tight mb-1`}
         >
-          {work.title}
+          {project.title}
         </h3>
-        <p className="text-xs text-muted-foreground mb-1">{work.company}</p>
-        {work.period && (
+        <p className="text-xs text-muted-foreground mb-1">{project.company}</p>
+        {project.period && (
           <p className="text-[10px] font-mono text-muted-foreground/70 mb-3">
-            {work.period}
+            {project.period}
           </p>
         )}
 
@@ -168,26 +181,28 @@ function WorkCard({ work, large, t }: { work: Work; large: boolean; t: (k: strin
             large ? "line-clamp-4" : "line-clamp-3"
           } flex-1`}
         >
-          {work.description}
+          {project.description}
         </p>
 
-        <div className="flex flex-wrap gap-1 mb-4">
-          {work.stack.slice(0, large ? 5 : 3).map((tech) => (
-            <span key={tech} className="tag-badge">
-              {tech}
-            </span>
-          ))}
-        </div>
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-4">
+            {tags.slice(0, large ? 5 : 3).map((tech) => (
+              <span key={tech} className="tag-badge">
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
 
-        {work.liveLink ? (
+        {project.liveLink ? (
           <a
-            href={work.liveLink}
+            href={project.liveLink}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-auto inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-accent/80 transition border-t border-border pt-3"
           >
             <ExternalLink size={14} />
-            {work.liveLink.replace(/^https?:\/\//, "")}
+            {project.liveLink.replace(/^https?:\/\//, "")}
           </a>
         ) : (
           <p className="mt-auto text-[10px] font-mono text-muted-foreground/50 border-t border-border pt-3">

@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import { allWork, heroStack } from "@/lib/portfolio-data";
+import type { Project } from "@/drizzle/schema";
+import { heroStack } from "@/lib/portfolio-data";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const featured = allWork.filter((w) => w.featured).slice(0, 3);
-
-export default function FeaturedProjectsSection() {
+export default function FeaturedProjectsSection({ projects }: { projects: Project[] }) {
   const { t } = useLanguage();
+  const featured = projects.filter((p) => p.featured).slice(0, 3);
+
   return (
     <>
       {/* Stack ribbon */}
@@ -31,82 +32,91 @@ export default function FeaturedProjectsSection() {
       </section>
 
       {/* Featured projects */}
-      <section id="featured" className="py-20 bg-background">
-        <div className="container">
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-            <div>
-              <p className="text-xs font-mono text-accent tracking-widest mb-2">
-                {t("home.featuredTag")}
-              </p>
-              <h2 className="section-header">{t("home.featuredTitle")}</h2>
-              <div className="w-12 h-1 bg-accent mt-3" />
-            </div>
-            <Link
-              href="/autonomo"
-              className="text-sm font-bold flex items-center gap-2 hover:text-accent transition"
-            >
-              {t("home.seeAll")} <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featured.map((p) => (
-              <article
-                key={p.slug}
-                className="card-brutalist hover:border-accent transition flex flex-col overflow-hidden p-0"
+      {featured.length > 0 && (
+        <section id="featured" className="py-20 bg-background">
+          <div className="container">
+            <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+              <div>
+                <p className="text-xs font-mono text-accent tracking-widest mb-2">
+                  {t("home.featuredTag")}
+                </p>
+                <h2 className="section-header">{t("home.featuredTitle")}</h2>
+                <div className="w-12 h-1 bg-accent mt-3" />
+              </div>
+              <Link
+                href="/autonomo"
+                className="text-sm font-bold flex items-center gap-2 hover:text-accent transition"
               >
-                <div className="aspect-video overflow-hidden border-b border-border bg-muted">
-                  {p.coverImageUrl ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={p.coverImageUrl}
-                      alt={p.title}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-foreground flex items-center justify-center p-6 relative">
-                      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 8px, currentColor 8px, currentColor 9px)" }} />
-                      <span className="relative font-black text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
-                        {p.title}
-                      </span>
+                {t("home.seeAll")} <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {featured.map((p) => {
+                const tags = Array.isArray(p.tags) ? p.tags : [];
+                return (
+                  <article
+                    key={p.id}
+                    className="card-brutalist hover:border-accent transition flex flex-col overflow-hidden p-0"
+                  >
+                    <div className="aspect-video overflow-hidden border-b border-border bg-muted">
+                      {p.coverImageUrl ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={p.coverImageUrl}
+                          alt={p.title}
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-foreground flex items-center justify-center p-6 relative">
+                          <div
+                            className="absolute inset-0 opacity-10"
+                            style={{
+                              backgroundImage:
+                                "repeating-linear-gradient(45deg, transparent, transparent 8px, currentColor 8px, currentColor 9px)",
+                            }}
+                          />
+                          <span className="relative font-black text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
+                            {p.title}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <div className="p-5 flex flex-col flex-1">
-                  <p className="text-[10px] font-mono text-accent tracking-widest mb-2">
-                    {p.category.toUpperCase()}
-                  </p>
-                  <h3 className="font-black text-lg leading-tight mb-1">
-                    {p.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mb-4">{p.company}</p>
-                  <p className="text-sm text-foreground/75 leading-relaxed mb-5 line-clamp-4 flex-1">
-                    {p.description}
-                  </p>
-                  <div className="flex flex-wrap gap-1 mb-4">
-                    {p.stack.slice(0, 4).map((tag) => (
-                      <span key={tag} className="tag-badge">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                  {p.liveLink && (
-                    <a
-                      href={p.liveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-accent/80 transition border-t border-border pt-3"
-                    >
-                      <ExternalLink size={14} />
-                      {p.liveLink.replace(/^https?:\/\//, "")}
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
+                    <div className="p-5 flex flex-col flex-1">
+                      <p className="text-[10px] font-mono text-accent tracking-widest mb-2">
+                        {p.category.toUpperCase()}
+                      </p>
+                      <h3 className="font-black text-lg leading-tight mb-1">{p.title}</h3>
+                      <p className="text-xs text-muted-foreground mb-4">{p.company}</p>
+                      <p className="text-sm text-foreground/75 leading-relaxed mb-5 line-clamp-4 flex-1">
+                        {p.description}
+                      </p>
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {tags.slice(0, 4).map((tag) => (
+                            <span key={tag} className="tag-badge">#{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                      {p.liveLink && (
+                        <a
+                          href={p.liveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-auto inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-accent/80 transition border-t border-border pt-3"
+                        >
+                          <ExternalLink size={14} />
+                          {p.liveLink.replace(/^https?:\/\//, "")}
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="py-16 bg-foreground text-background">
