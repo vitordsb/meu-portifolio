@@ -4,8 +4,13 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 
 // Base URL pra OG/Twitter images. Setar NEXT_PUBLIC_SITE_URL no deploy.
+// Normaliza adicionando https:// se faltar (evita quebrar new URL()).
+function normalizeUrl(raw: string): string {
+  if (!raw) return "";
+  return /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+}
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL ?? "") ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export const metadata: Metadata = {
