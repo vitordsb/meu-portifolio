@@ -22,21 +22,30 @@ function shouldUseSsl(url: string): boolean {
 }
 
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
+  if (!_db) {
+    const url = process.env.DATABASE_URL;
+    if (!url) {
+      console.error("[DB] DATABASE_URL não está definido nas env vars");
+      return null;
+    }
     try {
-      const url = process.env.DATABASE_URL;
       if (shouldUseSsl(url)) {
         // Pool com SSL pra providers cloud
+        // Parse URL pra log seguro (sem expor senha)
+        const u = new URL(url);
+        console.log(`[DB] Conectando com TLS em ${u.hostname}:${u.port}/${u.pathname.slice(1)}`);
         const pool = mysql.createPool({
           uri: url,
           ssl: { rejectUnauthorized: true },
+          connectTimeout: 10000,
         });
         _db = drizzle(pool);
       } else {
+        console.log("[DB] Conectando sem TLS");
         _db = drizzle(url);
       }
     } catch (e) {
-      console.warn("[DB] Connection failed:", e);
+      console.error("[DB] Falha ao criar pool:", e);
     }
   }
   return _db;
