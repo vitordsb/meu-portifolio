@@ -1,5 +1,6 @@
 import { eq, asc, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2";
 import {
   users, projects, certificates, skills, freelanceWork, timelineEvents,
   type InsertUser, type InsertProject, type InsertCertificate,
@@ -8,10 +9,32 @@ import {
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
+/**
+ * Cria pool MySQL aplicando SSL automaticamente quando necessário.
+ * Providers cloud (TiDB, PlanetScale, Aiven) exigem TLS — detectamos pelo host
+ * ou pelo query param `?ssl=true`.
+ */
+function shouldUseSsl(url: string): boolean {
+  if (/ssl=(true|require|verify|VERIFY)/i.test(url)) return true;
+  if (/ssl-mode=(REQUIRED|VERIFY_IDENTITY|VERIFY_CA)/i.test(url)) return true;
+  // Hosts conhecidos que exigem TLS
+  return /tidbcloud\.com|aivencloud\.com|psdb\.cloud|planetscale\.com|aws\.neon\.tech/i.test(url);
+}
+
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      const url = process.env.DATABASE_URL;
+      if (shouldUseSsl(url)) {
+        // Pool com SSL pra providers cloud
+        const pool = mysql.createPool({
+          uri: url,
+          ssl: { rejectUnauthorized: true },
+        });
+        _db = drizzle(pool);
+      } else {
+        _db = drizzle(url);
+      }
     } catch (e) {
       console.warn("[DB] Connection failed:", e);
     }

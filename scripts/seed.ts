@@ -11,9 +11,14 @@
 
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2";
 import { eq } from "drizzle-orm";
 import { scryptSync, randomBytes } from "crypto";
 import { users } from "../drizzle/schema";
+
+function needsSsl(url: string): boolean {
+  return /tidbcloud|aivencloud|planetscale|psdb\.cloud|neon\.tech|ssl=true|ssl-mode=/i.test(url);
+}
 
 function hashPassword(password: string): string {
   const salt = randomBytes(16).toString("hex");
@@ -25,7 +30,9 @@ async function main() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL not set");
 
-  const db = drizzle(url);
+  const db = needsSsl(url)
+    ? drizzle(mysql.createPool({ uri: url, ssl: { rejectUnauthorized: true } }))
+    : drizzle(url);
 
   const username = process.env.ADMIN_USERNAME ?? "root";
   const password = process.env.ADMIN_PASSWORD ?? "senha123";

@@ -13,6 +13,7 @@
 
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2";
 import { eq } from "drizzle-orm";
 import {
   projects,
@@ -27,10 +28,16 @@ import {
   hardcodedTimeline,
 } from "../lib/portfolio-data";
 
+function needsSsl(url: string): boolean {
+  return /tidbcloud|aivencloud|planetscale|psdb\.cloud|neon\.tech|ssl=true|ssl-mode=/i.test(url);
+}
+
 async function main() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL not set");
-  const db = drizzle(url);
+  const db = needsSsl(url)
+    ? drizzle(mysql.createPool({ uri: url, ssl: { rejectUnauthorized: true } }))
+    : drizzle(url);
 
   let inserted = 0;
   let updated = 0;
