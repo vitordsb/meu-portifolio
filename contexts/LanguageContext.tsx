@@ -26,10 +26,10 @@ export const translations = {
       admin: "ADMIN",
     },
     hero: {
-      tag: "[ ENGENHEIRO DE SOFTWARE ]",
+      tag: "[ UX ENGINEER ]",
       name: "VITOR DE\nSOUZA BARRETO",
       description:
-        "Engenheiro de Software transformando desafios de negócio em soluções web de alta performance, escalabilidade e impacto mensurável.",
+        "UX Engineer que une design de experiência e engenharia — interfaces de alta performance, acessíveis e pensadas pra converter. Onde código encontra usabilidade.",
       cta1: "VER PROJETOS",
       cta2: "ENTRAR EM CONTATO",
       stack: "[ STACK PRINCIPAL ]",
@@ -52,7 +52,7 @@ export const translations = {
     },
     about: {
       title: "Sobre mim",
-      p1: "Desenvolvedor Front-end com +4 anos de experiência em React.js, Next.js e TypeScript. Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica — com foco em performance, experiência do usuário e conversão.",
+      p1: "UX Engineer com +4 anos de experiência unindo design de experiência e engenharia front-end (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica — sempre com foco em usabilidade, performance e conversão.",
       p2: "Trabalho desde a arquitetura de componentes reutilizáveis e design systems até a integração com back-end e infraestrutura — Node.js, bancos relacionais e não-relacionais, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD e cloud (AWS, Vercel).",
       p3: "Estou aberto a oportunidades remotas ou híbridas. Gosto de transformar problemas de negócio em produto que funciona — não só feature que entrega.",
       education: "Formação",
@@ -151,10 +151,10 @@ export const translations = {
       admin: "ADMIN",
     },
     hero: {
-      tag: "[ SOFTWARE ENGINEER ]",
+      tag: "[ UX ENGINEER ]",
       name: "VITOR DE\nSOUZA BARRETO",
       description:
-        "Software Engineer turning business challenges into high-performance web solutions with scalability and measurable impact.",
+        "UX Engineer bridging experience design and engineering — high-performance, accessible interfaces built to convert. Where code meets usability.",
       cta1: "VIEW PROJECTS",
       cta2: "GET IN TOUCH",
       stack: "[ MAIN STACK ]",
@@ -177,7 +177,7 @@ export const translations = {
     },
     about: {
       title: "About me",
-      p1: "Front-end developer with 4+ years of experience in React.js, Next.js and TypeScript. I've worked on digital products across many domains — B2B marketplaces, infoproduct platforms, architecture and electronic security systems — with a focus on performance, UX and conversion.",
+      p1: "UX Engineer with 4+ years bridging experience design and front-end engineering (React, Next.js, TypeScript). I've shipped digital products across many domains — B2B marketplaces, infoproduct platforms, architecture and electronic security systems — always focused on usability, performance and conversion.",
       p2: "I work from reusable components and design systems all the way to back-end and infrastructure — Node.js, relational and non-relational databases, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD and cloud (AWS, Vercel).",
       p3: "I'm open to remote or hybrid opportunities. I like turning business problems into products that work — not just features that ship.",
       education: "Education",

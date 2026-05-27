@@ -94,7 +94,7 @@ export default function SkillsSection({
           <div className="mb-8 flex flex-wrap gap-2">
             <button
               onClick={() => setActive(ALL)}
-              className={`font-bold px-4 py-2 text-xs border transition ${
+              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                 active === ALL
                   ? "bg-accent text-background border-accent"
                   : "border-border hover:border-accent"
@@ -107,7 +107,7 @@ export default function SkillsSection({
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`font-bold px-4 py-2 text-xs border transition ${
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                   active === cat
                     ? "bg-accent text-background border-accent"
                     : "border-border hover:border-accent"
@@ -150,7 +150,7 @@ export default function SkillsSection({
                           className="w-8 h-8 mx-auto mb-2 object-contain group-hover:scale-110 transition"
                         />
                       ) : (
-                        <div className="text-lg font-black mb-2 h-8 flex items-center justify-center">
+                        <div className="text-lg font-extrabold mb-2 h-8 flex items-center justify-center">
                           ◆
                         </div>
                       )}
@@ -178,7 +178,7 @@ export default function SkillsSection({
                               />
                             )}
                             <div className="min-w-0">
-                              <h4 className="font-black text-sm leading-tight">
+                              <h4 className="font-extrabold text-sm leading-tight">
                                 {skill.title}
                               </h4>
                               {skill.category && (

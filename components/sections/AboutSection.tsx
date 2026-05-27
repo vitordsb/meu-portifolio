@@ -28,7 +28,7 @@ export default function AboutSection() {
           </div>
 
           <div className="card-brutalist">
-            <h3 className="font-black text-base mb-6 flex items-center gap-2">
+            <h3 className="font-extrabold text-base mb-6 flex items-center gap-2">
               <GraduationCap size={16} className="text-accent" />
               {t("about.education")}
             </h3>

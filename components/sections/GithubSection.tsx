@@ -40,7 +40,7 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
           <div className="mb-8 flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedLang(null)}
-              className={`font-bold px-4 py-2 text-xs border transition ${!selectedLang ? "bg-accent text-background border-accent" : "border-border hover:border-accent"}`}
+              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${!selectedLang ? "bg-accent text-background border-accent" : "border-border hover:border-accent"}`}
             >
               TODOS
             </button>
@@ -48,7 +48,7 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
               <button
                 key={lang}
                 onClick={() => setSelectedLang(selectedLang === lang ? null : lang)}
-                className={`font-bold px-4 py-2 text-xs border transition flex items-center gap-2 ${selectedLang === lang ? "bg-accent text-background border-accent" : "border-border hover:border-accent"}`}
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition flex items-center gap-2 ${selectedLang === lang ? "bg-accent text-background border-accent" : "border-border hover:border-accent"}`}
               >
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: langColors[lang!] ?? "#888" }} />
                 {lang}

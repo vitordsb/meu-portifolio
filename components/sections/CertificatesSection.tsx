@@ -53,7 +53,7 @@ export default function CertificatesSection({ certificates }: { certificates: Ce
           <div className="mb-8 flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`font-bold px-4 py-2 text-xs border transition ${
+              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                 selectedCategory === "all"
                   ? "bg-accent text-background border-accent"
                   : "border-border hover:border-accent"
@@ -66,7 +66,7 @@ export default function CertificatesSection({ certificates }: { certificates: Ce
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`font-bold px-4 py-2 text-xs border transition ${
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                   selectedCategory === cat
                     ? "bg-accent text-background border-accent"
                     : "border-border hover:border-accent"
@@ -161,7 +161,7 @@ export default function CertificatesSection({ certificates }: { certificates: Ce
                   <button
                     key={n}
                     onClick={() => setPage(n)}
-                    className={`w-9 h-9 border-2 font-bold text-xs transition ${
+                    className={`w-9 h-9 rounded-full border font-bold text-xs transition ${
                       safePage === n
                         ? "bg-accent border-accent text-background"
                         : "border-border hover:border-accent"

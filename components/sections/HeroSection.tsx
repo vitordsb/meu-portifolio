@@ -93,7 +93,7 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
             <span className="text-accent font-mono text-sm font-bold mb-4 block tracking-widest">
               {t("hero.tag")}
             </span>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6 whitespace-pre-line">
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none mb-6 whitespace-pre-line">
               {t("hero.name")}
             </h1>
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
@@ -112,9 +112,9 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
           {/* ── Foto ── */}
           <div className="shrink-0">
             <div className="relative w-60 h-60 md:w-80 md:h-80">
-              {/* sombra deslocada estilo brutalist */}
-              <div className="absolute inset-0 translate-x-2 translate-y-2 bg-accent" />
-              <div className="relative w-full h-full border-4 border-foreground overflow-hidden">
+              {/* glow suave accent atrás da foto */}
+              <div className="absolute -inset-3 rounded-[2rem] bg-accent/15 blur-2xl" />
+              <div className="relative w-full h-full rounded-3xl overflow-hidden ring-1 ring-border shadow-xl">
                 <Image
                   src={profilePic}
                   alt="Vitor de Souza Barreto"
@@ -133,9 +133,9 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
           {stats.map((s) => (
             <div
               key={s.label}
-              className="border border-border bg-background/60 backdrop-blur-sm px-4 py-3 hover:border-accent transition flex items-baseline gap-2 min-w-[160px]"
+              className="rounded-2xl border border-border/70 bg-card/70 backdrop-blur-sm px-5 py-3.5 hover:border-accent/60 hover:shadow-md transition-all flex items-baseline gap-2 min-w-[160px]"
             >
-              <p className="font-black text-2xl text-accent leading-none">
+              <p className="font-extrabold text-2xl text-accent leading-none">
                 {s.value}
               </p>
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider leading-tight">
@@ -156,7 +156,7 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
               return (
                 <div key={name} className="flex items-center">
                   <span
-                    className={`font-black text-base md:text-lg tracking-[0.15em] transition-colors duration-500 cursor-default hover:text-accent ${
+                    className={`font-extrabold text-base md:text-lg tracking-[0.15em] transition-colors duration-500 cursor-default hover:text-accent ${
                       isActive ? "text-accent" : "text-muted-foreground/60"
                     }`}
                   >

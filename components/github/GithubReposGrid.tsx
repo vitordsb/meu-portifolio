@@ -73,7 +73,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
           <div className="mb-10 flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedLang(null)}
-              className={`font-bold px-4 py-2 text-xs border transition ${!selectedLang ? "bg-accent text-accent-foreground border-accent" : "border-border hover:border-accent"}`}
+              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${!selectedLang ? "bg-accent text-accent-foreground border-accent" : "border-border hover:border-accent"}`}
             >
               TODOS
             </button>
@@ -81,7 +81,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
               <button
                 key={lang}
                 onClick={() => setSelectedLang(selectedLang === lang ? null : lang)}
-                className={`font-bold px-4 py-2 text-xs border transition flex items-center gap-2 ${selectedLang === lang ? "bg-accent text-accent-foreground border-accent" : "border-border hover:border-accent"}`}
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition flex items-center gap-2 ${selectedLang === lang ? "bg-accent text-accent-foreground border-accent" : "border-border hover:border-accent"}`}
               >
                 <span
                   className="w-2.5 h-2.5 rounded-full"
@@ -105,7 +105,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
                     <Code2 size={16} className="text-accent shrink-0" />
-                    <h2 className="font-black text-sm leading-tight truncate group-hover:text-accent transition">
+                    <h2 className="font-extrabold text-sm leading-tight truncate group-hover:text-accent transition">
                       {repo.name}
                     </h2>
                   </div>

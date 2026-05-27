@@ -69,11 +69,11 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
         >
           {/* Header */}
           <header className="border-b-2 border-foreground pb-6 mb-8 cv-section">
-            <h1 className="text-4xl font-black tracking-tighter leading-none mb-1">
+            <h1 className="text-4xl font-extrabold tracking-tighter leading-none mb-1">
               VITOR DE SOUZA BARRETO
             </h1>
             <p className="text-sm font-mono text-accent tracking-widest mt-2 mb-4">
-              ENGENHEIRO DE SOFTWARE · FULL-STACK
+              UX ENGINEER · FRONT-END · FULL-STACK
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-1 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -101,7 +101,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
 
           {/* Resumo */}
           <section className="mb-8 cv-section">
-            <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+            <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
               Resumo
             </h2>
             {aboutContent.paragraphs.map((p, i) => (
@@ -117,7 +117,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
           {/* Stack / Skills agrupadas */}
           {skills.length > 0 && (
             <section className="mb-8 cv-section">
-              <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+              <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
                 Stack &amp; Tecnologias ({skills.length})
               </h2>
               <div className="space-y-1.5">
@@ -135,7 +135,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
 
           {/* Experiência */}
           <section className="mb-8 cv-section">
-            <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+            <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
               Experiência profissional
             </h2>
             <div className="space-y-4">
@@ -161,7 +161,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
           {/* Projetos em destaque */}
           {featuredProjects.length > 0 && (
             <section className="mb-8 cv-section">
-              <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+              <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
                 Projetos em destaque ({featuredProjects.length})
               </h2>
               <div className="space-y-3">
@@ -199,7 +199,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
           {/* Outros trabalhos */}
           {otherProjects.length > 0 && (
             <section className="mb-8 cv-section">
-              <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+              <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
                 Outros trabalhos ({otherProjects.length})
               </h2>
               <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[11px]">
@@ -215,7 +215,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
 
           {/* Formação */}
           <section className="mb-8 cv-section">
-            <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+            <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
               Formação
             </h2>
             <div className="space-y-3">
@@ -236,7 +236,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
           {/* Certificados */}
           {certificates.length > 0 && (
             <section className="cv-section">
-              <h2 className="text-xs font-black uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
+              <h2 className="text-xs font-extrabold uppercase tracking-widest text-accent border-b border-border pb-1 mb-3">
                 Certificações ({certificates.length})
               </h2>
               <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-[10px]">

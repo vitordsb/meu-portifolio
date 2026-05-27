@@ -53,7 +53,7 @@ export default function FreelancerSection({ items }: { items: FreelanceWork[] })
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h3 className="font-black text-base leading-tight truncate">{item.company}</h3>
+                  <h3 className="font-extrabold text-base leading-tight truncate">{item.company}</h3>
                   {item.role && (
                     <p className="text-xs text-accent font-bold mt-0.5 truncate">{item.role}</p>
                   )}

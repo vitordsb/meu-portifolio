@@ -688,7 +688,7 @@ export const hardcodedCertificates: CertificateSeedExport[] = certSeeds.map((c) 
 export const aboutContent = {
   title: "Sobre mim",
   paragraphs: [
-    "Desenvolvedor Front-end com +4 anos de experiência em React.js, Next.js e TypeScript. Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica — com foco em performance, experiência do usuário e conversão.",
+    "UX Engineer com +4 anos de experiência unindo design de experiência e engenharia front-end (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica — sempre com foco em usabilidade, performance e conversão.",
     "Trabalho desde a arquitetura de componentes reutilizáveis e design systems até a integração com back-end e infraestrutura — Node.js, bancos relacionais e não-relacionais, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD e cloud (AWS, Vercel).",
     "Estou aberto a oportunidades remotas ou híbridas. Gosto de transformar problemas de negócio em produto que funciona — não só feature que entrega.",
   ],

@@ -37,7 +37,7 @@ export default function AutonomoSection({ projects }: { projects: Project[] }) {
             <p className="text-xs font-mono text-accent tracking-widest mb-2">
               {t("autonomo.tag")}
             </p>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-none">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-none">
               {t("autonomo.title")}
             </h1>
             <div className="w-12 h-1 bg-accent mt-4 mb-4" />
@@ -79,7 +79,7 @@ export default function AutonomoSection({ projects }: { projects: Project[] }) {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`font-bold px-4 py-2 text-xs border transition ${
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                   active === cat
                     ? "bg-accent text-background border-accent"
                     : "border-border hover:border-accent"
@@ -140,7 +140,7 @@ function WorkCard({
                     "repeating-linear-gradient(45deg, transparent, transparent 8px, currentColor 8px, currentColor 9px)",
                 }}
               />
-              <span className="relative font-black text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
+              <span className="relative font-extrabold text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
                 {project.title}
               </span>
             </div>
@@ -163,7 +163,7 @@ function WorkCard({
         </div>
 
         <h3
-          className={`font-black ${
+          className={`font-extrabold ${
             large ? "text-lg" : "text-base"
           } leading-tight mb-1`}
         >

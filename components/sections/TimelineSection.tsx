@@ -89,7 +89,7 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
             <p className="text-xs font-mono text-accent tracking-widest mb-2">
               {t("timeline.tag")}
             </p>
-            <h3 className="font-black text-2xl md:text-3xl tracking-tighter leading-none">
+            <h3 className="font-extrabold text-2xl md:text-3xl tracking-tighter leading-none">
               {t("timeline.title")}
             </h3>
             <div className="w-12 h-1 bg-accent mt-3" />
@@ -146,7 +146,7 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
                                 </span>
                               )}
                             </p>
-                            <h4 className="font-black text-sm leading-tight mb-2">
+                            <h4 className="font-extrabold text-sm leading-tight mb-2">
                               {L.title}
                             </h4>
                             {L.description && (

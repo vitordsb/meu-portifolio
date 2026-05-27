@@ -68,7 +68,7 @@ export default function TagSelector({
 
   return (
     <div ref={containerRef}>
-      <label className="flex items-center gap-1 text-xs font-black uppercase tracking-widest mb-2">
+      <label className="flex items-center gap-1 text-xs font-extrabold uppercase tracking-widest mb-2">
         <Tag size={12} />
         {label}
       </label>

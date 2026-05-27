@@ -233,7 +233,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const formCard = (title: string, body: React.ReactNode) => (
     <div className="card-brutalist border-accent mb-3">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="font-black text-base">{title}</h3>
+        <h3 className="font-extrabold text-base">{title}</h3>
         <button type="button" onClick={closeForm} className="text-muted-foreground hover:text-foreground transition"><X size={16} /></button>
       </div>
       {body}
@@ -245,7 +245,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
       {/* Header */}
       <div className="border-b-4 border-foreground bg-background sticky top-0 z-40">
         <div className="container py-5 flex items-center justify-between">
-          <h1 className="text-2xl font-black">PAINEL ADMIN</h1>
+          <h1 className="text-2xl font-extrabold">PAINEL ADMIN</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm font-bold hidden sm:block">{user.name}</span>
             <a href="/" className="btn-brutalist-outline text-sm px-4 py-2">SITE</a>
@@ -263,7 +263,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         <div className="container flex gap-0 overflow-x-auto">
           {tabs.map(({ id, label }) => (
             <button key={id} onClick={() => { setActiveTab(id); closeForm(); }}
-              className={`py-5 px-6 font-black text-sm border-b-4 transition whitespace-nowrap ${activeTab === id ? "border-accent text-accent" : "border-transparent"}`}>
+              className={`py-5 px-6 font-extrabold text-sm border-b-4 transition whitespace-nowrap ${activeTab === id ? "border-accent text-accent" : "border-transparent"}`}>
               {label}
             </button>
           ))}
@@ -273,7 +273,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
       <div className="container py-8">
         {/* Top bar */}
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-black">
+          <h2 className="text-2xl font-extrabold">
             {activeTab === "projects" && "PROJETOS / AUTÔNOMO"}
             {activeTab === "certificates" && "CERTIFICADOS"}
             {activeTab === "skills" && "SKILLS"}
@@ -300,7 +300,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
           {activeTab === "analytics" && (
             <div className="space-y-4">
               <div className="card-brutalist border-accent">
-                <h3 className="font-black text-base mb-2">📊 Vercel Analytics</h3>
+                <h3 className="font-extrabold text-base mb-2">📊 Vercel Analytics</h3>
                 <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
                   O tracker já está instrumentado no <code className="px-1 bg-muted">app/layout.tsx</code>.
                   Os dados aparecem no painel da Vercel — visitantes únicos,
@@ -317,7 +317,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
               </div>
 
               <div className="card-brutalist">
-                <h3 className="font-black text-base mb-3">Como ativar (uma vez)</h3>
+                <h3 className="font-extrabold text-base mb-3">Como ativar (uma vez)</h3>
                 <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside leading-relaxed">
                   <li>Faça deploy do projeto na Vercel (basta conectar o repo).</li>
                   <li>No dashboard da Vercel, vá em <strong>Project → Analytics</strong>.</li>
@@ -327,7 +327,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
               </div>
 
               <div className="card-brutalist">
-                <h3 className="font-black text-base mb-3">Métricas que valem acompanhar</h3>
+                <h3 className="font-extrabold text-base mb-3">Métricas que valem acompanhar</h3>
                 <ul className="text-sm text-muted-foreground space-y-2 leading-relaxed">
                   <li>• <strong>Páginas mais visitadas</strong> — qual seção converte mais visitas</li>
                   <li>• <strong>Cliques em /autonomo → /contact</strong> — se o portfolio gera contato</li>
@@ -347,7 +347,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                 <div className="card-brutalist flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <h4 className="font-black text-base">{p.title}</h4>
+                      <h4 className="font-extrabold text-base">{p.title}</h4>
                       {p.featured && (
                         <span className="text-[9px] font-mono font-bold bg-accent text-background px-2 py-0.5 tracking-widest">
                           DESTAQUE
@@ -386,7 +386,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
               : (
                 <div className="card-brutalist flex items-center justify-between gap-4">
                   <div className="min-w-0">
-                    <h4 className="font-black text-base mb-1">{c.name}</h4>
+                    <h4 className="font-extrabold text-base mb-1">{c.name}</h4>
                     <p className="text-xs text-muted-foreground">{c.category}</p>
                     {Array.isArray(c.tags) && c.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-2">{c.tags.map((t) => <span key={t} className="tag-badge">{t}</span>)}</div>
@@ -409,7 +409,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                 <div className="card-brutalist flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
                     {s.iconUrl && <img src={s.iconUrl} alt={s.title} className="w-10 h-10 object-contain" />}
-                    <div><h4 className="font-black text-base">{s.title}</h4>{s.category && <p className="text-xs text-muted-foreground">{s.category}</p>}</div>
+                    <div><h4 className="font-extrabold text-base">{s.title}</h4>{s.category && <p className="text-xs text-muted-foreground">{s.category}</p>}</div>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={() => { setShowNewForm(false); setEditingId(s.id); setSkillForm({ title: s.title, category: s.category ?? "", iconUrl: s.iconUrl ?? "", level: String(s.level ?? 3), projectSlugs: Array.isArray(s.projectSlugs) ? s.projectSlugs : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
@@ -432,7 +432,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                       {tl.category && <span className="text-muted-foreground/60 ml-2">· {tl.category}</span>}
                       {tl.icon && <span className="text-muted-foreground/60 ml-2">· ícone: {tl.icon}</span>}
                     </p>
-                    <h4 className="font-black text-base mb-1">{tl.title}</h4>
+                    <h4 className="font-extrabold text-base mb-1">{tl.title}</h4>
                     {tl.description && <p className="text-xs text-foreground/70 line-clamp-2">{tl.description}</p>}
                     <p className="text-[10px] font-mono text-muted-foreground/50 mt-1">
                       ordenação: {tl.sortDate}

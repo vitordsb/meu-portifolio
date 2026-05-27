@@ -76,7 +76,7 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
     <Link
       href="/"
       onClick={handleLogoClick}
-      className="font-mono font-black tracking-tighter hover:text-accent transition select-none text-xl whitespace-nowrap"
+      className="font-mono font-extrabold tracking-tighter hover:text-accent transition select-none text-xl whitespace-nowrap"
     >
       <span className="text-accent">&lt;</span>
       vitordsb
@@ -88,7 +88,7 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
     <Link
       href="/"
       onClick={handleLogoClick}
-      className="font-mono font-black tracking-tighter hover:text-accent transition select-none text-xl flex justify-center"
+      className="font-mono font-extrabold tracking-tighter hover:text-accent transition select-none text-xl flex justify-center"
       title="vitordsb"
     >
       <span className="text-accent">&lt;/&gt;</span>
@@ -98,7 +98,7 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
   const ThemeBtn = (
     <button
       onClick={toggleTheme}
-      className="p-2 border border-border hover:border-accent transition"
+      className="p-2 rounded-lg border border-border hover:border-accent transition"
       title={theme === "light" ? t("common.theme.dark") : t("common.theme.light")}
     >
       {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
@@ -107,7 +107,7 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
   const LangBtn = (
     <button
       onClick={() => setLanguage(language === "pt" ? "en" : "pt")}
-      className="p-2 border border-border hover:border-accent transition flex items-center gap-1 text-xs font-bold"
+      className="p-2 rounded-lg border border-border hover:border-accent transition flex items-center gap-1 text-xs font-bold"
       title={t("common.language")}
     >
       <Globe size={14} />
@@ -128,7 +128,7 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
             {ThemeBtn}
             {LangBtn}
             <button
-              className="p-2 border border-border hover:border-accent transition"
+              className="p-2 rounded-lg border border-border hover:border-accent transition"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Menu"
             >
@@ -186,7 +186,7 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
           {onToggle && (
             <button
               onClick={onToggle}
-              className="p-2 border border-border hover:border-accent transition shrink-0"
+              className="p-2 rounded-lg border border-border hover:border-accent transition shrink-0"
               title={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
               aria-label={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
             >

@@ -8,6 +8,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* Fontes — Inter (body) + Plus Jakarta Sans (headings) + Geist Mono (labels) */
+  --font-sans: var(--font-sans-base), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-display), var(--font-sans-base), system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -31,7 +35,7 @@
 
 /* ── Light mode (padrão) ──────────────────────────────────────────────────── */
 :root {
-  --radius: 0px;
+  --radius: 0.875rem;
   --background: oklch(0.98 0.004 235);
   --foreground: oklch(0.16 0.02 235);
   --card: oklch(1 0 0);
@@ -78,7 +82,15 @@
 
 @layer base {
   * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  /* Headings usam Plus Jakarta Sans */
+  h1, h2, h3, .font-display { font-family: var(--font-display); }
   button:not(:disabled), [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled), [type="submit"]:not(:disabled),
   a[href], select:not(:disabled) { @apply cursor-pointer; }
@@ -98,28 +110,45 @@
     .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; }
   }
 
-  h1 { @apply text-7xl font-black tracking-tighter leading-none; }
-  h2 { @apply text-5xl font-black tracking-tight leading-tight; }
+  h1 { @apply text-7xl font-extrabold tracking-tight leading-none; }
+  h2 { @apply text-5xl font-bold tracking-tight leading-tight; }
   h3 { @apply text-3xl font-bold tracking-tight; }
 
+  /* Botões arredondados, soft, com hover suave (lift + sombra) */
   .btn-brutalist {
-    @apply px-8 py-4 bg-foreground text-background font-black text-lg border-4 border-foreground hover:bg-background hover:text-foreground transition-all duration-200;
+    @apply px-7 py-3.5 rounded-full bg-foreground text-background font-bold text-base
+      shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0
+      transition-all duration-200;
   }
   .btn-brutalist-outline {
-    @apply px-8 py-4 bg-transparent text-foreground font-black text-lg border-4 border-foreground hover:bg-foreground hover:text-background transition-all duration-200;
+    @apply px-7 py-3.5 rounded-full bg-transparent text-foreground font-bold text-base
+      border border-foreground/20 hover:border-foreground/40 hover:bg-foreground/5
+      hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200;
   }
   .btn-brutalist-accent {
-    @apply px-8 py-4 bg-accent text-background font-black text-lg border-4 border-accent hover:bg-background hover:text-accent transition-all duration-200;
+    @apply px-7 py-3.5 rounded-full bg-accent text-background font-bold text-base
+      shadow-sm shadow-accent/20 hover:shadow-lg hover:shadow-accent/30
+      hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200;
   }
-  .card-brutalist { @apply border-2 border-border p-8 bg-card; }
-  .tag-badge { @apply inline-block px-2 py-0.5 text-xs font-bold border border-accent/40 text-accent bg-accent/10; }
-  .section-header { @apply text-3xl font-black mb-2 relative; }
-  .github-card { @apply border border-border bg-card p-5 hover:border-accent transition-colors duration-200; }
+  /* Cards arredondados com borda sutil + sombra suave que cresce no hover */
+  .card-brutalist {
+    @apply rounded-2xl border border-border/70 p-7 bg-card
+      shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  .tag-badge {
+    @apply inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold
+      border border-accent/30 text-accent bg-accent/10;
+  }
+  .section-header { @apply text-3xl font-bold mb-2 relative; }
+  .github-card {
+    @apply rounded-xl border border-border/70 bg-card p-5
+      hover:border-accent/60 hover:shadow-md transition-all duration-200;
+  }
 }
 
 @layer utilities {
   .section-spacing { @apply py-24 md:py-32 lg:py-40; }
-  .text-heavy { @apply font-black tracking-tight; }
+  .text-heavy { @apply font-extrabold tracking-tight; }
 }
 
 @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }

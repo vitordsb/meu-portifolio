@@ -54,14 +54,14 @@ export default function ContactSection() {
             href="https://wa.me/5511939572807"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-transparent text-background font-black text-sm border-4 border-background hover:bg-background hover:text-foreground transition-all duration-200 px-6 py-3 flex items-center gap-2"
+            className="bg-transparent text-background font-extrabold text-sm border-4 border-background hover:bg-background hover:text-foreground transition-all duration-200 px-6 py-3 flex items-center gap-2"
           >
             <MessageCircle size={16} />
             WHATSAPP
           </a>
           <a
             href="mailto:vitordsb2019@gmail.com"
-            className="bg-transparent text-background font-black text-sm border-4 border-background hover:bg-background hover:text-foreground transition-all duration-200 px-6 py-3 flex items-center gap-2"
+            className="bg-transparent text-background font-extrabold text-sm border-4 border-background hover:bg-background hover:text-foreground transition-all duration-200 px-6 py-3 flex items-center gap-2"
           >
             <AtSign size={16} />
             EMAIL
@@ -70,7 +70,7 @@ export default function ContactSection() {
             href="https://github.com/vitordsb"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-transparent text-background font-black text-sm border-4 border-background hover:bg-background hover:text-foreground transition-all duration-200 px-6 py-3 flex items-center gap-2"
+            className="bg-transparent text-background font-extrabold text-sm border-4 border-background hover:bg-background hover:text-foreground transition-all duration-200 px-6 py-3 flex items-center gap-2"
           >
             <Github size={16} />
             GITHUB

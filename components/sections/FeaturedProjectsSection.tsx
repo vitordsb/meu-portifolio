@@ -76,7 +76,7 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
                                 "repeating-linear-gradient(45deg, transparent, transparent 8px, currentColor 8px, currentColor 9px)",
                             }}
                           />
-                          <span className="relative font-black text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
+                          <span className="relative font-extrabold text-background text-2xl md:text-3xl tracking-tighter leading-none text-center">
                             {p.title}
                           </span>
                         </div>
@@ -86,7 +86,7 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
                       <p className="text-[10px] font-mono text-accent tracking-widest mb-2">
                         {p.category.toUpperCase()}
                       </p>
-                      <h3 className="font-black text-lg leading-tight mb-1">{p.title}</h3>
+                      <h3 className="font-extrabold text-lg leading-tight mb-1">{p.title}</h3>
                       <p className="text-xs text-muted-foreground mb-4">{p.company}</p>
                       <p className="text-sm text-foreground/75 leading-relaxed mb-5 line-clamp-4 flex-1">
                         {p.description}
@@ -121,7 +121,7 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
       {/* CTA */}
       <section className="py-16 bg-foreground text-background">
         <div className="container text-center">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-3">
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
             {t("home.ctaTitle")}
           </h2>
           <p className="text-sm opacity-80 max-w-xl mx-auto mb-8">
