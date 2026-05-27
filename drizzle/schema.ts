@@ -136,3 +136,20 @@ export const timelineEvents = mysqlTable("timeline_events", {
 
 export type TimelineEvent = typeof timelineEvents.$inferSelect;
 export type InsertTimelineEvent = typeof timelineEvents.$inferInsert;
+
+/**
+ * Mensagens de contato enviadas pelo formulário do modal "Email".
+ */
+export const contactMessages = mysqlTable("contact_messages", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }),
+  company: varchar("company", { length: 255 }),
+  subject: varchar("subject", { length: 255 }),
+  message: text("message").notNull(),
+  read: boolean("read").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type InsertContactMessage = typeof contactMessages.$inferInsert;

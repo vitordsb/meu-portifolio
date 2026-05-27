@@ -6,19 +6,23 @@ import {
   getAllSkills,
   getAllFreelanceWork,
   getAllTimelineEvents,
+  getAllContactMessages,
 } from "@/lib/db";
 import AdminPanel from "@/components/admin/AdminPanel";
+
+export const revalidate = 0;
 
 export default async function AdminPage() {
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") redirect("/");
 
-  const [projects, certificates, skills, freelance, timeline] = await Promise.all([
+  const [projects, certificates, skills, freelance, timeline, messages] = await Promise.all([
     getAllProjects(),
     getAllCertificates(),
     getAllSkills(),
     getAllFreelanceWork(),
     getAllTimelineEvents(),
+    getAllContactMessages(),
   ]);
 
   return (
@@ -29,6 +33,7 @@ export default async function AdminPage() {
       initialSkills={skills}
       initialFreelance={freelance}
       initialTimeline={timeline}
+      initialMessages={messages}
     />
   );
 }

@@ -188,3 +188,83 @@ export async function deleteTimelineEvent(id: number) {
   await db.deleteTimelineEvent(id);
   revalidatePath("/about"); revalidatePath("/admin");
 }
+
+// ── Contact (público) ─────────────────────────────────────────────────────────
+type ContactInput = {
+  name: string;
+  email?: string;
+  company?: string;
+  subject?: string;
+  message: string;
+};
+
+export async function sendContactMessage(
+  data: ContactInput,
+): Promise<{ ok: boolean; error?: string }> {
+  // Validação básica
+  const name = data.name?.trim();
+  const message = data.message?.trim();
+  if (!name || name.length < 2) return { ok: false, error: "Nome inválido." };
+  if (!message || message.length < 5) return { ok: false, error: "Mensagem muito curta." };
+  if (message.length > 5000) return { ok: false, error: "Mensagem muito longa." };
+
+  const payload = {
+    name,
+    email: data.email?.trim() || null,
+    company: data.company?.trim() || null,
+    subject: data.subject?.trim() || null,
+    message,
+  };
+
+  // 1) Sempre registra no banco (garante recebimento mesmo sem email configurado)
+  try {
+    await db.createContactMessage(payload);
+  } catch (e) {
+    console.error("[contact] falha ao salvar no banco:", e);
+    // não aborta — ainda tenta enviar email
+  }
+
+  // 2) Envia email via Resend, se configurado
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.CONTACT_TO_EMAIL ?? "vitordsb2019@gmail.com";
+  const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>";
+  if (apiKey) {
+    try {
+      const { Resend } = await import("resend");
+      const resend = new Resend(apiKey);
+      await resend.emails.send({
+        from,
+        to,
+        replyTo: payload.email ?? undefined,
+        subject: `[Portfolio] ${payload.subject || "Novo contato"} — ${name}`,
+        text: [
+          `Nome: ${name}`,
+          `Email: ${payload.email ?? "—"}`,
+          `Empresa: ${payload.company ?? "—"}`,
+          `Assunto: ${payload.subject ?? "—"}`,
+          "",
+          payload.message,
+        ].join("\n"),
+      });
+    } catch (e) {
+      console.error("[contact] falha ao enviar email (Resend):", e);
+      // banco já tem o registro — segue ok pro usuário
+    }
+  }
+
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+// ── Contact admin (gerenciar mensagens) ─────────────────────────────────────────
+export async function markContactRead(id: number, read: boolean) {
+  await assertAdmin();
+  await db.markContactMessageRead(id, read);
+  revalidatePath("/admin");
+}
+
+export async function deleteContactMessage(id: number) {
+  await assertAdmin();
+  await db.deleteContactMessage(id);
+  revalidatePath("/admin");
+}

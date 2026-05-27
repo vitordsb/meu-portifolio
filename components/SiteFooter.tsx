@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Linkedin, Github, MessageCircle, AtSign, FileText, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useContactModal } from "@/contexts/ContactModalContext";
 
 const contacts = [
   { href: "https://www.linkedin.com/in/vitordsb", label: "LinkedIn", icon: Linkedin, external: true },
@@ -14,6 +15,7 @@ const contacts = [
 
 export default function SiteFooter() {
   const { language } = useLanguage();
+  const { open: openContact } = useContactModal();
   const tagline =
     language === "pt"
       ? "UX Engineer — design de experiência + engenharia. Aberto a oportunidades remotas ou híbridas."
@@ -34,13 +36,13 @@ export default function SiteFooter() {
             <p className="text-sm text-muted-foreground leading-relaxed">{tagline}</p>
           </div>
 
-          <Link
-            href="/contact"
+          <button
+            onClick={openContact}
             className="btn-brutalist-accent px-6 py-3 text-sm inline-flex items-center gap-2 self-start md:self-auto"
           >
             {cta}
             <ArrowUpRight size={16} />
-          </Link>
+          </button>
         </div>
 
         {/* Contatos em linha — pills */}

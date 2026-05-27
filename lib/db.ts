@@ -1,10 +1,11 @@
-import { eq, asc, count } from "drizzle-orm";
+import { eq, asc, desc, count } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2";
 import {
-  users, projects, certificates, skills, freelanceWork, timelineEvents,
+  users, projects, certificates, skills, freelanceWork, timelineEvents, contactMessages,
   type InsertUser, type InsertProject, type InsertCertificate,
   type InsertSkill, type InsertFreelanceWork, type InsertTimelineEvent,
+  type InsertContactMessage,
 } from "../drizzle/schema";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -243,6 +244,31 @@ export async function deleteTimelineEvent(id: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   return db.delete(timelineEvents).where(eq(timelineEvents.id, id));
+}
+
+// ── Contact Messages ──────────────────────────────────────────────────────────
+export async function createContactMessage(data: InsertContactMessage) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.insert(contactMessages).values(data);
+}
+
+export async function getAllContactMessages() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function markContactMessageRead(id: number, read: boolean) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.update(contactMessages).set({ read }).where(eq(contactMessages.id, id));
+}
+
+export async function deleteContactMessage(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  return db.delete(contactMessages).where(eq(contactMessages.id, id));
 }
 
 // ── GitHub Repos ──────────────────────────────────────────────────────────────

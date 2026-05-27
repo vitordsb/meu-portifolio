@@ -2,19 +2,20 @@
 
 import { useState, useTransition, Fragment } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, LogOut, X } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, X, Mail, MailOpen } from "lucide-react";
 import { toast } from "sonner";
-import type { Project, Certificate, Skill, FreelanceWork, TimelineEvent, User } from "@/drizzle/schema";
+import type { Project, Certificate, Skill, FreelanceWork, TimelineEvent, ContactMessage, User } from "@/drizzle/schema";
 import {
   createProject, updateProject, deleteProject,
   createCertificate, updateCertificate, deleteCertificate,
   createSkill, updateSkill, deleteSkill,
   createTimelineEvent, updateTimelineEvent, deleteTimelineEvent,
+  markContactRead, deleteContactMessage,
   logout,
 } from "@/lib/actions";
 import TagSelector from "./TagSelector";
 
-type Tab = "projects" | "certificates" | "skills" | "timeline" | "analytics";
+type Tab = "messages" | "projects" | "certificates" | "skills" | "timeline" | "analytics";
 
 type ProjectForm = {
   title: string; company: string; description: string; category: string;
@@ -47,12 +48,14 @@ interface Props {
   initialSkills: Skill[];
   initialFreelance: FreelanceWork[]; // mantido por compat — não renderiza mais aba
   initialTimeline: TimelineEvent[];
+  initialMessages: ContactMessage[];
 }
 
-export default function AdminPanel({ user, initialProjects, initialCertificates, initialSkills, initialTimeline }: Props) {
+export default function AdminPanel({ user, initialProjects, initialCertificates, initialSkills, initialTimeline, initialMessages }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [activeTab, setActiveTab] = useState<Tab>("projects");
+  const unreadCount = initialMessages.filter((m) => !m.read).length;
+  const [activeTab, setActiveTab] = useState<Tab>(unreadCount > 0 ? "messages" : "projects");
   // showForm = true only for NEW items (top form). Editing happens inline.
   const [showNewForm, setShowNewForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -81,12 +84,16 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   };
 
   const tabs: { id: Tab; label: string }[] = [
+    { id: "messages", label: unreadCount > 0 ? `MENSAGENS (${unreadCount})` : "MENSAGENS" },
     { id: "projects", label: "PROJETOS / AUTÔNOMO" },
     { id: "certificates", label: "CERTIFICADOS" },
     { id: "skills", label: "SKILLS" },
     { id: "timeline", label: "TIMELINE" },
     { id: "analytics", label: "ANALYTICS" },
   ];
+
+  const fmtDate = (d: Date | string) =>
+    new Date(d).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
 
   const f = (placeholder: string, value: string, onChange: (v: string) => void, type = "text") => (
     <input type={type} placeholder={placeholder} value={value}
@@ -274,13 +281,14 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         {/* Top bar */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-extrabold">
+            {activeTab === "messages" && "MENSAGENS"}
             {activeTab === "projects" && "PROJETOS / AUTÔNOMO"}
             {activeTab === "certificates" && "CERTIFICADOS"}
             {activeTab === "skills" && "SKILLS"}
             {activeTab === "timeline" && "LINHA DO TEMPO"}
             {activeTab === "analytics" && "ANALYTICS"}
           </h2>
-          {activeTab !== "analytics" && (
+          {activeTab !== "analytics" && activeTab !== "messages" && (
             <button onClick={openNew} className="btn-brutalist-accent flex items-center gap-2 px-5 py-2 text-sm">
               <Plus size={18} />ADICIONAR
             </button>
@@ -295,6 +303,66 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
 
         {/* ── LISTS ── */}
         <div className="space-y-3">
+
+          {/* MESSAGES — contatos recebidos pelo modal de email */}
+          {activeTab === "messages" && (
+            initialMessages.length === 0 ? (
+              <div className="card-brutalist text-center py-12">
+                <Mail size={32} className="mx-auto mb-3 text-muted-foreground/40" />
+                <p className="text-sm text-muted-foreground">
+                  Nenhuma mensagem ainda. Quando alguém enviar pelo formulário de contato, aparece aqui.
+                </p>
+              </div>
+            ) : (
+              initialMessages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`card-brutalist flex items-start justify-between gap-4 ${
+                    !m.read ? "border-accent bg-accent/5" : ""
+                  }`}
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <h4 className="font-extrabold text-base">{m.name}</h4>
+                      {!m.read && (
+                        <span className="text-[9px] font-mono font-bold bg-accent text-background px-2 py-0.5 rounded-full tracking-widest">
+                          NOVA
+                        </span>
+                      )}
+                      <span className="text-[10px] font-mono text-muted-foreground/60">
+                        {fmtDate(m.createdAt)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {m.email && <a href={`mailto:${m.email}`} className="text-accent hover:underline">{m.email}</a>}
+                      {m.company && <> · {m.company}</>}
+                      {m.subject && <> · <span className="font-semibold">{m.subject}</span></>}
+                    </p>
+                    <p className="text-sm text-foreground/80 whitespace-pre-wrap leading-relaxed">
+                      {m.message}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <button
+                      onClick={() => run(() => markContactRead(m.id, !m.read))}
+                      disabled={isPending}
+                      className="btn-brutalist-outline p-2"
+                      title={m.read ? "Marcar como não lida" : "Marcar como lida"}
+                    >
+                      {m.read ? <Mail size={16} /> : <MailOpen size={16} />}
+                    </button>
+                    <button
+                      onClick={() => run(() => deleteContactMessage(m.id))}
+                      disabled={isPending}
+                      className="btn-brutalist-outline p-2"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )
+          )}
 
           {/* ANALYTICS — link pro painel da Vercel + instruções */}
           {activeTab === "analytics" && (

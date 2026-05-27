@@ -5,12 +5,14 @@ import Link from "next/link";
 import { ExternalLink, Lock, Mail } from "lucide-react";
 import type { Project } from "@/drizzle/schema";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useContactModal } from "@/contexts/ContactModalContext";
 import { Eyebrow } from "@/components/Eyebrow";
 
 const ALL = "__all__";
 
 export default function AutonomoSection({ projects }: { projects: Project[] }) {
   const { t } = useLanguage();
+  const { open: openContact } = useContactModal();
   const allLabel = t("autonomo.all");
 
   const categories = useMemo(() => {
@@ -43,13 +45,13 @@ export default function AutonomoSection({ projects }: { projects: Project[] }) {
             <p className="text-sm text-muted-foreground max-w-2xl">{subtitle}</p>
           </div>
 
-          <Link
-            href="/contact"
+          <button
+            onClick={openContact}
             className="btn-brutalist-accent px-6 py-3 text-sm inline-flex items-center gap-2 self-start"
           >
             <Mail size={16} />
             {t("autonomo.contact")}
-          </Link>
+          </button>
         </div>
 
         {/* Featured (com cover image grande) */}

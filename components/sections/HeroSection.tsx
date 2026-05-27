@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useContactModal } from "@/contexts/ContactModalContext";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { CountUp } from "@/components/motion/CountUp";
 import { Eyebrow } from "@/components/Eyebrow";
@@ -27,6 +28,7 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const { t } = useLanguage();
+  const { open: openContact } = useContactModal();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -106,9 +108,12 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
               <a href="/projects" className="btn-brutalist-accent px-6 py-3 text-sm inline-block">
                 {t("hero.cta1")}
               </a>
-              <a href="/contact" className="btn-brutalist-outline px-6 py-3 text-sm inline-block">
+              <button
+                onClick={openContact}
+                className="btn-brutalist-outline px-6 py-3 text-sm inline-block"
+              >
                 {t("hero.cta2")}
-              </a>
+              </button>
             </motion.div>
           </div>
 
