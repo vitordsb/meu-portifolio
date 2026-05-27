@@ -5,6 +5,8 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Project } from "@/drizzle/schema";
 import { heroStack } from "@/lib/portfolio-data";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Eyebrow } from "@/components/Eyebrow";
+import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/motion/ScrollReveal";
 
 export default function FeaturedProjectsSection({ projects }: { projects: Project[] }) {
   const { t } = useLanguage();
@@ -15,14 +17,14 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
       {/* Stack ribbon */}
       <section className="py-12 bg-muted/30 border-y border-border">
         <div className="container">
-          <p className="text-xs font-mono text-muted-foreground tracking-widest mb-4">
+          <Eyebrow className="mb-4 text-muted-foreground [&>span]:bg-muted-foreground/40">
             {t("hero.stack")}
-          </p>
+          </Eyebrow>
           <div className="flex flex-wrap gap-3">
             {heroStack.map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 border border-border text-xs font-bold tracking-wide hover:border-accent transition"
+                className="px-4 py-2 rounded-full border border-border text-xs font-semibold tracking-wide hover:border-accent hover:text-accent transition"
               >
                 {tech}
               </span>
@@ -37,11 +39,9 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
           <div className="container">
             <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
               <div>
-                <p className="text-xs font-mono text-accent tracking-widest mb-2">
-                  {t("home.featuredTag")}
-                </p>
+                <Eyebrow className="mb-2">{t("home.featuredTag")}</Eyebrow>
                 <h2 className="section-header">{t("home.featuredTitle")}</h2>
-                <div className="w-12 h-1 bg-accent mt-3" />
+                <div className="w-12 h-1 rounded-full bg-accent mt-3" />
               </div>
               <Link
                 href="/autonomo"
@@ -51,13 +51,13 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {featured.map((p) => {
                 const tags = Array.isArray(p.tags) ? p.tags : [];
                 return (
-                  <article
+                  <StaggerItem
                     key={p.id}
-                    className="card-brutalist hover:border-accent transition flex flex-col overflow-hidden p-0"
+                    className="group card-brutalist hover:border-accent transition flex flex-col overflow-hidden p-0"
                   >
                     <div className="aspect-video overflow-hidden border-b border-border bg-muted">
                       {p.coverImageUrl ? (
@@ -110,10 +110,10 @@ export default function FeaturedProjectsSection({ projects }: { projects: Projec
                         </a>
                       )}
                     </div>
-                  </article>
+                  </StaggerItem>
                 );
               })}
-            </div>
+            </StaggerGroup>
           </div>
         </section>
       )}

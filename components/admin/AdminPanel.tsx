@@ -91,11 +91,11 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const f = (placeholder: string, value: string, onChange: (v: string) => void, type = "text") => (
     <input type={type} placeholder={placeholder} value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="border-2 border-border p-3 font-medium bg-background w-full text-sm focus:border-accent outline-none" />
+      className="border border-border p-3 font-medium bg-background w-full text-sm focus:border-accent outline-none" />
   );
   const a = (placeholder: string, value: string, onChange: (v: string) => void) => (
     <textarea placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)}
-      className="border-2 border-border p-3 font-medium bg-background w-full text-sm h-24 resize-none focus:border-accent outline-none" />
+      className="border border-border p-3 font-medium bg-background w-full text-sm h-24 resize-none focus:border-accent outline-none" />
   );
 
   // ── Form bodies (reused for top "new" form and inline "edit" form) ──────────

@@ -96,7 +96,7 @@ export default function TagSelector({
 
       {/* Input */}
       <div className="relative">
-        <div className="flex items-center border-2 border-border focus-within:border-accent bg-background transition">
+        <div className="flex items-center border border-border focus-within:border-accent bg-background transition">
           <input
             ref={inputRef}
             value={input}
@@ -132,7 +132,7 @@ export default function TagSelector({
 
         {/* Dropdown */}
         {showDropdown && (
-          <div className="absolute top-full left-0 right-0 z-50 bg-card border-2 border-border border-t-0 max-h-52 overflow-y-auto shadow-lg">
+          <div className="absolute top-full left-0 right-0 z-50 bg-card border border-border border-t-0 max-h-52 overflow-y-auto shadow-lg">
             {/* Existing matching tags */}
             {suggestions.map((tag, i) => (
               <button
@@ -168,7 +168,7 @@ export default function TagSelector({
 
         {/* Empty state when open but no suggestions */}
         {open && !showDropdown && allTags.length > 0 && !input && (
-          <div className="absolute top-full left-0 right-0 z-50 bg-card border-2 border-border border-t-0 max-h-52 overflow-y-auto shadow-lg">
+          <div className="absolute top-full left-0 right-0 z-50 bg-card border border-border border-t-0 max-h-52 overflow-y-auto shadow-lg">
             {allTags
               .filter((t) => !selected.includes(t))
               .map((tag) => (

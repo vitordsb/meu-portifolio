@@ -2,8 +2,13 @@
 
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { TextReveal } from "@/components/motion/TextReveal";
+import { CountUp } from "@/components/motion/CountUp";
+import { MagneticButton } from "@/components/motion/MagneticButton";
+import { Eyebrow } from "@/components/Eyebrow";
 import profilePic from "@/app/(public)/images/vitu.jpeg";
 
 interface Particle { x: number; y: number; size: number; speedX: number; speedY: number; }
@@ -58,18 +63,20 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
     return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animId); };
   }, []);
 
-  // Stats dinâmicos:
+  // Stats dinâmicos (animam com CountUp ao entrar na viewport):
   //   - Projetos: contagem exata (+1 a cada novo projeto). Ex: 15+, 16+, 17+
   //   - Certificados: arredonda em múltiplos de 10. Ex: 30+, 50+, 70+
   // Fallback (0): mostra placeholder pra não exibir "0+".
-  const projectsValue = projectCount > 0 ? `${projectCount}+` : "15+";
-  const certsValue = certCount > 0 ? `${roundDownTo(certCount, 10)}+` : "50+";
+  const projectsNum = projectCount > 0 ? projectCount : 15;
+  const certsNum = certCount > 0 ? roundDownTo(certCount, 10) : 50;
 
   const stats = [
-    { value: "+4", label: t("hero.stats.years") },
-    { value: projectsValue, label: t("hero.stats.projects") },
-    { value: certsValue, label: t("hero.stats.certs") },
+    { prefix: "+", value: 4, suffix: "", label: t("hero.stats.years") },
+    { prefix: "", value: projectsNum, suffix: "+", label: t("hero.stats.projects") },
+    { prefix: "", value: certsNum, suffix: "+", label: t("hero.stats.certs") },
   ];
+
+  const nameLines = t("hero.name").split("\n");
 
   const clientNames = ["ZUPTOS", "ARQDOOR", "MTCPROP", "EGP", "FLORENZA", "ZYNTA"];
 
@@ -90,23 +97,35 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
 
           {/* ── Texto ── */}
           <div className="flex-1 text-center md:text-left">
-            <span className="text-accent font-mono text-sm font-bold mb-4 block tracking-widest">
-              {t("hero.tag")}
-            </span>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none mb-6 whitespace-pre-line">
-              {t("hero.name")}
+            <Eyebrow className="mb-4">{t("hero.tag")}</Eyebrow>
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-none mb-6">
+              <TextReveal lines={nameLines} delay={0.1} />
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
+            <motion.p
+              className="text-base md:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
               {t("hero.description")}
-            </p>
-            <div className="flex gap-4 flex-wrap justify-center md:justify-start">
-              <a href="/projects" className="btn-brutalist-accent px-6 py-3 text-sm">
-                {t("hero.cta1")}
-              </a>
-              <a href="/contact" className="btn-brutalist-outline px-6 py-3 text-sm">
-                {t("hero.cta2")}
-              </a>
-            </div>
+            </motion.p>
+            <motion.div
+              className="flex gap-4 flex-wrap justify-center md:justify-start"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.65, duration: 0.6 }}
+            >
+              <MagneticButton>
+                <a href="/projects" className="btn-brutalist-accent px-6 py-3 text-sm inline-block">
+                  {t("hero.cta1")}
+                </a>
+              </MagneticButton>
+              <MagneticButton>
+                <a href="/contact" className="btn-brutalist-outline px-6 py-3 text-sm inline-block">
+                  {t("hero.cta2")}
+                </a>
+              </MagneticButton>
+            </motion.div>
           </div>
 
           {/* ── Foto ── */}
@@ -135,9 +154,12 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
               key={s.label}
               className="rounded-2xl border border-border/70 bg-card/70 backdrop-blur-sm px-5 py-3.5 hover:border-accent/60 hover:shadow-md transition-all flex items-baseline gap-2 min-w-[160px]"
             >
-              <p className="font-extrabold text-2xl text-accent leading-none">
-                {s.value}
-              </p>
+              <CountUp
+                value={s.value}
+                prefix={s.prefix}
+                suffix={s.suffix}
+                className="font-extrabold text-2xl text-accent leading-none"
+              />
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider leading-tight">
                 {s.label}
               </p>

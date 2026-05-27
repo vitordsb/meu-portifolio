@@ -53,7 +53,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
             <Github size={28} className="text-accent" />
             <h1 className="section-header">REPOSITÓRIOS</h1>
           </div>
-          <div className="w-12 h-1 bg-accent mb-4" />
+          <div className="w-12 h-1 rounded-full bg-accent mb-4" />
           <p className="text-sm text-muted-foreground">
             {repos.length} repositórios públicos
           </p>
@@ -65,7 +65,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
           placeholder="Buscar projeto..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border-2 border-border bg-background w-full md:max-w-sm px-4 py-2 text-sm font-medium focus:border-accent outline-none mb-6"
+          className="border border-border bg-background w-full md:max-w-sm px-4 py-2 text-sm font-medium focus:border-accent outline-none mb-6"
         />
 
         {/* Language filter */}

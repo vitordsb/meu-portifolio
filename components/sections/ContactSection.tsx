@@ -34,7 +34,7 @@ export default function ContactSection() {
     <section id="contact" className="py-16 bg-foreground text-background">
       <div className="container text-center">
         <h2 className="section-header text-background">{t("contact.title")}</h2>
-        <div className="w-12 h-1 bg-accent mx-auto mb-6" />
+        <div className="w-12 h-1 rounded-full bg-accent mx-auto mb-6" />
         <p className="text-sm mb-10 max-w-xl mx-auto text-background/80">
           {t("contact.description")}
         </p>

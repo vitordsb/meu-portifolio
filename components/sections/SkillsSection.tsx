@@ -84,7 +84,7 @@ export default function SkillsSection({
     <section id="skills" className="py-16 bg-background">
       <div className="container">
         <h2 className="section-header">{t("skills.title")}</h2>
-        <div className="w-12 h-1 bg-accent mb-8" />
+        <div className="w-12 h-1 rounded-full bg-accent mb-8" />
         {skills.length === 0 && (
           <p className="text-sm text-muted-foreground">{t("skills.empty")}</p>
         )}

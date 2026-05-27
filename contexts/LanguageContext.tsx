@@ -26,14 +26,14 @@ export const translations = {
       admin: "ADMIN",
     },
     hero: {
-      tag: "[ UX ENGINEER ]",
+      tag: "UX ENGINEER",
       name: "VITOR DE\nSOUZA BARRETO",
       description:
         "UX Engineer que une design de experiência e engenharia — interfaces de alta performance, acessíveis e pensadas pra converter. Onde código encontra usabilidade.",
       cta1: "VER PROJETOS",
       cta2: "ENTRAR EM CONTATO",
-      stack: "[ STACK PRINCIPAL ]",
-      clients: "[ TRABALHARAM COMIGO ]",
+      stack: "STACK PRINCIPAL",
+      clients: "TRABALHARAM COMIGO",
       stats: {
         years: "anos de experiência",
         projects: "projetos entregues",
@@ -41,7 +41,7 @@ export const translations = {
       },
     },
     home: {
-      featuredTag: "[ DESTAQUE ]",
+      featuredTag: "DESTAQUE",
       featuredTitle: "Projetos em destaque",
       seeAll: "Ver todos",
       ctaTitle: "Vamos construir algo juntos?",
@@ -58,7 +58,7 @@ export const translations = {
       education: "Formação",
     },
     timeline: {
-      tag: "[ LINHA DO TEMPO ]",
+      tag: "LINHA DO TEMPO",
       title: "Minha história",
       scrollHint: "← arraste ou role para navegar →",
       empty: "Nenhum marco cadastrado ainda.",
@@ -82,14 +82,14 @@ export const translations = {
       } as Record<string, { title: string; description: string }>,
     },
     autonomo: {
-      tag: "[ AUTÔNOMO ]",
+      tag: "AUTÔNOMO",
       title: "Trabalhos como freelancer",
       subtitle:
         "{count} projetos entregues — startups, sites, plataformas SaaS e apps. Código-fonte sob NDA, mas você pode visitar o produto final quando disponível.",
       contact: "ENTRAR EM CONTATO",
-      featured: "[ DESTAQUE ]",
+      featured: "DESTAQUE",
       all: "Todos",
-      allTag: "[ TODOS · {count} ]",
+      allTag: "TODOS · {count}",
       private: "PRIVADO",
       privateTitle: "Código-fonte privado",
       noLink: "Sem link público disponível",
@@ -151,14 +151,14 @@ export const translations = {
       admin: "ADMIN",
     },
     hero: {
-      tag: "[ UX ENGINEER ]",
+      tag: "UX ENGINEER",
       name: "VITOR DE\nSOUZA BARRETO",
       description:
         "UX Engineer bridging experience design and engineering — high-performance, accessible interfaces built to convert. Where code meets usability.",
       cta1: "VIEW PROJECTS",
       cta2: "GET IN TOUCH",
-      stack: "[ MAIN STACK ]",
-      clients: "[ WORKED WITH ]",
+      stack: "MAIN STACK",
+      clients: "WORKED WITH",
       stats: {
         years: "years of experience",
         projects: "projects shipped",
@@ -166,7 +166,7 @@ export const translations = {
       },
     },
     home: {
-      featuredTag: "[ HIGHLIGHTS ]",
+      featuredTag: "HIGHLIGHTS",
       featuredTitle: "Featured projects",
       seeAll: "See all",
       ctaTitle: "Let's build something together?",
@@ -183,7 +183,7 @@ export const translations = {
       education: "Education",
     },
     timeline: {
-      tag: "[ TIMELINE ]",
+      tag: "TIMELINE",
       title: "My story",
       scrollHint: "← drag or scroll to navigate →",
       empty: "No milestones yet.",
@@ -206,14 +206,14 @@ export const translations = {
       } as Record<string, { title: string; description: string }>,
     },
     autonomo: {
-      tag: "[ FREELANCE ]",
+      tag: "FREELANCE",
       title: "Freelance work",
       subtitle:
         "{count} projects shipped — startups, sites, SaaS platforms and apps. Source code under NDA, but you can visit the live product when available.",
       contact: "GET IN TOUCH",
-      featured: "[ HIGHLIGHTS ]",
+      featured: "HIGHLIGHTS",
       all: "All",
-      allTag: "[ ALL · {count} ]",
+      allTag: "ALL · {count}",
       private: "PRIVATE",
       privateTitle: "Source code under NDA",
       noLink: "No public link available",

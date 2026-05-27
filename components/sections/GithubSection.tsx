@@ -29,7 +29,7 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
     <section id="github" className="py-16 bg-background">
       <div className="container">
         <h2 className="section-header">{t("github.title")}</h2>
-        <div className="w-12 h-1 bg-accent mb-8" />
+        <div className="w-12 h-1 rounded-full bg-accent mb-8" />
         {repos.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Nenhum repositório carregado — configure <code>GITHUB_USERNAME</code> nas variáveis de ambiente.

@@ -228,35 +228,22 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
           </ul>
         </nav>
 
-        {/* Footer — controls (theme + lang) + botão de colapsar embaixo */}
+        {/* Footer — theme + lang + colapsar, todos alinhados na mesma linha */}
         <div
-          className={`border-t border-border flex flex-col gap-2 ${
-            collapsed ? "px-2 py-3 items-center" : "px-4 py-4"
+          className={`border-t border-border flex gap-2 ${
+            collapsed ? "px-2 py-3 flex-col items-center" : "px-4 py-4 items-center"
           }`}
         >
-          <div className={`flex gap-2 ${collapsed ? "flex-col items-center" : "items-center"}`}>
-            {ThemeBtn}
-            {LangBtn}
-          </div>
+          {ThemeBtn}
+          {LangBtn}
           {onToggle && (
             <button
               onClick={onToggle}
-              className={`${
-                collapsed
-                  ? "h-9 w-9 justify-center"
-                  : "w-full justify-start gap-2 px-3"
-              } inline-flex items-center h-9 rounded-lg border border-border hover:border-accent hover:text-accent transition text-xs font-bold`}
+              className={iconBtn}
               title={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
               aria-label={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
             >
-              {collapsed ? (
-                <PanelLeftOpen size={15} />
-              ) : (
-                <>
-                  <PanelLeftClose size={15} />
-                  <span>Recolher</span>
-                </>
-              )}
+              {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
             </button>
           )}
         </div>

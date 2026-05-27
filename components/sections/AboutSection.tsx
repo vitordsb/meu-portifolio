@@ -16,7 +16,7 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="animate-slide-in-left">
             <h2 className="section-header">{t("about.title")}</h2>
-            <div className="w-12 h-1 bg-accent mb-6" />
+            <div className="w-12 h-1 rounded-full bg-accent mb-6" />
             {paragraphs.map((p, i) => (
               <p
                 key={i}

@@ -33,7 +33,7 @@ export default function CompetenciesSection({ competencies }: { competencies: Co
       <div className="container">
         <div className="mb-10">
           <h2 className="section-header">{t("competencies.title")}</h2>
-          <div className="w-12 h-1 bg-accent mb-3" />
+          <div className="w-12 h-1 rounded-full bg-accent mb-3" />
           <p className="text-muted-foreground text-sm">{t("competencies.subtitle")}</p>
         </div>
         {competencies.length === 0 && (

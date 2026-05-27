@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ExternalLink, Lock, Mail } from "lucide-react";
 import type { Project } from "@/drizzle/schema";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Eyebrow } from "@/components/Eyebrow";
 
 const ALL = "__all__";
 
@@ -34,13 +35,11 @@ export default function AutonomoSection({ projects }: { projects: Project[] }) {
         {/* Header */}
         <div className="flex items-end justify-between flex-wrap gap-6 mb-10">
           <div>
-            <p className="text-xs font-mono text-accent tracking-widest mb-2">
-              {t("autonomo.tag")}
-            </p>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-none">
+            <Eyebrow className="mb-2">{t("autonomo.tag")}</Eyebrow>
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-none">
               {t("autonomo.title")}
             </h1>
-            <div className="w-12 h-1 bg-accent mt-4 mb-4" />
+            <div className="w-12 h-1 rounded-full bg-accent mt-4 mb-4" />
             <p className="text-sm text-muted-foreground max-w-2xl">{subtitle}</p>
           </div>
 

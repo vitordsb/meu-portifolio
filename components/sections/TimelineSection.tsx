@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { TimelineEvent } from "@/drizzle/schema";
 import { useLanguage, translations } from "@/contexts/LanguageContext";
+import { Eyebrow } from "@/components/Eyebrow";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Briefcase,
@@ -86,13 +87,11 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
       <div className="container">
         <div className="mb-8 flex items-end justify-between flex-wrap gap-4">
           <div>
-            <p className="text-xs font-mono text-accent tracking-widest mb-2">
-              {t("timeline.tag")}
-            </p>
-            <h3 className="font-extrabold text-2xl md:text-3xl tracking-tighter leading-none">
+            <Eyebrow className="mb-2">{t("timeline.tag")}</Eyebrow>
+            <h3 className="font-extrabold text-2xl md:text-3xl tracking-tight leading-none">
               {t("timeline.title")}
             </h3>
-            <div className="w-12 h-1 bg-accent mt-3" />
+            <div className="w-12 h-1 rounded-full bg-accent mt-3" />
           </div>
           <p className="text-xs font-mono text-muted-foreground hidden md:block">
             {t("timeline.scrollHint")}

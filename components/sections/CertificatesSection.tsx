@@ -43,7 +43,7 @@ export default function CertificatesSection({ certificates }: { certificates: Ce
     <section id="certificates" className="py-16 bg-background">
       <div className="container">
         <h2 className="section-header">{t("certificates.title")}</h2>
-        <div className="w-12 h-1 bg-accent mb-8" />
+        <div className="w-12 h-1 rounded-full bg-accent mb-8" />
         {certificates.length === 0 && (
           <p className="text-sm text-muted-foreground">{t("certificates.empty")}</p>
         )}

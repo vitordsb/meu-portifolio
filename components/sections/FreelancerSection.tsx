@@ -14,7 +14,7 @@ export default function FreelancerSection({ items }: { items: FreelanceWork[] })
         <div className="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <h2 className="section-header">{t("freelance.title")}</h2>
-            <div className="w-12 h-1 bg-accent mb-3" />
+            <div className="w-12 h-1 rounded-full bg-accent mb-3" />
             <p className="text-sm text-muted-foreground max-w-xl">{t("freelance.subtitle")}</p>
           </div>
           <a
