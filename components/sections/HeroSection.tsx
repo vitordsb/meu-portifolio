@@ -1,13 +1,12 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { CountUp } from "@/components/motion/CountUp";
-import { MagneticButton } from "@/components/motion/MagneticButton";
 import { Eyebrow } from "@/components/Eyebrow";
 import profilePic from "@/app/(public)/images/vitu.jpeg";
 
@@ -78,17 +77,6 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
 
   const nameLines = t("hero.name").split("\n");
 
-  const clientNames = ["ZUPTOS", "ARQDOOR", "MTCPROP", "EGP", "FLORENZA", "ZYNTA"];
-
-  // Highlight cycles esquerda → direita, a cada 2s, em loop
-  const [highlightIdx, setHighlightIdx] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => {
-      setHighlightIdx((i) => (i + 1) % clientNames.length);
-    }, 2000);
-    return () => clearInterval(id);
-  }, [clientNames.length]);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 lg:pt-8 pb-12">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
@@ -115,16 +103,12 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.65, duration: 0.6 }}
             >
-              <MagneticButton>
-                <a href="/projects" className="btn-brutalist-accent px-6 py-3 text-sm inline-block">
-                  {t("hero.cta1")}
-                </a>
-              </MagneticButton>
-              <MagneticButton>
-                <a href="/contact" className="btn-brutalist-outline px-6 py-3 text-sm inline-block">
-                  {t("hero.cta2")}
-                </a>
-              </MagneticButton>
+              <a href="/projects" className="btn-brutalist-accent px-6 py-3 text-sm inline-block">
+                {t("hero.cta1")}
+              </a>
+              <a href="/contact" className="btn-brutalist-outline px-6 py-3 text-sm inline-block">
+                {t("hero.cta2")}
+              </a>
             </motion.div>
           </div>
 
@@ -167,33 +151,6 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
           ))}
         </div>
 
-        {/* ── Faixa de clientes ── */}
-        <div className="mt-12 md:mt-16 pt-8 border-t border-border">
-          <p className="text-[10px] font-mono text-muted-foreground tracking-widest mb-6 text-center md:text-left">
-            {t("hero.clients")}
-          </p>
-          <div className="flex flex-wrap items-center justify-center md:justify-between gap-y-4">
-            {clientNames.map((name, i) => {
-              const isActive = i === highlightIdx;
-              return (
-                <div key={name} className="flex items-center">
-                  <span
-                    className={`font-extrabold text-base md:text-lg tracking-[0.15em] transition-colors duration-500 cursor-default hover:text-accent ${
-                      isActive ? "text-accent" : "text-muted-foreground/60"
-                    }`}
-                  >
-                    {name}
-                  </span>
-                  {i < clientNames.length - 1 && (
-                    <span className="hidden md:inline mx-6 lg:mx-8 text-muted-foreground/30 select-none">
-                      ·
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </div>
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-float hidden md:block">
         <ChevronDown size={24} className="text-accent" />

@@ -2,16 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import SiteFooter from "./SiteFooter";
 import { CursorFollower } from "./motion/CursorFollower";
 
 const STORAGE_KEY = "sidebar-collapsed";
 
 export default function SidebarShell({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
+  // Padrão = encolhida. Só expande se o usuário salvou essa preferência.
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === "1") setCollapsed(true);
+    if (saved === "0") setCollapsed(false);
   }, []);
 
   const toggle = useCallback(() => {
@@ -28,6 +30,7 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
       <Navbar collapsed={collapsed} onToggle={toggle} />
       <div className={collapsed ? "lg:pl-16 transition-[padding] duration-200" : "lg:pl-60 transition-[padding] duration-200"}>
         {children}
+        <SiteFooter />
       </div>
     </>
   );
