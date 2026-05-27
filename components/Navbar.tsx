@@ -95,23 +95,27 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
     </Link>
   );
 
+  // Botões de controle padronizados — mesmo tamanho (h-9 w-9), só ícone.
+  const iconBtn =
+    "h-9 w-9 inline-flex items-center justify-center rounded-lg border border-border hover:border-accent hover:text-accent transition shrink-0";
   const ThemeBtn = (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg border border-border hover:border-accent transition"
+      className={iconBtn}
       title={theme === "light" ? t("common.theme.dark") : t("common.theme.light")}
+      aria-label={theme === "light" ? t("common.theme.dark") : t("common.theme.light")}
     >
-      {theme === "light" ? <Moon size={14} /> : <Sun size={14} />}
+      {theme === "light" ? <Moon size={15} /> : <Sun size={15} />}
     </button>
   );
   const LangBtn = (
     <button
       onClick={() => setLanguage(language === "pt" ? "en" : "pt")}
-      className="p-2 rounded-lg border border-border hover:border-accent transition flex items-center gap-1 text-xs font-bold"
-      title={t("common.language")}
+      className={iconBtn}
+      title={`${t("common.language")} (${language.toUpperCase()})`}
+      aria-label={`${t("common.language")} (${language.toUpperCase()})`}
     >
-      <Globe size={14} />
-      {language.toUpperCase()}
+      <Globe size={15} />
     </button>
   );
 
@@ -128,11 +132,11 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
             {ThemeBtn}
             {LangBtn}
             <button
-              className="p-2 rounded-lg border border-border hover:border-accent transition"
+              className={iconBtn}
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Menu"
             >
-              {mobileOpen ? <X size={14} /> : <Menu size={14} />}
+              {mobileOpen ? <X size={15} /> : <Menu size={15} />}
             </button>
           </div>
         </div>
@@ -176,23 +180,13 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
           collapsed ? "w-16" : "w-60"
         }`}
       >
-        {/* Header com logo + botão de toggle */}
+        {/* Header — só o logo, sem poluição */}
         <div
           className={`border-b border-border flex items-center ${
-            collapsed ? "px-2 py-4 flex-col gap-3" : "px-4 py-4 justify-between gap-2"
+            collapsed ? "px-2 py-4 justify-center" : "px-4 py-4"
           }`}
         >
           {collapsed ? LogoMini : LogoFull}
-          {onToggle && (
-            <button
-              onClick={onToggle}
-              className="p-2 rounded-lg border border-border hover:border-accent transition shrink-0"
-              title={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
-              aria-label={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
-            >
-              {collapsed ? <PanelLeftOpen size={14} /> : <PanelLeftClose size={14} />}
-            </button>
-          )}
         </div>
 
         {/* Links */}
@@ -234,14 +228,37 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
           </ul>
         </nav>
 
-        {/* Controls */}
+        {/* Footer — controls (theme + lang) + botão de colapsar embaixo */}
         <div
-          className={`border-t border-border ${
-            collapsed ? "px-2 py-3 flex flex-col gap-2 items-center" : "px-4 py-4 flex items-center gap-2"
+          className={`border-t border-border flex flex-col gap-2 ${
+            collapsed ? "px-2 py-3 items-center" : "px-4 py-4"
           }`}
         >
-          {ThemeBtn}
-          {LangBtn}
+          <div className={`flex gap-2 ${collapsed ? "flex-col items-center" : "items-center"}`}>
+            {ThemeBtn}
+            {LangBtn}
+          </div>
+          {onToggle && (
+            <button
+              onClick={onToggle}
+              className={`${
+                collapsed
+                  ? "h-9 w-9 justify-center"
+                  : "w-full justify-start gap-2 px-3"
+              } inline-flex items-center h-9 rounded-lg border border-border hover:border-accent hover:text-accent transition text-xs font-bold`}
+              title={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+              aria-label={collapsed ? "Expandir sidebar" : "Colapsar sidebar"}
+            >
+              {collapsed ? (
+                <PanelLeftOpen size={15} />
+              ) : (
+                <>
+                  <PanelLeftClose size={15} />
+                  <span>Recolher</span>
+                </>
+              )}
+            </button>
+          )}
         </div>
       </aside>
     </>
