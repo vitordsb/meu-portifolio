@@ -138,8 +138,8 @@ export default function SkillsCarousel({
         </div>
       </div>
 
-      {/* Carrossel */}
-      <div className="overflow-hidden -mx-1" ref={emblaRef}>
+      {/* Carrossel — py dá folga pro lift/sombra do hover não serem cortados pelo overflow */}
+      <div className="overflow-hidden -mx-1 py-4" ref={emblaRef}>
         <div className="flex">
           {groups.map((g, i) => {
             const Icon = CATEGORY_ICON[g.cat] ?? Boxes;
@@ -151,7 +151,7 @@ export default function SkillsCarousel({
               >
                 <button
                   onClick={() => setOpenCat(g.cat)}
-                  className="group relative h-[420px] w-full text-left rounded-3xl border border-border bg-card overflow-hidden cursor-pointer transition-all hover:border-accent hover:shadow-xl hover:-translate-y-1"
+                  className="group relative h-[420px] w-full text-left rounded-3xl border border-border bg-card overflow-hidden cursor-pointer transition-all duration-300 hover:border-accent hover:shadow-[0_12px_40px_-12px] hover:shadow-accent/25 hover:-translate-y-1"
                 >
                   {/* Fundo parallax — ícone gigante deslocado */}
                   <div
