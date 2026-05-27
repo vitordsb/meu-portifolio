@@ -28,7 +28,7 @@ export default async function HomePage() {
       <main className="min-h-screen bg-background text-foreground">
         <HeroSection certCount={certCount} projectCount={projects.length} />
         <HomeAbout events={timeline} />
-        <HomeStack skills={skills} />
+        <HomeStack skills={skills} projects={projects} />
         <HomeWork projects={projects} />
         <HomeCertificates certificates={certificates} />
       </main>
