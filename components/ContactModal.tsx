@@ -3,8 +3,6 @@
 import { useState, useEffect, useTransition } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
-  Linkedin,
-  Github,
   MessageCircle,
   AtSign,
   X,
@@ -26,22 +24,6 @@ const CHANNELS = [
     href: "https://wa.me/5511939572807",
     descPt: "Resposta rápida no chat",
     descEn: "Quick reply on chat",
-  },
-  {
-    key: "linkedin",
-    label: "LinkedIn",
-    icon: Linkedin,
-    href: "https://www.linkedin.com/in/vitordsb",
-    descPt: "Conexão profissional",
-    descEn: "Professional connection",
-  },
-  {
-    key: "github",
-    label: "GitHub",
-    icon: Github,
-    href: "https://github.com/vitordsb",
-    descPt: "Veja meu código",
-    descEn: "See my code",
   },
   {
     key: "email",

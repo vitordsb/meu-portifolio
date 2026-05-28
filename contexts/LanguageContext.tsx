@@ -17,7 +17,7 @@ export const translations = {
     nav: {
       home: "INÍCIO",
       about: "SOBRE",
-      autonomo: "AUTÔNOMO",
+      autonomo: "PORTFÓLIO",
       skills: "SKILLS",
       certificates: "CERTIFICADOS",
       contact: "CONTATO",
@@ -82,10 +82,10 @@ export const translations = {
       } as Record<string, { title: string; description: string }>,
     },
     autonomo: {
-      tag: "AUTÔNOMO",
-      title: "Trabalhos como freelancer",
+      tag: "PORTFÓLIO",
+      title: "Experiências digitais que entreguei",
       subtitle:
-        "{count} projetos entregues — startups, sites, plataformas SaaS e apps. Código-fonte sob NDA, mas você pode visitar o produto final quando disponível.",
+        "{count} projetos entregues — da interface ao backend, para startups e empresas reais. Código-fonte sob NDA, mas você pode visitar o produto final quando disponível.",
       contact: "ENTRAR EM CONTATO",
       featured: "DESTAQUE",
       all: "Todos",
@@ -142,7 +142,7 @@ export const translations = {
     nav: {
       home: "HOME",
       about: "ABOUT",
-      autonomo: "FREELANCE",
+      autonomo: "PORTFOLIO",
       skills: "SKILLS",
       certificates: "CERTIFICATES",
       contact: "CONTACT",
@@ -206,10 +206,10 @@ export const translations = {
       } as Record<string, { title: string; description: string }>,
     },
     autonomo: {
-      tag: "FREELANCE",
-      title: "Freelance work",
+      tag: "PORTFOLIO",
+      title: "Digital experiences I've shipped",
       subtitle:
-        "{count} projects shipped — startups, sites, SaaS platforms and apps. Source code under NDA, but you can visit the live product when available.",
+        "{count} projects shipped — from interface to backend, for real startups and companies. Source code under NDA, but you can visit the live product when available.",
       contact: "GET IN TOUCH",
       featured: "HIGHLIGHTS",
       all: "All",

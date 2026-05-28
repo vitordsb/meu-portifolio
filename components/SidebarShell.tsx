@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import SiteFooter from "./SiteFooter";
+import ContactFab from "./ContactFab";
 import { CursorFollower } from "./motion/CursorFollower";
+import { PageTransition } from "./motion/PageTransition";
 
 const STORAGE_KEY = "sidebar-collapsed";
 
@@ -29,9 +30,9 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
       <CursorFollower />
       <Navbar collapsed={collapsed} onToggle={toggle} />
       <div className={collapsed ? "lg:pl-16 transition-[padding] duration-200" : "lg:pl-60 transition-[padding] duration-200"}>
-        {children}
-        <SiteFooter />
+        <PageTransition>{children}</PageTransition>
       </div>
+      <ContactFab />
     </>
   );
 }

@@ -110,3 +110,11 @@ docs/
 # ─────────────────────────────────────────────────────────────────────────────
 *.pem
 *.local
+.vercel
+.env*.local
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dropzone local de imagens-fonte dos projetos — as servidas ficam em
+# public/projects/. Estas são as originais e não vão pro repo (evita duplicar).
+# ─────────────────────────────────────────────────────────────────────────────
+app/(public)/images/projects/

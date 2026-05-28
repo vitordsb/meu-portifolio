@@ -15,7 +15,6 @@ import {
   Code2,
   Award,
   FileText,
-  Mail,
   PanelLeftClose,
   PanelLeftOpen,
   type LucideIcon,
@@ -58,7 +57,6 @@ export default function Navbar({ collapsed = false, onToggle }: NavbarProps) {
     { href: "/skills", label: t("nav.skills"), icon: Code2 },
     { href: "/certificates", label: t("nav.certificates"), icon: Award },
     { href: "/cv", label: "CV", icon: FileText },
-    { href: "/contact", label: t("nav.contact"), icon: Mail },
   ];
 
   const LogoFull = (

@@ -72,7 +72,7 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
   const certsNum = certCount > 0 ? roundDownTo(certCount, 10) : 50;
 
   const stats = [
-    { prefix: "+", value: 4, suffix: "", label: t("hero.stats.years") },
+    { prefix: "+", value: 5, suffix: "", label: t("hero.stats.years") },
     { prefix: "", value: projectsNum, suffix: "+", label: t("hero.stats.projects") },
     { prefix: "", value: certsNum, suffix: "+", label: t("hero.stats.certs") },
   ];
@@ -117,8 +117,38 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
             </motion.div>
           </div>
 
-          {/* ── Foto ── */}
-          <div className="shrink-0">
+          {/* ── Redes (coluna à esquerda) + Foto ── */}
+          <div className="shrink-0 flex items-center gap-5 md:gap-6">
+            {/* Redes — LinkedIn + GitHub coloridos, em coluna */}
+            <motion.div
+              className="flex flex-col items-center gap-4"
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+            >
+              <a
+                href="https://www.linkedin.com/in/vitordsb"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-white ring-1 ring-border shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/linkedin.svg" alt="LinkedIn" className="h-7 w-7" />
+              </a>
+              <a
+                href="https://github.com/vitordsb"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-white ring-1 ring-border shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/github.svg" alt="GitHub" className="h-7 w-7" />
+              </a>
+            </motion.div>
+
+            {/* Foto */}
             <div className="relative w-60 h-60 md:w-80 md:h-80">
               {/* glow suave accent atrás da foto */}
               <div className="absolute -inset-3 rounded-[2rem] bg-accent/15 blur-2xl" />

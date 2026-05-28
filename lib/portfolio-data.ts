@@ -70,7 +70,7 @@ export const allWork: Work[] = [
       "Plataforma B2B para conectar fornecedores e compradores. Construí toda a stack: landing, autenticação, dashboards de cotação e gestão de leads.",
     stack: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"],
     liveLink: "https://www.girob2b.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/girob2b.png",
     featured: false,
   },
   {
@@ -95,7 +95,7 @@ export const allWork: Work[] = [
       "Site institucional da MTC Prop em WordPress customizado.",
     stack: ["WordPress", "Tema custom"],
     liveLink: "https://mtcprop.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/mtcprop-site.png",
     featured: false,
   },
   {
@@ -107,7 +107,7 @@ export const allWork: Work[] = [
       "Site institucional em WordPress com tema custom — foco em apresentação da marca, captação de leads e SEO.",
     stack: ["WordPress", "Tema custom", "SEO"],
     liveLink: "https://institutoflorenza.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/florenza.png",
     featured: false,
   },
   {
@@ -131,7 +131,7 @@ export const allWork: Work[] = [
       "Plataforma com identidade visual própria, conteúdo educacional e fluxos de contato.",
     stack: ["Next.js", "Express", "Prisma", "Tailwind"],
     liveLink: "https://andressasemionatto.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/oncoliving.png",
     featured: false,
   },
   {
@@ -143,7 +143,7 @@ export const allWork: Work[] = [
       "Aplicação web com autenticação e persistência via Supabase.",
     stack: ["Next.js", "React", "Supabase"],
     liveLink: "https://www.bioathos.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/bioathos.png",
     featured: false,
   },
   {
@@ -154,7 +154,7 @@ export const allWork: Work[] = [
     description: "Landing institucional com seção de time e programa.",
     stack: ["Next.js", "React"],
     liveLink: "https://www.zyntaecossistema.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/zynta.png",
     featured: false,
   },
   {
@@ -177,7 +177,7 @@ export const allWork: Work[] = [
     description: "Site comercial estático com seção de projetos.",
     stack: ["HTML", "CSS", "JS"],
     liveLink: "https://www.nortepremiumtopografia.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/norte-premium.png",
     featured: false,
   },
   {
@@ -189,7 +189,7 @@ export const allWork: Work[] = [
       "Site para o sambista Negritude Junior — galeria de vídeos, imagens e contato.",
     stack: ["HTML", "CSS", "JS"],
     liveLink: "https://contratenegritudejunior.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/negritude-junior.png",
     featured: false,
   },
   {
@@ -201,7 +201,7 @@ export const allWork: Work[] = [
       "Site institucional do Grupo EGP — apresentação comercial dos equipamentos eletrônicos de segurança, fortalecimento de marca e captação de novos clientes. Construído enquanto eu era Full-Stack interno da EGP.",
     stack: ["Next.js", "React", "SEO", "Tailwind"],
     liveLink: "https://www.grupoegp.com.br",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/egp-industria.png",
     featured: false,
   },
   {
