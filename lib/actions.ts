@@ -4,31 +4,20 @@ import { revalidatePath } from "next/cache";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "./auth";
-import { verifyPassword } from "./crypto";
-import { createSessionToken } from "./oauth";
+import { fakePasswordWork, verifyPassword } from "./crypto";
+import { createSessionToken, SESSION_TTL_SECONDS } from "./oauth";
+import { clientIpFrom, isAllowedIp } from "./request-ip";
+import { rateLimit, resetRateLimit } from "./rate-limit";
 import * as db from "./db";
 
-async function getRequestIp(): Promise<string> {
+async function getRequestIp(): Promise<string | null> {
   const h = await headers();
-  const fwd = h.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return h.get("x-real-ip")?.trim() ?? "unknown";
-}
-
-function ipAllowed(ip: string): boolean {
-  const allowed = (process.env.ADMIN_ALLOWED_IPS ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const localhost = ip === "127.0.0.1" || ip === "::1" || ip === "unknown";
-  if (allowed.length === 0) return localhost;
-  if (localhost && process.env.NODE_ENV !== "production") return true;
-  return allowed.includes(ip);
+  return clientIpFrom((name) => h.get(name));
 }
 
 async function assertAdmin() {
   const ip = await getRequestIp();
-  if (!ipAllowed(ip)) throw new Error("Forbidden");
+  if (!isAllowedIp(ip)) throw new Error("Forbidden");
   const user = await getCurrentUser();
   if (!user || user.role !== "admin") throw new Error("Unauthorized");
   return user;
@@ -41,19 +30,49 @@ export async function logout() {
   redirect("/");
 }
 
+// Erro único pra qualquer falha de login: usuário errado, senha errada ou IP
+// fora da allowlist devolvem exatamente a mesma coisa. Mensagem específica é
+// dica de graça pra quem está tentando adivinhar.
+const LOGIN_ERROR = "Usuário ou senha inválidos.";
+
+const LOGIN_MAX_ATTEMPTS = 5;
+const LOGIN_WINDOW_MS = 10 * 60 * 1000;
+
 export async function loginWithPassword(
   _prev: { error: string } | null,
   formData: FormData,
 ): Promise<{ error: string }> {
+  // O middleware protege a PÁGINA /login, mas uma server action é um POST na
+  // rota em que está montada e pode escapar do matcher. A allowlist tem que ser
+  // reconferida aqui dentro, não só na borda.
+  const ip = await getRequestIp();
+  if (!isAllowedIp(ip)) return { error: LOGIN_ERROR };
+
+  const limit = rateLimit(`login:${ip ?? "sem-ip"}`, LOGIN_MAX_ATTEMPTS, LOGIN_WINDOW_MS);
+  if (!limit.ok) {
+    const minutos = Math.ceil(limit.retryAfterMs / 60000);
+    return { error: `Muitas tentativas. Tente de novo em ${minutos} min.` };
+  }
+
   const username = (formData.get("username") as string | null)?.trim() ?? "";
   const password = (formData.get("password") as string | null) ?? "";
 
   if (!username || !password) return { error: "Preencha todos os campos." };
 
   const user = await db.getUserByUsername(username);
-  if (!user?.passwordHash || !verifyPassword(password, user.passwordHash)) {
-    return { error: "Usuário ou senha inválidos." };
+
+  // Usuário inexistente gasta o mesmo tempo de um hash real, senão dá pra
+  // descobrir quem existe cronometrando a resposta.
+  if (!user?.passwordHash) {
+    await fakePasswordWork();
+    return { error: LOGIN_ERROR };
   }
+
+  if (!(await verifyPassword(password, user.passwordHash))) {
+    return { error: LOGIN_ERROR };
+  }
+
+  resetRateLimit(`login:${ip ?? "sem-ip"}`);
 
   const token = await createSessionToken(user.openId, user.name ?? username);
   const cookieStore = await cookies();
@@ -61,7 +80,7 @@ export async function loginWithPassword(
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 365,
+    maxAge: SESSION_TTL_SECONDS,
     path: "/",
   });
 
@@ -221,7 +240,7 @@ export async function sendContactMessage(
     await db.createContactMessage(payload);
   } catch (e) {
     console.error("[contact] falha ao salvar no banco:", e);
-    // não aborta — ainda tenta enviar email
+    // não aborta, ainda tenta enviar email
   }
 
   // 2) Envia email via Resend, se configurado
@@ -236,19 +255,19 @@ export async function sendContactMessage(
         from,
         to,
         replyTo: payload.email ?? undefined,
-        subject: `[Portfolio] ${payload.subject || "Novo contato"} — ${name}`,
+        subject: `[Portfolio] ${payload.subject || "Novo contato"} de ${name}`,
         text: [
           `Nome: ${name}`,
-          `Email: ${payload.email ?? "—"}`,
-          `Empresa: ${payload.company ?? "—"}`,
-          `Assunto: ${payload.subject ?? "—"}`,
+          `Email: ${payload.email ?? "(não informado)"}`,
+          `Empresa: ${payload.company ?? "(não informada)"}`,
+          `Assunto: ${payload.subject ?? "(não informado)"}`,
           "",
           payload.message,
         ].join("\n"),
       });
     } catch (e) {
       console.error("[contact] falha ao enviar email (Resend):", e);
-      // banco já tem o registro — segue ok pro usuário
+      // banco já tem o registro, segue ok pro usuário
     }
   }
 

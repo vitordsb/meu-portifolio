@@ -2,7 +2,15 @@ import { SignJWT } from "jose";
 
 const OAUTH_SERVER_URL = process.env.OAUTH_SERVER_URL ?? "";
 const APP_ID = process.env.NEXT_PUBLIC_APP_ID ?? process.env.APP_ID ?? "";
-const ONE_YEAR_MS = 1000 * 60 * 60 * 24 * 365;
+/**
+ * Duração da sessão administrativa.
+ *
+ * Era um ano. Como não existe lista de revogação (o logout só apaga o cookie do
+ * navegador, o token continua válido), a janela de estrago de um token vazado
+ * era a mesma: um ano. Doze horas mantém o dia de trabalho inteiro sem relogar
+ * e reduz essa janela ao que dá pra tolerar.
+ */
+export const SESSION_TTL_SECONDS = 60 * 60 * 12;
 
 export interface TokenResponse {
   accessToken: string;
@@ -28,8 +36,12 @@ function deriveLoginMethod(platforms: unknown, fallback: string | null): string 
   return first ? first.toLowerCase() : null;
 }
 
-export async function exchangeCodeForToken(code: string, state: string): Promise<TokenResponse> {
-  const redirectUri = atob(state);
+/**
+ * Troca o `code` pelo token. O `redirectUri` vem de quem chama (calculado a
+ * partir da nossa configuração), não mais de um `atob(state)` que o visitante
+ * conseguia forjar.
+ */
+export async function exchangeCodeForToken(code: string, redirectUri: string): Promise<TokenResponse> {
   const res = await fetch(`${OAUTH_SERVER_URL}/webdev.v1.WebDevAuthPublicService/ExchangeToken`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -53,9 +65,9 @@ export async function getUserInfo(accessToken: string): Promise<UserInfo> {
 
 export async function createSessionToken(openId: string, name: string): Promise<string> {
   const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? "");
-  const expiresAt = Math.floor((Date.now() + ONE_YEAR_MS) / 1000);
   return new SignJWT({ openId, appId: APP_ID, name })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-    .setExpirationTime(expiresAt)
+    .setIssuedAt()
+    .setExpirationTime(Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS)
     .sign(secret);
 }
