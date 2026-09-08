@@ -3,158 +3,698 @@
 
 @custom-variant dark (&:is([data-theme="dark"], [data-theme="dark"] *));
 
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  /* Fontes — Inter (body) + Plus Jakarta Sans (headings) + Geist Mono (labels) */
-  --font-sans: var(--font-sans-base), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display: var(--font-display), var(--font-sans-base), system-ui, sans-serif;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   MATERIAL DESIGN 3
+   Seed: #0B57D0 (azul Google). Paletas tonais abaixo, roles derivados delas.
+   Referência: m3.material.io/styles
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Light mode (padrão) ──────────────────────────────────────────────────── */
 :root {
-  --radius: 0.875rem;
-  --background: oklch(0.98 0.004 235);
-  --foreground: oklch(0.16 0.02 235);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.16 0.02 235);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.16 0.02 235);
-  --primary: oklch(0.50 0.22 235);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.93 0.008 235);
-  --secondary-foreground: oklch(0.25 0.02 235);
-  --muted: oklch(0.93 0.008 235);
-  --muted-foreground: oklch(0.45 0.02 235);
-  --accent: oklch(0.50 0.22 235);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.78 0.025 235);
-  --input: oklch(0.96 0.005 235);
-  --ring: oklch(0.50 0.22 235);
+  /* ── Paleta tonal: primary ─────────────────────────────────────────────── */
+  --p-0:   #000000;
+  --p-10:  #001a41;
+  --p-20:  #002e6a;
+  --p-30:  #0842a0;
+  --p-40:  #0b57d0;
+  --p-50:  #3b77e8;
+  --p-60:  #4c8df6;
+  --p-70:  #7cacf8;
+  --p-80:  #a8c7fa;
+  --p-90:  #d3e3fd;
+  --p-95:  #ecf3fe;
+  --p-99:  #fafaff;
+  --p-100: #ffffff;
+
+  /* ── Paleta tonal: secondary (azul dessaturado) ────────────────────────── */
+  --s-10: #131c2b;
+  --s-20: #283143;
+  --s-30: #3e4759;
+  --s-40: #565f71;
+  --s-80: #bec6dc;
+  --s-90: #dae2f9;
+
+  /* ── Paleta tonal: tertiary (verde) ────────────────────────────────────── */
+  --t-10: #072711;
+  --t-20: #0a3818;
+  --t-30: #0f5223;
+  --t-40: #146c2e;
+  --t-80: #6dd58c;
+  --t-90: #c4eed0;
+
+  /* ── Paleta tonal: error ───────────────────────────────────────────────── */
+  --e-10: #410e0b;
+  --e-20: #601410;
+  --e-30: #8c1d18;
+  --e-40: #b3261e;
+  --e-80: #f2b8b5;
+  --e-90: #f9dedc;
+
+  /* ── Paleta tonal: neutral e neutral-variant ───────────────────────────── */
+  --n-4:  #0e0e11;
+  --n-6:  #131314;
+  --n-10: #1b1b1f;
+  --n-12: #1f1f23;
+  --n-17: #282a2c;
+  --n-20: #303034;
+  --n-22: #35363a;
+  --n-24: #3a3b3e;
+  --n-90: #e4e2e6;
+  --n-92: #eae8ec;
+  --n-94: #f0eef2;
+  --n-95: #f3f1f5;
+  --n-96: #f5f3f7;
+  --n-98: #faf9fd;
+  --n-100: #ffffff;
+  --nv-30: #444749;
+  --nv-50: #74777c;
+  --nv-60: #8e9196;
+  --nv-80: #c4c6d0;
+  --nv-90: #e1e2ec;
+
+  /* ── Shape scale ───────────────────────────────────────────────────────── */
+  --shape-xs: 4px;
+  --shape-sm: 8px;
+  --shape-md: 12px;
+  --shape-lg: 16px;
+  --shape-xl: 28px;
+  --shape-full: 9999px;
+
+  /* ── State layers (opacidades da spec) ─────────────────────────────────── */
+  --state-hover: 0.08;
+  --state-focus: 0.10;
+  --state-pressed: 0.10;
+  --state-dragged: 0.16;
+
+  /* ── Motion (easing e duração da spec) ─────────────────────────────────── */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0, 1);
+  --dur-short: 150ms;
+  --dur-medium: 300ms;
+  --dur-long: 450ms;
 }
 
-/* ── Dark mode ────────────────────────────────────────────────────────────── */
+/* ── Roles: light scheme ──────────────────────────────────────────────────── */
+:root {
+  --primary: var(--p-40);
+  --on-primary: var(--p-100);
+  --primary-container: var(--p-90);
+  --on-primary-container: var(--p-10);
+
+  --secondary: var(--s-40);
+  --on-secondary: #ffffff;
+  --secondary-container: var(--s-90);
+  --on-secondary-container: var(--s-10);
+
+  --tertiary: var(--t-40);
+  --on-tertiary: #ffffff;
+  --tertiary-container: var(--t-90);
+  --on-tertiary-container: var(--t-10);
+
+  --error: var(--e-40);
+  --on-error: #ffffff;
+  --error-container: var(--e-90);
+  --on-error-container: var(--e-10);
+
+  --surface: var(--n-98);
+  --on-surface: var(--n-10);
+  --surface-variant: var(--nv-90);
+  --on-surface-variant: var(--nv-30);
+
+  --surface-container-lowest: var(--n-100);
+  --surface-container-low: var(--n-96);
+  --surface-container: var(--n-94);
+  --surface-container-high: var(--n-92);
+  --surface-container-highest: var(--n-90);
+
+  --outline: var(--nv-50);
+  --outline-variant: var(--nv-80);
+
+  --inverse-surface: var(--n-20);
+  --inverse-on-surface: var(--n-95);
+  --inverse-primary: var(--p-80);
+  --scrim: #000000;
+  --shadow: #000000;
+
+  /* Sombras M3: elevação 0 a 5 */
+  --elev-1: 0 1px 2px rgb(0 0 0 / 0.30), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --elev-2: 0 1px 2px rgb(0 0 0 / 0.30), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --elev-3: 0 1px 3px rgb(0 0 0 / 0.30), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+  --elev-4: 0 2px 3px rgb(0 0 0 / 0.30), 0 6px 10px 4px rgb(0 0 0 / 0.15);
+  --elev-5: 0 4px 4px rgb(0 0 0 / 0.30), 0 8px 12px 6px rgb(0 0 0 / 0.15);
+}
+
+/* Esquema nativo (scrollbar, inputs, autofill) acompanha o tema aplicado.
+   O ThemeContext também seta isso inline; aqui fica a rede de segurança
+   pra quando o JS ainda não rodou.                                        */
+:root { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+
+/* ── Roles: dark scheme ───────────────────────────────────────────────────── */
 [data-theme="dark"] {
-  --background: oklch(0.17 0.018 235);
-  --foreground: oklch(0.91 0.010 235);
-  --card: oklch(0.21 0.018 235);
-  --card-foreground: oklch(0.91 0.010 235);
-  --popover: oklch(0.21 0.018 235);
-  --popover-foreground: oklch(0.91 0.010 235);
-  --primary: oklch(0.62 0.20 235);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.26 0.020 235);
-  --secondary-foreground: oklch(0.82 0.010 235);
-  --muted: oklch(0.26 0.020 235);
-  --muted-foreground: oklch(0.56 0.018 235);
-  --accent: oklch(0.62 0.20 235);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.58 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.32 0.022 235);
-  --input: oklch(0.24 0.018 235);
-  --ring: oklch(0.62 0.20 235);
+  --primary: var(--p-80);
+  --on-primary: var(--p-20);
+  --primary-container: var(--p-30);
+  --on-primary-container: var(--p-90);
+
+  --secondary: var(--s-80);
+  --on-secondary: var(--s-20);
+  --secondary-container: var(--s-30);
+  --on-secondary-container: var(--s-90);
+
+  --tertiary: var(--t-80);
+  --on-tertiary: var(--t-20);
+  --tertiary-container: var(--t-30);
+  --on-tertiary-container: var(--t-90);
+
+  --error: var(--e-80);
+  --on-error: var(--e-20);
+  --error-container: var(--e-30);
+  --on-error-container: var(--e-90);
+
+  --surface: var(--n-6);
+  --on-surface: var(--n-90);
+  --surface-variant: var(--nv-30);
+  --on-surface-variant: var(--nv-80);
+
+  --surface-container-lowest: var(--n-4);
+  --surface-container-low: var(--n-10);
+  --surface-container: var(--n-12);
+  --surface-container-high: var(--n-17);
+  --surface-container-highest: var(--n-22);
+
+  --outline: var(--nv-60);
+  --outline-variant: var(--nv-30);
+
+  --inverse-surface: var(--n-90);
+  --inverse-on-surface: var(--n-20);
+  --inverse-primary: var(--p-40);
+
+  /* No escuro a sombra some no fundo, então a spec pede opacidade maior */
+  --elev-1: 0 1px 2px rgb(0 0 0 / 0.45), 0 1px 3px 1px rgb(0 0 0 / 0.30);
+  --elev-2: 0 1px 2px rgb(0 0 0 / 0.45), 0 2px 6px 2px rgb(0 0 0 / 0.30);
+  --elev-3: 0 1px 3px rgb(0 0 0 / 0.45), 0 4px 8px 3px rgb(0 0 0 / 0.30);
+  --elev-4: 0 2px 3px rgb(0 0 0 / 0.45), 0 6px 10px 4px rgb(0 0 0 / 0.30);
+  --elev-5: 0 4px 4px rgb(0 0 0 / 0.45), 0 8px 12px 6px rgb(0 0 0 / 0.30);
+}
+
+/* ── Ponte com o Tailwind ─────────────────────────────────────────────────── */
+@theme inline {
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+
+  --color-surface: var(--surface);
+  --color-on-surface: var(--on-surface);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-surface-lowest: var(--surface-container-lowest);
+  --color-surface-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-high: var(--surface-container-high);
+  --color-surface-highest: var(--surface-container-highest);
+
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-inverse-primary: var(--inverse-primary);
+  --color-scrim: var(--scrim);
+
+  /* Aliases que o Tailwind já espera (bg-background, text-foreground, ...) */
+  --color-background: var(--surface);
+  --color-foreground: var(--on-surface);
+  --color-card: var(--surface-container-low);
+  --color-card-foreground: var(--on-surface);
+  --color-popover: var(--surface-container);
+  --color-popover-foreground: var(--on-surface);
+  --color-muted: var(--surface-container-high);
+  --color-muted-foreground: var(--on-surface-variant);
+  --color-accent: var(--primary);
+  --color-accent-foreground: var(--on-primary);
+  --color-destructive: var(--error);
+  --color-destructive-foreground: var(--on-error);
+  --color-border: var(--outline-variant);
+  --color-input: var(--surface-container-highest);
+  --color-ring: var(--primary);
+
+  --radius-xs: var(--shape-xs);
+  --radius-sm: var(--shape-sm);
+  --radius-md: var(--shape-md);
+  --radius-lg: var(--shape-lg);
+  --radius-xl: var(--shape-xl);
+  --radius-2xl: var(--shape-xl);
+  --radius-3xl: var(--shape-xl);
+
+  --font-sans: var(--font-roboto), "Roboto", system-ui, sans-serif;
+  --font-display: var(--font-figtree), var(--font-roboto), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ESCALA TIPOGRÁFICA M3
+   Display e headline em Figtree (identidade), o resto em Roboto (leitura).
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .display-large,
+  .display-medium,
+  .display-small,
+  .headline-large,
+  .headline-medium,
+  .headline-small {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .display-large  { font-size: 3.5625rem; line-height: 4rem;    letter-spacing: -0.015em; }
+  .display-medium { font-size: 2.8125rem; line-height: 3.25rem; letter-spacing: -0.01em; }
+  .display-small  { font-size: 2.25rem;   line-height: 2.75rem; letter-spacing: 0; }
+
+  .headline-large  { font-size: 2rem;    line-height: 2.5rem;  letter-spacing: 0; }
+  .headline-medium { font-size: 1.75rem; line-height: 2.25rem; letter-spacing: 0; }
+  .headline-small  { font-size: 1.5rem;  line-height: 2rem;    letter-spacing: 0; }
+
+  .title-large  { font-size: 1.375rem; line-height: 1.75rem; letter-spacing: 0; font-weight: 500; }
+  .title-medium { font-size: 1rem;     line-height: 1.5rem;  letter-spacing: 0.009em; font-weight: 500; }
+  .title-small  { font-size: 0.875rem; line-height: 1.25rem; letter-spacing: 0.007em; font-weight: 500; }
+
+  .body-large  { font-size: 1rem;     line-height: 1.5rem;  letter-spacing: 0.031em; }
+  .body-medium { font-size: 0.875rem; line-height: 1.25rem; letter-spacing: 0.018em; }
+  .body-small  { font-size: 0.75rem;  line-height: 1rem;    letter-spacing: 0.033em; }
+
+  .label-large  { font-size: 0.875rem;  line-height: 1.25rem; letter-spacing: 0.007em; font-weight: 500; }
+  .label-medium { font-size: 0.75rem;   line-height: 1rem;    letter-spacing: 0.042em; font-weight: 500; }
+  .label-small  { font-size: 0.6875rem; line-height: 1rem;    letter-spacing: 0.045em; font-weight: 500; }
 }
 
 @layer base {
-  * { @apply border-border outline-ring/50; }
+  * {
+    border-color: var(--outline-variant);
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background: var(--surface);
+    color: var(--on-surface);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.031em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
   }
-  /* Headings usam Plus Jakarta Sans */
-  h1, h2, h3, .font-display { font-family: var(--font-display); }
+
+  /* Headings caem na escala M3 por padrão */
+  h1 { font-family: var(--font-display); font-size: 3.5625rem; line-height: 4rem; letter-spacing: -0.015em; font-weight: 700; }
+  h2 { font-family: var(--font-display); font-size: 2.25rem;   line-height: 2.75rem; font-weight: 700; }
+  h3 { font-family: var(--font-display); font-size: 1.75rem;   line-height: 2.25rem; font-weight: 700; }
+  h4 { font-family: var(--font-display); font-size: 1.375rem;  line-height: 1.75rem; font-weight: 600; }
+
   button:not(:disabled), [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled), [type="submit"]:not(:disabled),
-  a[href], select:not(:disabled) { @apply cursor-pointer; }
+  a[href], select:not(:disabled) { cursor: pointer; }
+
+  ::selection { background: var(--primary-container); color: var(--on-primary-container); }
+
+  :focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--outline-variant);
+    border-radius: var(--shape-full);
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  * { scrollbar-width: thin; scrollbar-color: var(--outline-variant) transparent; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPONENTES M3
+   ═══════════════════════════════════════════════════════════════════════════ */
 @layer components {
   .container {
-    width: 100%; margin-left: auto; margin-right: auto;
-    padding-left: 1rem; padding-right: 1rem;
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
   }
+  @media (min-width: 640px) { .container { padding-inline: 2rem; } }
+  @media (min-width: 1024px) { .container { padding-inline: 3rem; max-width: 1280px; } }
+  /* Respiro extra em telas largas: o conteúdo de todas as seções fica na
+     mesma faixa que o banner ocupa, em vez de encostar nas bordas.        */
+  @media (min-width: 1280px) { .container { padding-inline: 6rem; } }
+  @media (min-width: 1536px) { .container { padding-inline: 7rem; max-width: 1440px; } }
+
   .flex { min-height: 0; min-width: 0; }
 
-  @media (min-width: 640px) {
-    .container { padding-left: 1.5rem; padding-right: 1.5rem; }
+  /* ── State layer ────────────────────────────────────────────────────────
+     Camada de cor sobre o componente, com as opacidades da spec. Todo alvo
+     interativo herda daqui em vez de trocar background no hover.            */
+  .state-layer {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
   }
+  .state-layer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-standard);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .state-layer:hover::after { opacity: var(--state-hover); }
+  .state-layer:focus-visible::after { opacity: var(--state-focus); }
+  .state-layer:active::after { opacity: var(--state-pressed); }
+  .state-layer > * { position: relative; z-index: 1; }
+
+  /* ── Botões (spec: altura 40, raio full, label-large) ─────────────────── */
+  .btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding-inline: 1.5rem;
+    border-radius: var(--shape-full);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.007em;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: box-shadow var(--dur-short) var(--ease-standard),
+                background-color var(--dur-short) var(--ease-standard);
+  }
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-standard);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .btn:hover::after { opacity: var(--state-hover); }
+  .btn:focus-visible::after { opacity: var(--state-focus); }
+  .btn:active::after { opacity: var(--state-pressed); }
+  .btn > * { position: relative; z-index: 1; }
+  .btn:disabled, .btn[aria-disabled="true"] {
+    background: color-mix(in srgb, var(--on-surface) 12%, transparent);
+    color: color-mix(in srgb, var(--on-surface) 38%, transparent);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+  .btn:disabled::after { opacity: 0; }
+
+  .btn-filled   { background: var(--primary); color: var(--on-primary); }
+  .btn-filled:hover { box-shadow: var(--elev-1); }
+
+  .btn-tonal    { background: var(--secondary-container); color: var(--on-secondary-container); }
+  .btn-tonal:hover { box-shadow: var(--elev-1); }
+
+  .btn-elevated { background: var(--surface-container-low); color: var(--primary); box-shadow: var(--elev-1); }
+  .btn-elevated:hover { box-shadow: var(--elev-2); }
+
+  .btn-outlined {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--outline);
+  }
+  .btn-outlined:focus-visible { border-color: var(--primary); }
+
+  .btn-text { background: transparent; color: var(--primary); padding-inline: 0.75rem; }
+
+  /* Botão com ícone à esquerda: a spec reduz o padding daquele lado */
+  .btn-icon-leading { padding-inline: 1rem 1.5rem; }
+
+  /* ── FAB (raio lg, elevação 3) ─────────────────────────────────────────── */
+  .fab {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    padding-inline: 1rem;
+    border-radius: var(--shape-lg);
+    background: var(--primary-container);
+    color: var(--on-primary-container);
+    box-shadow: var(--elev-3);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.007em;
+    transition: box-shadow var(--dur-medium) var(--ease-standard);
+  }
+  .fab-extended { padding-inline: 1.25rem; }
+  .fab::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-standard);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .fab:hover::after { opacity: var(--state-hover); }
+  .fab:active::after { opacity: var(--state-pressed); }
+  .fab:hover { box-shadow: var(--elev-4); }
+  .fab > * { position: relative; z-index: 1; }
+
+  /* ── Icon button (48x48 de alvo, ícone 24) ─────────────────────────────── */
+  .icon-btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--shape-full);
+    color: var(--on-surface-variant);
+    transition: color var(--dur-short) var(--ease-standard);
+  }
+  .icon-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-standard);
+    pointer-events: none;
+  }
+  .icon-btn:hover::after { opacity: var(--state-hover); }
+  .icon-btn:focus-visible::after { opacity: var(--state-focus); }
+  .icon-btn:active::after { opacity: var(--state-pressed); }
+  .icon-btn:disabled { color: color-mix(in srgb, var(--on-surface) 38%, transparent); cursor: not-allowed; }
+  .icon-btn:disabled::after { opacity: 0; }
+  .icon-btn-filled { background: var(--primary); color: var(--on-primary); }
+  .icon-btn-tonal { background: var(--secondary-container); color: var(--on-secondary-container); }
+
+  /* ── Cards (raio md, spec §cards) ──────────────────────────────────────── */
+  .card-filled {
+    border-radius: var(--shape-md);
+    background: var(--surface-container-highest);
+    color: var(--on-surface);
+    padding: 1.5rem;
+    transition: box-shadow var(--dur-medium) var(--ease-standard),
+                background-color var(--dur-medium) var(--ease-standard);
+  }
+  .card-elevated {
+    border-radius: var(--shape-md);
+    background: var(--surface-container-low);
+    color: var(--on-surface);
+    padding: 1.5rem;
+    box-shadow: var(--elev-1);
+    transition: box-shadow var(--dur-medium) var(--ease-standard);
+  }
+  .card-elevated:hover { box-shadow: var(--elev-2); }
+  .card-outlined {
+    border-radius: var(--shape-md);
+    background: var(--surface);
+    color: var(--on-surface);
+    padding: 1.5rem;
+    border: 1px solid var(--outline-variant);
+    transition: box-shadow var(--dur-medium) var(--ease-standard),
+                border-color var(--dur-medium) var(--ease-standard);
+  }
+  .card-outlined:hover { box-shadow: var(--elev-1); }
+
+  /* ── Chips (altura 32, raio sm, label-large) ───────────────────────────── */
+  .chip {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2rem;
+    padding-inline: 1rem;
+    border-radius: var(--shape-sm);
+    border: 1px solid var(--outline-variant);
+    background: transparent;
+    color: var(--on-surface-variant);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    letter-spacing: 0.007em;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color var(--dur-short) var(--ease-standard),
+                border-color var(--dur-short) var(--ease-standard);
+  }
+  .chip::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--dur-short) var(--ease-standard);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .chip:hover::after { opacity: var(--state-hover); }
+  .chip:active::after { opacity: var(--state-pressed); }
+  .chip > * { position: relative; z-index: 1; }
+  .chip-selected {
+    background: var(--secondary-container);
+    color: var(--on-secondary-container);
+    border-color: transparent;
+  }
+  /* Chip informativo, sem interação (usado como tag de tecnologia) */
+  .chip-static {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    height: 1.75rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--shape-sm);
+    background: var(--surface-container-highest);
+    color: var(--on-surface-variant);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    letter-spacing: 0.042em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── Navigation rail (spec: 80 de largura, indicador pill 56x32) ───────── */
+  .nav-item {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    color: var(--on-surface-variant);
+    transition: color var(--dur-short) var(--ease-standard);
+  }
+  .nav-item:hover { color: var(--on-surface); }
+  .nav-item-active { color: var(--on-secondary-container); }
+  /* O indicador é um elemento próprio pra poder animar entre itens */
+  .nav-indicator {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--shape-full);
+    background: var(--secondary-container);
+    z-index: -1;
+  }
+
+  /* ── Text field (outlined) ─────────────────────────────────────────────── */
+  .text-field {
+    width: 100%;
+    height: 3.5rem;
+    padding-inline: 1rem;
+    border-radius: var(--shape-xs);
+    border: 1px solid var(--outline);
+    background: transparent;
+    color: var(--on-surface);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.031em;
+    transition: border-color var(--dur-short) var(--ease-standard);
+  }
+  .text-field::placeholder { color: var(--on-surface-variant); }
+  .text-field:hover { border-color: var(--on-surface); }
+  .text-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    border-width: 2px;
+    padding-inline: calc(1rem - 1px);
+  }
+  textarea.text-field { height: auto; padding-block: 1rem; resize: none; }
+
+  /* ── Divider ───────────────────────────────────────────────────────────── */
+  .divider { border: 0; border-top: 1px solid var(--outline-variant); }
+
+  /* ── Superfície de seção que atravessa a rail transparente ─────────────── */
+  .shell { --shell-pad: 0px; padding-left: var(--shell-pad); }
   @media (min-width: 1024px) {
-    .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; }
+    .shell-collapsed { --shell-pad: 5rem; }
+    .shell-expanded { --shell-pad: 22.5rem; }
   }
-
-  h1 { @apply text-7xl font-extrabold tracking-tight leading-none; }
-  h2 { @apply text-5xl font-bold tracking-tight leading-tight; }
-  h3 { @apply text-3xl font-bold tracking-tight; }
-
-  /* Botões arredondados, soft, com hover suave (lift + sombra) */
-  .btn-brutalist {
-    @apply px-7 py-3.5 rounded-full bg-foreground text-background font-bold text-base
-      shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0
-      transition-all duration-200;
-  }
-  .btn-brutalist-outline {
-    @apply px-7 py-3.5 rounded-full bg-transparent text-foreground font-bold text-base
-      border border-foreground/20 hover:border-foreground/40 hover:bg-foreground/5
-      hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200;
-  }
-  .btn-brutalist-accent {
-    @apply px-7 py-3.5 rounded-full bg-accent text-background font-bold text-base
-      shadow-sm shadow-accent/20 hover:shadow-lg hover:shadow-accent/30
-      hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200;
-  }
-  /* Cards arredondados com borda sutil + sombra suave que cresce no hover */
-  .card-brutalist {
-    @apply rounded-2xl border border-border/70 p-7 bg-card
-      shadow-sm hover:shadow-md transition-shadow duration-200;
-  }
-  .tag-badge {
-    @apply inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold
-      border border-accent/30 text-accent bg-accent/10;
-  }
-  .section-header { @apply text-3xl font-bold mb-2 relative; }
-  .github-card {
-    @apply rounded-xl border border-border/70 bg-card p-5
-      hover:border-accent/60 hover:shadow-md transition-all duration-200;
+  .section-surface { position: relative; isolation: isolate; }
+  .section-surface::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: calc(-1 * var(--shell-pad, 0px));
+    background: var(--surface-container-low);
+    z-index: -1;
   }
 }
 
 @layer utilities {
-  .section-spacing { @apply py-24 md:py-32 lg:py-40; }
-  .text-heavy { @apply font-extrabold tracking-tight; }
+  .section-spacing { padding-block: 6rem; }
 }
 
-@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+/* Elevação como @utility (e não @layer) pra aceitar variants: hover:elev-2 */
+@utility elev-0 { box-shadow: none; }
+@utility elev-1 { box-shadow: var(--elev-1); }
+@utility elev-2 { box-shadow: var(--elev-2); }
+@utility elev-3 { box-shadow: var(--elev-3); }
+@utility elev-4 { box-shadow: var(--elev-4); }
+@utility elev-5 { box-shadow: var(--elev-5); }
 
-.animate-float { animation: float 3s ease-in-out infinite; }
-.animate-fade-in { animation: fadeIn 0.6s ease-out; }
-.animate-slide-in-left { animation: slideInLeft 0.6s ease-out; }
+/* ── Motion ───────────────────────────────────────────────────────────────── */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.animate-fade-in { animation: fadeIn var(--dur-long) var(--ease-decelerate); }
+.animate-rise-in { animation: riseIn var(--dur-long) var(--ease-decelerate); }
+.animate-float { animation: floatY 3s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

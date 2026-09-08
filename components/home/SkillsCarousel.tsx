@@ -110,19 +110,19 @@ export default function SkillsCarousel({
   const prev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const next = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  const dragHint = language === "pt" ? "arraste para ver mais →" : "drag to see more →";
+  const dragHint = language === "pt" ? "Arraste para ver mais" : "Drag to see more";
   const clickHint = language === "pt" ? "Clique para abrir" : "Click to open";
 
   return (
     <div>
       {/* Header do carrossel */}
       <div className="flex items-center justify-between mb-6">
-        <p className="text-xs font-mono text-muted-foreground hidden sm:block">{dragHint}</p>
+        <p className="body-small hidden text-on-surface-variant sm:block">{dragHint}</p>
         <div className="flex gap-2 ml-auto">
           <button
             onClick={prev}
             disabled={!canPrev}
-            className="h-10 w-10 inline-flex items-center justify-center rounded-full border border-border hover:border-accent hover:text-accent transition disabled:opacity-30 disabled:cursor-not-allowed"
+            className="icon-btn bg-surface-container"
             aria-label="Anterior"
           >
             <ChevronLeft size={18} />
@@ -130,7 +130,7 @@ export default function SkillsCarousel({
           <button
             onClick={next}
             disabled={!canNext}
-            className="h-10 w-10 inline-flex items-center justify-center rounded-full border border-border hover:border-accent hover:text-accent transition disabled:opacity-30 disabled:cursor-not-allowed"
+            className="icon-btn bg-surface-container"
             aria-label="Próximo"
           >
             <ChevronRight size={18} />
@@ -138,7 +138,7 @@ export default function SkillsCarousel({
         </div>
       </div>
 
-      {/* Carrossel — py dá folga pro lift/sombra do hover não serem cortados pelo overflow */}
+      {/* Carrossel: py dá folga pro lift/sombra do hover não serem cortados pelo overflow */}
       <div className="overflow-hidden -mx-1 py-4" ref={emblaRef}>
         <div className="flex">
           {groups.map((g, i) => {
@@ -151,11 +151,11 @@ export default function SkillsCarousel({
               >
                 <button
                   onClick={() => setOpenCat(g.cat)}
-                  className="group relative h-[420px] w-full text-left rounded-3xl border border-border bg-card overflow-hidden cursor-pointer transition-all duration-300 hover:border-accent hover:shadow-[0_12px_40px_-12px] hover:shadow-accent/25 hover:-translate-y-1"
+                  className="card-filled group relative h-[420px] w-full cursor-pointer overflow-hidden p-0 text-left transition-shadow duration-300 hover:elev-2"
                 >
-                  {/* Fundo parallax — ícone gigante deslocado */}
+                  {/* Fundo parallax: ícone gigante deslocado */}
                   <div
-                    className="absolute -right-10 -bottom-10 text-accent/[0.07] pointer-events-none group-hover:text-accent/[0.12] transition-colors"
+                    className="absolute -right-10 -bottom-10 text-primary/[0.07] pointer-events-none group-hover:text-primary/[0.12] transition-colors"
                     style={{ transform: `translateX(${px}px)` }}
                   >
                     <Icon size={280} strokeWidth={1} />
@@ -163,19 +163,19 @@ export default function SkillsCarousel({
 
                   <div className="relative h-full p-7 flex flex-col">
                     <div className="flex items-center justify-between">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-background transition">
+                      <span className="flex h-14 w-14 items-center justify-center rounded-[var(--shape-lg)] bg-primary-container text-on-primary-container transition group-hover:bg-primary group-hover:text-on-primary">
                         <Icon size={24} />
                       </span>
-                      <span className="text-5xl font-extrabold text-foreground/10">
+                      <span className="display-small font-display text-on-surface/10">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
 
                     <div className="mt-auto">
-                      <p className="text-[10px] font-mono text-accent tracking-widest uppercase mb-1">
+                      <p className="label-medium mb-1 text-primary">
                         {g.items.length} {language === "pt" ? "tecnologias" : "technologies"}
                       </p>
-                      <h3 className="text-2xl font-extrabold tracking-tight mb-3">
+                      <h3 className="headline-small mb-3">
                         {catL10n[g.cat] ?? g.cat}
                       </h3>
                       <div className="flex flex-wrap gap-2 mb-5">
@@ -184,16 +184,16 @@ export default function SkillsCarousel({
                             /* eslint-disable-next-line @next/next/no-img-element */
                             <img key={s.id} src={s.iconUrl} alt="" className="w-6 h-6 object-contain opacity-80" />
                           ) : (
-                            <span key={s.id} className="text-muted-foreground/40 text-sm">◆</span>
+                            <Boxes key={s.id} size={22} className="text-on-surface-variant/50" />
                           ),
                         )}
                         {g.items.length > 6 && (
-                          <span className="text-xs text-muted-foreground self-center">
+                          <span className="text-xs text-on-surface-variant self-center">
                             +{g.items.length - 6}
                           </span>
                         )}
                       </div>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-accent group-hover:gap-2.5 transition-all">
+                      <span className="label-large inline-flex items-center gap-1.5 text-primary transition-all group-hover:gap-2.5">
                         {clickHint} <ArrowRight size={14} />
                       </span>
                     </div>
@@ -205,29 +205,29 @@ export default function SkillsCarousel({
         </div>
       </div>
 
-      {/* MODAL — tecnologias da categoria selecionada (nível + projetos visíveis) */}
+      {/* MODAL: tecnologias da categoria selecionada (nível + projetos visíveis) */}
       <Dialog.Root open={!!openCat} onOpenChange={(o) => !o && setOpenCat(null)}>
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-[90] bg-foreground/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 z-[95] w-[calc(100vw-2rem)] max-w-2xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-border bg-card p-6 md:p-8 shadow-2xl data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 focus:outline-none">
-            <Dialog.Close className="absolute right-4 top-4 rounded-lg p-1.5 text-muted-foreground hover:bg-foreground/5 hover:text-foreground transition">
+          <Dialog.Overlay className="fixed inset-0 z-[90] bg-scrim/32 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-[95] w-[calc(100vw-2rem)] max-w-2xl max-h-[85vh] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[var(--shape-md)] bg-surface-highest p-6 md:p-8 elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 focus:outline-none">
+            <Dialog.Close className="icon-btn absolute right-4 top-4">
               <X size={18} />
             </Dialog.Close>
 
             {openGroup && (
               <>
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-background">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-[var(--shape-lg)] bg-primary-container text-on-primary-container">
                     {(() => {
                       const Icon = CATEGORY_ICON[openGroup.cat] ?? Boxes;
                       return <Icon size={24} />;
                     })()}
                   </span>
                   <div>
-                    <Dialog.Title className="text-xl font-extrabold tracking-tight">
+                    <Dialog.Title className="headline-small">
                       {catL10n[openGroup.cat] ?? openGroup.cat}
                     </Dialog.Title>
-                    <Dialog.Description className="text-xs text-muted-foreground">
+                    <Dialog.Description className="body-medium text-on-surface-variant">
                       {openGroup.items.length}{" "}
                       {language === "pt" ? "tecnologias" : "technologies"}
                     </Dialog.Description>
@@ -243,17 +243,17 @@ export default function SkillsCarousel({
                     return (
                       <div
                         key={s.id}
-                        className="rounded-xl border border-border bg-background p-4 hover:border-accent/60 transition"
+                        className="rounded-[var(--shape-md)] bg-surface-lowest p-4"
                       >
                         <div className="flex items-center gap-2.5 mb-3">
                           {s.iconUrl ? (
                             /* eslint-disable-next-line @next/next/no-img-element */
                             <img src={s.iconUrl} alt="" className="w-6 h-6 object-contain shrink-0" />
                           ) : (
-                            <span className="text-accent">◆</span>
+                            <Boxes size={20} className="shrink-0 text-primary" />
                           )}
-                          <span className="font-bold text-sm">{s.title}</span>
-                          <span className="ml-auto text-[10px] font-bold text-accent">
+                          <span className="title-small">{s.title}</span>
+                          <span className="label-medium ml-auto text-primary">
                             {lvl[language]}
                           </span>
                         </div>
@@ -261,22 +261,20 @@ export default function SkillsCarousel({
                           {[1, 2, 3, 4, 5].map((n) => (
                             <div
                               key={n}
-                              className={`flex-1 h-1.5 rounded-full ${
-                                n <= level ? "bg-accent" : "bg-muted"
-                              }`}
+                              className={`h-1 flex-1 rounded-full ${n <= level ? "bg-primary" : "bg-surface-variant"}`}
                             />
                           ))}
                         </div>
                         {titles.length > 0 ? (
                           <div className="flex flex-wrap gap-1">
                             {titles.map((t) => (
-                              <span key={t} className="tag-badge text-[10px]">
+                              <span key={t} className="chip-static text-[10px]">
                                 {t}
                               </span>
                             ))}
                           </div>
                         ) : (
-                          <p className="text-[11px] text-muted-foreground italic">
+                          <p className="text-[11px] text-on-surface-variant italic">
                             {language === "pt" ? "Estudo / curso" : "Self-study"}
                           </p>
                         )}

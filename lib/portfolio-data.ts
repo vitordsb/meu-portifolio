@@ -1,10 +1,10 @@
-// Curated portfolio content — usado APENAS pelo seed inicial (scripts/seed-portfolio.ts).
+// Curated portfolio content: usado APENAS pelo seed inicial (scripts/seed-portfolio.ts).
 // Em runtime, o site lê tudo do banco. Editar/criar registros pelo /admin.
 
 // ── Trabalhos consolidados (Autônomo) ───────────────────────────────────────
 // Source of truth única pra página /autonomo. Une projetos próprios + clientes.
 // `featured: true` aparece na home e em destaque na página.
-// Código sempre fechado (você ataca o quesito autoral) — mas se tiver liveLink
+// Código sempre fechado (você ataca o quesito autoral). Se tiver liveLink,
 // público a pessoa pode visitar.
 export type Work = {
   slug: string;
@@ -16,7 +16,7 @@ export type Work = {
   liveLink: string | null;
   coverImageUrl: string | null;
   featured: boolean;
-  period?: string;           // ex: "Abr/2025 — Hoje"
+  period?: string;           // ex: "Abr/2025 - Hoje"
 };
 
 export const allWork: Work[] = [
@@ -24,41 +24,55 @@ export const allWork: Work[] = [
   {
     slug: "arqdoor",
     title: "ArqDoor",
-    company: "Cliente · SaaS para Arquitetos",
+    company: "Cliente, SaaS para Arquitetos",
     category: "SaaS",
     description:
-      "Plataforma que formaliza a relação entre arquitetos e clientes: propostas, contratos em PDF, comunicação, pagamentos e dashboard do profissional. Atuei no front-end (React + Vite + TypeScript) cobrindo fluxos públicos, autenticação, área logada e jornadas comerciais.",
+      "Plataforma que formaliza a relação entre **arquitetos e clientes**: propostas, **contratos em PDF**, comunicação, pagamentos e dashboard do profissional. Atuei no **front-end (React + Vite + TypeScript)** cobrindo fluxos públicos, autenticação, área logada e jornadas comerciais.",
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Radix UI", "TanStack Query"],
     liveLink: "https://arqdoor.com",
     coverImageUrl: "/projects/arqdoor.png",
     featured: true,
-    period: "Abr/2025 — Hoje",
+    period: "Abr/2025 - Hoje",
+  },
+  {
+    slug: "arqdoor-mobile",
+    title: "ArqDoor Mobile",
+    company: "Cliente, SaaS para Arquitetos",
+    category: "Mobile",
+    description:
+      "Versão **mobile** da plataforma ArqDoor, em **React Native + Expo**: o arquiteto acompanha propostas, contratos e conversas com o cliente direto do celular, compartilhando a mesma API do produto web.",
+    stack: ["React Native", "Expo", "TypeScript", "Expo Router"],
+    // App na Play Store (package com.arqdoor.app), não o site do produto web.
+    liveLink: "https://play.google.com/store/apps/details?id=com.arqdoor.app&hl=pt_BR",
+    coverImageUrl: null,
+    featured: true,
+    period: "Abr/2025 - Hoje",
   },
   {
     slug: "zuptos",
     title: "Zuptos",
-    company: "Cliente · Plataforma de Infoprodutos",
+    company: "Cliente, Plataforma de Infoprodutos",
     category: "SaaS",
     description:
-      "Plataforma de criação e venda de infoprodutos. Construí interfaces e fluxos de venda com foco em conversão, dashboards de produtor com gráficos, jornada gamificada do afiliado, checkouts editáveis e padronização visual.",
+      "Plataforma de criação e venda de **infoprodutos**. Construí interfaces e fluxos de venda com foco em **conversão**: dashboards de produtor com gráficos, jornada gamificada do afiliado, **checkouts editáveis** e padronização visual.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Radix UI", "Recharts"],
     liveLink: "https://app.zuptos.com.br",
     coverImageUrl: "/projects/zuptos.png",
     featured: true,
-    period: "Nov/2025 — Hoje",
+    period: "Nov/2025 - Hoje",
   },
   {
     slug: "mtcprop-members",
-    title: "MTCprop — Área de Membros",
-    company: "Cliente · Prop Trading",
+    title: "MTCprop: Área de Membros",
+    company: "Cliente, Prop Trading",
     category: "Members Area",
     description:
-      "Área de membros para traders: planos, certificados, benefícios, financeiro, gamificação, academy. Front-end Next.js 16 (App Router) + Tailwind v4 e back-end NestJS 11 + Prisma. Auth e dados via Supabase.",
+      "**Área de membros para traders**: planos, certificados, benefícios, financeiro, gamificação e academy. Front-end **Next.js 16 (App Router)** + Tailwind v4 e back-end **NestJS 11 + Prisma**. Auth e dados via Supabase.",
     stack: ["Next.js 16", "NestJS", "Supabase", "Prisma", "Tailwind v4", "TypeScript"],
     liveLink: "https://app.mtcprop.com.br",
     coverImageUrl: "/projects/mtcprop-members.png",
     featured: true,
-    period: "Abr/2026 — Hoje",
+    period: "Abr/2026 - Hoje",
   },
   // ── Demais trabalhos ──────────────────────────────────────────────────────
   {
@@ -67,7 +81,7 @@ export const allWork: Work[] = [
     company: "Startup própria",
     category: "Marketplace",
     description:
-      "Plataforma B2B para conectar fornecedores e compradores. Construí toda a stack: landing, autenticação, dashboards de cotação e gestão de leads.",
+      "**Startup própria**: plataforma B2B que conecta fornecedores e compradores. Construí **toda a stack** - landing, autenticação, dashboards de cotação e gestão de leads.",
     stack: ["Next.js", "TypeScript", "Supabase", "Tailwind CSS"],
     liveLink: "https://www.girob2b.com.br",
     coverImageUrl: "/projects/girob2b.png",
@@ -75,24 +89,24 @@ export const allWork: Work[] = [
   },
   {
     slug: "egp-iot",
-    title: "EGP — Plataforma IoT de Segurança",
+    title: "EGP: Plataforma IoT de Segurança",
     company: "EGP Equipamentos Eletrônicos",
     category: "Mobile + IoT",
     description:
-      "Plataforma proprietária de controle remoto de equipamentos de segurança (alarmes, portões, fechaduras). App em React Native + Expo, backend Node.js + Fastify + Drizzle + Postgres, bridge MQTT com firmware ESP32.",
+      "Plataforma proprietária de **controle remoto de equipamentos de segurança** (alarmes, portões, fechaduras). App em **React Native + Expo**, backend **Node.js + Fastify + Drizzle + Postgres** e bridge **MQTT** com firmware ESP32.",
     stack: ["React Native", "Expo", "Fastify", "Drizzle", "Postgres", "MQTT"],
     liveLink: null,
     coverImageUrl: null,
     featured: false,
-    period: "Ago/2023 — Abr/2025",
+    period: "Ago/2023 - Abr/2025",
   },
   {
     slug: "mtcprop-site",
-    title: "MTCprop — Site",
-    company: "Cliente · Prop Trading",
+    title: "MTCprop: Site",
+    company: "Cliente, Prop Trading",
     category: "Site institucional",
     description:
-      "Site institucional da MTC Prop em WordPress customizado.",
+      "Site institucional da MTC Prop em **WordPress** com tema customizado.",
     stack: ["WordPress", "Tema custom"],
     liveLink: "https://mtcprop.com.br",
     coverImageUrl: "/projects/mtcprop-site.png",
@@ -104,7 +118,7 @@ export const allWork: Work[] = [
     company: "Cliente",
     category: "Site institucional",
     description:
-      "Site institucional em WordPress com tema custom — foco em apresentação da marca, captação de leads e SEO.",
+      "Site institucional em WordPress com tema custom, com foco em apresentação da marca, captação de leads e SEO.",
     stack: ["WordPress", "Tema custom", "SEO"],
     liveLink: "https://institutoflorenza.com.br",
     coverImageUrl: "/projects/florenza.png",
@@ -125,7 +139,7 @@ export const allWork: Work[] = [
   {
     slug: "oncoliving",
     title: "Oncoliving",
-    company: "Cliente · Andressa Semionatto",
+    company: "Cliente, Andressa Semionatto",
     category: "Plataforma de saúde",
     description:
       "Plataforma com identidade visual própria, conteúdo educacional e fluxos de contato.",
@@ -160,7 +174,7 @@ export const allWork: Work[] = [
   {
     slug: "dbl",
     title: "DBL Conexões",
-    company: "Cliente · Acessórios industriais",
+    company: "Cliente, Acessórios industriais",
     category: "Site institucional",
     description:
       "Site institucional estático para apresentação de produtos e contato comercial.",
@@ -183,10 +197,10 @@ export const allWork: Work[] = [
   {
     slug: "negritude-junior",
     title: "Negritude Junior",
-    company: "Cliente · Artista (samba)",
+    company: "Cliente, Artista (samba)",
     category: "Site artístico",
     description:
-      "Site para o sambista Negritude Junior — galeria de vídeos, imagens e contato.",
+      "Site para o sambista Negritude Junior, com galeria de vídeos, imagens e contato.",
     stack: ["HTML", "CSS", "JS"],
     liveLink: "https://contratenegritudejunior.com.br",
     coverImageUrl: "/projects/negritude-junior.png",
@@ -198,7 +212,7 @@ export const allWork: Work[] = [
     company: "EGP Equipamentos Eletrônicos",
     category: "Site institucional",
     description:
-      "Site institucional do Grupo EGP — apresentação comercial dos equipamentos eletrônicos de segurança, fortalecimento de marca e captação de novos clientes. Construído enquanto eu era Full-Stack interno da EGP.",
+      "Site institucional do **Grupo EGP**, com apresentação comercial dos equipamentos eletrônicos de segurança, fortalecimento de marca e **captação de novos clientes**. Construído enquanto eu era **Full-Stack interno** da EGP.",
     stack: ["Next.js", "React", "SEO", "Tailwind"],
     liveLink: "https://www.grupoegp.com.br",
     coverImageUrl: "/projects/egp-industria.png",
@@ -207,7 +221,7 @@ export const allWork: Work[] = [
   {
     slug: "gap-ads",
     title: "GAP-ADS",
-    company: "Cliente · Agência",
+    company: "Cliente, Agência",
     category: "Landing Page",
     description: "Landing para agência GAP-ADS.",
     stack: ["HTML", "CSS", "JS"],
@@ -219,7 +233,7 @@ export const allWork: Work[] = [
 
 // ── Skills ──────────────────────────────────────────────────────────────────
 // iconSlug usa simple-icons.org (CDN: https://cdn.simpleicons.org/{slug})
-// level: 1-5 (1=básico → 5=especialista)
+// level: 1 a 5 (1 = básico, 5 = especialista)
 // projects: slugs do allWork onde a skill é usada
 type SkillSeed = {
   title: string;
@@ -285,7 +299,7 @@ const skillSeeds: SkillSeed[] = [
   { title: "MCP Agents",       category: "IA & Tooling",     iconSlug: null,               level: 3, projects: [] },
 ];
 
-// Dados puros do seed — sem id/timestamps (são preenchidos pelo DB).
+// Dados puros do seed, sem id/timestamps (são preenchidos pelo DB).
 export type SkillSeedExport = {
   title: string;
   category: string;
@@ -313,21 +327,21 @@ type CertSeed = {
 const certSeeds: CertSeed[] = [
   {
     name: "Desenvolvedor React e Next.js",
-    issuer: "TreinaWeb · Mai/2024",
+    issuer: "TreinaWeb, Mai/2024",
     category: "Frontend",
-    description: "Formação completa em React e Next.js — SSR, hooks, componentização, integração com APIs.",
+    description: "Formação completa em React e Next.js: SSR, hooks, componentização, integração com APIs.",
     tags: ["React", "Next.js", "React Native"],
   },
   {
     name: "Especialista Desenvolvimento Web",
-    issuer: "TreinaWeb · Mar/2024",
+    issuer: "TreinaWeb, Mar/2024",
     category: "Frontend",
     description: "HTML, CSS, JavaScript, frameworks modernos (React/Next), gerenciamento de pacotes e ecossistema npm.",
     tags: ["HTML", "CSS", "JavaScript", "React"],
   },
   {
     name: "Curso de Desenvolvimento em Vue.js",
-    issuer: "TreinaWeb · Abr/2025",
+    issuer: "TreinaWeb, Abr/2025",
     category: "Frontend",
     description: "Princípios do Vue.js aplicados em projetos práticos.",
     tags: ["Vue.js", "JavaScript"],
@@ -341,99 +355,99 @@ const certSeeds: CertSeed[] = [
   },
   {
     name: "Certificado de autoridade: JavaScript",
-    issuer: "DevMedia · Set/2024",
+    issuer: "DevMedia, Set/2024",
     category: "Frontend",
     description: "Avaliação de proficiência em JavaScript moderno.",
     tags: ["JavaScript"],
   },
   {
     name: "Git e GitHub: Formação Básica",
-    issuer: "LinkedIn · Set/2024",
+    issuer: "LinkedIn, Set/2024",
     category: "DevOps",
     description: "Versionamento, branching, fluxos colaborativos e práticas com GitHub.",
     tags: ["Git", "GitHub"],
   },
   {
     name: "Fundamentos de Programação: APIs e Serviços da Web",
-    issuer: "LinkedIn · Set/2024",
+    issuer: "LinkedIn, Set/2024",
     category: "Backend",
     description: "Design e consumo de APIs, padrões REST, segurança e integração entre serviços.",
     tags: ["API", "REST", "Backend"],
   },
   {
     name: "Fundamentos de Programação: Teste de Software e QA",
-    issuer: "LinkedIn · Jul/2024",
+    issuer: "LinkedIn, Jul/2024",
     category: "Qualidade",
     description: "Estratégia de testes, garantia de qualidade e prevenção de regressões.",
     tags: ["Testes", "QA"],
   },
   // ── Frontend (mais) ─────────────────────────────────────────────────────
   {
-    name: "React.js Completo — Hooks, Context e Performance",
-    issuer: "Rocketseat · Mar/2024",
+    name: "React.js Completo: Hooks, Context e Performance",
+    issuer: "Rocketseat, Mar/2024",
     category: "Frontend",
     description: "Fundamentos sólidos de React moderno com Hooks, Context API, memoization e otimização de renders.",
     tags: ["React", "Hooks", "Performance"],
   },
   {
-    name: "Next.js 14 — App Router & Server Components",
-    issuer: "TreinaWeb · Jun/2024",
+    name: "Next.js 14: App Router & Server Components",
+    issuer: "TreinaWeb, Jun/2024",
     category: "Frontend",
     description: "Construção de aplicações com App Router, RSC, Server Actions e estratégias de cache.",
     tags: ["Next.js", "RSC", "App Router"],
   },
   {
-    name: "TypeScript Avançado — Tipos, Generics e Utility Types",
-    issuer: "DevMedia · Ago/2024",
+    name: "TypeScript Avançado: Tipos, Generics e Utility Types",
+    issuer: "DevMedia, Ago/2024",
     category: "Frontend",
     description: "Tipos avançados, generics, conditional types e patterns para domínio sólido em TS.",
     tags: ["TypeScript", "Generics"],
   },
   {
-    name: "Tailwind CSS — do Zero ao Design System",
-    issuer: "TreinaWeb · Jan/2025",
+    name: "Tailwind CSS: do Zero ao Design System",
+    issuer: "TreinaWeb, Jan/2025",
     category: "Frontend",
     description: "Construção de UI consistentes com Tailwind, configuração avançada e patterns brutais.",
     tags: ["Tailwind", "Design System"],
   },
   {
     name: "HTML5 & CSS3 Avançado",
-    issuer: "TreinaWeb · Fev/2024",
+    issuer: "TreinaWeb, Fev/2024",
     category: "Frontend",
     description: "Semântica, layout moderno com Grid/Flexbox, animações e responsividade.",
     tags: ["HTML", "CSS", "Responsive"],
   },
   {
-    name: "Styled Components — CSS-in-JS",
-    issuer: "DevMedia · Out/2024",
+    name: "Styled Components: CSS-in-JS",
+    issuer: "DevMedia, Out/2024",
     category: "Frontend",
     description: "Componentização visual com Styled Components, theming e refatoração de UI.",
     tags: ["Styled Components", "CSS-in-JS"],
   },
   {
-    name: "React Native — Apps Nativos Mobile",
-    issuer: "TreinaWeb · Nov/2024",
+    name: "React Native: Apps Nativos Mobile",
+    issuer: "TreinaWeb, Nov/2024",
     category: "Frontend",
     description: "Desenvolvimento de apps iOS/Android com React Native, Expo e bibliotecas nativas.",
     tags: ["React Native", "Expo", "Mobile"],
   },
   {
     name: "Animações Web com Framer Motion",
-    issuer: "Udemy · Dez/2024",
+    issuer: "Udemy, Dez/2024",
     category: "Frontend",
     description: "Animações declarativas e gestures em React com Framer Motion.",
     tags: ["Animations", "Framer Motion"],
   },
   {
-    name: "Gerenciamento de Estado — Redux & Zustand",
-    issuer: "Rocketseat · Set/2024",
+    name: "Gerenciamento de Estado: Redux & Zustand",
+    issuer: "Rocketseat, Set/2024",
     category: "Frontend",
     description: "Padrões de estado global, Redux Toolkit, Zustand e quando usar cada um.",
     tags: ["Redux", "Zustand", "State"],
   },
   {
     name: "Acessibilidade Web (WCAG)",
-    issuer: "LinkedIn · Out/2024",
+    issuer: "LinkedIn, Out/2024",
     category: "Frontend",
     description: "Princípios WCAG 2.1, ARIA roles e checagens de acessibilidade real.",
     tags: ["A11y", "WCAG"],
@@ -441,56 +455,56 @@ const certSeeds: CertSeed[] = [
   // ── Backend ──────────────────────────────────────────────────────────────
   {
     name: "Node.js Profissional",
-    issuer: "TreinaWeb · Mai/2024",
+    issuer: "TreinaWeb, Mai/2024",
     category: "Backend",
     description: "Arquitetura de aplicações Node, módulos nativos, streams e patterns de produção.",
     tags: ["Node.js"],
   },
   {
     name: "Express.js Avançado",
-    issuer: "DevMedia · Jun/2024",
+    issuer: "DevMedia, Jun/2024",
     category: "Backend",
     description: "Construção de APIs robustas com Express, middlewares, validação e error handling.",
     tags: ["Express", "API"],
   },
   {
     name: "NestJS do Zero ao Avançado",
-    issuer: "Udemy · Jan/2026",
+    issuer: "Udemy, Jan/2026",
     category: "Backend",
     description: "Modules, providers, guards, interceptors, OpenAPI e integração com Prisma.",
     tags: ["NestJS", "Prisma"],
   },
   {
     name: "Fastify & Performance",
-    issuer: "DevMedia · Fev/2026",
+    issuer: "DevMedia, Fev/2026",
     category: "Backend",
     description: "Construção de APIs de alta performance com Fastify, plugins e schema validation.",
     tags: ["Fastify", "Performance"],
   },
   {
     name: "GraphQL Essentials",
-    issuer: "LinkedIn · Jul/2024",
+    issuer: "LinkedIn, Jul/2024",
     category: "Backend",
     description: "Modelagem de schema, resolvers, queries e mutations em GraphQL.",
     tags: ["GraphQL", "API"],
   },
   {
     name: "Microsserviços com Node.js",
-    issuer: "TreinaWeb · Out/2024",
+    issuer: "TreinaWeb, Out/2024",
     category: "Backend",
     description: "Padrões de microsserviços, comunicação via filas e orquestração com Docker.",
     tags: ["Microservices", "Node.js"],
   },
   {
-    name: "WebSockets — Comunicação em Tempo Real",
-    issuer: "DevMedia · Mar/2025",
+    name: "WebSockets: Comunicação em Tempo Real",
+    issuer: "DevMedia, Mar/2025",
     category: "Backend",
     description: "Aplicações em tempo real com Socket.io, broadcast, rooms e auth.",
     tags: ["WebSocket", "Real-time"],
   },
   {
-    name: "Autenticação & Autorização — JWT e OAuth2",
-    issuer: "Rocketseat · Abr/2025",
+    name: "Autenticação & Autorização: JWT e OAuth2",
+    issuer: "Rocketseat, Abr/2025",
     category: "Backend",
     description: "Implementação segura de autenticação com JWT, refresh tokens e OAuth2.",
     tags: ["Auth", "JWT", "OAuth"],
@@ -498,35 +512,35 @@ const certSeeds: CertSeed[] = [
   // ── Banco de Dados ───────────────────────────────────────────────────────
   {
     name: "PostgreSQL Avançado",
-    issuer: "TreinaWeb · Mai/2024",
+    issuer: "TreinaWeb, Mai/2024",
     category: "Banco de Dados",
     description: "Modelagem relacional, índices, EXPLAIN, transações e tuning.",
     tags: ["PostgreSQL", "SQL"],
   },
   {
-    name: "MySQL — Performance e Otimização",
-    issuer: "DevMedia · Jun/2024",
+    name: "MySQL: Performance e Otimização",
+    issuer: "DevMedia, Jun/2024",
     category: "Banco de Dados",
     description: "Otimização de queries, índices compostos e replicação no MySQL.",
     tags: ["MySQL", "Performance"],
   },
   {
     name: "MongoDB para Desenvolvedores",
-    issuer: "LinkedIn · Jul/2024",
+    issuer: "LinkedIn, Jul/2024",
     category: "Banco de Dados",
     description: "Modelagem NoSQL, agregações, índices e patterns no MongoDB.",
     tags: ["MongoDB", "NoSQL"],
   },
   {
-    name: "Prisma ORM — TypeScript-First",
-    issuer: "Rocketseat · Set/2024",
+    name: "Prisma ORM: TypeScript-First",
+    issuer: "Rocketseat, Set/2024",
     category: "Banco de Dados",
     description: "Schema-driven development, migrations e queries type-safe com Prisma.",
     tags: ["Prisma", "ORM"],
   },
   {
-    name: "Drizzle ORM — Lightweight e SQL-first",
-    issuer: "DevMedia · Fev/2025",
+    name: "Drizzle ORM: Lightweight e SQL-first",
+    issuer: "DevMedia, Fev/2025",
     category: "Banco de Dados",
     description: "ORM minimalista com type-safety completa e migrations programáticas.",
     tags: ["Drizzle", "ORM"],
@@ -534,56 +548,56 @@ const certSeeds: CertSeed[] = [
   // ── Cloud & DevOps ───────────────────────────────────────────────────────
   {
     name: "Docker para Desenvolvedores",
-    issuer: "TreinaWeb · Ago/2024",
+    issuer: "TreinaWeb, Ago/2024",
     category: "DevOps",
     description: "Containerização, multi-stage builds, Docker Compose e best practices.",
     tags: ["Docker"],
   },
   {
     name: "Docker Compose & Orquestração Local",
-    issuer: "DevMedia · Set/2024",
+    issuer: "DevMedia, Set/2024",
     category: "DevOps",
     description: "Stack completa local com Docker Compose, networks e volumes persistentes.",
     tags: ["Docker", "Compose"],
   },
   {
     name: "CI/CD com GitHub Actions",
-    issuer: "LinkedIn · Out/2024",
+    issuer: "LinkedIn, Out/2024",
     category: "DevOps",
     description: "Pipelines de teste, build e deploy automatizados com GitHub Actions.",
     tags: ["CI/CD", "GitHub Actions"],
   },
   {
     name: "GitLab CI Essentials",
-    issuer: "TreinaWeb · Nov/2024",
+    issuer: "TreinaWeb, Nov/2024",
     category: "DevOps",
     description: "Pipelines em GitLab, runners e estratégias de deploy.",
     tags: ["GitLab", "CI/CD"],
   },
   {
     name: "AWS Cloud Practitioner",
-    issuer: "AWS Training · Dez/2024",
+    issuer: "AWS Training, Dez/2024",
     category: "DevOps",
     description: "Fundamentos de AWS, principais serviços, segurança e modelo de cobrança.",
     tags: ["AWS", "Cloud"],
   },
   {
     name: "Vercel & Edge Functions",
-    issuer: "Vercel · Jan/2025",
+    issuer: "Vercel, Jan/2025",
     category: "DevOps",
     description: "Deploy moderno na Vercel, ISR, edge runtime e otimizações.",
     tags: ["Vercel", "Edge"],
   },
   {
-    name: "Nginx — Servidor & Proxy Reverso",
-    issuer: "DevMedia · Mar/2025",
+    name: "Nginx: Servidor & Proxy Reverso",
+    issuer: "DevMedia, Mar/2025",
     category: "DevOps",
     description: "Configuração de Nginx para servir SPA, proxy reverso e load balancing.",
     tags: ["Nginx", "Infra"],
   },
   {
-    name: "Linux para Devs — Linha de Comando",
-    issuer: "LinkedIn · Mai/2024",
+    name: "Linux para Devs: Linha de Comando",
+    issuer: "LinkedIn, Mai/2024",
     category: "DevOps",
     description: "Comandos essenciais, permissões, scripts shell e workflow eficiente em Linux.",
     tags: ["Linux", "CLI"],
@@ -591,21 +605,21 @@ const certSeeds: CertSeed[] = [
   // ── Design & UX ─────────────────────────────────────────────────────────
   {
     name: "Design Tokens & Design Systems",
-    issuer: "TreinaWeb · Set/2024",
+    issuer: "TreinaWeb, Set/2024",
     category: "Design",
     description: "Construção de design systems escaláveis com tokens, theming e governance.",
     tags: ["Design System", "Tokens"],
   },
   {
     name: "Figma para Desenvolvedores",
-    issuer: "LinkedIn · Out/2024",
+    issuer: "LinkedIn, Out/2024",
     category: "Design",
     description: "Leitura de design no Figma, auto-layout, componentes e handoff dev-friendly.",
     tags: ["Figma", "Design Handoff"],
   },
   {
     name: "Microinterações & Motion Design",
-    issuer: "DevMedia · Nov/2024",
+    issuer: "DevMedia, Nov/2024",
     category: "Design",
     description: "Animações sutis, easing, e a anatomia de uma microinteração eficaz.",
     tags: ["Motion", "UX"],
@@ -613,57 +627,57 @@ const certSeeds: CertSeed[] = [
   // ── Qualidade ───────────────────────────────────────────────────────────
   {
     name: "Testes E2E com Cypress",
-    issuer: "TreinaWeb · Dez/2024",
+    issuer: "TreinaWeb, Dez/2024",
     category: "Qualidade",
     description: "Cobertura E2E, fixtures, network stubs e estratégias robustas.",
     tags: ["Cypress", "E2E"],
   },
   {
-    name: "Playwright — Automação de Testes",
-    issuer: "DevMedia · Jan/2025",
+    name: "Playwright: Automação de Testes",
+    issuer: "DevMedia, Jan/2025",
     category: "Qualidade",
     description: "Tests cross-browser, parallel execution e reporters em Playwright.",
     tags: ["Playwright", "E2E"],
   },
   {
-    name: "Jest Advanced — Mocking & Coverage",
-    issuer: "LinkedIn · Fev/2025",
+    name: "Jest Advanced: Mocking & Coverage",
+    issuer: "LinkedIn, Fev/2025",
     category: "Qualidade",
     description: "Mocking, spies, coverage thresholds e snapshot testing avançado.",
     tags: ["Jest", "Testes"],
   },
   {
     name: "TDD em JavaScript",
-    issuer: "Rocketseat · Mar/2025",
+    issuer: "Rocketseat, Mar/2025",
     category: "Qualidade",
     description: "Desenvolvimento orientado a testes, red-green-refactor e mindset TDD.",
     tags: ["TDD", "Testes"],
   },
   // ── IA & Tooling ────────────────────────────────────────────────────────
   {
-    name: "IA para Desenvolvedores — Copilot, Claude e Codex",
-    issuer: "DevMedia · Out/2025",
+    name: "IA para Desenvolvedores: Copilot, Claude e Codex",
+    issuer: "DevMedia, Out/2025",
     category: "IA & Tooling",
     description: "Workflow de dev produtivo com agentes de IA, Claude Code e Codex.",
     tags: ["AI", "Claude", "Copilot"],
   },
   {
-    name: "LLM e RAG — Recuperação Aumentada",
-    issuer: "Linkedin · Nov/2025",
+    name: "LLM e RAG: Recuperação Aumentada",
+    issuer: "Linkedin, Nov/2025",
     category: "IA & Tooling",
     description: "Integração de LLMs com bases de conhecimento via RAG, embeddings e vector DBs.",
     tags: ["LLM", "RAG"],
   },
   {
     name: "Prompt Engineering",
-    issuer: "Anthropic · Dez/2025",
+    issuer: "Anthropic, Dez/2025",
     category: "IA & Tooling",
     description: "Princípios e patterns para prompts efetivos em modelos de linguagem.",
     tags: ["Prompt", "AI"],
   },
   {
-    name: "MCP Agents — Protocolo Model Context",
-    issuer: "Anthropic · Jan/2026",
+    name: "MCP Agents: Protocolo Model Context",
+    issuer: "Anthropic, Jan/2026",
     category: "IA & Tooling",
     description: "Construção de agentes que se conectam a ferramentas via MCP.",
     tags: ["MCP", "Agents"],
@@ -679,7 +693,7 @@ export type CertificateSeedExport = {
 
 export const hardcodedCertificates: CertificateSeedExport[] = certSeeds.map((c) => ({
   name: c.name,
-  description: `${c.issuer}${c.description ? " — " + c.description : ""}`,
+  description: `${c.issuer}${c.description ? " - " + c.description : ""}`,
   category: c.category,
   tags: c.tags ?? null,
 }));
@@ -688,144 +702,144 @@ export const hardcodedCertificates: CertificateSeedExport[] = certSeeds.map((c) 
 export const aboutContent = {
   title: "Sobre mim",
   paragraphs: [
-    "UX Engineer com +4 anos de experiência unindo design de experiência e engenharia front-end (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica — sempre com foco em usabilidade, performance e conversão.",
-    "Trabalho desde a arquitetura de componentes reutilizáveis e design systems até a integração com back-end e infraestrutura — Node.js, bancos relacionais e não-relacionais, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD e cloud (AWS, Vercel).",
-    "Estou aberto a oportunidades remotas ou híbridas. Gosto de transformar problemas de negócio em produto que funciona — não só feature que entrega.",
+    "Frontend Engineer com +5 anos de experiência, unindo design de experiência e engenharia de interface (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica, sempre com foco em usabilidade, performance e conversão.",
+    "Trabalho desde a arquitetura de componentes reutilizáveis e design systems até a integração com back-end e infraestrutura: Node.js, bancos relacionais e não-relacionais, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD e cloud (AWS, Vercel).",
+    "Estou aberto a oportunidades remotas ou híbridas. Gosto de transformar problemas de negócio em produto que funciona, não só feature que entrega.",
   ],
   experience: [
     {
-      role: "Desenvolvedor Front-end · Next.js",
+      role: "Desenvolvedor Front-end, Next.js",
       company: "Zuptos",
-      period: "Nov/2025 — Abr/2026",
+      period: "Nov/2025 - Abr/2026",
       description:
         "Plataforma de infoprodutos. Construção e evolução de interfaces de venda com foco em conversão e padronização visual.",
     },
     {
-      role: "Desenvolvedor Front-end · React + TypeScript + Vite",
+      role: "Desenvolvedor Front-end, React + TypeScript + Vite",
       company: "ArqDoor",
-      period: "Abr/2025 — Abr/2026",
+      period: "Abr/2025 - Abr/2026",
       description:
         "SaaS para arquitetos: autenticação, área logada, dashboard do prestador, fluxo de propostas com PDF e links compartilháveis.",
     },
     {
-      role: "Desenvolvedor Full-Stack · React + Node",
-      company: "EGP — Equipamentos Eletrônicos",
-      period: "Ago/2023 — Abr/2025",
+      role: "Desenvolvedor Full-Stack, React + Node",
+      company: "EGP - Equipamentos Eletrônicos",
+      period: "Ago/2023 - Abr/2025",
       description:
         "Sistemas internos, site institucional, SEO/Google Ads, design e estruturação de app mobile, materiais visuais.",
     },
   ],
   education: [
     {
-      degree: "Bacharelado · Gestão da Tecnologia da Informação",
+      degree: "Bacharelado, Gestão da Tecnologia da Informação",
       school: "UniFECAF",
-      period: "Jan/2026 — Jan/2027",
+      period: "Jan/2026 - Jan/2027",
     },
     {
-      degree: "Bacharelado · Gestão de Sistemas de Informação",
+      degree: "Bacharelado, Gestão de Sistemas de Informação",
       school: "Faculdades Integradas Rio Branco",
-      period: "Fev/2024 — Dez/2025",
+      period: "Fev/2024 - Dez/2025",
     },
   ],
   clientProjects: [
     {
       name: "ArqDoor",
       type: "SaaS para Arquitetos",
-      stack: "React · Vite · TypeScript · Radix UI · TanStack Query",
+      stack: "React, Vite, TypeScript, Radix UI, TanStack Query",
       description:
         "Front-end completo: landing comercial, autenticação, dashboard do prestador, propostas com PDF e links compartilháveis.",
     },
     {
       name: "Zuptos",
       type: "Plataforma de Infoprodutos",
-      stack: "Next.js · TypeScript · Radix UI · Tailwind · Recharts",
+      stack: "Next.js, TypeScript, Radix UI, Tailwind, Recharts",
       description:
         "Painel de produtor, jornada gamificada do afiliado, checkouts editáveis e fluxos de venda focados em conversão.",
     },
     {
-      name: "MTCprop — Área de Membros",
+      name: "MTCprop: Área de Membros",
       type: "SaaS de Prop Trading",
-      stack: "Next.js 16 · NestJS · Prisma · Supabase · Tailwind v4",
+      stack: "Next.js 16, NestJS, Prisma, Supabase, Tailwind v4",
       description:
         "Área de membros para traders: planos, certificados, benefícios, financeiro, gamificação e academy. Back-end NestJS com Supabase Auth.",
     },
     {
-      name: "MTCprop — Site",
+      name: "MTCprop: Site",
       type: "Site institucional",
-      stack: "WordPress · Tema custom",
+      stack: "WordPress, Tema custom",
       description: "Site institucional MTC Prop em WordPress customizado.",
     },
     {
-      name: "EGP — Plataforma IoT",
+      name: "EGP: Plataforma IoT",
       type: "App mobile + Backend IoT",
-      stack: "React Native · Expo · Fastify · Drizzle · Postgres · MQTT",
+      stack: "React Native, Expo, Fastify, Drizzle, Postgres, MQTT",
       description:
         "Plataforma proprietária de controle remoto de equipamentos de segurança (alarmes, portões, fechaduras) com bridge MQTT e firmware ESP32.",
     },
     {
       name: "Girob2b",
       type: "Marketplace B2B (startup própria)",
-      stack: "Next.js · TypeScript · Supabase · Tailwind",
+      stack: "Next.js, TypeScript, Supabase, Tailwind",
       description:
         "Plataforma B2B para conectar fornecedores e compradores: landing, autenticação, dashboards de cotação e gestão de leads.",
     },
     {
       name: "Bioathos",
       type: "App de bem-estar / saúde",
-      stack: "Next.js · React · Supabase",
+      stack: "Next.js, React, Supabase",
       description: "Aplicação web com autenticação e persistência via Supabase.",
     },
     {
       name: "Instituto Florenza",
       type: "Site institucional",
-      stack: "WordPress · Tema custom · SEO",
+      stack: "WordPress, Tema custom, SEO",
       description:
         "Site institucional com tema custom focado em performance, captação de leads e SEO.",
     },
     {
       name: "JMA Serralheria",
       type: "Portfolio / Site institucional",
-      stack: "Next.js · Express · Tailwind",
+      stack: "Next.js, Express, Tailwind",
       description:
         "Portfolio de serviços de serralheria com galeria e captação de orçamentos.",
     },
     {
       name: "Oncoliving",
       type: "Plataforma de saúde",
-      stack: "Next.js · Express · Prisma · Tailwind",
+      stack: "Next.js, Express, Prisma, Tailwind",
       description:
         "Plataforma para Andressa Semionatto com identidade visual própria, conteúdo e fluxos de contato.",
     },
     {
       name: "Zynta",
       type: "Landing page de produto",
-      stack: "Next.js · React",
+      stack: "Next.js, React",
       description: "Landing institucional com seção de time e programa.",
     },
     {
       name: "DBL Conexões",
       type: "Site comercial (acessórios industriais)",
-      stack: "HTML · CSS · JS",
+      stack: "HTML, CSS, JS",
       description:
         "Site institucional estático para apresentação de produtos e contato comercial.",
     },
     {
       name: "Norte Premium Topografia",
       type: "Site institucional",
-      stack: "HTML · CSS · JS",
+      stack: "HTML, CSS, JS",
       description: "Site comercial estático com seção de projetos.",
     },
     {
       name: "Negritude Junior",
       type: "Site artístico",
-      stack: "HTML · CSS · JS",
+      stack: "HTML, CSS, JS",
       description:
-        "Site para o sambista Negritude Junior — galeria de vídeos, imagens e contato.",
+        "Site para o sambista Negritude Junior, com galeria de vídeos, imagens e contato.",
     },
     {
       name: "GAP-ADS",
       type: "Site institucional",
-      stack: "HTML · CSS · JS",
+      stack: "HTML, CSS, JS",
       description: "Landing para agência GAP-ADS.",
     },
   ],
@@ -861,7 +875,7 @@ const timelineSeeds: TimelineSeed[] = [
     icon: "GraduationCap",
   },
   {
-    dateLabel: "Mar–Set/2024",
+    dateLabel: "Mar-Set/2024",
     sortDate: "2024-03-01",
     title: "Trilha de certificações",
     description:
@@ -874,7 +888,7 @@ const timelineSeeds: TimelineSeed[] = [
     sortDate: "2025-04-01",
     title: "Entrei na ArqDoor",
     description:
-      "Comecei como Desenvolvedor Front-end na ArqDoor (React + TypeScript + Vite) — autenticação, dashboards e fluxo de propostas com PDF.",
+      "Comecei como Desenvolvedor Front-end na ArqDoor (React + TypeScript + Vite): autenticação, dashboards e fluxo de propostas com PDF.",
     category: "Cliente",
     icon: "Rocket",
   },
@@ -883,7 +897,7 @@ const timelineSeeds: TimelineSeed[] = [
     sortDate: "2025-05-01",
     title: "Primeiros sites e landings de clientes",
     description:
-      "Instituto Florenza, JMA Serralheria, Norte Premium, DBL Conexões, Negritude Junior, GAP-ADS — atendimento direto a clientes finais.",
+      "Instituto Florenza, JMA Serralheria, Norte Premium, DBL Conexões, Negritude Junior, GAP-ADS. Atendimento direto a clientes finais.",
     category: "Cliente",
     icon: "Globe",
   },
@@ -892,7 +906,7 @@ const timelineSeeds: TimelineSeed[] = [
     sortDate: "2025-11-01",
     title: "Entrei na Zuptos",
     description:
-      "Desenvolvedor Front-end Next.js na Zuptos — plataforma de infoprodutos com foco em conversão.",
+      "Desenvolvedor Front-end Next.js na Zuptos, plataforma de infoprodutos com foco em conversão.",
     category: "Cliente",
     icon: "Sparkles",
   },
@@ -908,7 +922,7 @@ const timelineSeeds: TimelineSeed[] = [
   {
     dateLabel: "Abr/2026",
     sortDate: "2026-04-01",
-    title: "MTCprop — Área de Membros",
+    title: "MTCprop: Área de Membros",
     description:
       "Construção da área de membros da MTCprop em Next.js 16 + NestJS + Supabase. Stack moderna e auth gerenciado.",
     category: "Cliente",

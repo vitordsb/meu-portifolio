@@ -20,16 +20,16 @@ export default function HomeStack({
   const seeAll = language === "pt" ? "Ver todas as skills" : "See all skills";
 
   return (
-    <section className="py-20 md:py-28 bg-background">
+    <section className="py-20 md:py-28 bg-surface">
       <div className="container">
         <ScrollReveal>
           <Eyebrow className="mb-4">{t("hero.stack")}</Eyebrow>
-          {/* Stack principal — chips destacados */}
+          {/* Stack principal: chips destacados */}
           <div className="flex flex-wrap gap-3 mb-12">
             {heroStack.map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 rounded-full border border-border text-sm font-semibold hover:border-accent hover:text-accent transition"
+                className="px-4 py-2 rounded-full border border-outline-variant text-sm font-semibold hover:border-primary hover:text-primary transition"
               >
                 {tech}
               </span>
@@ -37,7 +37,7 @@ export default function HomeStack({
           </div>
         </ScrollReveal>
 
-        {/* Skills — carrossel de categorias (frontend primeiro) */}
+        {/* Skills: carrossel de categorias (frontend primeiro) */}
         <ScrollReveal delay={0.05}>
           <div className="flex items-end justify-between mb-6 flex-wrap gap-3">
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
@@ -45,7 +45,7 @@ export default function HomeStack({
             </h2>
             <Link
               href="/skills"
-              className="text-sm font-bold flex items-center gap-2 hover:text-accent transition"
+              className="text-sm font-bold flex items-center gap-2 hover:text-primary transition"
             >
               {seeAll} <ArrowRight size={14} />
             </Link>

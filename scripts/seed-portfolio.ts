@@ -1,5 +1,5 @@
 /**
- * Seed portfolio — migra todo o conteúdo de lib/portfolio-data.ts pro banco.
+ * Seed portfolio: migra todo o conteúdo de lib/portfolio-data.ts pro banco.
  *
  * Idempotente:
  *   - Skill (chave: title)
@@ -157,7 +157,7 @@ async function main() {
     }
   }
 
-  console.log(`✓ Seed portfolio concluído.`);
+  console.log(`[ok] Seed portfolio concluído.`);
   console.log(`  Inseridos: ${inserted}`);
   console.log(`  Atualizados: ${updated}`);
   console.log(`  Total: ${inserted + updated}`);

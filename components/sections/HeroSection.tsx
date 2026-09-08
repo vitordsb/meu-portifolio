@@ -1,137 +1,93 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useContactModal } from "@/contexts/ContactModalContext";
 import { TextReveal } from "@/components/motion/TextReveal";
 import { CountUp } from "@/components/motion/CountUp";
 import { Eyebrow } from "@/components/Eyebrow";
-import profilePic from "@/app/(public)/images/vitu.jpeg";
-
-interface Particle { x: number; y: number; size: number; speedX: number; speedY: number; }
-
-// Arredonda pra baixo no múltiplo dado (default 10).
-// Ex: 34 → 30, 78 → 70, 7 → 0 (mas mostramos "0+" só se realmente vazio).
-function roundDownTo(n: number, step = 10): number {
-  return Math.max(0, Math.floor(n / step) * step);
-}
+import profilePic from "@/app/(public)/images/fotoPerfil-recorte.png";
 
 interface HeroSectionProps {
-  certCount?: number;
   projectCount?: number;
 }
 
-export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSectionProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
+export default function HeroSection({ projectCount = 0 }: HeroSectionProps) {
   const { t } = useLanguage();
   const { open: openContact } = useContactModal();
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    particlesRef.current = Array.from({ length: 40 }, () => ({
-      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-      size: Math.random() * 1.5 + 0.5,
-      speedX: (Math.random() - 0.5) * 0.3, speedY: (Math.random() - 0.5) * 0.3,
-    }));
-    let animId: number;
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particlesRef.current.forEach((p) => {
-        p.x += p.speedX; p.y += p.speedY;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-        ctx.fillStyle = "oklch(0.50 0.22 235 / 0.25)";
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      animId = requestAnimationFrame(animate);
-    };
-    animate();
-    const handleResize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    window.addEventListener("resize", handleResize);
-    return () => { window.removeEventListener("resize", handleResize); cancelAnimationFrame(animId); };
-  }, []);
-
-  // Stats dinâmicos (animam com CountUp ao entrar na viewport):
-  //   - Projetos: contagem exata (+1 a cada novo projeto). Ex: 15+, 16+, 17+
-  //   - Certificados: arredonda em múltiplos de 10. Ex: 30+, 50+, 70+
-  // Fallback (0): mostra placeholder pra não exibir "0+".
+  // Stat dinâmico (anima com CountUp ao entrar na viewport): contagem exata
+  // de projetos. Fallback (0): mostra placeholder pra não exibir "0+".
   const projectsNum = projectCount > 0 ? projectCount : 15;
-  const certsNum = certCount > 0 ? roundDownTo(certCount, 10) : 50;
 
+  // Cada stat usa um par container/on-container da paleta M3.
   const stats = [
-    { prefix: "+", value: 5, suffix: "", label: t("hero.stats.years") },
-    { prefix: "", value: projectsNum, suffix: "+", label: t("hero.stats.projects") },
-    { prefix: "", value: certsNum, suffix: "+", label: t("hero.stats.certs") },
+    {
+      prefix: "+", value: 5, suffix: "", label: t("hero.stats.years"),
+      surface: "bg-primary-container text-on-primary-container",
+    },
+    {
+      prefix: "", value: projectsNum, suffix: "+", label: t("hero.stats.projects"),
+      surface: "bg-tertiary-container text-on-tertiary-container",
+    },
   ];
 
   const nameLines = t("hero.name").split("\n");
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 lg:pt-8 pb-12">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-60" />
-      <div className="relative z-10 container">
-        <div className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-16 animate-fade-in">
+    <section className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-24 lg:pt-12">
+      <div className="container relative z-10">
+        <div className="flex animate-fade-in flex-col-reverse items-center gap-12 md:flex-row md:justify-between md:gap-14">
 
           {/* ── Texto ── */}
-          <div className="flex-1 text-center md:text-left">
-            <Eyebrow className="mb-4">{t("hero.tag")}</Eyebrow>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-none mb-6">
+          <div className="max-w-xl text-center md:text-left">
+            <Eyebrow className="mb-6">{t("hero.tag")}</Eyebrow>
+
+            <h1 className="display-large mb-6">
               <TextReveal lines={nameLines} delay={0.1} />
             </h1>
+
             <motion.p
-              className="text-base md:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed"
+              className="body-large mb-9 max-w-xl text-on-surface-variant"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              transition={{ delay: 0.5, duration: 0.45 }}
             >
               {t("hero.description")}
             </motion.p>
+
             <motion.div
-              className="flex gap-4 flex-wrap justify-center md:justify-start"
+              className="flex flex-wrap justify-center gap-3 md:justify-start"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65, duration: 0.6 }}
+              transition={{ delay: 0.65, duration: 0.45 }}
             >
-              <a href="/projects" className="btn-brutalist-accent px-6 py-3 text-sm inline-block">
-                {t("hero.cta1")}
+              <a href="/projects" className="btn btn-filled btn-icon-leading group">
+                <span>{t("hero.cta1")}</span>
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
               </a>
-              <button
-                onClick={openContact}
-                className="btn-brutalist-outline px-6 py-3 text-sm inline-block"
-              >
-                {t("hero.cta2")}
+              <button onClick={openContact} className="btn btn-outlined">
+                <span>{t("hero.cta2")}</span>
               </button>
             </motion.div>
           </div>
 
-          {/* ── Redes (coluna à esquerda) + Foto ── */}
-          <div className="shrink-0 flex items-center gap-5 md:gap-6">
-            {/* Redes — LinkedIn + GitHub coloridos, em coluna */}
+          {/* ── Redes + foto ── */}
+          <div className="flex shrink-0 flex-col-reverse items-center gap-5 md:flex-row md:gap-7">
             <motion.div
-              className="flex flex-col items-center gap-4"
+              className="flex flex-row items-center gap-4 md:flex-col md:gap-3"
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7, duration: 0.6 }}
+              transition={{ delay: 0.7, duration: 0.45 }}
             >
               <a
                 href="https://www.linkedin.com/in/vitordsb"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-white ring-1 ring-border shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-white elev-1 transition-shadow hover:elev-2"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icons/linkedin.svg" alt="LinkedIn" className="h-7 w-7" />
@@ -141,54 +97,51 @@ export default function HeroSection({ certCount = 0, projectCount = 0 }: HeroSec
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-white ring-1 ring-border shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-white elev-1 transition-shadow hover:elev-2"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icons/github.svg" alt="GitHub" className="h-7 w-7" />
               </a>
             </motion.div>
 
-            {/* Foto */}
-            <div className="relative w-60 h-60 md:w-80 md:h-80">
-              {/* glow suave accent atrás da foto */}
-              <div className="absolute -inset-3 rounded-[2rem] bg-accent/15 blur-2xl" />
-              <div className="relative w-full h-full rounded-3xl overflow-hidden ring-1 ring-border shadow-xl">
-                <Image
-                  src={profilePic}
-                  alt="Vitor de Souza Barreto"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                />
-              </div>
+            {/* Recorte sem moldura: a foto flutua direto sobre a superfície da
+                seção, sem card nem bloco de cor atrás. */}
+            <div className="relative h-72 w-60 md:h-96 md:w-80">
+              <Image
+                src={profilePic}
+                alt="Vitor de Souza Barreto"
+                fill
+                sizes="(max-width: 768px) 15rem, 20rem"
+                className="object-contain object-bottom [mask-image:linear-gradient(to_top,transparent_0%,black_9%)] [-webkit-mask-image:linear-gradient(to_top,transparent_0%,black_9%)]"
+                priority
+              />
             </div>
           </div>
-
         </div>
 
-        {/* ── Stats (compactos, alinhados à esquerda) ── */}
-        <div className="mt-10 md:mt-12 flex flex-wrap gap-3 md:gap-4 justify-center md:justify-start">
+        {/* ── Stats em cards de container ── */}
+        <div className="mt-14 flex flex-wrap justify-center gap-3 md:justify-start">
           {stats.map((s) => (
             <div
               key={s.label}
-              className="rounded-2xl border border-border/70 bg-card/70 backdrop-blur-sm px-5 py-3.5 hover:border-accent/60 hover:shadow-md transition-all flex items-baseline gap-2 min-w-[160px]"
+              className={`flex min-w-[10.5rem] items-baseline gap-3 rounded-[var(--shape-lg)] px-6 py-4 ${s.surface}`}
             >
               <CountUp
                 value={s.value}
                 prefix={s.prefix}
                 suffix={s.suffix}
-                className="font-extrabold text-2xl text-accent leading-none"
+                className="headline-small font-display"
               />
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider leading-tight">
-                {s.label}
-              </p>
+              <p className="label-medium opacity-80">{s.label}</p>
             </div>
           ))}
         </div>
-
       </div>
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-float hidden md:block">
-        <ChevronDown size={24} className="text-accent" />
+
+      <div className="animate-float absolute bottom-6 left-1/2 hidden -translate-x-1/2 md:block">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-high text-on-surface-variant">
+          <ChevronDown size={20} />
+        </span>
       </div>
     </section>
   );

@@ -79,7 +79,7 @@ export default function TagSelector({
           {selected.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 bg-accent text-accent-foreground px-2 py-1 text-xs font-bold"
+              className="inline-flex items-center gap-1 bg-primary text-on-primary px-2 py-1 text-xs font-bold"
             >
               {tag}
               <button
@@ -96,7 +96,7 @@ export default function TagSelector({
 
       {/* Input */}
       <div className="relative">
-        <div className="flex items-center border border-border focus-within:border-accent bg-background transition">
+        <div className="flex items-center border border-outline-variant focus-within:border-primary bg-surface transition">
           <input
             ref={inputRef}
             value={input}
@@ -124,7 +124,7 @@ export default function TagSelector({
           <button
             type="button"
             onClick={() => { setOpen((v) => !v); inputRef.current?.focus(); }}
-            className="px-2 text-muted-foreground hover:text-foreground transition"
+            className="px-2 text-on-surface-variant hover:text-on-surface transition"
           >
             <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
@@ -132,7 +132,7 @@ export default function TagSelector({
 
         {/* Dropdown */}
         {showDropdown && (
-          <div className="absolute top-full left-0 right-0 z-50 bg-card border border-border border-t-0 max-h-52 overflow-y-auto shadow-lg">
+          <div className="absolute top-full left-0 right-0 z-50 bg-surface-low border border-outline-variant border-t-0 max-h-52 overflow-y-auto elev-2">
             {/* Existing matching tags */}
             {suggestions.map((tag, i) => (
               <button
@@ -140,16 +140,16 @@ export default function TagSelector({
                 data-suggestion={i === 0 ? "first" : undefined}
                 type="button"
                 onMouseDown={(e) => { e.preventDefault(); add(tag); }}
-                className="w-full text-left px-3 py-2.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
+                className="w-full text-left px-3 py-2.5 text-sm font-medium hover:bg-primary hover:text-on-primary transition flex items-center gap-2"
               >
-                <Tag size={12} className="text-accent shrink-0" />
+                <Tag size={12} className="text-primary shrink-0" />
                 {tag}
               </button>
             ))}
 
             {/* Divider when both exist */}
             {suggestions.length > 0 && inputIsNew && (
-              <div className="border-t border-border" />
+              <div className="border-t border-outline-variant" />
             )}
 
             {/* Create new option */}
@@ -157,7 +157,7 @@ export default function TagSelector({
               <button
                 type="button"
                 onMouseDown={(e) => { e.preventDefault(); add(input.trim()); }}
-                className="w-full text-left px-3 py-2.5 text-sm font-bold hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
+                className="w-full text-left px-3 py-2.5 text-sm font-bold hover:bg-primary hover:text-on-primary transition flex items-center gap-2"
               >
                 <Plus size={12} className="shrink-0" />
                 Criar &ldquo;{input.trim()}&rdquo;
@@ -168,7 +168,7 @@ export default function TagSelector({
 
         {/* Empty state when open but no suggestions */}
         {open && !showDropdown && allTags.length > 0 && !input && (
-          <div className="absolute top-full left-0 right-0 z-50 bg-card border border-border border-t-0 max-h-52 overflow-y-auto shadow-lg">
+          <div className="absolute top-full left-0 right-0 z-50 bg-surface-low border border-outline-variant border-t-0 max-h-52 overflow-y-auto elev-2">
             {allTags
               .filter((t) => !selected.includes(t))
               .map((tag) => (
@@ -176,9 +176,9 @@ export default function TagSelector({
                   key={tag}
                   type="button"
                   onMouseDown={(e) => { e.preventDefault(); add(tag); }}
-                  className="w-full text-left px-3 py-2.5 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
+                  className="w-full text-left px-3 py-2.5 text-sm font-medium hover:bg-primary hover:text-on-primary transition flex items-center gap-2"
                 >
-                  <Tag size={12} className="text-accent shrink-0" />
+                  <Tag size={12} className="text-primary shrink-0" />
                   {tag}
                 </button>
               ))}
@@ -186,8 +186,8 @@ export default function TagSelector({
         )}
       </div>
 
-      <p className="text-xs text-muted-foreground mt-1">
-        Selecione existentes ou digite e pressione <kbd className="px-1 border border-border text-xs">Enter</kbd> para criar nova
+      <p className="text-xs text-on-surface-variant mt-1">
+        Selecione existentes ou digite e pressione <kbd className="px-1 border border-outline-variant text-xs">Enter</kbd> para criar nova
       </p>
     </div>
   );

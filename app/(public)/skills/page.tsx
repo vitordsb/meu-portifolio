@@ -10,7 +10,7 @@ export default async function SkillsPage() {
     getAllProjects().catch(() => []),
   ]);
   return (
-    <main className="pt-20 lg:pt-0 min-h-screen bg-background text-foreground">
+    <main className="pt-20 lg:pt-0 min-h-screen bg-surface text-on-surface">
       <SkillsSection skills={skills} projects={projects} />
     </main>
   );

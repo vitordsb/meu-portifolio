@@ -46,7 +46,7 @@ interface Props {
   initialProjects: Project[];
   initialCertificates: Certificate[];
   initialSkills: Skill[];
-  initialFreelance: FreelanceWork[]; // mantido por compat — não renderiza mais aba
+  initialFreelance: FreelanceWork[]; // mantido por compat, não renderiza mais aba
   initialTimeline: TimelineEvent[];
   initialMessages: ContactMessage[];
 }
@@ -86,7 +86,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const tabs: { id: Tab; label: string }[] = [
     { id: "messages", label: unreadCount > 0 ? `MENSAGENS (${unreadCount})` : "MENSAGENS" },
     { id: "projects", label: "PROJETOS / AUTÔNOMO" },
-    { id: "certificates", label: "CERTIFICADOS" },
+    { id: "certificates", label: "CURSOS" },
     { id: "skills", label: "SKILLS" },
     { id: "timeline", label: "TIMELINE" },
     { id: "analytics", label: "ANALYTICS" },
@@ -98,11 +98,11 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
   const f = (placeholder: string, value: string, onChange: (v: string) => void, type = "text") => (
     <input type={type} placeholder={placeholder} value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="border border-border p-3 font-medium bg-background w-full text-sm focus:border-accent outline-none" />
+      className="border border-outline-variant p-3 font-medium bg-surface w-full text-sm focus:border-primary outline-none" />
   );
   const a = (placeholder: string, value: string, onChange: (v: string) => void) => (
     <textarea placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)}
-      className="border border-border p-3 font-medium bg-background w-full text-sm h-24 resize-none focus:border-accent outline-none" />
+      className="border border-outline-variant p-3 font-medium bg-surface w-full text-sm h-24 resize-none focus:border-primary outline-none" />
   );
 
   // ── Form bodies (reused for top "new" form and inline "edit" form) ──────────
@@ -129,9 +129,9 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {f("Título *", projectForm.title, (v) => setProjectForm((p) => ({ ...p, title: v })))}
         {f("Empresa / Cliente *", projectForm.company, (v) => setProjectForm((p) => ({ ...p, company: v })))}
-        {f("Categoria * (SaaS, Landing Page, Marketplace…)", projectForm.category, (v) => setProjectForm((p) => ({ ...p, category: v })))}
-        {f("Slug (ex: arqdoor) — usado pra referência de skills", projectForm.slug, (v) => setProjectForm((p) => ({ ...p, slug: v })))}
-        {f("Período (ex: Abr/2025 — Hoje)", projectForm.period, (v) => setProjectForm((p) => ({ ...p, period: v })))}
+        {f("Categoria * (SaaS, Landing Page, Marketplace...)", projectForm.category, (v) => setProjectForm((p) => ({ ...p, category: v })))}
+        {f("Slug (ex: arqdoor), usado pra referência de skills", projectForm.slug, (v) => setProjectForm((p) => ({ ...p, slug: v })))}
+        {f("Período (ex: Abr/2025 - Hoje)", projectForm.period, (v) => setProjectForm((p) => ({ ...p, period: v })))}
         {f("URL da Imagem de Capa", projectForm.coverImageUrl, (v) => setProjectForm((p) => ({ ...p, coverImageUrl: v })))}
         {f("Link do Site (público)", projectForm.liveLink, (v) => setProjectForm((p) => ({ ...p, liveLink: v })), "url")}
         {f("Link do Repositório", projectForm.repositoryLink, (v) => setProjectForm((p) => ({ ...p, repositoryLink: v })), "url")}
@@ -146,10 +146,10 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         />
         DESTAQUE (aparece na home + topo da /autonomo)
       </label>
-      <TagSelector label="STACK / TAGS" placeholder="Ex: React, TypeScript…" selected={projectForm.tags} onChange={(tags) => setProjectForm((p) => ({ ...p, tags }))} />
+      <TagSelector label="STACK / TAGS" placeholder="Ex: React, TypeScript" selected={projectForm.tags} onChange={(tags) => setProjectForm((p) => ({ ...p, tags }))} />
       <div className="flex gap-3">
-        <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
-        <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
+        <button type="submit" disabled={isPending} className="btn btn-filled px-5 py-2 text-sm">{isPending ? "Salvando" : "Salvar"}</button>
+        <button type="button" onClick={closeForm} className="btn btn-outlined px-5 py-2 text-sm">CANCELAR</button>
       </div>
     </form>
   );
@@ -167,10 +167,10 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         {f("Link (opcional)", certForm.link, (v) => setCertForm((p) => ({ ...p, link: v })), "url")}
       </div>
       {a("Descrição", certForm.description, (v) => setCertForm((p) => ({ ...p, description: v })))}
-      <TagSelector label="TAGS" placeholder="Ex: Cloud, AWS…" selected={certForm.tags} onChange={(tags) => setCertForm((p) => ({ ...p, tags }))} />
+      <TagSelector label="TAGS" placeholder="Ex: Cloud, AWS" selected={certForm.tags} onChange={(tags) => setCertForm((p) => ({ ...p, tags }))} />
       <div className="flex gap-3">
-        <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
-        <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
+        <button type="submit" disabled={isPending} className="btn btn-filled px-5 py-2 text-sm">{isPending ? "Salvando" : "Salvar"}</button>
+        <button type="button" onClick={closeForm} className="btn btn-outlined px-5 py-2 text-sm">CANCELAR</button>
       </div>
     </form>
   );
@@ -195,14 +195,14 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         {f("Nível (1=básico, 5=especialista)", skillForm.level, (v) => setSkillForm((p) => ({ ...p, level: v })), "number")}
       </div>
       <TagSelector
-        label="PROJETOS ONDE USA (slugs — ex: arqdoor, zuptos)"
-        placeholder="Digite o slug do projeto…"
+        label="Projetos onde usa (slugs, ex: arqdoor, zuptos)"
+        placeholder="Digite o slug do projeto"
         selected={skillForm.projectSlugs}
         onChange={(slugs) => setSkillForm((p) => ({ ...p, projectSlugs: slugs }))}
       />
       <div className="flex gap-3">
-        <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
-        <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
+        <button type="submit" disabled={isPending} className="btn btn-filled px-5 py-2 text-sm">{isPending ? "Salvando" : "Salvar"}</button>
+        <button type="button" onClick={closeForm} className="btn btn-outlined px-5 py-2 text-sm">CANCELAR</button>
       </div>
     </form>
   );
@@ -228,36 +228,36 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         {f("Categoria (Carreira / Educação / Cliente / Marco)", timelineForm.category, (v) => setTimelineForm((p) => ({ ...p, category: v })))}
         {f("Ícone Lucide (ex: Briefcase, GraduationCap, Award, Rocket, Globe, Sparkles, Building2, Flame)", timelineForm.icon, (v) => setTimelineForm((p) => ({ ...p, icon: v })))}
       </div>
-      {a("Descrição do marco (1–2 linhas)", timelineForm.description, (v) => setTimelineForm((p) => ({ ...p, description: v })))}
+      {a("Descrição do marco (1 a 2 linhas)", timelineForm.description, (v) => setTimelineForm((p) => ({ ...p, description: v })))}
       <div className="flex gap-3">
-        <button type="submit" disabled={isPending} className="btn-brutalist-accent px-5 py-2 text-sm">{isPending ? "SALVANDO…" : "SALVAR"}</button>
-        <button type="button" onClick={closeForm} className="btn-brutalist-outline px-5 py-2 text-sm">CANCELAR</button>
+        <button type="submit" disabled={isPending} className="btn btn-filled px-5 py-2 text-sm">{isPending ? "Salvando" : "Salvar"}</button>
+        <button type="button" onClick={closeForm} className="btn btn-outlined px-5 py-2 text-sm">CANCELAR</button>
       </div>
     </form>
   );
 
   // ── Shared card wrapper ───────────────────────────────────────────────────────
   const formCard = (title: string, body: React.ReactNode) => (
-    <div className="card-brutalist border-accent mb-3">
+    <div className="card-filled border-primary mb-3">
       <div className="flex items-center justify-between mb-5">
         <h3 className="font-extrabold text-base">{title}</h3>
-        <button type="button" onClick={closeForm} className="text-muted-foreground hover:text-foreground transition"><X size={16} /></button>
+        <button type="button" onClick={closeForm} className="text-on-surface-variant hover:text-on-surface transition"><X size={16} /></button>
       </div>
       {body}
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-surface text-on-surface">
       {/* Header */}
-      <div className="border-b-4 border-foreground bg-background sticky top-0 z-40">
+      <div className="border-b-4 border-foreground bg-surface sticky top-0 z-40">
         <div className="container py-5 flex items-center justify-between">
           <h1 className="text-2xl font-extrabold">PAINEL ADMIN</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm font-bold hidden sm:block">{user.name}</span>
-            <a href="/" className="btn-brutalist-outline text-sm px-4 py-2">SITE</a>
+            <a href="/" className="btn btn-outlined text-sm px-4 py-2">SITE</a>
             <form action={logout}>
-              <button type="submit" className="btn-brutalist-outline p-2" title="Sair">
+              <button type="submit" className="btn btn-outlined p-2" title="Sair">
                 <LogOut size={16} />
               </button>
             </form>
@@ -270,7 +270,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         <div className="container flex gap-0 overflow-x-auto">
           {tabs.map(({ id, label }) => (
             <button key={id} onClick={() => { setActiveTab(id); closeForm(); }}
-              className={`py-5 px-6 font-extrabold text-sm border-b-4 transition whitespace-nowrap ${activeTab === id ? "border-accent text-accent" : "border-transparent"}`}>
+              className={`py-5 px-6 font-extrabold text-sm border-b-4 transition whitespace-nowrap ${activeTab === id ? "border-primary text-primary" : "border-transparent"}`}>
               {label}
             </button>
           ))}
@@ -289,7 +289,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
             {activeTab === "analytics" && "ANALYTICS"}
           </h2>
           {activeTab !== "analytics" && activeTab !== "messages" && (
-            <button onClick={openNew} className="btn-brutalist-accent flex items-center gap-2 px-5 py-2 text-sm">
+            <button onClick={openNew} className="btn btn-filled flex items-center gap-2 px-5 py-2 text-sm">
               <Plus size={18} />ADICIONAR
             </button>
           )}
@@ -304,12 +304,12 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
         {/* ── LISTS ── */}
         <div className="space-y-3">
 
-          {/* MESSAGES — contatos recebidos pelo modal de email */}
+          {/* MESSAGES: contatos recebidos pelo modal de email */}
           {activeTab === "messages" && (
             initialMessages.length === 0 ? (
-              <div className="card-brutalist text-center py-12">
-                <Mail size={32} className="mx-auto mb-3 text-muted-foreground/40" />
-                <p className="text-sm text-muted-foreground">
+              <div className="card-filled text-center py-12">
+                <Mail size={32} className="mx-auto mb-3 text-on-surface-variant/40" />
+                <p className="text-sm text-on-surface-variant">
                   Nenhuma mensagem ainda. Quando alguém enviar pelo formulário de contato, aparece aqui.
                 </p>
               </div>
@@ -317,28 +317,28 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
               initialMessages.map((m) => (
                 <div
                   key={m.id}
-                  className={`card-brutalist flex items-start justify-between gap-4 ${
-                    !m.read ? "border-accent bg-accent/5" : ""
+                  className={`card-filled flex items-start justify-between gap-4 ${
+                    !m.read ? "border-primary bg-primary-container" : ""
                   }`}
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <h4 className="font-extrabold text-base">{m.name}</h4>
                       {!m.read && (
-                        <span className="text-[9px] font-mono font-bold bg-accent text-background px-2 py-0.5 rounded-full tracking-widest">
+                        <span className="text-[9px] font-mono font-bold bg-primary text-on-primary px-2 py-0.5 rounded-full tracking-widest">
                           NOVA
                         </span>
                       )}
-                      <span className="text-[10px] font-mono text-muted-foreground/60">
+                      <span className="text-[10px] font-mono text-on-surface-variant/60">
                         {fmtDate(m.createdAt)}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">
-                      {m.email && <a href={`mailto:${m.email}`} className="text-accent hover:underline">{m.email}</a>}
-                      {m.company && <> · {m.company}</>}
-                      {m.subject && <> · <span className="font-semibold">{m.subject}</span></>}
+                    <p className="text-xs text-on-surface-variant mb-2">
+                      {m.email && <a href={`mailto:${m.email}`} className="text-primary hover:underline">{m.email}</a>}
+                      {m.company && <>, {m.company}</>}
+                      {m.subject && <>, <span className="font-semibold">{m.subject}</span></>}
                     </p>
-                    <p className="text-sm text-foreground/80 whitespace-pre-wrap leading-relaxed">
+                    <p className="text-sm text-on-surface/80 whitespace-pre-wrap leading-relaxed">
                       {m.message}
                     </p>
                   </div>
@@ -346,7 +346,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                     <button
                       onClick={() => run(() => markContactRead(m.id, !m.read))}
                       disabled={isPending}
-                      className="btn-brutalist-outline p-2"
+                      className="btn btn-outlined p-2"
                       title={m.read ? "Marcar como não lida" : "Marcar como lida"}
                     >
                       {m.read ? <Mail size={16} /> : <MailOpen size={16} />}
@@ -354,7 +354,7 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
                     <button
                       onClick={() => run(() => deleteContactMessage(m.id))}
                       disabled={isPending}
-                      className="btn-brutalist-outline p-2"
+                      className="btn btn-outlined p-2"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -364,44 +364,44 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
             )
           )}
 
-          {/* ANALYTICS — link pro painel da Vercel + instruções */}
+          {/* ANALYTICS: link pro painel da Vercel + instruções */}
           {activeTab === "analytics" && (
             <div className="space-y-4">
-              <div className="card-brutalist border-accent">
-                <h3 className="font-extrabold text-base mb-2">📊 Vercel Analytics</h3>
-                <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                  O tracker já está instrumentado no <code className="px-1 bg-muted">app/layout.tsx</code>.
-                  Os dados aparecem no painel da Vercel — visitantes únicos,
+              <div className="card-filled border-primary">
+                <h3 className="title-large mb-2">Vercel Analytics</h3>
+                <p className="text-sm text-on-surface-variant mb-5 leading-relaxed">
+                  O tracker já está instrumentado no <code className="px-1 bg-surface-high">app/layout.tsx</code>.
+                  Os dados aparecem no painel da Vercel: visitantes únicos,
                   páginas mais acessadas, origem (referrer), país, dispositivo.
                 </p>
                 <a
                   href="https://vercel.com/vitordsb/vitor-portfolio/analytics"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-brutalist-accent inline-flex items-center gap-2 px-5 py-2 text-sm"
+                  className="btn btn-filled inline-flex items-center gap-2 px-5 py-2 text-sm"
                 >
-                  ABRIR DASHBOARD ↗
+                  Abrir dashboard
                 </a>
               </div>
 
-              <div className="card-brutalist">
+              <div className="card-filled">
                 <h3 className="font-extrabold text-base mb-3">Como ativar (uma vez)</h3>
-                <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside leading-relaxed">
+                <ol className="text-sm text-on-surface-variant space-y-2 list-decimal list-inside leading-relaxed">
                   <li>Faça deploy do projeto na Vercel (basta conectar o repo).</li>
-                  <li>No dashboard da Vercel, vá em <strong>Project → Analytics</strong>.</li>
+                  <li>No dashboard da Vercel, vá em <strong>Project, Analytics</strong>.</li>
                   <li>Clique em <strong>Enable</strong>. Free tier cobre 2.500 eventos/mês.</li>
                   <li>Dados começam a aparecer ~1min após a primeira visita.</li>
                 </ol>
               </div>
 
-              <div className="card-brutalist">
+              <div className="card-filled">
                 <h3 className="font-extrabold text-base mb-3">Métricas que valem acompanhar</h3>
-                <ul className="text-sm text-muted-foreground space-y-2 leading-relaxed">
-                  <li>• <strong>Páginas mais visitadas</strong> — qual seção converte mais visitas</li>
-                  <li>• <strong>Cliques em /autonomo → /contact</strong> — se o portfolio gera contato</li>
-                  <li>• <strong>Referrers</strong> — LinkedIn, GitHub, busca direta</li>
-                  <li>• <strong>Países</strong> — define se vale subir conteúdo EN</li>
-                  <li>• <strong>Bounce no /</strong> — se o hero segura ou perde a atenção</li>
+                <ul className="text-sm text-on-surface-variant space-y-2 leading-relaxed">
+                  <li><strong>Páginas mais visitadas</strong>: qual seção converte mais visitas</li>
+                  <li><strong>Cliques de /autonomo pra /contact</strong>: se o portfolio gera contato</li>
+                  <li><strong>Referrers</strong>: LinkedIn, GitHub, busca direta</li>
+                  <li><strong>Países</strong>: define se vale subir conteúdo EN</li>
+                  <li><strong>Bounce no /</strong>: se o hero segura ou perde a atenção</li>
                 </ul>
               </div>
             </div>
@@ -412,34 +412,34 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
             <Fragment key={p.id}>{editingId === p.id
               ? formCard("EDITAR PROJETO", <ProjectFormBody isNew={false} />)
               : (
-                <div className="card-brutalist flex items-start justify-between gap-4">
+                <div className="card-filled flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <h4 className="font-extrabold text-base">{p.title}</h4>
                       {p.featured && (
-                        <span className="text-[9px] font-mono font-bold bg-accent text-background px-2 py-0.5 tracking-widest">
+                        <span className="text-[9px] font-mono font-bold bg-primary text-on-primary px-2 py-0.5 tracking-widest">
                           DESTAQUE
                         </span>
                       )}
                       {p.slug && (
-                        <span className="text-[10px] font-mono text-muted-foreground">
+                        <span className="text-[10px] font-mono text-on-surface-variant">
                           /{p.slug}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      {p.company} · {p.category}
-                      {p.period && <> · {p.period}</>}
+                    <p className="text-xs text-on-surface-variant">
+                      {p.company}, {p.category}
+                      {p.period && <>, {p.period}</>}
                     </p>
                     {Array.isArray(p.tags) && p.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-2">
-                        {p.tags.map((t) => <span key={t} className="tag-badge">{t}</span>)}
+                        {p.tags.map((t) => <span key={t} className="chip-static">{t}</span>)}
                       </div>
                     )}
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(p.id); setProjectForm({ title: p.title, company: p.company, description: p.description, category: p.category, slug: p.slug ?? "", period: p.period ?? "", featured: !!p.featured, coverImageUrl: p.coverImageUrl ?? "", liveLink: p.liveLink ?? "", repositoryLink: p.repositoryLink ?? "", tags: Array.isArray(p.tags) ? p.tags : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
-                    <button onClick={() => run(() => deleteProject(p.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
+                    <button onClick={() => { setShowNewForm(false); setEditingId(p.id); setProjectForm({ title: p.title, company: p.company, description: p.description, category: p.category, slug: p.slug ?? "", period: p.period ?? "", featured: !!p.featured, coverImageUrl: p.coverImageUrl ?? "", liveLink: p.liveLink ?? "", repositoryLink: p.repositoryLink ?? "", tags: Array.isArray(p.tags) ? p.tags : [] }); }} className="btn btn-outlined p-2"><Edit2 size={16} /></button>
+                    <button onClick={() => run(() => deleteProject(p.id))} disabled={isPending} className="btn btn-outlined p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
               )
@@ -452,17 +452,17 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
             <Fragment key={c.id}>{editingId === c.id
               ? formCard("EDITAR CERTIFICADO", <CertFormBody isNew={false} />)
               : (
-                <div className="card-brutalist flex items-center justify-between gap-4">
+                <div className="card-filled flex items-center justify-between gap-4">
                   <div className="min-w-0">
                     <h4 className="font-extrabold text-base mb-1">{c.name}</h4>
-                    <p className="text-xs text-muted-foreground">{c.category}</p>
+                    <p className="text-xs text-on-surface-variant">{c.category}</p>
                     {Array.isArray(c.tags) && c.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">{c.tags.map((t) => <span key={t} className="tag-badge">{t}</span>)}</div>
+                      <div className="flex flex-wrap gap-1 mt-2">{c.tags.map((t) => <span key={t} className="chip-static">{t}</span>)}</div>
                     )}
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(c.id); setCertForm({ name: c.name, description: c.description ?? "", category: c.category, link: c.link ?? "", tags: Array.isArray(c.tags) ? c.tags : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
-                    <button onClick={() => run(() => deleteCertificate(c.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
+                    <button onClick={() => { setShowNewForm(false); setEditingId(c.id); setCertForm({ name: c.name, description: c.description ?? "", category: c.category, link: c.link ?? "", tags: Array.isArray(c.tags) ? c.tags : [] }); }} className="btn btn-outlined p-2"><Edit2 size={16} /></button>
+                    <button onClick={() => run(() => deleteCertificate(c.id))} disabled={isPending} className="btn btn-outlined p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
               )
@@ -474,14 +474,14 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
             <Fragment key={s.id}>{editingId === s.id
               ? formCard("EDITAR SKILL", <SkillFormBody isNew={false} />)
               : (
-                <div className="card-brutalist flex items-center justify-between gap-4">
+                <div className="card-filled flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
                     {s.iconUrl && <img src={s.iconUrl} alt={s.title} className="w-10 h-10 object-contain" />}
-                    <div><h4 className="font-extrabold text-base">{s.title}</h4>{s.category && <p className="text-xs text-muted-foreground">{s.category}</p>}</div>
+                    <div><h4 className="font-extrabold text-base">{s.title}</h4>{s.category && <p className="text-xs text-on-surface-variant">{s.category}</p>}</div>
                   </div>
                   <div className="flex gap-2">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(s.id); setSkillForm({ title: s.title, category: s.category ?? "", iconUrl: s.iconUrl ?? "", level: String(s.level ?? 3), projectSlugs: Array.isArray(s.projectSlugs) ? s.projectSlugs : [] }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
-                    <button onClick={() => run(() => deleteSkill(s.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
+                    <button onClick={() => { setShowNewForm(false); setEditingId(s.id); setSkillForm({ title: s.title, category: s.category ?? "", iconUrl: s.iconUrl ?? "", level: String(s.level ?? 3), projectSlugs: Array.isArray(s.projectSlugs) ? s.projectSlugs : [] }); }} className="btn btn-outlined p-2"><Edit2 size={16} /></button>
+                    <button onClick={() => run(() => deleteSkill(s.id))} disabled={isPending} className="btn btn-outlined p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
               )
@@ -493,22 +493,22 @@ export default function AdminPanel({ user, initialProjects, initialCertificates,
             <Fragment key={tl.id}>{editingId === tl.id
               ? formCard("EDITAR MARCO", <TimelineFormBody isNew={false} />)
               : (
-                <div className="card-brutalist flex items-start justify-between gap-4">
+                <div className="card-filled flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
-                    <p className="text-[10px] font-mono text-accent tracking-widest mb-1">
+                    <p className="text-[10px] font-mono text-primary tracking-widest mb-1">
                       {tl.dateLabel}
-                      {tl.category && <span className="text-muted-foreground/60 ml-2">· {tl.category}</span>}
-                      {tl.icon && <span className="text-muted-foreground/60 ml-2">· ícone: {tl.icon}</span>}
+                      {tl.category && <span className="text-on-surface-variant/60 ml-2">{tl.category}</span>}
+                      {tl.icon && <span className="text-on-surface-variant/60 ml-2">ícone: {tl.icon}</span>}
                     </p>
                     <h4 className="font-extrabold text-base mb-1">{tl.title}</h4>
-                    {tl.description && <p className="text-xs text-foreground/70 line-clamp-2">{tl.description}</p>}
-                    <p className="text-[10px] font-mono text-muted-foreground/50 mt-1">
+                    {tl.description && <p className="text-xs text-on-surface/70 line-clamp-2">{tl.description}</p>}
+                    <p className="text-[10px] font-mono text-on-surface-variant/50 mt-1">
                       ordenação: {tl.sortDate}
                     </p>
                   </div>
                   <div className="flex gap-2 shrink-0">
-                    <button onClick={() => { setShowNewForm(false); setEditingId(tl.id); setTimelineForm({ dateLabel: tl.dateLabel, sortDate: tl.sortDate, title: tl.title, description: tl.description ?? "", category: tl.category ?? "", icon: tl.icon ?? "" }); }} className="btn-brutalist-outline p-2"><Edit2 size={16} /></button>
-                    <button onClick={() => run(() => deleteTimelineEvent(tl.id))} disabled={isPending} className="btn-brutalist-outline p-2"><Trash2 size={16} /></button>
+                    <button onClick={() => { setShowNewForm(false); setEditingId(tl.id); setTimelineForm({ dateLabel: tl.dateLabel, sortDate: tl.sortDate, title: tl.title, description: tl.description ?? "", category: tl.category ?? "", icon: tl.icon ?? "" }); }} className="btn btn-outlined p-2"><Edit2 size={16} /></button>
+                    <button onClick={() => run(() => deleteTimelineEvent(tl.id))} disabled={isPending} className="btn btn-outlined p-2"><Trash2 size={16} /></button>
                   </div>
                 </div>
               )

@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * "Eyebrow" — label pequeno acima de títulos.
- * Substitui o padrão antigo "[ TEXTO ]" por um traço accent + texto,
- * mais refinado visualmente.
+ * "Eyebrow": label acima de títulos.
+ * Assist chip do M3, no par primary-container / on-primary-container.
  */
 export function Eyebrow({
   children,
@@ -16,11 +15,11 @@ export function Eyebrow({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-2.5 text-[11px] font-mono font-semibold uppercase tracking-[0.2em] text-accent ${
+      className={`inline-flex h-8 items-center gap-2 rounded-[var(--shape-sm)] bg-primary-container px-3 text-on-primary-container label-large ${
         align === "center" ? "justify-center" : ""
       } ${className}`}
     >
-      <span className="h-px w-7 bg-accent/60" />
+      <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70" />
       {children}
     </span>
   );

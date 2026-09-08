@@ -29,28 +29,28 @@ export default function CompetenciesSection({ competencies }: { competencies: Co
   }, [competencies]);
 
   return (
-    <section id="competencies" ref={sectionRef} className="py-16 bg-background">
+    <section id="competencies" ref={sectionRef} className="py-16 bg-surface">
       <div className="container">
         <div className="mb-10">
-          <h2 className="section-header">{t("competencies.title")}</h2>
-          <div className="w-12 h-1 rounded-full bg-accent mb-3" />
-          <p className="text-muted-foreground text-sm">{t("competencies.subtitle")}</p>
+          <h2 className="headline-large mb-6">{t("competencies.title")}</h2>
+          <div className="w-12 h-1 rounded-full bg-primary mb-3" />
+          <p className="text-on-surface-variant text-sm">{t("competencies.subtitle")}</p>
         </div>
         {competencies.length === 0 && (
-          <p className="text-sm text-muted-foreground">Nenhuma competência mapeada ainda.</p>
+          <p className="text-sm text-on-surface-variant">Nenhuma competência mapeada ainda.</p>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-5">
           {competencies.map(({ tag, count, percentage }) => (
             <div key={tag}>
               <div className="flex justify-between items-baseline mb-1">
                 <span className="font-bold text-sm">{tag}</span>
-                <span className="text-xs text-muted-foreground font-medium">
-                  {count} {t("competencies.projects")} · {percentage}%
+                <span className="text-xs text-on-surface-variant font-medium">
+                  {count} {t("competencies.projects")}, {percentage}%
                 </span>
               </div>
-              <div className="h-2 bg-muted w-full overflow-hidden">
+              <div className="h-2 bg-surface-high w-full overflow-hidden">
                 <div
-                  className="progress-bar-fill h-full bg-accent transition-all duration-1000 ease-out"
+                  className="progress-bar-fill h-full bg-primary transition-all duration-1000 ease-out"
                   style={{ width: "0%" }}
                   data-target={`${percentage}%`}
                 />

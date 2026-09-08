@@ -7,12 +7,20 @@ import {
   type InsertSkill, type InsertFreelanceWork, type InsertTimelineEvent,
   type InsertContactMessage,
 } from "../drizzle/schema";
+import {
+  fallbackProjects,
+  fallbackSkills,
+  fallbackCertificates,
+  fallbackTimeline,
+  fallbackFreelanceWork,
+  fallbackCompetencies,
+} from "./fallback-data";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
 /**
  * Cria pool MySQL aplicando SSL automaticamente quando necessário.
- * Providers cloud (TiDB, PlanetScale, Aiven) exigem TLS — detectamos pelo host
+ * Providers cloud (TiDB, PlanetScale, Aiven) exigem TLS, detectado pelo host
  * ou pelo query param `?ssl=true`.
  */
 function shouldUseSsl(url: string): boolean {
@@ -26,7 +34,7 @@ export async function getDb() {
   if (!_db) {
     const url = process.env.DATABASE_URL;
     if (!url) {
-      console.error("[DB] DATABASE_URL não está definido nas env vars");
+      console.info("[DB] DATABASE_URL ausente, servindo conteúdo de fallback (lib/fallback-data.ts)");
       return null;
     }
     try {
@@ -56,7 +64,7 @@ export async function getDb() {
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) throw new Error("openId required");
   const db = await getDb();
-  if (!db) return console.warn("[DB] upsertUser skipped — no db");
+  if (!db) return console.warn("[DB] upsertUser skipped: no db");
 
   const values: InsertUser = { openId: user.openId };
   const updateSet: Record<string, unknown> = {};
@@ -89,7 +97,7 @@ export async function getUserByUsername(username: string) {
 // ── Projects ─────────────────────────────────────────────────────────────────
 export async function getAllProjects() {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return fallbackProjects;
   return db.select().from(projects).orderBy(projects.createdAt);
 }
 
@@ -114,7 +122,7 @@ export async function deleteProject(id: number) {
 // ── Competencies (derived from project + certificate tags) ───────────────────
 export async function getCompetencies() {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return fallbackCompetencies();
   const [allProjects, allCerts, allFreelance] = await Promise.all([
     db.select({ tags: projects.tags }).from(projects),
     db.select({ tags: certificates.tags }).from(certificates),
@@ -135,20 +143,20 @@ export async function getCompetencies() {
 // ── Certificates ──────────────────────────────────────────────────────────────
 export async function getAllCertificates() {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return fallbackCertificates;
   return db.select().from(certificates).orderBy(certificates.createdAt);
 }
 
 export async function getCertificateCount(): Promise<number> {
   const db = await getDb();
-  if (!db) return 0;
+  if (!db) return fallbackCertificates.length;
   const res = await db.select({ value: count() }).from(certificates);
   return res[0]?.value ?? 0;
 }
 
 export async function getProjectCount(): Promise<number> {
   const db = await getDb();
-  if (!db) return 0;
+  if (!db) return fallbackProjects.length;
   const res = await db.select({ value: count() }).from(projects);
   return res[0]?.value ?? 0;
 }
@@ -174,7 +182,7 @@ export async function deleteCertificate(id: number) {
 // ── Skills ───────────────────────────────────────────────────────────────────
 export async function getAllSkills() {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return fallbackSkills;
   return db.select().from(skills).orderBy(skills.createdAt);
 }
 
@@ -199,7 +207,7 @@ export async function deleteSkill(id: number) {
 // ── Freelance Work ────────────────────────────────────────────────────────────
 export async function getAllFreelanceWork() {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return fallbackFreelanceWork;
   return db.select().from(freelanceWork).orderBy(freelanceWork.displayOrder, freelanceWork.createdAt);
 }
 
@@ -224,7 +232,7 @@ export async function deleteFreelanceWork(id: number) {
 // ── Timeline Events ───────────────────────────────────────────────────────────
 export async function getAllTimelineEvents() {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) return fallbackTimeline;
   return db.select().from(timelineEvents).orderBy(asc(timelineEvents.sortDate));
 }
 

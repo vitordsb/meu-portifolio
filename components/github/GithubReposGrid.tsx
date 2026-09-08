@@ -50,11 +50,11 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
         {/* Header */}
         <div className="mb-10">
           <div className="flex items-center gap-3 mb-2">
-            <Github size={28} className="text-accent" />
-            <h1 className="section-header">REPOSITÓRIOS</h1>
+            <Github size={28} className="text-primary" />
+            <h1 className="headline-large mb-6">REPOSITÓRIOS</h1>
           </div>
-          <div className="w-12 h-1 rounded-full bg-accent mb-4" />
-          <p className="text-sm text-muted-foreground">
+          <div className="w-12 h-1 rounded-full bg-primary mb-4" />
+          <p className="text-sm text-on-surface-variant">
             {repos.length} repositórios públicos
           </p>
         </div>
@@ -65,7 +65,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
           placeholder="Buscar projeto..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border border-border bg-background w-full md:max-w-sm px-4 py-2 text-sm font-medium focus:border-accent outline-none mb-6"
+          className="border border-outline-variant bg-surface w-full md:max-w-sm px-4 py-2 text-sm font-medium focus:border-primary outline-none mb-6"
         />
 
         {/* Language filter */}
@@ -73,7 +73,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
           <div className="mb-10 flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedLang(null)}
-              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${!selectedLang ? "bg-accent text-accent-foreground border-accent" : "border-border hover:border-accent"}`}
+              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${!selectedLang ? "bg-primary text-on-primary border-primary" : "border-outline-variant hover:border-primary"}`}
             >
               TODOS
             </button>
@@ -81,7 +81,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
               <button
                 key={lang}
                 onClick={() => setSelectedLang(selectedLang === lang ? null : lang)}
-                className={`font-bold px-4 py-2 text-xs rounded-full border transition flex items-center gap-2 ${selectedLang === lang ? "bg-accent text-accent-foreground border-accent" : "border-border hover:border-accent"}`}
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition flex items-center gap-2 ${selectedLang === lang ? "bg-primary text-on-primary border-primary" : "border-outline-variant hover:border-primary"}`}
               >
                 <span
                   className="w-2.5 h-2.5 rounded-full"
@@ -99,18 +99,18 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
             filtered.map((repo) => (
               <div
                 key={repo.id}
-                className="card-brutalist hover:border-accent transition flex flex-col gap-4 group"
+                className="card-filled hover:border-primary transition flex flex-col gap-4 group"
               >
                 {/* Title + stars */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
-                    <Code2 size={16} className="text-accent shrink-0" />
-                    <h2 className="font-extrabold text-sm leading-tight truncate group-hover:text-accent transition">
+                    <Code2 size={16} className="text-primary shrink-0" />
+                    <h2 className="font-extrabold text-sm leading-tight truncate group-hover:text-primary transition">
                       {repo.name}
                     </h2>
                   </div>
                   {repo.stars > 0 && (
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
+                    <span className="flex items-center gap-1 text-xs text-on-surface-variant shrink-0">
                       <Star size={12} />
                       {repo.stars}
                     </span>
@@ -118,7 +118,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-3">
+                <p className="text-sm text-on-surface-variant leading-relaxed flex-1 line-clamp-3">
                   {repo.description || "Sem descrição"}
                 </p>
 
@@ -140,18 +140,18 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
                     </span>
                   )}
                   {repo.topics.map((topic) => (
-                    <span key={topic} className="tag-badge">
+                    <span key={topic} className="chip-static">
                       {topic}
                     </span>
                   ))}
                 </div>
 
-                {/* Repo link — explicit CTA */}
+                {/* Repo link: explicit CTA */}
                 <a
                   href={repo.htmlUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-brutalist-accent px-4 py-2 text-xs flex items-center justify-center gap-2 mt-auto"
+                  className="btn btn-filled px-4 py-2 text-xs flex items-center justify-center gap-2 mt-auto"
                 >
                   <ExternalLink size={14} />
                   VER REPOSITÓRIO
@@ -159,7 +159,7 @@ export default function GithubReposGrid({ repos }: { repos: GithubRepo[] }) {
               </div>
             ))
           ) : (
-            <p className="col-span-full text-center text-muted-foreground text-sm py-16">
+            <p className="col-span-full text-center text-on-surface-variant text-sm py-16">
               Nenhum repositório encontrado.
             </p>
           )}
