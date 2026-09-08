@@ -13,7 +13,7 @@ export default async function AutonomoPage() {
     return [];
   });
   return (
-    <main className="pt-20 lg:pt-0 min-h-screen bg-background text-foreground">
+    <main className="pt-20 lg:pt-0 min-h-screen bg-surface text-on-surface">
       <AutonomoSection projects={projects} />
     </main>
   );

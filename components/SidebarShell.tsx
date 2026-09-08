@@ -29,7 +29,12 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
     <>
       <CursorFollower />
       <Navbar collapsed={collapsed} onToggle={toggle} />
-      <div className={collapsed ? "lg:pl-16 transition-[padding] duration-200" : "lg:pl-60 transition-[padding] duration-200"}>
+      <div
+        className={`shell transition-[padding] duration-300 ${
+          collapsed ? "shell-collapsed" : "shell-expanded"
+        }`}
+        style={{ transitionTimingFunction: "var(--ease-emphasized)" }}
+      >
         <PageTransition>{children}</PageTransition>
       </div>
       <ContactFab />

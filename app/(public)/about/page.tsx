@@ -8,7 +8,7 @@ export const revalidate = 0;
 export default async function AboutPage() {
   const events = await getAllTimelineEvents().catch(() => []);
   return (
-    <main className="pt-20 lg:pt-0 min-h-screen bg-background text-foreground">
+    <main className="pt-20 lg:pt-0 min-h-screen bg-surface text-on-surface">
       <AboutSection />
       <TimelineSection events={events} />
     </main>

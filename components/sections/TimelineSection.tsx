@@ -34,10 +34,10 @@ function getIcon(name?: string | null): LucideIcon {
 }
 
 const categoryColors: Record<string, string> = {
-  Carreira: "border-accent text-accent",
-  Educação: "border-foreground text-foreground",
-  Cliente: "border-accent text-accent",
-  Marco: "border-accent text-accent bg-accent/10",
+  Carreira: "border-primary text-primary",
+  Educação: "border-foreground text-on-surface",
+  Cliente: "border-primary text-primary",
+  Marco: "border-primary text-primary bg-primary/10",
 };
 
 export default function TimelineSection({ events }: { events: TimelineEvent[] }) {
@@ -74,16 +74,16 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
 
   if (events.length === 0) {
     return (
-      <section className="py-12 bg-background">
+      <section className="py-12 bg-surface">
         <div className="container">
-          <p className="text-sm text-muted-foreground">{t("timeline.empty")}</p>
+          <p className="text-sm text-on-surface-variant">{t("timeline.empty")}</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="py-12 bg-background">
+    <section className="py-12 bg-surface">
       <div className="container">
         <div className="mb-8 flex items-end justify-between flex-wrap gap-4">
           <div>
@@ -91,9 +91,9 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
             <h3 className="font-extrabold text-2xl md:text-3xl tracking-tight leading-none">
               {t("timeline.title")}
             </h3>
-            <div className="w-12 h-1 rounded-full bg-accent mt-3" />
+            <div className="w-12 h-1 rounded-full bg-primary mt-3" />
           </div>
-          <p className="text-xs font-mono text-muted-foreground hidden md:block">
+          <p className="text-xs font-mono text-on-surface-variant hidden md:block">
             {t("timeline.scrollHint")}
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
                 const isAbove = idx % 2 === 0;
                 const catCls =
                   categoryColors[evt.category ?? ""] ??
-                  "border-border text-muted-foreground";
+                  "border-outline-variant text-on-surface-variant";
 
                 return (
                   <div
@@ -136,12 +136,12 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
                           className="absolute left-1/2 -translate-x-1/2 w-64"
                           style={isAbove ? { bottom: 260 } : { top: 260 }}
                         >
-                          <div className="card-brutalist hover:border-accent transition">
-                            <p className="text-[10px] font-mono text-accent tracking-widest mb-2">
+                          <div className="card-filled hover:border-primary transition">
+                            <p className="text-[10px] font-mono text-primary tracking-widest mb-2">
                               {evt.dateLabel}
                               {L.category && (
-                                <span className="text-muted-foreground/60 ml-2">
-                                  · {L.category}
+                                <span className="text-on-surface-variant/60 ml-2">
+                                  , {L.category}
                                 </span>
                               )}
                             </p>
@@ -149,7 +149,7 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
                               {L.title}
                             </h4>
                             {L.description && (
-                              <p className="text-xs text-muted-foreground leading-relaxed">
+                              <p className="text-xs text-on-surface-variant leading-relaxed">
                                 {L.description}
                               </p>
                             )}
@@ -164,9 +164,9 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
                       style={{ top: 220 }}
                     >
                       <div
-                        className={`w-10 h-10 border-2 flex items-center justify-center bg-background ${
+                        className={`w-10 h-10 border-2 flex items-center justify-center bg-surface ${
                           isLast
-                            ? "bg-accent text-background border-accent"
+                            ? "bg-primary text-on-primary border-primary"
                             : catCls
                         }`}
                       >

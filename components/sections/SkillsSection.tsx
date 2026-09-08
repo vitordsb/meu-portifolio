@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import * as HoverCard from "@radix-ui/react-hover-card";
+import { Boxes } from "lucide-react";
 import { useLanguage, translations } from "@/contexts/LanguageContext";
 import type { Skill, Project } from "@/drizzle/schema";
 
@@ -71,7 +72,7 @@ export default function SkillsSection({
     return ordered.filter(([cat]) => cat === active);
   }, [byCategory, categories, active]);
 
-  // Lookup slug → título do projeto
+  // Lookup de slug pro título do projeto
   const titleBySlug = useMemo(() => {
     const m: Record<string, string> = {};
     for (const p of projects) {
@@ -81,12 +82,12 @@ export default function SkillsSection({
   }, [projects]);
 
   return (
-    <section id="skills" className="py-16 bg-background">
+    <section id="skills" className="py-16 bg-surface">
       <div className="container">
-        <h2 className="section-header">{t("skills.title")}</h2>
-        <div className="w-12 h-1 rounded-full bg-accent mb-8" />
+        <h2 className="headline-large mb-6">{t("skills.title")}</h2>
+        <div className="w-12 h-1 rounded-full bg-primary mb-8" />
         {skills.length === 0 && (
-          <p className="text-sm text-muted-foreground">{t("skills.empty")}</p>
+          <p className="text-sm text-on-surface-variant">{t("skills.empty")}</p>
         )}
 
         {/* Filtro */}
@@ -96,8 +97,8 @@ export default function SkillsSection({
               onClick={() => setActive(ALL)}
               className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                 active === ALL
-                  ? "bg-accent text-background border-accent"
-                  : "border-border hover:border-accent"
+                  ? "bg-primary text-on-primary border-primary"
+                  : "border-outline-variant hover:border-primary"
               }`}
             >
               {allLabel.toUpperCase()}
@@ -109,8 +110,8 @@ export default function SkillsSection({
                 onClick={() => setActive(cat)}
                 className={`font-bold px-4 py-2 text-xs rounded-full border transition ${
                   active === cat
-                    ? "bg-accent text-background border-accent"
-                    : "border-border hover:border-accent"
+                    ? "bg-primary text-on-primary border-primary"
+                    : "border-outline-variant hover:border-primary"
                 }`}
               >
                 {(catL10n[cat] ?? cat).toUpperCase()}
@@ -124,7 +125,7 @@ export default function SkillsSection({
           {filteredEntries.map(([category, catSkills]) => (
             <div key={category}>
               {category !== "Outros" && (
-                <h3 className="font-bold text-sm mb-4 text-accent uppercase tracking-widest">
+                <h3 className="font-bold text-sm mb-4 text-primary uppercase tracking-widest">
                   {catL10n[category] ?? category}
                 </h3>
               )}
@@ -140,7 +141,7 @@ export default function SkillsSection({
                   const lvl = levelLabel[level] ?? levelLabel[3];
 
                   const card = (
-                    <div className="card-brutalist text-center hover:bg-accent hover:text-background transition group p-3 cursor-default">
+                    <div className="card-filled text-center hover:bg-primary hover:text-on-primary transition group p-3 cursor-default">
                       {skill.iconUrl ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
@@ -150,8 +151,8 @@ export default function SkillsSection({
                           className="w-8 h-8 mx-auto mb-2 object-contain group-hover:scale-110 transition"
                         />
                       ) : (
-                        <div className="text-lg font-extrabold mb-2 h-8 flex items-center justify-center">
-                          ◆
+                        <div className="mb-2 flex h-8 items-center justify-center text-on-surface-variant">
+                          <Boxes size={22} />
                         </div>
                       )}
                       <p className="font-bold text-xs leading-tight">{skill.title}</p>
@@ -166,7 +167,7 @@ export default function SkillsSection({
                           side="top"
                           align="center"
                           sideOffset={8}
-                          className="z-50 w-72 card-brutalist border-accent shadow-lg animate-in fade-in zoom-in-95"
+                          className="z-50 w-72 card-filled border-primary elev-2 animate-in fade-in zoom-in-95"
                         >
                           <div className="flex items-center gap-3 mb-3">
                             {skill.iconUrl && (
@@ -182,7 +183,7 @@ export default function SkillsSection({
                                 {skill.title}
                               </h4>
                               {skill.category && (
-                                <p className="text-[10px] font-mono text-accent tracking-widest uppercase">
+                                <p className="text-[10px] font-mono text-primary tracking-widest uppercase">
                                   {catL10n[skill.category] ?? skill.category}
                                 </p>
                               )}
@@ -191,11 +192,11 @@ export default function SkillsSection({
 
                           <div className="mb-3">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
                                 {language === "pt" ? "Nível" : "Level"}
                               </span>
-                              <span className="text-[10px] font-bold text-accent">
-                                {lvl[language]} · {level}/5
+                              <span className="text-[10px] font-bold text-primary">
+                                {lvl[language]} ({level}/5)
                               </span>
                             </div>
                             <div className="flex gap-1">
@@ -203,7 +204,7 @@ export default function SkillsSection({
                                 <div
                                   key={i}
                                   className={`flex-1 h-1.5 ${
-                                    i <= level ? "bg-accent" : "bg-muted"
+                                    i <= level ? "bg-primary" : "bg-surface-high"
                                   }`}
                                 />
                               ))}
@@ -211,7 +212,7 @@ export default function SkillsSection({
                           </div>
 
                           <div>
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-2">
                               {language === "pt"
                                 ? `Aparece em ${projectTitles.length} projeto${projectTitles.length === 1 ? "" : "s"}`
                                 : `Used in ${projectTitles.length} project${projectTitles.length === 1 ? "" : "s"}`}
@@ -219,13 +220,13 @@ export default function SkillsSection({
                             {projectTitles.length > 0 ? (
                               <div className="flex flex-wrap gap-1">
                                 {projectTitles.map((title) => (
-                                  <span key={title} className="tag-badge text-[10px]">
+                                  <span key={title} className="chip-static text-[10px]">
                                     {title}
                                   </span>
                                 ))}
                               </div>
                             ) : (
-                              <p className="text-xs text-muted-foreground italic">
+                              <p className="text-xs text-on-surface-variant italic">
                                 {language === "pt"
                                   ? "Estudo / curso, sem projeto público."
                                   : "Self-study, no public project yet."}
@@ -233,7 +234,7 @@ export default function SkillsSection({
                             )}
                           </div>
 
-                          <HoverCard.Arrow className="fill-accent" />
+                          <HoverCard.Arrow className="fill-primary" />
                         </HoverCard.Content>
                       </HoverCard.Portal>
                     </HoverCard.Root>

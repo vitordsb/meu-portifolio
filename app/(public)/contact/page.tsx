@@ -4,7 +4,7 @@ export const metadata = { title: "Contato | Vitor Barreto" };
 
 export default function ContactPage() {
   return (
-    <main className="pt-20 lg:pt-0 min-h-screen bg-background text-foreground">
+    <main className="pt-20 lg:pt-0 min-h-screen bg-surface text-on-surface">
       <ContactSection />
     </main>
   );

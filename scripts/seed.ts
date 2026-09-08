@@ -1,5 +1,5 @@
 /**
- * Seed script — creates the admin user with username/password credentials.
+ * Seed script: creates the admin user with username/password credentials.
  * Run with: pnpm db:seed
  *
  * Usage:
@@ -46,7 +46,7 @@ async function main() {
     .limit(1);
 
   if (existing.length > 0) {
-    console.log(`✓ Usuário "${username}" já existe — nada foi alterado.`);
+    console.log(`[ok] Usuário "${username}" já existe, nada foi alterado.`);
     process.exit(0);
   }
 
@@ -61,7 +61,7 @@ async function main() {
     lastSignedIn: new Date(),
   });
 
-  console.log(`✓ Usuário admin criado: ${username}`);
+  console.log(`[ok] Usuário admin criado: ${username}`);
   console.log(`  Senha: ${password}`);
   console.log(`  Troque a senha em produção!`);
   process.exit(0);

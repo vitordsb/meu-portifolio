@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { exchangeCodeForToken, getUserInfo, createSessionToken } from "@/lib/oauth";
+import { exchangeCodeForToken, getUserInfo, createSessionToken, SESSION_TTL_SECONDS } from "@/lib/oauth";
+import { OAUTH_STATE_COOKIE, callbackUrl, statesMatch } from "@/lib/oauth-state";
 import { upsertUser } from "@/lib/db";
 
 const COOKIE_NAME = "app_session_id";
-const ONE_YEAR_S = 60 * 60 * 24 * 365;
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -14,8 +14,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "code and state are required" }, { status: 400 });
   }
 
+  // O retorno só vale se este site tiver começado o fluxo (ver /api/oauth/start).
+  // Antes, qualquer `code` válido do provedor virava sessão nossa.
+  const expectedState = request.cookies.get(OAUTH_STATE_COOKIE)?.value;
+  if (!statesMatch(expectedState, state)) {
+    return NextResponse.json({ error: "invalid state" }, { status: 400 });
+  }
+
   try {
-    const tokenResponse = await exchangeCodeForToken(code, state);
+    // O redirect_uri sai da nossa configuração. Antes vinha de `atob(state)`,
+    // ou seja, de um valor que o visitante controlava.
+    const redirectUri = callbackUrl(request.nextUrl.origin);
+    const tokenResponse = await exchangeCodeForToken(code, redirectUri);
     const userInfo = await getUserInfo(tokenResponse.accessToken);
 
     if (!userInfo.openId) {
@@ -31,16 +41,21 @@ export async function GET(request: NextRequest) {
     });
 
     const sessionToken = await createSessionToken(userInfo.openId, userInfo.name ?? "");
-    const isHttps = request.nextUrl.protocol === "https:";
 
     const response = NextResponse.redirect(new URL("/", request.url));
     response.cookies.set(COOKIE_NAME, sessionToken, {
       httpOnly: true,
       path: "/",
-      sameSite: "none",
-      secure: isHttps,
-      maxAge: ONE_YEAR_S,
+      // `lax` (era `none`): com `none` o cookie de sessão viajava em requisição
+      // cross-site, o que reabre CSRF nas rotas de API. E `secure` agora segue o
+      // ambiente, não o protocolo que o Next enxerga atrás do proxy.
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: SESSION_TTL_SECONDS,
     });
+
+    // O state é de uso único.
+    response.cookies.delete(OAUTH_STATE_COOKIE);
 
     return response;
   } catch (err) {

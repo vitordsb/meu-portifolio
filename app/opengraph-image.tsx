@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
-export const alt = "Vitor de Souza Barreto — Engenheiro de Software";
+export const alt = "Vitor de Souza Barreto, Frontend Engineer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,7 +43,7 @@ export default async function OpengraphImage() {
             display: "flex",
           }}
         >
-          [ ENGENHEIRO DE SOFTWARE ]
+          [ FRONTEND ENGINEER ]
         </div>
 
         {/* Nome em destaque */}

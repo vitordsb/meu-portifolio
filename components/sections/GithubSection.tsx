@@ -26,13 +26,13 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
   );
 
   return (
-    <section id="github" className="py-16 bg-background">
+    <section id="github" className="py-16 bg-surface">
       <div className="container">
-        <h2 className="section-header">{t("github.title")}</h2>
-        <div className="w-12 h-1 rounded-full bg-accent mb-8" />
+        <h2 className="headline-large mb-6">{t("github.title")}</h2>
+        <div className="w-12 h-1 rounded-full bg-primary mb-8" />
         {repos.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            Nenhum repositório carregado — configure <code>GITHUB_USERNAME</code> nas variáveis de ambiente.
+          <p className="text-sm text-on-surface-variant">
+            Nenhum repositório carregado. Configure <code>GITHUB_USERNAME</code> nas variáveis de ambiente.
           </p>
         )}
 
@@ -40,7 +40,7 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
           <div className="mb-8 flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedLang(null)}
-              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${!selectedLang ? "bg-accent text-background border-accent" : "border-border hover:border-accent"}`}
+              className={`font-bold px-4 py-2 text-xs rounded-full border transition ${!selectedLang ? "bg-primary text-on-primary border-primary" : "border-outline-variant hover:border-primary"}`}
             >
               TODOS
             </button>
@@ -48,7 +48,7 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
               <button
                 key={lang}
                 onClick={() => setSelectedLang(selectedLang === lang ? null : lang)}
-                className={`font-bold px-4 py-2 text-xs rounded-full border transition flex items-center gap-2 ${selectedLang === lang ? "bg-accent text-background border-accent" : "border-border hover:border-accent"}`}
+                className={`font-bold px-4 py-2 text-xs rounded-full border transition flex items-center gap-2 ${selectedLang === lang ? "bg-primary text-on-primary border-primary" : "border-outline-variant hover:border-primary"}`}
               >
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: langColors[lang!] ?? "#888" }} />
                 {lang}
@@ -60,18 +60,18 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((repo) => (
             <a key={repo.id} href={repo.htmlUrl} target="_blank" rel="noopener noreferrer"
-              className="github-card flex flex-col group">
+              className="card-filled flex flex-col group">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Code2 size={14} className="text-accent shrink-0" />
-                  <span className="font-bold text-sm group-hover:text-accent transition">{repo.name}</span>
+                  <Code2 size={14} className="text-primary shrink-0" />
+                  <span className="font-bold text-sm group-hover:text-primary transition">{repo.name}</span>
                 </div>
-                <ExternalLink size={12} className="text-muted-foreground shrink-0" />
+                <ExternalLink size={12} className="text-on-surface-variant shrink-0" />
               </div>
-              <p className="text-xs text-muted-foreground mb-4 flex-1 line-clamp-2">
+              <p className="text-xs text-on-surface-variant mb-4 flex-1 line-clamp-2">
                 {repo.description || t("github.noDesc")}
               </p>
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+              <div className="flex items-center gap-4 text-xs text-on-surface-variant">
                 {repo.language && (
                   <span className="flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: langColors[repo.language] ?? "#888" }} />
@@ -82,7 +82,7 @@ export default function GithubSection({ repos }: { repos: GithubRepo[] }) {
                   <span className="flex items-center gap-1"><Star size={10} />{repo.stars}</span>
                 )}
                 {repo.topics.slice(0, 2).map((topic) => (
-                  <span key={topic} className="tag-badge">{topic}</span>
+                  <span key={topic} className="chip-static">{topic}</span>
                 ))}
               </div>
             </a>

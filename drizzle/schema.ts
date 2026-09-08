@@ -38,7 +38,7 @@ export const projects = mysqlTable("projects", {
   company: varchar("company", { length: 255 }).notNull(),
   description: text("description").notNull(),
   category: varchar("category", { length: 100 }).notNull(),
-  /** Período do trabalho (ex: "Abr/2025 — Hoje"). */
+  /** Período do trabalho (ex: "Abr/2025 - Hoje"). */
   period: varchar("period", { length: 100 }),
   /** Aparece como destaque na home (top 3). */
   featured: boolean("featured").default(false).notNull(),
@@ -94,7 +94,7 @@ export type Skill = typeof skills.$inferSelect;
 export type InsertSkill = typeof skills.$inferInsert;
 
 /**
- * Freelance work table — private client projects
+ * Freelance work table: private client projects
  */
 export const freelanceWork = mysqlTable("freelance_work", {
   id: int("id").autoincrement().primaryKey(),
@@ -114,7 +114,7 @@ export type FreelanceWork = typeof freelanceWork.$inferSelect;
 export type InsertFreelanceWork = typeof freelanceWork.$inferInsert;
 
 /**
- * Timeline events — marcos da história profissional
+ * Timeline events: marcos da história profissional
  * (career start, faculdade, cursos, primeiros clientes, etc).
  * Renderizado como linha do tempo horizontal no /about.
  */

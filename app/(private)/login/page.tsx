@@ -8,7 +8,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-      <div className="card-brutalist p-8 w-full max-w-sm flex flex-col gap-6">
+      <div className="card-filled p-8 w-full max-w-sm flex flex-col gap-6">
         <h1 className="text-2xl font-bold tracking-tight">Admin</h1>
 
         <form action={action} className="flex flex-col gap-4">
@@ -47,7 +47,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={pending}
-            className="btn-brutalist-accent mt-2 disabled:opacity-50"
+            className="btn btn-filled mt-2 disabled:opacity-50"
           >
             {pending ? "Entrando..." : "Entrar"}
           </button>
