@@ -74,7 +74,7 @@ export default function CVDocument({ projects, skills, certificates }: CVProps) 
               VITOR DE SOUZA BARRETO
             </h1>
             <p className="text-sm font-mono text-primary tracking-widest mt-2 mb-4">
-              Frontend Engineer, Full-stack
+              Engenheiro de Software, especialista em Front-end
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-1 text-xs text-on-surface-variant">
               <div className="flex items-center gap-2">

@@ -3,6 +3,7 @@
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ContactModalProvider } from "@/contexts/ContactModalContext";
+import { CommandPaletteProvider } from "@/contexts/CommandPaletteContext";
 import { Toaster } from "sonner";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -10,8 +11,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider>
       <LanguageProvider>
         <ContactModalProvider>
-          {children}
-          <Toaster position="bottom-right" />
+          <CommandPaletteProvider>
+            {children}
+            <Toaster position="bottom-right" />
+          </CommandPaletteProvider>
         </ContactModalProvider>
       </LanguageProvider>
     </ThemeProvider>

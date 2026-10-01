@@ -23,7 +23,7 @@ export default function ContactFab() {
 
   return (
     <motion.button
-      onClick={open}
+      onClick={() => open()}
       aria-label={label}
       initial={reduce ? false : { opacity: 0, y: 16, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}

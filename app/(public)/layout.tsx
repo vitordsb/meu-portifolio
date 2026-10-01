@@ -1,5 +1,5 @@
-import SidebarShell from "@/components/SidebarShell";
+import SiteShell from "@/components/SiteShell";
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
-  return <SidebarShell>{children}</SidebarShell>;
+  return <SiteShell>{children}</SiteShell>;
 }

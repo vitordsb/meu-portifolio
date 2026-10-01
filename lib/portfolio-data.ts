@@ -30,7 +30,7 @@ export const allWork: Work[] = [
       "Plataforma que formaliza a relação entre **arquitetos e clientes**: propostas, **contratos em PDF**, comunicação, pagamentos e dashboard do profissional. Atuei no **front-end (React + Vite + TypeScript)** cobrindo fluxos públicos, autenticação, área logada e jornadas comerciais.",
     stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Radix UI", "TanStack Query"],
     liveLink: "https://arqdoor.com",
-    coverImageUrl: "/projects/arqdoor.png",
+    coverImageUrl: "/projects/arqdoor-web.jpg",
     featured: true,
     period: "Abr/2025 - Hoje",
   },
@@ -44,7 +44,7 @@ export const allWork: Work[] = [
     stack: ["React Native", "Expo", "TypeScript", "Expo Router"],
     // App na Play Store (package com.arqdoor.app), não o site do produto web.
     liveLink: "https://play.google.com/store/apps/details?id=com.arqdoor.app&hl=pt_BR",
-    coverImageUrl: null,
+    coverImageUrl: "/projects/arqdoor-app.jpg",
     featured: true,
     period: "Abr/2025 - Hoje",
   },
@@ -702,7 +702,7 @@ export const hardcodedCertificates: CertificateSeedExport[] = certSeeds.map((c) 
 export const aboutContent = {
   title: "Sobre mim",
   paragraphs: [
-    "Frontend Engineer com +5 anos de experiência, unindo design de experiência e engenharia de interface (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica, sempre com foco em usabilidade, performance e conversão.",
+    "Engenheiro de software com +5 anos de experiência e especialização em front-end, unindo design de experiência e engenharia de interface (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica, sempre com foco em usabilidade, performance e conversão.",
     "Trabalho desde a arquitetura de componentes reutilizáveis e design systems até a integração com back-end e infraestrutura: Node.js, bancos relacionais e não-relacionais, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD e cloud (AWS, Vercel).",
     "Estou aberto a oportunidades remotas ou híbridas. Gosto de transformar problemas de negócio em produto que funciona, não só feature que entrega.",
   ],

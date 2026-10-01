@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
-export const alt = "Vitor de Souza Barreto, Frontend Engineer";
+export const alt = "Vitor de Souza Barreto, Engenheiro de Software";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,7 +43,7 @@ export default async function OpengraphImage() {
             display: "flex",
           }}
         >
-          [ FRONTEND ENGINEER ]
+          [ ENGENHEIRO DE SOFTWARE ]
         </div>
 
         {/* Nome em destaque */}
@@ -73,7 +73,7 @@ export default async function OpengraphImage() {
             display: "flex",
           }}
         >
-          Soluções web de alta performance, escalabilidade e impacto mensurável.
+          Do Figma ao deploy: software completo, com obsessão pela experiência do usuário.
         </div>
 
         {/* Stack chips no rodapé */}
