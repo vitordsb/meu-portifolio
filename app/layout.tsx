@@ -1,23 +1,15 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { Figtree, Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-// Figtree: geométrica de terminais arredondados, usada em display e headline.
-const figtree = Figtree({
+// Inter: a mesma do wireframe. Variável, então segura do texto corrido ao
+// display de 9rem sem baixar um arquivo por peso.
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  variable: "--font-figtree",
-  display: "swap",
-});
-
-// Roboto: a fonte do Material Design. Segura title, body e label.
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -33,21 +25,21 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Vitor de Souza Barreto | Frontend Engineer",
+  title: "Vitor de Souza Barreto | Engenheiro de Software",
   description:
-    "Frontend Engineer unindo design de experiência e engenharia de software: interfaces de alta performance, acessíveis e com impacto mensurável.",
+    "Engenheiro de software especialista em front-end. Do Figma ao deploy: software completo, com obsessão pela experiência do usuário.",
   openGraph: {
-    title: "Vitor de Souza Barreto | Frontend Engineer",
+    title: "Vitor de Souza Barreto | Engenheiro de Software",
     description: "Portfolio profissional: projetos, competências e trabalho freelancer.",
     type: "website",
   },
 };
 
-// A cor da barra do navegador acompanha a superfície M3 de cada esquema.
+// A cor da barra do navegador acompanha a superfície de cada esquema.
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf9fd" },
-    { media: "(prefers-color-scheme: dark)", color: "#131314" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1c1f" },
   ],
 };
 
@@ -60,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={`${figtree.variable} ${roboto.variable} ${GeistMono.variable}`}
+      className={`${inter.variable} ${GeistMono.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

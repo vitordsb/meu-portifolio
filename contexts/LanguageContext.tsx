@@ -26,10 +26,10 @@ export const translations = {
       admin: "Admin",
     },
     hero: {
-      tag: "Frontend Engineer",
+      tag: "Engenheiro de Software",
       name: "Vitor de\nSouza Barreto",
       description:
-        "Frontend Engineer que une design de experiência e engenharia: interfaces de alta performance, acessíveis e pensadas pra converter. Onde código encontra usabilidade.",
+        "Engenheiro de software especialista em front-end, unindo design de experiência e engenharia: software completo, acessível e pensado pra converter. Onde código encontra usabilidade.",
       cta1: "Ver projetos",
       cta2: "Entrar em contato",
       stack: "Stack principal",
@@ -58,7 +58,7 @@ export const translations = {
     },
     about: {
       title: "Sobre mim",
-      p1: "Frontend Engineer com +5 anos de experiência, unindo design de experiência e engenharia de interface (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica, sempre com foco em usabilidade, performance e conversão.",
+      p1: "Engenheiro de software com +5 anos de experiência e especialização em front-end, unindo design de experiência e engenharia de interface (React, Next.js, TypeScript). Atuei em produtos digitais de diferentes segmentos: marketplace B2B, plataformas de infoprodutos, sistemas para arquitetura e segurança eletrônica, sempre com foco em usabilidade, performance e conversão.",
       p2: "Trabalho desde a arquitetura de componentes reutilizáveis e design systems até a integração com back-end e infraestrutura: Node.js, bancos relacionais e não-relacionais, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD e cloud (AWS, Vercel).",
       p3: "Estou aberto a oportunidades remotas ou híbridas. Gosto de transformar problemas de negócio em produto que funciona, não só feature que entrega.",
       education: "Formação",
@@ -159,10 +159,10 @@ export const translations = {
       admin: "Admin",
     },
     hero: {
-      tag: "Frontend Engineer",
+      tag: "Software Engineer",
       name: "Vitor de\nSouza Barreto",
       description:
-        "Frontend Engineer bridging experience design and engineering: high-performance, accessible interfaces built to convert. Where code meets usability.",
+        "Software engineer specialized in front-end, bridging experience design and engineering: complete, accessible software built to convert. Where code meets usability.",
       cta1: "View projects",
       cta2: "Get in touch",
       stack: "Main stack",
@@ -191,7 +191,7 @@ export const translations = {
     },
     about: {
       title: "About me",
-      p1: "Frontend Engineer with 5+ years of experience, bridging experience design and interface engineering (React, Next.js, TypeScript). I've shipped digital products across many domains (B2B marketplaces, infoproduct platforms, architecture and electronic security systems), always focused on usability, performance and conversion.",
+      p1: "Software engineer with 5+ years of experience and a front-end specialization, bridging experience design and interface engineering (React, Next.js, TypeScript). I've shipped digital products across many domains (B2B marketplaces, infoproduct platforms, architecture and electronic security systems), always focused on usability, performance and conversion.",
       p2: "I work from reusable components and design systems all the way to back-end and infrastructure: Node.js, relational and non-relational databases, ORMs (Prisma, Drizzle), BaaS (Supabase, Firebase), Docker, CI/CD and cloud (AWS, Vercel).",
       p3: "I'm open to remote or hybrid opportunities. I like turning business problems into products that work, not just features that ship.",
       education: "Education",

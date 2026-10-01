@@ -42,5 +42,5 @@ export function localizedStoreLink(url: string, language: string): string {
 /** Rótulo pronto para qualquer link: nome da loja, ou o domínio limpo. */
 export function linkLabelFor(url: string): string {
   const store = storeOf(url);
-  return store ? storeLabel(store) : url.replace(/^https?:\/\//, "");
+  return store ? storeLabel(store) : url.replace(/^https?:\/\/(www\.)?/, "");
 }

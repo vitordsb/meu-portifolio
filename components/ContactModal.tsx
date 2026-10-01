@@ -16,12 +16,14 @@ import { sendContactMessage } from "@/lib/actions";
 
 type Step = "channel" | "email" | "thanks";
 
+const WHATSAPP = "https://wa.me/5511939572807";
+
 const CHANNELS = [
   {
     key: "whatsapp",
     label: "WhatsApp",
     icon: MessageCircle,
-    href: "https://wa.me/5511939572807",
+    href: WHATSAPP,
     descPt: "Resposta rápida no chat",
     descEn: "Quick reply on chat",
   },
@@ -35,18 +37,34 @@ const CHANNELS = [
   },
 ] as const;
 
+/** Link do WhatsApp com a mensagem já escrita quando há assunto. */
+function whatsappHref(subject: string | null, pt: boolean): string {
+  if (!subject) return WHATSAPP;
+  const text = pt
+    ? `Oi Vitor! Vim pelo seu portfólio e quero falar sobre: ${subject}.`
+    : `Hi Vitor! I found your portfolio and I'd like to talk about: ${subject}.`;
+  return `${WHATSAPP}?text=${encodeURIComponent(text)}`;
+}
+
 export default function ContactModal({
   isOpen,
   onClose,
+  subject = null,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  subject?: string | null;
 }) {
   const { language } = useLanguage();
   const [step, setStep] = useState<Step>("channel");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "", company: "", subject: "", message: "" });
+
+  // Assunto vindo do CTA entra no formulário ao abrir
+  useEffect(() => {
+    if (isOpen && subject) setForm((f) => ({ ...f, subject }));
+  }, [isOpen, subject]);
 
   // Reset ao fechar
   useEffect(() => {
@@ -88,7 +106,7 @@ export default function ContactModal({
     <Dialog.Root open={isOpen} onOpenChange={(o) => !o && onClose()}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[90] bg-scrim/32 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 z-[95] w-[calc(100vw-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-[var(--shape-md)] bg-surface-highest p-6 elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 focus:outline-none">
+        <Dialog.Content className="fixed left-1/2 top-1/2 z-[95] w-[calc(100vw-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl border border-outline-variant bg-surface p-6 elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:zoom-in-95 focus:outline-none">
           {/* Close */}
           <Dialog.Close className="absolute right-4 top-4 rounded-lg p-1.5 text-on-surface-variant hover:bg-surface-high hover:text-on-surface transition">
             <X size={18} />
@@ -97,6 +115,11 @@ export default function ContactModal({
           {/* STEP: escolha de canal */}
           {step === "channel" && (
             <>
+              {subject && (
+                <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-brand">
+                  {subject}
+                </p>
+              )}
               <Dialog.Title className="text-xl font-extrabold tracking-tight mb-1">
                 {pt ? "Vamos conversar?" : "Let's talk?"}
               </Dialog.Title>
@@ -109,7 +132,9 @@ export default function ContactModal({
                 {CHANNELS.map((c) => (
                   <button
                     key={c.key}
-                    onClick={() => handleChannel(c.href)}
+                    onClick={() =>
+                      handleChannel(c.key === "whatsapp" ? whatsappHref(subject, pt) : c.href)
+                    }
                     className="group flex items-center gap-4 rounded-[var(--shape-md)] border border-outline-variant p-3.5 text-left hover:border-primary hover:bg-primary-container transition"
                   >
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-container text-on-primary-container group-hover:bg-primary group-hover:text-on-primary transition">
