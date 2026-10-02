@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { AnimatePresence, MotionConfig } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LANDING } from "@/lib/landing-data";
 import {
@@ -45,6 +46,8 @@ const FLICK_SPEED = 0.45;
 const WHEEL_COMMIT = 140;
 /** Duração de uma troca (saída 0,32s, entrada 0,4s): trava contra sobreposição. */
 const NAV_LOCK_MS = 420;
+/** Desvanecer da home antes de ir pra outra página. */
+const LEAVE_MS = 180;
 
 function overlayOpen() {
   return !!document.querySelector("[role='dialog'], [role='menu']");
@@ -91,6 +94,8 @@ export default function HomeDeck() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [dragging, setDragging] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
   // Uma alça por sessão montada. Um ref único seria zerado pelo React quando a
   // sessão antiga termina de sair, deixando a nova sem controle de arraste.
@@ -223,6 +228,32 @@ export default function HomeDeck() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
 
+  // ── Saída suave pra outra página ──────────────────────────────────────────
+  // Link interno pra outra rota (Serviços, Orçamento...): a home desvanece e
+  // só então navega, e a página nova entra com o PageTransition. Sem isso a
+  // home sumia de uma vez. Captura no document: roda antes do onClick do
+  // <Link>, que respeita o preventDefault.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as HTMLElement).closest?.("a");
+      if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+      const url = new URL(a.href, window.location.href);
+      // Externo, ou sessão da própria home (/#experiencia): não é saída
+      if (url.origin !== window.location.origin || url.pathname === "/") return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      e.preventDefault();
+      setLeaving(true);
+      window.setTimeout(
+        () => router.push(url.pathname + url.search + url.hash),
+        LEAVE_MS,
+      );
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [router]);
+
   // ── Arrastar (mouse e toque) ──────────────────────────────────────────────
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0 || !e.isPrimary || overlayOpen()) return;
@@ -351,74 +382,82 @@ export default function HomeDeck() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <CursorFollower />
+      {/* Só opacidade: transform aqui viraria referência pros filhos fixed */}
       <div
-        ref={rootRef}
-        // pan-y: o dedo rola na vertical; o arraste lateral vem pra cá
-        className={`fixed inset-0 touch-pan-y overflow-hidden bg-surface text-on-surface ${
-          dragging ? "cursor-grabbing select-none" : ""
-        }`}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={() => endDrag(false)}
-        onPointerCancel={() => endDrag(true)}
+        style={{
+          opacity: leaving ? 0 : 1,
+          transition: `opacity ${LEAVE_MS}ms ease-out`,
+        }}
       >
-        {/* Sem mode="wait": a sessão nova monta no mesmo commit da troca e a
+        <CursorFollower />
+        <div
+          ref={rootRef}
+          // pan-y: o dedo rola na vertical; o arraste lateral vem pra cá
+          className={`fixed inset-0 touch-pan-y overflow-hidden bg-surface text-on-surface ${
+            dragging ? "cursor-grabbing select-none" : ""
+          }`}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={() => endDrag(false)}
+          onPointerCancel={() => endDrag(true)}
+        >
+          {/* Sem mode="wait": a sessão nova monta no mesmo commit da troca e a
             antiga sai por cima. Esperar a saída fazia a montagem (pesada no
             banner) cair no meio da animação da paginação e engasgar. */}
-        <AnimatePresence initial={false} custom={direction}>
-          <SlidePane
-            key={section.id}
-            ref={(h) => {
-              if (h) panes.current.set(section.id, h);
-              else panes.current.delete(section.id);
-            }}
-            id={section.id}
-            label={labels[index]}
-            direction={direction}
-          >
-            {slides[section.id]}
-          </SlidePane>
-        </AnimatePresence>
+          <AnimatePresence initial={false} custom={direction}>
+            <SlidePane
+              key={section.id}
+              ref={(h) => {
+                if (h) panes.current.set(section.id, h);
+                else panes.current.delete(section.id);
+              }}
+              id={section.id}
+              label={labels[index]}
+              direction={direction}
+            >
+              {slides[section.id]}
+            </SlidePane>
+          </AnimatePresence>
 
-        {/* Degradê do topo: o conteúdo que rola some por baixo da busca, igual
+          {/* Degradê do topo: o conteúdo que rola some por baixo da busca, igual
             ao rodapé faz com a paginação */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-30 h-16 bg-gradient-to-b from-surface from-40% to-transparent sm:h-24"
-        />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 z-30 h-16 bg-gradient-to-b from-surface from-40% to-transparent sm:h-24"
+          />
 
-        {/* Busca no topo, centralizada (no celular, lupa à direita). Completa só
+          {/* Busca no topo, centralizada (no celular, lupa à direita). Completa só
             no Início; nas outras sessões encolhe pro atalho, animando. */}
-        <div className="pointer-events-none absolute right-4 top-4 z-40 flex sm:inset-x-0 sm:top-6 sm:justify-center [&>*]:pointer-events-auto">
-          <SearchHint variant="hero" expanded={index === 0} delay={1.2} />
+          <div className="pointer-events-none absolute right-4 top-4 z-40 flex sm:inset-x-0 sm:top-6 sm:justify-center [&>*]:pointer-events-auto">
+            <SearchHint variant="hero" expanded={index === 0} delay={1.2} />
+          </div>
+
+          <p className="sr-only" aria-live="polite">
+            {pt
+              ? `Sessão ${index + 1} de ${total}: ${labels[index]}`
+              : `Section ${index + 1} of ${total}: ${labels[index]}`}
+          </p>
         </div>
 
-        <p className="sr-only" aria-live="polite">
-          {pt
-            ? `Sessão ${index + 1} de ${total}: ${labels[index]}`
-            : `Section ${index + 1} of ${total}: ${labels[index]}`}
-        </p>
-      </div>
-
-      {/* Rodapé: avatar/menu à esquerda, paginação no centro. Fixo e sem
+        {/* Rodapé: avatar/menu à esquerda, paginação no centro. Fixo e sem
           animação de entrada: é navegação, tem que estar lá desde o
           primeiro frame. O degradê esconde o conteúdo que rola por baixo. */}
-      <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 bg-gradient-to-t from-surface from-60% to-transparent pb-3 pt-6 sm:pb-6 sm:pt-10">
-        <div className="pointer-events-auto mx-auto grid max-w-[96rem] grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-8 lg:px-20">
-          <AvatarMenu />
-          <div className="flex justify-center">
-            <DeckPagination
-              current={index}
-              labels={labels}
-              onChange={go}
-              language={language}
-            />
+        <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 bg-gradient-to-t from-surface from-60% to-transparent pb-3 pt-6 sm:pb-6 sm:pt-10">
+          <div className="pointer-events-auto mx-auto grid max-w-[96rem] grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:grid-cols-[1fr_auto_1fr] sm:px-8 lg:px-20">
+            <AvatarMenu />
+            <div className="flex justify-center">
+              <DeckPagination
+                current={index}
+                labels={labels}
+                onChange={go}
+                language={language}
+              />
+            </div>
+            {/* Coluna da direita vazia: equilibra o grid pra paginação ficar no centro */}
+            <span />
           </div>
-          {/* Coluna da direita vazia: equilibra o grid pra paginação ficar no centro */}
-          <span />
-        </div>
-      </footer>
+        </footer>
+      </div>
     </MotionConfig>
   );
 }
