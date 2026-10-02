@@ -280,10 +280,21 @@ export const translations = {
   },
 };
 
+/**
+ * Idioma do dispositivo: percorre a lista de preferências do aparelho e usa o
+ * primeiro que o site tem (pt ou en). Espanhol + português -> português.
+ * Nenhum dos dois -> inglês.
+ */
 function detectBrowserLanguage(): Language {
   if (typeof navigator === "undefined") return "pt";
-  const lang = navigator.language?.toLowerCase() ?? "";
-  if (lang.startsWith("pt")) return "pt";
+  const prefs = navigator.languages?.length
+    ? navigator.languages
+    : [navigator.language ?? ""];
+  for (const raw of prefs) {
+    const lang = raw.toLowerCase();
+    if (lang.startsWith("pt")) return "pt";
+    if (lang.startsWith("en")) return "en";
+  }
   return "en";
 }
 
@@ -299,6 +310,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       setLanguage(detectBrowserLanguage());
     }
   }, []);
+
+  // <html lang> acompanha: leitor de tela e tradutor do navegador usam isso
+  useEffect(() => {
+    document.documentElement.lang = language === "pt" ? "pt-BR" : "en";
+  }, [language]);
 
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
