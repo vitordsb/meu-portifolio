@@ -29,6 +29,13 @@ import JourneySlide from "./slides/JourneySlide";
 /** Onde um arraste NÃO começa: o que já é clicável ou rola de lado. */
 const INTERACTIVE =
   "a, button, input, textarea, select, label, summary, [role='button'], [role='tab'], [data-no-swipe], [contenteditable='true']";
+/**
+ * No toque, o arraste pode começar em link e botão: no celular eles ocupam
+ * boa parte da tela e quem desliza não mira. Um toque simples segue abrindo
+ * o link; só um deslize de verdade vira troca de sessão (o click é engolido).
+ */
+const TOUCH_BLOCK =
+  "input, textarea, select, [data-no-swipe], [contenteditable='true']";
 /** Arraste que passa disso (ou 20% da tela) troca de sessão ao soltar. */
 const DRAG_COMMIT_PX = 160;
 /** ...ou um "chute" rápido: >40px a mais de 0,45 px/ms. */
@@ -219,7 +226,8 @@ export default function HomeDeck() {
   // ── Arrastar (mouse e toque) ──────────────────────────────────────────────
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0 || !e.isPrimary || overlayOpen()) return;
-    if ((e.target as HTMLElement).closest(INTERACTIVE)) return;
+    const block = e.pointerType === "touch" ? TOUCH_BLOCK : INTERACTIVE;
+    if ((e.target as HTMLElement).closest(block)) return;
     gesture.current = {
       id: e.pointerId,
       x0: e.clientX,
