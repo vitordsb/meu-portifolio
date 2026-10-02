@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { cleanText } from "@/lib/sanitize";
 import { MAX_MESSAGE_CHARS, MAX_USER_TURNS } from "./shared";
 
 /**
@@ -16,9 +17,14 @@ export const ConversationSchema = z
       role: z.enum(["user", "assistant"]),
       content: z
         .string()
-        .trim()
-        .min(1)
-        .max(MAX_MESSAGE_CHARS * 2),
+        .transform(cleanText)
+        .pipe(
+          z
+            .string()
+            .trim()
+            .min(1)
+            .max(MAX_MESSAGE_CHARS * 2),
+        ),
     }),
   )
   .min(1)

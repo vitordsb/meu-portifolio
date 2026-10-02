@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { cleanLine } from "@/lib/sanitize";
 import { deliverContact } from "@/lib/contact-delivery";
 import { sendEmail } from "@/lib/mailer";
 import { buildClientEmail } from "@/lib/estimate/client-email";
@@ -26,18 +27,17 @@ import { ScopeSchema, type Estimate, type Scope } from "@/lib/estimate/scope";
 export const maxDuration = 60;
 
 const LeadSchema = z.object({
-  name: z.string().trim().min(2).max(80),
+  name: z.string().transform(cleanLine).pipe(z.string().min(2).max(80)),
   whatsapp: z
     .string()
     .transform((s) => s.replace(/\D/g, ""))
     .pipe(z.string().min(10).max(13)),
   email: z
     .string()
-    .trim()
-    .max(320)
+    .max(400)
     .optional()
-    .transform((s) => s || undefined)
-    .pipe(z.email().optional()),
+    .transform((s) => (s ? cleanLine(s) : undefined) || undefined)
+    .pipe(z.email().max(320).optional()),
   consent: z.literal(true),
 });
 
