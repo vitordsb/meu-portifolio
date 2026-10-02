@@ -12,7 +12,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { SOCIALS } from "@/lib/deck-content";
 import { CNPJ } from "@/lib/email-layout";
+import { WhatsappIcon } from "@/components/deck/SocialIcons";
 import { PACKAGES, type ServicePackage } from "@/lib/payments/packages";
 import PageHeader from "./PageHeader";
 
@@ -22,19 +24,25 @@ const brl = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 0,
 });
 
+type Notice = { pkg: string; kind: "fallback" | "rate" | "offline" };
+
 /**
  * Vitrine de pacotes com preço fechado. "Contratar" cria a sessão de
  * checkout no Asaas (o preço sai do servidor) e leva a pessoa pra lá.
+ *
+ * Se o Asaas não abrir o pagamento (conta em análise, instabilidade), o card
+ * oferece contratar pelo WhatsApp com o pacote já escrito: a venda não morre
+ * num erro.
  */
 export default function ServicesPage() {
   const { language } = useLanguage();
   const pt = language === "pt";
   const [busy, setBusy] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<Notice | null>(null);
 
   const hire = async (pkg: ServicePackage) => {
     setBusy(pkg.id);
-    setError(null);
+    setNotice(null);
     track("pacote_contratar", { pacote: pkg.id });
     try {
       const res = await fetch("/api/pagamentos/checkout", {
@@ -47,19 +55,12 @@ export default function ServicesPage() {
         window.location.href = data.url;
         return; // segue "carregando" até a página do Asaas abrir
       }
-      setError(
-        res.status === 429
-          ? pt
-            ? "Muitas tentativas seguidas. Tenta de novo em alguns minutos."
-            : "Too many attempts. Try again in a few minutes."
-          : pt
-            ? "Não consegui abrir o pagamento agora. Tenta de novo ou me chama no WhatsApp."
-            : "Couldn't open the payment right now. Try again or reach me on WhatsApp.",
-      );
+      const kind = res.status === 429 ? "rate" : "fallback";
+      setNotice({ pkg: pkg.id, kind });
+      if (kind === "fallback")
+        track("pacote_fallback_whatsapp", { pacote: pkg.id });
     } catch {
-      setError(
-        pt ? "Sem conexão. Tenta de novo." : "No connection. Try again.",
-      );
+      setNotice({ pkg: pkg.id, kind: "offline" });
     }
     setBusy(null);
   };
@@ -77,12 +78,6 @@ export default function ServicesPage() {
             ? "Escolha, pague com Pix ou cartão e eu começo. Sem orçamento, sem espera."
             : "Pick one, pay with Pix or card and I get started. No quote, no waiting."}
         </p>
-
-        {error && (
-          <p role="alert" className="mt-6 text-sm text-error">
-            {error}
-          </p>
-        )}
 
         <ul className="mt-10 grid gap-4 md:grid-cols-2">
           {PACKAGES.map((pkg) => (
@@ -153,6 +148,45 @@ export default function ServicesPage() {
                   )}
                 </span>
               </button>
+
+              {notice?.pkg === pkg.id && (
+                <div role="alert" className="mt-4 text-sm">
+                  {notice.kind === "fallback" ? (
+                    <>
+                      <p className="text-on-surface-variant">
+                        {pt
+                          ? "O pagamento online está indisponível agora. Contrata comigo pelo WhatsApp que eu te mando o link."
+                          : "Online payment is unavailable right now. Hire me on WhatsApp and I'll send you the link."}
+                      </p>
+                      <a
+                        href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(
+                          pt
+                            ? `Olá! Quero contratar o pacote ${pkg.name.pt} (${brl.format(pkg.price)}).`
+                            : `Hi! I'd like to hire the ${pkg.name.en} package (${brl.format(pkg.price)}).`,
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn mt-3 h-11 w-full rounded-lg bg-[#25D366] text-base text-white"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <WhatsappIcon size={18} />
+                          {pt ? "Contratar pelo WhatsApp" : "Hire on WhatsApp"}
+                        </span>
+                      </a>
+                    </>
+                  ) : (
+                    <p className="text-error">
+                      {notice.kind === "rate"
+                        ? pt
+                          ? "Muitas tentativas seguidas. Tenta de novo em alguns minutos."
+                          : "Too many attempts. Try again in a few minutes."
+                        : pt
+                          ? "Sem conexão. Tenta de novo."
+                          : "No connection. Try again."}
+                    </p>
+                  )}
+                </div>
+              )}
             </li>
           ))}
         </ul>
