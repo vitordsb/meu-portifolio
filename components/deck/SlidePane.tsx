@@ -79,7 +79,10 @@ const SlidePane = forwardRef<
       initial="from"
       animate="enter"
       exit="exit"
-      className="absolute inset-0 overflow-y-auto overscroll-contain"
+      // touch-pan-y aqui, não só na raiz: o navegador só olha o touch-action
+      // até a área rolável mais próxima. Sem isso, no celular ele assume o
+      // gesto lateral, cancela o ponteiro e o arraste entre sessões morre.
+      className="absolute inset-0 touch-pan-y overflow-y-auto overscroll-contain"
     >
       {children}
     </motion.section>
