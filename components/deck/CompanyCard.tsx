@@ -68,7 +68,7 @@ function AppShot({ src }: { src: string }) {
  */
 function PrivateAppShot({ title, pt }: { title: string; pt: boolean }) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-surface-container-high to-surface-container">
+    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-surface-high to-surface-container">
       <div className="relative h-[78%] translate-y-[8%] transition-transform duration-500 group-hover:translate-y-[6%]">
         <div className="flex h-full aspect-[9/19] flex-col gap-2 rounded-[1.6rem] border-[5px] border-on-surface/80 bg-surface p-3 shadow-2xl">
           <div className="mx-auto mb-1 h-1.5 w-10 rounded-full bg-on-surface/15" />
@@ -126,8 +126,8 @@ export default function CompanyCard({
   const store = storeOf(link);
 
   return (
-    <article className="group flex w-full flex-col overflow-hidden rounded-xl border border-outline-variant bg-surface-container-low transition-colors hover:border-on-surface/30">
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-outline-variant bg-surface-container-high">
+    <article className="group flex w-full flex-col overflow-hidden rounded-xl border border-outline-variant bg-surface-low transition-colors hover:border-on-surface/30">
+      <div className="relative aspect-[16/10] overflow-hidden border-b border-outline-variant bg-surface-high">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={product.title}
@@ -244,13 +244,13 @@ export default function CompanyCard({
               href={store ? localizedStoreLink(link, language) : link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-9 items-center gap-2 rounded-md border border-outline-variant px-3 text-sm font-medium transition-colors hover:border-on-surface hover:bg-surface-container-high"
+              className="inline-flex h-9 items-center gap-2 rounded-md border border-outline-variant px-3 text-sm font-medium transition-colors hover:border-on-surface hover:bg-surface-high"
             >
               {store ? storeCta(store, language) : linkLabelFor(link)}
               <ArrowUpRight size={14} />
             </a>
           ) : (
-            <span className="inline-flex h-9 items-center gap-2 rounded-md bg-surface-container-high px-3 text-sm text-on-surface-variant">
+            <span className="inline-flex h-9 items-center gap-2 rounded-md bg-surface-high px-3 text-sm text-on-surface-variant">
               <Lock size={13} />
               {product.title}
             </span>

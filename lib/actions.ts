@@ -8,6 +8,7 @@ import { fakePasswordWork, verifyPassword } from "./crypto";
 import { createSessionToken, SESSION_TTL_SECONDS } from "./oauth";
 import { clientIpFrom, isAllowedIp } from "./request-ip";
 import { rateLimit, resetRateLimit } from "./rate-limit";
+import { deliverContact } from "./contact-delivery";
 import * as db from "./db";
 
 async function getRequestIp(): Promise<string | null> {
@@ -235,41 +236,7 @@ export async function sendContactMessage(
     message,
   };
 
-  // 1) Sempre registra no banco (garante recebimento mesmo sem email configurado)
-  try {
-    await db.createContactMessage(payload);
-  } catch (e) {
-    console.error("[contact] falha ao salvar no banco:", e);
-    // não aborta, ainda tenta enviar email
-  }
-
-  // 2) Envia email via Resend, se configurado
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? "vitordsb2019@gmail.com";
-  const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>";
-  if (apiKey) {
-    try {
-      const { Resend } = await import("resend");
-      const resend = new Resend(apiKey);
-      await resend.emails.send({
-        from,
-        to,
-        replyTo: payload.email ?? undefined,
-        subject: `[Portfolio] ${payload.subject || "Novo contato"} de ${name}`,
-        text: [
-          `Nome: ${name}`,
-          `Email: ${payload.email ?? "(não informado)"}`,
-          `Empresa: ${payload.company ?? "(não informada)"}`,
-          `Assunto: ${payload.subject ?? "(não informado)"}`,
-          "",
-          payload.message,
-        ].join("\n"),
-      });
-    } catch (e) {
-      console.error("[contact] falha ao enviar email (Resend):", e);
-      // banco já tem o registro, segue ok pro usuário
-    }
-  }
+  await deliverContact(payload);
 
   revalidatePath("/admin");
   return { ok: true };

@@ -261,6 +261,18 @@ export async function createContactMessage(data: InsertContactMessage) {
   return db.insert(contactMessages).values(data);
 }
 
+/** Já existe contato com este assunto? `null` = sem banco pra conferir. */
+export async function contactSubjectExists(subject: string): Promise<boolean | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db
+    .select({ id: contactMessages.id })
+    .from(contactMessages)
+    .where(eq(contactMessages.subject, subject))
+    .limit(1);
+  return rows.length > 0;
+}
+
 export async function getAllContactMessages() {
   const db = await getDb();
   if (!db) return [];

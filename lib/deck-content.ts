@@ -65,8 +65,11 @@ export const SERVICES: {
   { key: "consulting", label: { pt: "Consultoria", en: "Consulting" } },
   {
     key: "build",
-    label: { pt: "Crie um software", en: "Build a software" },
+    // Era "Crie um software" (abria o contato). Desde 01/out/2026 leva pro
+    // orçamento com IA: vende mais que um formulário.
+    label: { pt: "Orçamento com IA em 2 min", en: "AI quote in 2 min" },
     primary: true,
+    href: "/orcamento",
   },
 ];
 
