@@ -93,11 +93,20 @@ export default function LeadForm({
             type="email"
             autoComplete="email"
             placeholder={pt ? "E-mail (opcional)" : "Email (optional)"}
+            aria-describedby="lead-email-hint"
             value={lead.email}
             maxLength={320}
             onChange={(e) => setLead((l) => ({ ...l, email: e.target.value }))}
             className={field}
           />
+          <span
+            id="lead-email-hint"
+            className="mt-1.5 block px-1 text-xs text-on-surface-variant"
+          >
+            {pt
+              ? "Com e-mail, você recebe uma cópia do orçamento."
+              : "With an email, you get a copy of the quote."}
+          </span>
         </label>
       </div>
 

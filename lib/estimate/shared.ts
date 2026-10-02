@@ -1,3 +1,5 @@
+import type { Scope } from "./scope";
+
 /**
  * O que a página e as rotas do orçamento compartilham. Sem prompt aqui: este
  * arquivo vai pro navegador.
@@ -54,3 +56,35 @@ export function quoteWhatsappText(name: string, code: string, pt: boolean) {
     ? `Olá! Sou ${first} e quero discutir o orçamento #${code}. Está disponível?`
     : `Hi! I'm ${first} and I'd like to discuss quote #${code}. Are you available?`;
 }
+
+/**
+ * O que entra no MVP, em linguagem de cliente (sem horas nem fatores). A
+ * mesma lista aparece na tela do resultado e no e-mail de confirmação.
+ */
+export function mvpItems(s: Scope, pt: boolean) {
+  const items = s.funcionalidades.map((f) => f.nome);
+  if (s.login) items.push(pt ? "Login de usuários" : "User accounts");
+  if (s.painel_admin) items.push(pt ? "Painel administrativo" : "Admin panel");
+  items.push(...s.integracoes);
+  if (s.design !== "pronto")
+    items.push(pt ? "Design de interface (UI/UX)" : "Interface design (UI/UX)");
+  const platforms = [
+    s.plataformas.web && "Web",
+    s.plataformas.mobile && (pt ? "App iOS e Android" : "iOS and Android app"),
+  ].filter(Boolean) as string[];
+  return { items, platforms };
+}
+
+/** Os três avisos de "Como esse valor funciona" (tela e e-mail). */
+export const PRICE_NOTES = {
+  pt: [
+    "É o valor de partida da primeira versão (MVP): o essencial pra colocar sua ideia no ar e validar com usuários reais.",
+    "O preço final muda conforme o escopo e a nossa conversa. Mais funcionalidades ou mais detalhe aumentam; deixar o que não é essencial pra depois diminui.",
+    "Nada aqui é compromisso: o valor fechado sai depois de uma conversa rápida comigo.",
+  ],
+  en: [
+    "This is the starting price for the first version (MVP): the essentials to launch your idea and validate it with real users.",
+    "The final price changes with the scope and our conversation. More features or more detail raise it; leaving non-essentials for later lowers it.",
+    "Nothing here is binding: the final price comes after a quick call with me.",
+  ],
+};

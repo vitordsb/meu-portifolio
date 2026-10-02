@@ -39,6 +39,8 @@ type Saved = {
   /** Número do pedido (#48213), pro WhatsApp curto. */
   code: string;
   name: string;
+  /** E-mail que recebeu a confirmação ("" = nenhum). */
+  sentTo?: string;
 };
 
 const STORAGE_KEY = "orcamento:v2";
@@ -92,6 +94,7 @@ export default function EstimateChat() {
   const [estimate, setEstimate] = useState<Estimate | null>(null);
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
+  const [sentTo, setSentTo] = useState("");
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -114,6 +117,7 @@ export default function EstimateChat() {
       setPhase(s.phase);
       setEstimate(s.estimate);
       setCode(s.code ?? "");
+      setSentTo(s.sentTo ?? "");
       setName(s.name);
     }
     restored.current = true;
@@ -121,8 +125,8 @@ export default function EstimateChat() {
 
   useEffect(() => {
     if (restored.current && !streaming)
-      save({ msgs, phase, estimate, code, name });
-  }, [msgs, phase, estimate, code, name, streaming]);
+      save({ msgs, phase, estimate, code, name, sentTo });
+  }, [msgs, phase, estimate, code, name, sentTo, streaming]);
 
   // ── Rolagem: acompanha o fim da conversa ──────────────────────────────────
   // Antes da primeira mensagem, o topo (título + modelo) é o que importa.
@@ -256,11 +260,13 @@ export default function EstimateChat() {
         body: JSON.stringify({
           messages: msgs,
           lead: { ...lead, consent: true },
+          lang: language,
         }),
       });
       const data = await res.json().catch(() => ({}));
       setName(lead.name);
       if (typeof data.code === "string") setCode(data.code);
+      setSentTo(data.confirmationSent ? lead.email.trim() : "");
 
       if (res.ok && data.estimate) {
         setEstimate(data.estimate as Estimate);
@@ -297,6 +303,7 @@ export default function EstimateChat() {
     setPhase("chat");
     setEstimate(null);
     setCode("");
+    setSentTo("");
     setNotice(null);
     setLeadError(null);
     setInput("");
@@ -501,6 +508,10 @@ export default function EstimateChat() {
                 {pt
                   ? "A calculadora falhou agora, mas a conversa chegou inteira pra mim. Eu te mando o valor de partida pelo WhatsApp, ou me chama citando o número do pedido."
                   : "The calculator failed just now, but the whole chat reached me. I'll send you the starting price on WhatsApp, or reach me mentioning the quote number."}
+                {sentTo &&
+                  (pt
+                    ? ` Mandei a confirmação pra ${sentTo}.`
+                    : ` I sent a confirmation to ${sentTo}.`)}
               </p>
               <a
                 href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(quoteWhatsappText(name, code, pt))}`}
@@ -522,6 +533,7 @@ export default function EstimateChat() {
                 estimate={estimate}
                 code={code}
                 name={name}
+                sentTo={sentTo}
                 pt={pt}
                 onRestart={restart}
               />

@@ -1,7 +1,11 @@
 import { RotateCcw } from "lucide-react";
 import { SOCIALS } from "@/lib/deck-content";
 import type { Estimate } from "@/lib/estimate/scope";
-import { quoteWhatsappText } from "@/lib/estimate/shared";
+import {
+  mvpItems,
+  PRICE_NOTES,
+  quoteWhatsappText,
+} from "@/lib/estimate/shared";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 
 const brl = new Intl.NumberFormat("pt-BR", {
@@ -10,36 +14,23 @@ const brl = new Intl.NumberFormat("pt-BR", {
   maximumFractionDigits: 0,
 });
 
-/** O que entrou na conta, em linguagem de cliente (sem horas nem fatores). */
-function considered(e: Estimate, pt: boolean) {
-  const s = e.scope;
-  const items = s.funcionalidades.map((f) => f.nome);
-  if (s.login) items.push(pt ? "Login de usuários" : "User accounts");
-  if (s.painel_admin) items.push(pt ? "Painel administrativo" : "Admin panel");
-  items.push(...s.integracoes);
-  const plat = [
-    s.plataformas.web && "Web",
-    s.plataformas.mobile && (pt ? "App iOS e Android" : "iOS and Android app"),
-  ].filter(Boolean) as string[];
-  if (s.design !== "pronto")
-    items.push(pt ? "Design de interface (UI/UX)" : "Interface design (UI/UX)");
-  return { items, plat };
-}
-
 export default function EstimateResult({
   estimate,
   code,
   name,
+  sentTo,
   pt,
   onRestart,
 }: {
   estimate: Estimate;
   code: string;
   name: string;
+  /** E-mail que recebeu a confirmação; vazio = não mandou. */
+  sentTo?: string;
   pt: boolean;
   onRestart: () => void;
 }) {
-  const { items, plat } = considered(estimate, pt);
+  const { items, platforms: plat } = mvpItems(estimate.scope, pt);
   const to = pt ? " a " : " to ";
   const weeks = `${estimate.weeksMin} a ${estimate.weeksMax} ${pt ? "semanas" : "weeks"}`;
 
@@ -107,18 +98,7 @@ export default function EstimateResult({
             {pt ? "Como esse valor funciona" : "How this price works"}
           </p>
           <ul className="space-y-1.5 text-sm leading-relaxed text-on-surface-variant">
-            {(pt
-              ? [
-                  "É o valor de partida da primeira versão (MVP): o essencial pra colocar sua ideia no ar e validar com usuários reais.",
-                  "O preço final muda conforme o escopo e a nossa conversa. Mais funcionalidades ou mais detalhe aumentam; deixar o que não é essencial pra depois diminui.",
-                  "Nada aqui é compromisso: o valor fechado sai depois de uma conversa rápida comigo.",
-                ]
-              : [
-                  "This is the starting price for the first version (MVP): the essentials to launch your idea and validate it with real users.",
-                  "The final price changes with the scope and our conversation. More features or more detail raise it; leaving non-essentials for later lowers it.",
-                  "Nothing here is binding: the final price comes after a quick call with me.",
-                ]
-            ).map((t) => (
+            {PRICE_NOTES[pt ? "pt" : "en"].map((t) => (
               <li key={t} className="flex gap-2">
                 <span
                   aria-hidden
@@ -147,6 +127,14 @@ export default function EstimateResult({
             </>
           )}
         </p>
+        {sentTo && (
+          <p className="-mt-1 w-full text-sm text-on-surface-variant">
+            {pt
+              ? "Enviei uma cópia deste orçamento pra "
+              : "I sent a copy of this quote to "}
+            <span className="font-medium text-on-surface">{sentTo}</span>.
+          </p>
+        )}
         <a
           href={whatsapp}
           target="_blank"
