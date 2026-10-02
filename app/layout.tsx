@@ -47,6 +47,12 @@ export const viewport = {
 // sistema no escuro vê um flash claro até o ThemeProvider hidratar.
 const themeScript = `(function(){try{var c=localStorage.getItem('theme');var r=(c==='light'||c==='dark')?c:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');var e=document.documentElement;e.setAttribute('data-theme',r);e.style.colorScheme=r;}catch(e){}})();`;
 
+// Idioma antes da primeira pintura. O HTML estático sai em português; se o
+// aparelho (ou a escolha salva) pede outro idioma, a página fica invisível até
+// o LanguageProvider trocar o texto, em vez de piscar português. Mesma regra
+// de detectBrowserLanguage (contexts/LanguageContext.tsx): manter as duas iguais.
+const langScript = `(function(){try{var s=localStorage.getItem('language');var l=(s==='pt'||s==='en')?s:null;if(!l){var p=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||''];for(var i=0;i<p.length&&!l;i++){var x=(p[i]||'').toLowerCase();if(x.indexOf('pt')===0)l='pt';else if(x.indexOf('en')===0)l='en';}}l=l||'en';var e=document.documentElement;e.setAttribute('lang',l==='pt'?'pt-BR':'en');if(l!=='pt')e.setAttribute('data-lang-pending','');}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -56,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: langScript }} />
       </head>
       <body>
         <Providers>{children}</Providers>

@@ -311,9 +311,15 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // <html lang> acompanha: leitor de tela e tradutor do navegador usam isso
+  // <html lang> acompanha: leitor de tela e tradutor do navegador usam isso.
+  // E quando o idioma do aparelho não é português, o langScript do layout
+  // deixou a página invisível: mostra assim que o texto já trocou.
   useEffect(() => {
-    document.documentElement.lang = language === "pt" ? "pt-BR" : "en";
+    const root = document.documentElement;
+    root.lang = language === "pt" ? "pt-BR" : "en";
+    if (language !== "pt" && root.hasAttribute("data-lang-pending")) {
+      requestAnimationFrame(() => root.removeAttribute("data-lang-pending"));
+    }
   }, [language]);
 
   const handleSetLanguage = (lang: Language) => {
