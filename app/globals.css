@@ -324,6 +324,10 @@
   /* O deslize de dois dedos troca de sessão no deck: sem isso o Chrome usa
      o mesmo gesto pra voltar/avançar página. */
   html, body { overscroll-behavior-x: none; }
+  /* Aparelho em outro idioma: esconde o português do HTML estático até o
+     LanguageProvider trocar (ver langScript no layout). Se o JS falhar, a
+     página aparece sozinha em 1,5 s. */
+  html[data-lang-pending] body { opacity: 0; animation: lang-reveal 0s 1.5s forwards; }
 
   body {
     background: var(--surface);
@@ -795,3 +799,5 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+@keyframes lang-reveal { to { opacity: 1; } }
