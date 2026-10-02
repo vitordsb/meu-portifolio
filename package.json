@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
-    "db:seed:portfolio": "tsx scripts/seed-portfolio.ts"
+    "db:seed:portfolio": "tsx scripts/seed-portfolio.ts",
+    "cobrar": "tsx scripts/cobrar.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
