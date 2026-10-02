@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useContactModal } from "@/contexts/ContactModalContext";
 import { HERO, SERVICES, SOCIALS, l } from "@/lib/deck-content";
@@ -161,16 +163,19 @@ export default function HeroSlide({
               return (
                 <Rise key={s.key} step={5.2 + i * 0.4}>
                   {s.href ? (
-                    <a
+                    <Link
                       href={s.href}
                       className={
                         s.primary
-                          ? "btn btn-filled h-12 rounded-lg px-7 text-base"
+                          ? "btn btn-filled h-12 rounded-lg px-6 text-base"
                           : "link-underline"
                       }
                     >
-                      <span>{label}</span>
-                    </a>
+                      <span className="inline-flex items-center gap-2">
+                        {s.primary && <Sparkles size={16} />}
+                        {label}
+                      </span>
+                    </Link>
                   ) : (
                     <button
                       type="button"

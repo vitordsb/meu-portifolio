@@ -17,7 +17,7 @@ export default function AboutMeDrawer({ language }: { language: "pt" | "en" }) {
       <Dialog.Trigger asChild>
         <button
           type="button"
-          className="group flex w-full items-center justify-between gap-6 rounded-xl border border-outline-variant bg-surface-container-low p-6 text-left transition-colors hover:border-on-surface/40 md:p-8"
+          className="group flex w-full items-center justify-between gap-6 rounded-xl border border-outline-variant bg-surface-low p-6 text-left transition-colors hover:border-on-surface/40 md:p-8"
         >
           <span className="min-w-0">
             <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
@@ -55,7 +55,7 @@ export default function AboutMeDrawer({ language }: { language: "pt" | "en" }) {
             </div>
             <Dialog.Close
               aria-label={pt ? "Fechar" : "Close"}
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
             >
               <X size={18} />
             </Dialog.Close>

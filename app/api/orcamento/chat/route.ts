@@ -1,0 +1,107 @@
+import {
+  ConversationSchema,
+  countUserTurns,
+  noDashes,
+} from "@/lib/estimate/conversation";
+import {
+  AiUnavailableError,
+  hasAiKey,
+  streamChat,
+} from "@/lib/estimate/deepseek";
+import { isDevMock, mockChat } from "@/lib/estimate/dev-mock";
+import { guard, json } from "@/lib/estimate/guard";
+import {
+  CHAT_SYSTEM,
+  MAX_USER_TURNS,
+  READY_MARKER,
+  WRAP_UP_AT,
+  WRAP_UP_NOTE,
+} from "@/lib/estimate/prompts";
+
+/**
+ * Um turno da conversa. Responde em NDJSON, uma linha por evento:
+ *   {"t":"d","v":"texto"}       pedaço da resposta
+ *   {"t":"end","ready":true}    fim; ready = já dá pra gerar o orçamento
+ *   {"t":"err"}                 a IA caiu no meio
+ */
+
+export const maxDuration = 60;
+
+export async function POST(req: Request) {
+  const blocked = guard(req, "orc-chat", 40, 60 * 60 * 1000);
+  if (blocked) return blocked;
+
+  const body = await req.json().catch(() => null);
+  const parsed = ConversationSchema.safeParse(body?.messages);
+  if (!parsed.success) return json({ error: "invalid" }, 400);
+
+  const msgs = parsed.data;
+  if (msgs[msgs.length - 1].role !== "user")
+    return json({ error: "invalid" }, 400);
+
+  const turns = countUserTurns(msgs);
+  if (turns > MAX_USER_TURNS) return json({ error: "too_long" }, 400);
+
+  const mock = isDevMock();
+  if (!mock && !hasAiKey()) return json({ error: "unavailable" }, 503);
+
+  // A nota de "hora de fechar" vai colada na última mensagem: o prefixo
+  // (system + histórico) fica igual entre turnos e cai no cache da DeepSeek.
+  const history = msgs.map((m) => ({ ...m }));
+  if (turns >= WRAP_UP_AT) {
+    const last = history[history.length - 1];
+    last.content = `${last.content}\n\n${WRAP_UP_NOTE}`;
+  }
+
+  const pieces = mock
+    ? mockChat(turns)
+    : streamChat([{ role: "system", content: CHAT_SYSTEM }, ...history], {
+        maxTokens: 400,
+        signal: req.signal,
+      });
+
+  const encoder = new TextEncoder();
+  const send = (ctrl: ReadableStreamDefaultController, event: object) =>
+    ctrl.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
+
+  const stream = new ReadableStream({
+    async start(ctrl) {
+      // Segura o fim do texto até ter certeza de que não é o começo do
+      // marcador: ele nunca pode aparecer pela metade na tela.
+      const hold = READY_MARKER.length;
+      let full = "";
+      let sent = 0;
+
+      try {
+        for await (const piece of pieces) {
+          full += piece;
+          const safeEnd = full.length - hold;
+          if (safeEnd > sent) {
+            send(ctrl, { t: "d", v: noDashes(full.slice(sent, safeEnd)) });
+            sent = safeEnd;
+          }
+        }
+
+        const ready = full.includes(READY_MARKER) || turns >= MAX_USER_TURNS;
+        const clean = full.replace(READY_MARKER, "");
+        const rest = clean.slice(sent).trimEnd();
+        if (rest) send(ctrl, { t: "d", v: noDashes(rest) });
+        send(ctrl, { t: "end", ready });
+      } catch (e) {
+        if (!(e instanceof AiUnavailableError)) {
+          console.error("[orcamento] falha no stream:", e);
+        }
+        send(ctrl, { t: "err" });
+      } finally {
+        ctrl.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "application/x-ndjson; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
+}

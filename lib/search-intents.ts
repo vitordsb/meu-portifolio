@@ -232,11 +232,11 @@ export const SEARCH_INTENTS: SearchIntent[] = [
   {
     id: "criar",
     group: "falar",
-    icon: "code",
-    label: { pt: "Crie um software", en: "Build a software" },
+    icon: "sparkles",
+    label: { pt: "Orçamento com IA em 2 min", en: "AI quote in 2 min" },
     answer: {
-      pt: "Me conta a ideia: orçamento sai rápido, por WhatsApp ou e-mail.",
-      en: "Tell me the idea: quotes come fast, via WhatsApp or email.",
+      pt: "Conta a ideia pra assistente e veja a faixa de preço e prazo na hora.",
+      en: "Tell the assistant your idea and see the price and timeline range right away.",
     },
     keywords: [
       "criar",
@@ -264,11 +264,12 @@ export const SEARCH_INTENTS: SearchIntent[] = [
       "price",
       "quote",
       "cost",
+      "ia",
+      "ai",
+      "estimativa",
+      "estimate",
     ],
-    action: {
-      kind: "contact",
-      subject: { pt: "Crie um software", en: "Build a software" },
-    },
+    action: { kind: "route", href: "/orcamento" },
   },
   {
     id: "consultoria",
