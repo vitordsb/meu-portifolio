@@ -11,7 +11,9 @@
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
     "db:seed:portfolio": "tsx scripts/seed-portfolio.ts",
-    "cobrar": "tsx scripts/cobrar.ts"
+    "cobrar": "tsx scripts/cobrar.ts",
+    "seg:ia": "node scripts/security/ia.mjs",
+    "seg:api": "node scripts/security/api.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

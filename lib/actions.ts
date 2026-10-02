@@ -9,6 +9,7 @@ import { createSessionToken, SESSION_TTL_SECONDS } from "./oauth";
 import { clientIpFrom, isAllowedIp } from "./request-ip";
 import { rateLimit, resetRateLimit } from "./rate-limit";
 import { deliverContact } from "./contact-delivery";
+import { cleanLine, cleanText } from "./sanitize";
 import * as db from "./db";
 
 async function getRequestIp(): Promise<string | null> {
@@ -216,23 +217,53 @@ type ContactInput = {
   company?: string;
   subject?: string;
   message: string;
+  /** Campo-isca escondido: pessoa não vê, robô preenche (SPEC segurança S1). */
+  website?: string;
 };
+
+const CONTACT_MAX_PER_HOUR = 5;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function sendContactMessage(
   data: ContactInput,
 ): Promise<{ ok: boolean; error?: string }> {
-  // Validação básica
-  const name = data.name?.trim();
-  const message = data.message?.trim();
-  if (!name || name.length < 2) return { ok: false, error: "Nome inválido." };
-  if (!message || message.length < 5) return { ok: false, error: "Mensagem muito curta." };
+  // Robô preencheu o campo-isca: finge que deu certo e não entrega nada.
+  // Responder erro ensinaria o robô a deixar o campo vazio.
+  if (data.website?.trim()) return { ok: true };
+
+  // Sem isto um script mandava milhares de mensagens: banco cheio, caixa do
+  // Vitor cheia e cota do Resend (que também entrega os orçamentos) gasta.
+  const ip = await getRequestIp();
+  const limit = rateLimit(
+    `contact:${ip ?? "sem-ip"}`,
+    CONTACT_MAX_PER_HOUR,
+    60 * 60 * 1000,
+  );
+  if (!limit.ok) {
+    const minutos = Math.ceil(limit.retryAfterMs / 60000);
+    return {
+      ok: false,
+      error: `Muitas mensagens seguidas. Tente de novo em ${minutos} min ou me chame no WhatsApp.`,
+    };
+  }
+
+  // Validação básica, depois de tirar caracteres invisíveis (SPEC S9)
+  const name = cleanLine(data.name ?? "");
+  const message = cleanText(data.message ?? "").trim();
+  const email = cleanLine(data.email ?? "");
+  const company = cleanLine(data.company ?? "");
+  const subject = cleanLine(data.subject ?? "");
+  if (name.length < 2 || name.length > 100) return { ok: false, error: "Nome inválido." };
+  if (email && (email.length > 320 || !EMAIL_RE.test(email))) return { ok: false, error: "E-mail inválido." };
+  if (company.length > 120 || subject.length > 150) return { ok: false, error: "Campo longo demais." };
+  if (message.length < 5) return { ok: false, error: "Mensagem muito curta." };
   if (message.length > 5000) return { ok: false, error: "Mensagem muito longa." };
 
   const payload = {
     name,
-    email: data.email?.trim() || null,
-    company: data.company?.trim() || null,
-    subject: data.subject?.trim() || null,
+    email: email || null,
+    company: company || null,
+    subject: subject || null,
     message,
   };
 

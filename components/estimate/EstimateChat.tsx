@@ -219,6 +219,13 @@ export default function EstimateChat() {
                   { ...last, content: last.content + piece },
                 ];
               });
+            } else if (ev.t === "replace" && typeof ev.v === "string") {
+              // O servidor barrou a resposta (parecia vazamento): troca inteira
+              const text = ev.v;
+              setMsgs((m) => [
+                ...m.slice(0, -1),
+                { role: "assistant", content: text },
+              ]);
             } else if (ev.t === "end") {
               ready = Boolean(ev.ready);
             } else if (ev.t === "err") {

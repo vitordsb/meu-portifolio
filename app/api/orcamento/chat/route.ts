@@ -11,6 +11,11 @@ import {
 import { isDevMock, mockChat } from "@/lib/estimate/dev-mock";
 import { guard, json } from "@/lib/estimate/guard";
 import {
+  looksLikePromptLeak,
+  refusal,
+  stripMarker,
+} from "@/lib/estimate/guardrails";
+import {
   CHAT_SYSTEM,
   MAX_USER_TURNS,
   READY_MARKER,
@@ -26,6 +31,9 @@ import {
  */
 
 export const maxDuration = 60;
+
+/** Antes disso o marcador da IA é ignorado: não há escopo pra orçar. */
+const MIN_TURNS_FOR_READY = 2;
 
 export async function POST(req: Request) {
   const blocked = guard(req, "orc-chat", 40, 60 * 60 * 1000);
@@ -47,7 +55,10 @@ export async function POST(req: Request) {
 
   // A nota de "hora de fechar" vai colada na última mensagem: o prefixo
   // (system + histórico) fica igual entre turnos e cai no cache da DeepSeek.
-  const history = msgs.map((m) => ({ ...m }));
+  // Marcador digitado pelo cliente não pode virar comando (SPEC S7)
+  const history = msgs.map((m) =>
+    m.role === "user" ? { ...m, content: stripMarker(m.content) } : { ...m },
+  );
   if (turns >= WRAP_UP_AT) {
     const last = history[history.length - 1];
     last.content = `${last.content}\n\n${WRAP_UP_NOTE}`;
@@ -66,15 +77,23 @@ export async function POST(req: Request) {
 
   const stream = new ReadableStream({
     async start(ctrl) {
-      // Segura o fim do texto até ter certeza de que não é o começo do
-      // marcador: ele nunca pode aparecer pela metade na tela.
-      const hold = READY_MARKER.length;
+      // Segura o fim do texto: o marcador nunca aparece pela metade e o
+      // verificador de vazamento (SPEC S3) olha cada trecho antes de ele ir
+      // pra tela. Vazou: corta o stream e manda a recusa no lugar.
+      const hold = Math.max(READY_MARKER.length, 160);
       let full = "";
       let sent = 0;
+      const lastUser = msgs[msgs.length - 1].content;
 
       try {
         for await (const piece of pieces) {
           full += piece;
+          if (looksLikePromptLeak(full)) {
+            console.warn("[orcamento] resposta bloqueada: parecia o prompt");
+            send(ctrl, { t: "replace", v: refusal(lastUser) });
+            send(ctrl, { t: "end", ready: false });
+            return;
+          }
           const safeEnd = full.length - hold;
           if (safeEnd > sent) {
             send(ctrl, { t: "d", v: noDashes(full.slice(sent, safeEnd)) });
@@ -82,7 +101,10 @@ export async function POST(req: Request) {
           }
         }
 
-        const ready = full.includes(READY_MARKER) || turns >= MAX_USER_TURNS;
+        // Marcador só vale a partir do 2º turno: no 1º não tem escopo (SPEC S7)
+        const ready =
+          (full.includes(READY_MARKER) && turns >= MIN_TURNS_FOR_READY) ||
+          turns >= MAX_USER_TURNS;
         const clean = full.replace(READY_MARKER, "");
         const rest = clean.slice(sent).trimEnd();
         if (rest) send(ctrl, { t: "d", v: noDashes(rest) });

@@ -59,7 +59,7 @@ export default function ContactModal({
   const [step, setStep] = useState<Step>("channel");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", company: "", subject: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", company: "", subject: "", message: "", website: "" });
 
   // Assunto vindo do CTA entra no formulário ao abrir
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function ContactModal({
       const t = setTimeout(() => {
         setStep("channel");
         setError(null);
-        setForm({ name: "", email: "", company: "", subject: "", message: "" });
+        setForm({ name: "", email: "", company: "", subject: "", message: "", website: "" });
       }, 250);
       return () => clearTimeout(t);
     }
@@ -176,6 +176,21 @@ export default function ContactModal({
               </Dialog.Description>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                {/* Campo-isca (anti-robô): fora da tela, fora do Tab e do leitor
+                    de tela. Pessoa não preenche; robô preenche e é descartado. */}
+                <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
+                  <label>
+                    Website
+                    <input
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={form.website}
+                      onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
+                    />
+                  </label>
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                   <input
                     required
