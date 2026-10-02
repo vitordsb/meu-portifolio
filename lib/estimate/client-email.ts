@@ -1,63 +1,26 @@
 import { SOCIALS } from "@/lib/deck-content";
+import {
+  brl,
+  C,
+  CNPJ,
+  emailShell,
+  esc,
+  firstName,
+  highlight,
+  label,
+  noLinks,
+  row,
+  SITE,
+} from "@/lib/email-layout";
 import type { Estimate } from "./scope";
 import { mvpItems, PRICE_NOTES, quoteWhatsappText } from "./shared";
 
 /**
  * E-mail de confirmação pro cliente que pediu orçamento: agradece, repete o
  * número do pedido e o valor de partida do MVP e aponta o próximo passo.
- *
- * HTML de e-mail é outro mundo: tabela, estilo inline, sem CSS externo nem
- * fonte da web (Gmail e Outlook ignoram). Visual monocromático do site.
- *
- * Nome e resumo vêm do visitante (direto ou via IA), então são escapados e
- * têm link removido: o formulário não pode virar canhão de spam com o nosso
- * domínio de remetente.
+ * Moldura em `lib/email-layout.ts`. Nome e resumo vêm do visitante (direto
+ * ou via IA), então são escapados e têm link removido.
  */
-
-const brl = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-  maximumFractionDigits: 0,
-});
-
-const CNPJ = "69.283.538/0001-57";
-const SITE = "https://www.vitordsb.com.br";
-
-function esc(s: string) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-/** Tira URL e domínio solto do texto vindo do visitante. */
-function noLinks(s: string) {
-  return s
-    .replace(/\b(?:https?:\/\/|www\.)\S+/gi, "")
-    .replace(
-      /\b[\w-]+(?:\.[\w-]+)*\.(?:com|net|org|br|io|xyz|info|ru|cn|link|top)\b\S*/gi,
-      "",
-    )
-    .replace(/\s{2,}/g, " ")
-    .trim();
-}
-
-function firstName(name: string) {
-  return noLinks(name).split(/\s+/)[0] || "";
-}
-
-const C = {
-  bg: "#f4f4f5",
-  card: "#ffffff",
-  border: "#e4e4e7",
-  text: "#0a0a0a",
-  muted: "#52525b",
-  soft: "#fafafa",
-  green: "#25D366",
-};
-const FONT =
-  "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
 export function buildClientEmail(opts: {
   name: string;
@@ -171,9 +134,6 @@ export function buildClientEmail(opts: {
   ].join("\n");
 
   // ── HTML ──
-  const label = (s: string) =>
-    `<p style="margin:0 0 8px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:${C.muted};">${esc(s)}</p>`;
-
   const chips = items
     .map(
       (i) =>
@@ -188,84 +148,43 @@ export function buildClientEmail(opts: {
     )
     .join("");
 
-  const estimateBlock = estimate
-    ? `
-      <tr><td style="padding:24px 32px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.soft};border:1px solid ${C.border};border-radius:12px;">
-          <tr><td style="padding:20px 22px;">
-            ${label(t.rangeLabel)}
+  const body = estimate
+    ? [
+        row(
+          highlight(
+            `${label(t.rangeLabel)}
             <p style="margin:0;font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.5px;color:${C.text};">${rangeHtml}</p>
-            <p style="margin:8px 0 0;font-size:14px;color:${C.muted};">${esc(t.weeksLabel)}: <strong style="color:${C.text};">${esc(weeks!)}</strong>${mvp && mvp.platforms.length ? ` &middot; ${esc(mvp.platforms.join(" + "))}` : ""}</p>
-          </td></tr>
-        </table>
-      </td></tr>
-      ${
+            <p style="margin:8px 0 0;font-size:14px;color:${C.muted};">${esc(t.weeksLabel)}: <strong style="color:${C.text};">${esc(weeks!)}</strong>${mvp && mvp.platforms.length ? ` &middot; ${esc(mvp.platforms.join(" + "))}` : ""}</p>`,
+          ),
+        ),
         resumo
-          ? `<tr><td style="padding:24px 32px 0;">
-        ${label(t.projectLabel)}
-        <p style="margin:0;font-size:15px;line-height:24px;color:${C.text};">${esc(resumo)}</p>
-      </td></tr>`
-          : ""
-      }
-      ${
-        chips
-          ? `<tr><td style="padding:22px 32px 0;">
-        ${label(t.mvpLabel)}
-        <div>${chips}</div>
-      </td></tr>`
-          : ""
-      }
-      <tr><td style="padding:14px 32px 0;">
-        ${label(t.notesLabel)}
-        <table role="presentation" cellpadding="0" cellspacing="0">${bullets}</table>
-      </td></tr>`
-    : `
-      <tr><td style="padding:16px 32px 0;">
-        <p style="margin:0;font-size:15px;line-height:24px;color:${C.muted};">${esc(t.failNote)}</p>
-      </td></tr>`;
+          ? row(
+              `${label(t.projectLabel)}<p style="margin:0;font-size:15px;line-height:24px;color:${C.text};">${esc(resumo)}</p>`,
+            )
+          : "",
+        chips ? row(`${label(t.mvpLabel)}<div>${chips}</div>`, 22) : "",
+        row(
+          `${label(t.notesLabel)}<table role="presentation" cellpadding="0" cellspacing="0">${bullets}</table>`,
+          14,
+        ),
+      ].join("")
+    : row(
+        `<p style="margin:0;font-size:15px;line-height:24px;color:${C.muted};">${esc(t.failNote)}</p>`,
+        16,
+      );
 
-  const html = `<!doctype html>
-<html lang="${pt ? "pt-BR" : "en"}">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
-<title>${esc(t.subject)}</title>
-</head>
-<body style="margin:0;padding:0;background:${C.bg};font-family:${FONT};-webkit-font-smoothing:antialiased;">
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(t.preheader)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.bg};">
-  <tr><td align="center" style="padding:32px 16px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${C.card};border:1px solid ${C.border};border-radius:16px;">
-      <tr><td style="padding:28px 32px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td style="font-size:15px;font-weight:800;letter-spacing:-0.3px;color:${C.text};">Vitor de Souza</td>
-          <td align="right" style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:${C.muted};">${esc(t.label)}</td>
-        </tr></table>
-      </td></tr>
-      <tr><td style="padding:28px 32px 0;">
-        <h1 style="margin:0;font-size:24px;line-height:30px;font-weight:800;letter-spacing:-0.4px;color:${C.text};">${esc(t.hello)}</h1>
-        <p style="margin:12px 0 0;font-size:15px;line-height:24px;color:${C.muted};">${esc(t.thanks)}</p>
-      </td></tr>
-      ${estimateBlock}
-      <tr><td style="padding:24px 32px 0;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${C.border};"><tr><td style="padding-top:22px;">
-          ${label(t.nextLabel)}
-          <p style="margin:0 0 18px;font-size:15px;line-height:24px;color:${C.text};">${esc(t.next)}</p>
-          <a href="${esc(whatsapp)}" style="display:inline-block;padding:13px 22px;background:${C.green};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;border-radius:10px;">${esc(t.cta)}</a>
-        </td></tr></table>
-      </td></tr>
-      <tr><td style="padding:28px 32px 28px;">
-        <p style="margin:0;font-size:15px;font-weight:700;color:${C.text};">Vitor de Souza</p>
-        <p style="margin:2px 0 0;font-size:13px;color:${C.muted};">${esc(t.role)}</p>
-        <p style="margin:2px 0 0;font-size:13px;"><a href="${SITE}" style="color:${C.text};">vitordsb.com.br</a></p>
-      </td></tr>
-    </table>
-    <p style="max-width:560px;margin:16px auto 0;font-size:12px;line-height:18px;color:#71717a;">${esc(t.footer)}<br>CNPJ ${CNPJ}</p>
-  </td></tr>
-</table>
-</body>
-</html>`;
+  const html = emailShell({
+    pt,
+    title: t.subject,
+    preheader: t.preheader,
+    tag: t.label,
+    hello: t.hello,
+    intro: t.thanks,
+    body,
+    next: { label: t.nextLabel, text: t.next, cta: t.cta, href: whatsapp },
+    role: t.role,
+    footer: t.footer,
+  });
 
   return { subject: t.subject, text, html };
 }

@@ -42,6 +42,8 @@ export default function AvatarMenu({ className }: { className?: string }) {
 
   const pages = [
     { href: "/", label: pt ? "Início" : "Home" },
+    { href: "/servicos", label: pt ? "Serviços" : "Services" },
+    { href: "/orcamento", label: pt ? "Orçamento com IA" : "AI quote" },
     { href: "/about", label: t("nav.about") },
     { href: "/autonomo", label: t("nav.autonomo") },
     { href: "/skills", label: t("nav.skills") },
