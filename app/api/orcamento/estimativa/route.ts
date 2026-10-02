@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { deliverContact } from "@/lib/contact-delivery";
+import { sendEmail } from "@/lib/mailer";
+import { buildClientEmail } from "@/lib/estimate/client-email";
 import {
   ConversationSchema,
   countUserTurns,
@@ -125,8 +127,24 @@ export async function POST(req: Request) {
     ].join("\n"),
   });
 
-  if (!estimate) {
-    return json({ error: "unavailable", saved: true, code }, 503);
+  // Confirmação pro cliente: só com e-mail informado. Responder cai no
+  // orcamento@ (ImprovMX encaminha pro Vitor).
+  let confirmationSent = false;
+  if (email) {
+    const mail = buildClientEmail({
+      name,
+      code,
+      estimate,
+      pt: body?.lang !== "en",
+    });
+    confirmationSent = await sendEmail({ to: email, ...mail });
   }
-  return json({ estimate, code });
+
+  if (!estimate) {
+    return json(
+      { error: "unavailable", saved: true, code, confirmationSent },
+      503,
+    );
+  }
+  return json({ estimate, code, confirmationSent });
 }
