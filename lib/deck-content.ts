@@ -61,8 +61,14 @@ export const SERVICES: {
   /** Destino do produto do ecossistema. Vazio = abre o contato. */
   href?: string;
 }[] = [
-  { key: "learn", label: { pt: "Aprenda comigo", en: "Learn with me" } },
-  { key: "consulting", label: { pt: "Consultoria", en: "Consulting" } },
+  // "Aprenda comigo" e "Consultoria" saíram em 02/out/2026: consultoria
+  // virou pacote em /servicos; "Aprenda comigo" volta quando o produto de
+  // cursos existir.
+  {
+    key: "services",
+    label: { pt: "Serviços e preços", en: "Services & pricing" },
+    href: "/servicos",
+  },
   {
     key: "build",
     // Era "Crie um software" (abria o contato). Desde 01/out/2026 leva pro

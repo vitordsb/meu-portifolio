@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import * as Menu from "@radix-ui/react-dropdown-menu";
@@ -16,8 +16,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
 /**
- * Botão do canto inferior esquerdo: o menu do site (páginas internas, tema e
- * idioma). Era a foto do Vitor; a foto foi pro banner, ao lado do "UI/UX".
+ * Botão do canto inferior esquerdo: o menu do site (sessões da home, portas
+ * de venda, tema e idioma). Era a foto do Vitor; a foto foi pro banner, ao lado do "UI/UX".
  *
  * Easter egg herdado da rail: 7 cliques em 3s levam pro /admin.
  */
@@ -40,25 +40,54 @@ export default function AvatarMenu({ className }: { className?: string }) {
     }
   }, [router]);
 
-  const pages = [
-    { href: "/", label: pt ? "Início" : "Home" },
-    { href: "/servicos", label: pt ? "Serviços" : "Services" },
-    { href: "/orcamento", label: pt ? "Orçamento com IA" : "AI quote" },
-    { href: "/about", label: t("nav.about") },
-    { href: "/autonomo", label: t("nav.autonomo") },
-    { href: "/skills", label: t("nav.skills") },
-    { href: "/certificates", label: t("nav.certificates") },
-    { href: "/cv", label: "CV" },
-  ];
+  // Portfólio = sessões da home (o deck escuta o #); "Trabalhe comigo" = as
+  // portas de venda. As páginas internas antigas (/about, /cv...) saíram do
+  // menu em 02/out/2026: o conteúdo delas já vive na home.
+  const groups: { label: string; items: { href: string; label: string }[] }[] =
+    [
+      {
+        label: pt ? "Portfólio" : "Portfolio",
+        items: [
+          { href: "/", label: pt ? "Início" : "Home" },
+          { href: "/#experiencia", label: pt ? "Experiência" : "Experience" },
+          {
+            href: "/#especializacoes",
+            label: pt ? "Especializações" : "Expertise",
+          },
+          { href: "/#trajetoria", label: pt ? "Trajetória" : "Journey" },
+        ],
+      },
+      {
+        label: pt ? "Trabalhe comigo" : "Work with me",
+        items: [
+          { href: "/servicos", label: pt ? "Serviços e preços" : "Services" },
+          { href: "/orcamento", label: pt ? "Orçamento com IA" : "AI quote" },
+          { href: "/pagar", label: pt ? "Pagar pedido" : "Pay order" },
+        ],
+      },
+    ];
+
+  // O # muda sem re-render (o deck usa replaceState): lê ao abrir o menu
+  const [hash, setHash] = useState("");
+  const isActive = (href: string) => {
+    if (!href.startsWith("/#") && href !== "/")
+      return pathname.startsWith(href);
+    if (pathname !== "/") return false;
+    const current = hash && hash !== "#inicio" ? hash : "";
+    return href === "/" ? current === "" : href.slice(1) === current;
+  };
 
   const ThemeIcon = theme === "light" ? Sun : theme === "dark" ? Moon : Monitor;
 
   const item =
-    "flex h-10 cursor-pointer select-none items-center justify-between gap-3 rounded-md px-3 text-sm outline-none " +
+    "flex h-10 cursor-pointer select-none items-center justify-between gap-3 rounded-md px-3 text-sm outline-none [@media(max-height:500px)]:h-8 " +
     "data-[highlighted]:bg-surface-high";
 
   return (
-    <Menu.Root modal={false}>
+    <Menu.Root
+      modal={false}
+      onOpenChange={(open) => open && setHash(window.location.hash)}
+    >
       <Menu.Trigger
         onClick={countClick}
         aria-label={pt ? "Abrir menu" : "Open menu"}
@@ -72,33 +101,43 @@ export default function AvatarMenu({ className }: { className?: string }) {
           side="top"
           align="start"
           sideOffset={12}
-          className="z-[90] w-52 rounded-xl border border-outline-variant bg-surface p-1.5 text-on-surface elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-bottom-2"
+          collisionPadding={8}
+          className="z-[90] max-h-[var(--radix-dropdown-menu-content-available-height)] w-56 overflow-y-auto overscroll-contain rounded-xl border border-outline-variant bg-surface p-1.5 text-on-surface elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-bottom-2"
         >
-          {pages.map((p) => {
-            const active =
-              p.href === "/" ? pathname === "/" : pathname.startsWith(p.href);
-            return (
-              <Menu.Item key={p.href} asChild>
-                <Link
-                  href={p.href}
-                  className={item}
-                  aria-current={active ? "page" : undefined}
-                >
-                  <span className={active ? "font-semibold" : ""}>
-                    {p.label}
-                  </span>
-                  {active ? (
-                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-                  ) : (
-                    <ArrowUpRight
-                      size={14}
-                      className="text-on-surface-variant"
-                    />
-                  )}
-                </Link>
-              </Menu.Item>
-            );
-          })}
+          {groups.map((g) => (
+            <Menu.Group key={g.label}>
+              <Menu.Label className="px-3 pb-1 pt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-on-surface-variant">
+                {g.label}
+              </Menu.Label>
+              {g.items.map((p) => {
+                const active = isActive(p.href);
+                // Link do Next com # na mesma página não dispara hashchange:
+                // <a> comum deixa o navegador avisar o deck.
+                const Anchor = p.href.startsWith("/#") ? "a" : Link;
+                return (
+                  <Menu.Item key={p.href} asChild>
+                    <Anchor
+                      href={p.href}
+                      className={item}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      <span className={active ? "font-semibold" : ""}>
+                        {p.label}
+                      </span>
+                      {active ? (
+                        <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                      ) : (
+                        <ArrowUpRight
+                          size={14}
+                          className="text-on-surface-variant"
+                        />
+                      )}
+                    </Anchor>
+                  </Menu.Item>
+                );
+              })}
+            </Menu.Group>
+          ))}
 
           <Menu.Separator className="my-1 h-px bg-outline-variant" />
 
