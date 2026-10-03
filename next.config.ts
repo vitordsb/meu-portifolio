@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 
 /**
  * Cabeçalhos de segurança (SPEC de segurança, S4).
@@ -20,8 +21,11 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   `connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com${isDev ? " ws: wss:" : ""}`,
-  "frame-src 'none'",
-  "frame-ancestors 'none'",
+  // BotID usa quadro e worker do próprio site (rota interna proxiada pela
+  // Vercel): 'self' libera ele e continua barrando outros domínios.
+  "frame-src 'self'",
+  "worker-src 'self' blob:",
+  "frame-ancestors 'self'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -30,8 +34,9 @@ const csp = [
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
-  // Ninguém coloca o site dentro de um iframe (clickjacking)
-  { key: "X-Frame-Options", value: "DENY" },
+  // Outro site não coloca este dentro de um iframe (clickjacking). SAMEORIGIN
+  // e não DENY: o desafio do BotID roda num quadro do próprio site.
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
@@ -61,4 +66,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// withBotId cria as rotas internas do desafio anti-robô (SPEC S2)
+export default withBotId(nextConfig);

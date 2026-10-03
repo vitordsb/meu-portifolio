@@ -9,6 +9,8 @@ import {
   streamChat,
 } from "@/lib/estimate/deepseek";
 import { isDevMock, mockChat } from "@/lib/estimate/dev-mock";
+import { isBotRequest } from "@/lib/security/bot";
+import { takeDaily } from "@/lib/security/daily-cap";
 import { guard, json } from "@/lib/estimate/guard";
 import {
   looksLikePromptLeak,
@@ -39,6 +41,9 @@ export async function POST(req: Request) {
   const blocked = guard(req, "orc-chat", 40, 60 * 60 * 1000);
   if (blocked) return blocked;
 
+  // Robô (BotID) e teto diário global: o que o rate limit por IP não pega
+  if (await isBotRequest()) return json({ error: "forbidden" }, 403);
+
   const body = await req.json().catch(() => null);
   const parsed = ConversationSchema.safeParse(body?.messages);
   if (!parsed.success) return json({ error: "invalid" }, 400);
@@ -52,6 +57,8 @@ export async function POST(req: Request) {
 
   const mock = isDevMock();
   if (!mock && !hasAiKey()) return json({ error: "unavailable" }, 503);
+  // Só conta turno válido (depois do schema): lixo não gasta o teto
+  if (!(await takeDaily("chat")).ok) return json({ error: "unavailable" }, 503);
 
   // A nota de "hora de fechar" vai colada na última mensagem: o prefixo
   // (system + histórico) fica igual entre turnos e cai no cache da DeepSeek.

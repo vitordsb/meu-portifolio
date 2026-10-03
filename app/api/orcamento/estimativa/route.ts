@@ -10,6 +10,8 @@ import {
 } from "@/lib/estimate/conversation";
 import { completeJson, hasAiKey } from "@/lib/estimate/deepseek";
 import { isDevMock, MOCK_SCOPE } from "@/lib/estimate/dev-mock";
+import { isBotRequest } from "@/lib/security/bot";
+import { takeDaily } from "@/lib/security/daily-cap";
 import { guard, json } from "@/lib/estimate/guard";
 import { priceScope } from "@/lib/estimate/pricing";
 import { EXTRACT_SYSTEM } from "@/lib/estimate/prompts";
@@ -65,11 +67,18 @@ export async function POST(req: Request) {
   const blocked = guard(req, "orc-estimate", 5, 60 * 60 * 1000);
   if (blocked) return blocked;
 
+  if (await isBotRequest()) return json({ error: "forbidden" }, 403);
+
   const body = await req.json().catch(() => null);
   const convo = ConversationSchema.safeParse(body?.messages);
   const lead = LeadSchema.safeParse(body?.lead);
   if (!convo.success || !lead.success) return json({ error: "invalid" }, 400);
   if (countUserTurns(convo.data) < 1) return json({ error: "invalid" }, 400);
+
+  // Teto diário: cada orçamento manda até 2 e-mails (um pra fora do site)
+  if (!(await takeDaily("estimativa")).ok) {
+    return json({ error: "unavailable" }, 503);
+  }
 
   const text = transcript(convo.data);
   const mock = isDevMock();

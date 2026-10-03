@@ -283,6 +283,12 @@ export default function EstimateChat() {
         // Contato salvo, só a conta falhou: vira pedido sem faixa na tela
         setPhase("done");
         track("orcamento_lead", { faixaMin: 0 });
+      } else if (res.status === 403 || res.status === 503) {
+        setLeadError(
+          pt
+            ? "Não consegui gerar o orçamento agora. Me chama no WhatsApp que eu te respondo pessoalmente."
+            : "I couldn't generate the quote right now. Reach me on WhatsApp and I'll answer personally.",
+        );
       } else if (res.status === 429) {
         setLeadError(
           pt
