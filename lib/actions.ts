@@ -10,6 +10,7 @@ import { clientIpFrom, isAllowedIp } from "./request-ip";
 import { rateLimit, resetRateLimit } from "./rate-limit";
 import { deliverContact } from "./contact-delivery";
 import { cleanLine, cleanText } from "./sanitize";
+import { takeDaily } from "./security/daily-cap";
 import * as db from "./db";
 
 async function getRequestIp(): Promise<string | null> {
@@ -258,6 +259,14 @@ export async function sendContactMessage(
   if (company.length > 120 || subject.length > 150) return { ok: false, error: "Campo longo demais." };
   if (message.length < 5) return { ok: false, error: "Mensagem muito curta." };
   if (message.length > 5000) return { ok: false, error: "Mensagem muito longa." };
+
+  // Teto diário global: segura spam vindo de muitos IPs (SPEC S2)
+  if (!(await takeDaily("contato")).ok) {
+    return {
+      ok: false,
+      error: "O formulário está temporariamente indisponível. Me chame no WhatsApp.",
+    };
+  }
 
   const payload = {
     name,

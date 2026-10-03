@@ -1,3 +1,4 @@
+import { isBotRequest } from "@/lib/security/bot";
 import { guard, json } from "@/lib/estimate/guard";
 import { findPaymentsByReference, hasAsaas } from "@/lib/payments/asaas";
 
@@ -20,6 +21,8 @@ export async function GET(req: Request) {
   const code = new URL(req.url).searchParams.get("codigo")?.trim() ?? "";
   if (!/^\d{5}$/.test(code)) return json({ error: "invalid" }, 400);
   if (!hasAsaas()) return json({ error: "unavailable" }, 503);
+  // Varredura dos números de pedido por robô
+  if (await isBotRequest()) return json({ error: "forbidden" }, 403);
 
   let payments;
   try {

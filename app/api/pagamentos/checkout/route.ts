@@ -1,4 +1,6 @@
 import { SITE } from "@/lib/email-layout";
+import { isBotRequest } from "@/lib/security/bot";
+import { takeDaily } from "@/lib/security/daily-cap";
 import { guard, json } from "@/lib/estimate/guard";
 import { newQuoteCode } from "@/lib/estimate/quote-code";
 import { createCheckout, hasAsaas } from "@/lib/payments/asaas";
@@ -18,10 +20,13 @@ export async function POST(req: Request) {
   if (blocked) return blocked;
 
   if (!hasAsaas()) return json({ error: "unavailable" }, 503);
+  if (await isBotRequest()) return json({ error: "forbidden" }, 403);
 
   const body = await req.json().catch(() => null);
   const pkg = findPackage(String(body?.packageId ?? ""));
   if (!pkg) return json({ error: "invalid" }, 400);
+  if (!(await takeDaily("checkout")).ok)
+    return json({ error: "unavailable" }, 503);
 
   const code = await newQuoteCode();
   try {
