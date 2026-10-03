@@ -12,7 +12,12 @@
  * Falha do Redis deixa passar e loga (não derruba o site por causa do contador).
  */
 
-export type CapName = "chat" | "estimativa" | "checkout" | "contato";
+export type CapName =
+  | "chat"
+  | "estimativa"
+  | "checkout"
+  | "contato"
+  | "contraproposta";
 
 /** Limites padrão por dia; sobrescreva com CAP_<NOME>_DIA na Vercel. */
 const DEFAULTS: Record<CapName, number> = {
@@ -20,6 +25,7 @@ const DEFAULTS: Record<CapName, number> = {
   estimativa: 60,
   checkout: 150,
   contato: 80,
+  contraproposta: 60,
 };
 
 function limitFor(name: CapName) {

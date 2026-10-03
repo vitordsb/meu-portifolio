@@ -13,8 +13,13 @@ import { isDevMock, MOCK_SCOPE } from "@/lib/estimate/dev-mock";
 import { isBotRequest } from "@/lib/security/bot";
 import { takeDaily } from "@/lib/security/daily-cap";
 import { guard, json } from "@/lib/estimate/guard";
-import { priceScope } from "@/lib/estimate/pricing";
+import { priceScope, type PricingNotes } from "@/lib/estimate/pricing";
 import { EXTRACT_SYSTEM } from "@/lib/estimate/prompts";
+import {
+  cleanImages,
+  ImageError,
+  type CleanImage,
+} from "@/lib/estimate/images";
 import { newQuoteCode, quoteSubject } from "@/lib/estimate/quote-code";
 import { ScopeSchema, type Estimate, type Scope } from "@/lib/estimate/scope";
 
@@ -58,8 +63,26 @@ function scopeLines(s: Scope) {
     `Escala: ${s.escala} · Momento: ${s.fase === "validando" ? "testando a ideia (candidato a MVP)" : "planejado"}`,
     `Login: ${s.login ? "sim" : "não"} · Painel admin: ${s.painel_admin ? "sim" : "não"} · Urgente: ${s.urgente ? "sim" : "não"} · Confiança: ${s.confianca}`,
     `Integrações: ${s.integracoes.join(", ") || "nenhuma"}`,
+    `Prazo: ${s.prazo} · Referências: ${s.referencias} · Pediu desconto: ${s.pediu_desconto ? "sim" : "não"}`,
+    `Pode investir: ${s.investimento_max ? brl.format(s.investimento_max) : "não disse"} · Pagamento preferido: ${s.pagamento_preferido}`,
     "Funcionalidades:",
     ...s.funcionalidades.map((f) => `  - ${f.nome} (${f.complexidade})`),
+  ];
+}
+
+/** Só pro Vitor: descontos aplicados e o que foi oferecido de pagamento. */
+function pricingLines(e: Estimate, n: PricingNotes | null) {
+  const pct = (x: number) => `${Math.round(x * 1000) / 10}%`;
+  return [
+    n
+      ? `Desconto automático: ${pct(n.discount)} (referências ${pct(n.parts.referencias)}, prazo ${pct(n.parts.prazo)}, negociação ${pct(n.parts.negociacao)}, orçamento ${pct(n.parts.orcamento)})`
+      : "Desconto automático: n/d",
+    ...(n?.budgetGap
+      ? [
+          "ATENÇÃO: a faixa ainda ficou ACIMA do que o cliente disse que pode investir.",
+        ]
+      : []),
+    `Pagamento oferecido: ${e.payment.map((p) => `${p.label.pt} (${p.detail.pt})`).join(" | ")}`,
   ];
 }
 
@@ -84,6 +107,11 @@ export async function POST(req: Request) {
   const mock = isDevMock();
 
   let estimate: Estimate | null = null;
+  let notes: PricingNotes | null = null;
+  // Imagens contam como referência concreta (preço menor, regra interna)
+  const imageCount = Array.isArray(body?.images)
+    ? Math.min(body.images.length, 4)
+    : 0;
   try {
     if (!mock && !hasAiKey()) throw new Error("sem chave");
     const raw = mock
@@ -96,13 +124,26 @@ export async function POST(req: Request) {
           { maxTokens: 1200, signal: req.signal },
         );
     const scope = ScopeSchema.parse(raw);
-    estimate = priceScope(scope);
+    ({ estimate, notes } = priceScope(scope, { images: imageCount }));
   } catch (e) {
     console.error("[orcamento] extração falhou:", e);
   }
 
   const { name, whatsapp, email } = lead.data;
   const code = await newQuoteCode();
+
+  // Imagens do cliente: regravadas e limpas; inválida não derruba o pedido
+  let images: CleanImage[] = [];
+  let imageNote = "";
+  try {
+    images = await cleanImages(body?.images, `pedido-${code}`);
+    if (images.length)
+      imageNote = `Imagens anexadas: ${images.length} (neste e-mail)`;
+  } catch (e) {
+    const why = e instanceof ImageError ? e.message : "erro";
+    console.warn(`[orcamento] imagens recusadas no pedido #${code}: ${why}`);
+    imageNote = `Imagens recusadas (${why}): o cliente tentou anexar, mas não passaram na validação`;
+  }
   const when = new Date().toLocaleString("pt-BR", {
     timeZone: "America/Sao_Paulo",
     dateStyle: "short",
@@ -115,26 +156,32 @@ export async function POST(req: Request) {
         "",
         `Resumo: ${estimate.scope.resumo}`,
         ...scopeLines(estimate.scope),
+        "",
+        ...pricingLines(estimate, notes),
       ]
     : [
         "A IA falhou ao gerar a estimativa: o cliente NÃO viu valor. Responder manualmente.",
       ];
 
-  await deliverContact({
-    name,
-    email: email ?? null,
-    company: null,
-    subject: quoteSubject(code),
-    message: [
-      `Pedido #${code} · ${when}`,
-      `WhatsApp: ${whatsapp}`,
-      ...header,
-      "",
-      "── Conversa ──",
-      "",
-      text,
-    ].join("\n"),
-  });
+  await deliverContact(
+    {
+      name,
+      email: email ?? null,
+      company: null,
+      subject: quoteSubject(code),
+      message: [
+        `Pedido #${code} · ${when}`,
+        `WhatsApp: ${whatsapp}`,
+        ...(imageNote ? [imageNote] : []),
+        ...header,
+        "",
+        "── Conversa ──",
+        "",
+        text,
+      ].join("\n"),
+    },
+    images,
+  );
 
   // Confirmação pro cliente: só com e-mail informado. Responder cai no
   // orcamento@ (ImprovMX encaminha pro Vitor).

@@ -13,8 +13,25 @@ export const MAX_MESSAGE_CHARS = 2500;
 
 /** A saudação aparece fixa na tela (não gasta chamada). */
 export const GREETING = {
-  pt: "Oi! Eu sou a assistente de orçamentos do Vitor. Me conta a ideia: o que o seu projeto faz e pra quem ele é? Se preferir, use o modelo de briefing aqui embaixo: com ele o orçamento sai mais certeiro.",
-  en: "Hi! I'm Vitor's quoting assistant. Tell me the idea: what does your project do and who is it for? If you prefer, use the briefing template below: it makes the quote more accurate.",
+  pt: "Oi! Me conta sua ideia: o que o projeto faz e pra quem é?",
+  en: "Hi! Tell me your idea: what does the project do and who is it for?",
+};
+
+/** Exemplos que giram no texto de exemplo da caixa de digitação. Curtos:
+ *  precisam caber numa linha no celular. */
+export const INPUT_EXAMPLES = {
+  pt: [
+    "Ex.: app de agendamento",
+    "Ex.: site pra minha clínica",
+    "Ex.: sistema de pedidos",
+    "Ex.: área de membros",
+  ],
+  en: [
+    "E.g. a booking app",
+    "E.g. a clinic website",
+    "E.g. an ordering system",
+    "E.g. a members area",
+  ],
 };
 
 /**

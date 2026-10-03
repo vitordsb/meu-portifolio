@@ -25,7 +25,7 @@ export default function ExperienceSlide({ title }: { title: string }) {
         }
       />
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 3xl:grid-cols-4">
         {COMPANIES.map((company, i) => (
           <Rise key={company.id} step={2 + i * 0.35} className="flex">
             <CompanyCard company={company} language={language} />

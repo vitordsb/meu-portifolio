@@ -1,4 +1,6 @@
-import { RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { HandCoins, RotateCcw } from "lucide-react";
+import CounterOffer from "./CounterOffer";
 import { SOCIALS } from "@/lib/deck-content";
 import type { Estimate } from "@/lib/estimate/scope";
 import {
@@ -19,6 +21,9 @@ export default function EstimateResult({
   code,
   name,
   sentTo,
+  contact,
+  counterSent,
+  onCounterSent,
   pt,
   onRestart,
 }: {
@@ -27,12 +32,19 @@ export default function EstimateResult({
   name: string;
   /** E-mail que recebeu a confirmação; vazio = não mandou. */
   sentTo?: string;
+  /** WhatsApp e e-mail do formulário, pra contraproposta já ir identificada. */
+  contact: { whatsapp: string; email: string };
+  counterSent: boolean;
+  onCounterSent: () => void;
   pt: boolean;
   onRestart: () => void;
 }) {
+  const [negotiating, setNegotiating] = useState(counterSent);
   const { items, platforms: plat } = mvpItems(estimate.scope, pt);
   const to = pt ? " a " : " to ";
   const weeks = `${estimate.weeksMin} a ${estimate.weeksMax} ${pt ? "semanas" : "weeks"}`;
+  const range = `${brl.format(estimate.min)}${to}${brl.format(estimate.max)}`;
+  const payment = estimate.payment ?? [];
 
   const whatsapp = `${SOCIALS.whatsapp}?text=${encodeURIComponent(
     quoteWhatsappText(name, code, pt),
@@ -91,6 +103,37 @@ export default function EstimateResult({
           </>
         )}
 
+        {payment.length > 0 && (
+          <>
+            <p className="mb-2.5 mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+              {pt ? "Formas de pagamento" : "Payment options"}
+            </p>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {payment.map((p) => (
+                <li
+                  key={p.id}
+                  className="rounded-xl border border-outline-variant bg-surface px-4 py-3"
+                >
+                  <p className="text-sm font-semibold">
+                    {pt ? p.label.pt : p.label.en}
+                  </p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-on-surface-variant">
+                    {pt ? p.detail.pt : p.detail.en}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {estimate.aboveBudget && !negotiating && (
+          <p className="mt-4 text-sm leading-relaxed">
+            {pt
+              ? "Ficou acima do que você pode investir? Manda uma contraproposta: dá pra ajustar o escopo, o prazo ou a forma de pagamento."
+              : "Above what you can invest? Send a counteroffer: we can adjust scope, timeline or payment."}
+          </p>
+        )}
+
         {/* Visível de propósito, não letra miúda: o valor é de partida e
             quem vê isso antes de conversar não se sente enganado depois */}
         <div className="mt-6 rounded-xl border border-outline-variant bg-surface p-4">
@@ -110,6 +153,21 @@ export default function EstimateResult({
           </ul>
         </div>
       </div>
+
+      {negotiating && (
+        <div className="border-t border-outline-variant bg-surface-low px-5 py-4 sm:px-7">
+          <CounterOffer
+            pt={pt}
+            code={code}
+            name={name}
+            whatsapp={contact.whatsapp}
+            email={contact.email}
+            range={range}
+            sent={counterSent}
+            onSent={onCounterSent}
+          />
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-outline-variant bg-surface px-5 py-4 sm:px-7">
         <p className="w-full text-sm text-on-surface-variant">
@@ -146,6 +204,18 @@ export default function EstimateResult({
             {pt ? "Falar com o Vitor" : "Talk to Vitor"}
           </span>
         </a>
+        {!negotiating && (
+          <button
+            type="button"
+            onClick={() => setNegotiating(true)}
+            className="btn btn-outlined h-12 rounded-lg px-5 text-base"
+          >
+            <span className="inline-flex items-center gap-2">
+              <HandCoins size={18} />
+              {pt ? "Negociar valor" : "Negotiate"}
+            </span>
+          </button>
+        )}
         <button
           type="button"
           onClick={onRestart}

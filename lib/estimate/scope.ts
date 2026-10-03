@@ -63,16 +63,48 @@ export const ScopeSchema = z.object({
   login: z.boolean().catch(false),
   painel_admin: z.boolean().catch(false),
   urgente: z.boolean().catch(false),
+  prazo: z.enum(["urgente", "normal", "flexivel"]).catch("normal"),
+  referencias: z.enum(["nenhuma", "algumas", "muitas"]).catch("nenhuma"),
+  /** Quanto o cliente disse que pode investir (R$). Teto de sanidade. */
+  investimento_max: z.coerce
+    .number()
+    .positive()
+    .max(10_000_000)
+    .transform(Math.round)
+    .nullable()
+    .catch(null),
+  pagamento_preferido: z
+    .enum(["a_vista", "entrada_e_entrega", "parcelado", "nao_disse"])
+    .catch("nao_disse"),
+  pediu_desconto: z.boolean().catch(false),
   confianca: z.enum(["baixa", "media", "alta"]).catch("media"),
 });
 
 export type Scope = z.infer<typeof ScopeSchema>;
 
-/** O que a página mostra no fim. Sem horas nem valor-hora: isso fica comigo. */
+/** Uma forma de pagamento oferecida, já com a conta feita pelo código. */
+export type PaymentOption = {
+  id:
+    | "entrada_entrega"
+    | "boleto_2x"
+    | "boleto_3x"
+    | "boleto_4x"
+    | "pix_contrato";
+  label: { pt: string; en: string };
+  /** Detalhe com valores (a partir do mínimo da faixa). */
+  detail: { pt: string; en: string };
+};
+
+/** O que a página mostra no fim. Sem horas, valor-hora nem desconto
+ *  aplicado: isso fica com o Vitor (vai só no e-mail dele). */
 export type Estimate = {
   min: number;
   max: number;
   weeksMin: number;
   weeksMax: number;
   scope: Scope;
+  payment: PaymentOption[];
+  /** A faixa ficou acima do que o cliente disse que pode investir: a tela
+   *  convida pra contraproposta. */
+  aboveBudget: boolean;
 };

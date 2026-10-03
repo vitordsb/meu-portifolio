@@ -209,6 +209,8 @@
 
 /* ── Ponte com o Tailwind ─────────────────────────────────────────────────── */
 @theme inline {
+  /* Tela grande (Full HD pra cima, inclusive ultrawide): mais colunas */
+  --breakpoint-3xl: 120rem;
   --color-primary: var(--primary);
   --color-on-primary: var(--on-primary);
   --color-primary-container: var(--primary-container);
@@ -324,6 +326,18 @@
   /* O deslize de dois dedos troca de sessão no deck: sem isso o Chrome usa
      o mesmo gesto pra voltar/avançar página. */
   html, body { overscroll-behavior-x: none; }
+
+  /* Escala que acompanha a tela (telas grandes e ultrawide). Cresce pela
+     dimensão que LIMITA, medida em 16:9: 1080p = 100% (16px), QHD e
+     3440x1440 = 125% (20px); ultrawide baixo (2560x1080) fica em 100%,
+     senão o conteúdo crescido sairia pela altura. Em % pra respeitar o
+     tamanho de fonte que a pessoa escolheu no navegador. Media queries em
+     rem não mudam com isto (usam o padrão do navegador). */
+  html { font-size: clamp(100%, min(0.834vw, 1.482vh), 125%); }
+
+  /* Largura da moldura do conteúdo. Setas e menu do deck se alinham a ela. */
+  :root { --deck-frame: 72rem; }
+  @media (min-width: 120rem) { :root { --deck-frame: 110rem; } }
   /* Aparelho em outro idioma: esconde o português do HTML estático até o
      LanguageProvider trocar (ver langScript no layout). Se o JS falhar, a
      página aparece sozinha em 1,5 s. */

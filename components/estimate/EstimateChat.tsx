@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { track } from "@vercel/analytics";
 import {
   ArrowLeft,
@@ -10,7 +10,9 @@ import {
   Check,
   Copy,
   FileText,
+  Paperclip,
   Sparkles,
+  X,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
@@ -18,14 +20,33 @@ import type { Estimate } from "@/lib/estimate/scope";
 import {
   BRIEFING,
   GREETING,
+  INPUT_EXAMPLES,
   MAX_MESSAGE_CHARS,
   MAX_USER_TURNS,
   quoteWhatsappText,
 } from "@/lib/estimate/shared";
 import EstimateResult from "./EstimateResult";
 import LeadForm, { type Lead } from "./LeadForm";
+import { prepareImage, PrepareError } from "./prepareImage";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = {
+  role: "user" | "assistant";
+  content: string;
+  /** Imagens do cliente (data URL JPEG já reduzido). Só vão no pedido. */
+  images?: string[];
+};
+
+/** Por conversa. O servidor confere de novo (lib/estimate/images.ts). */
+const MAX_IMAGES = 4;
+
+/** O que vai pra rota do chat: a IA só recebe a contagem, não a imagem. */
+function toApi(msgs: Msg[]) {
+  return msgs.map(({ role, content, images }) => ({
+    role,
+    content,
+    ...(images?.length ? { images: images.length } : {}),
+  }));
+}
 
 type Phase =
   | "chat" // conversando
@@ -41,6 +62,9 @@ type Saved = {
   name: string;
   /** E-mail que recebeu a confirmação ("" = nenhum). */
   sentTo?: string;
+  /** WhatsApp/e-mail do formulário (pra contraproposta). */
+  contact?: { whatsapp: string; email: string };
+  counterSent?: boolean;
 };
 
 const STORAGE_KEY = "orcamento:v2";
@@ -48,21 +72,6 @@ const STORAGE_KEY = "orcamento:v2";
 const SKIP_AFTER = 2;
 /** Turnos que a barra de progresso considera "conversa completa". */
 const EXPECTED_TURNS = 5;
-
-const SUGGESTIONS = {
-  pt: [
-    "Um app de agendamento",
-    "Um site para minha empresa",
-    "Um sistema interno",
-    "Uma loja virtual",
-  ],
-  en: [
-    "A booking app",
-    "A website for my company",
-    "An internal system",
-    "An online store",
-  ],
-};
 
 function load(): Saved | null {
   try {
@@ -77,7 +86,12 @@ function save(s: Saved) {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s));
   } catch {
-    // aba anônima ou storage cheio: a conversa só não sobrevive ao F5
+    // Storage cheio (imagens pesam): guarda a conversa sem elas. Aba
+    // anônima: a conversa só não sobrevive ao F5.
+    try {
+      const light = { ...s, msgs: s.msgs.map(({ images: _, ...m }) => m) };
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(light));
+    } catch {}
   }
 }
 
@@ -95,12 +109,26 @@ export default function EstimateChat() {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [sentTo, setSentTo] = useState("");
+  const [contact, setContact] = useState({ whatsapp: "", email: "" });
+  const [counterSent, setCounterSent] = useState(false);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [leadError, setLeadError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  // Saudação "digitando" ao abrir: -1 = só os três pontinhos; depois a frase
+  // aparece letra a letra. Conversa restaurada (F5) mostra direto.
+  const [greetShown, setGreetShown] = useState(-1);
+  const [exampleIdx, setExampleIdx] = useState(0);
+  const reduceMotion = useReducedMotion();
+  // Imagens escolhidas e ainda não enviadas (aparecem acima da caixa)
+  const [pending, setPending] = useState<string[]>([]);
+  const [dragging, setDragging] = useState(false);
+  // Aviso das imagens (limite, arquivo ilegível): fica junto das miniaturas,
+  // sem o "Abrir WhatsApp" dos erros de conexão
+  const [imageNotice, setImageNotice] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -108,6 +136,8 @@ export default function EstimateChat() {
 
   const turns = msgs.filter((m) => m.role === "user").length;
   const started = turns > 0;
+  const usedImages =
+    msgs.reduce((n, m) => n + (m.images?.length ?? 0), 0) + pending.length;
 
   // ── Persistência na aba (F5 não apaga a conversa) ─────────────────────────
   useEffect(() => {
@@ -118,15 +148,62 @@ export default function EstimateChat() {
       setEstimate(s.estimate);
       setCode(s.code ?? "");
       setSentTo(s.sentTo ?? "");
+      if (s.contact) setContact(s.contact);
+      setCounterSent(Boolean(s.counterSent));
       setName(s.name);
     }
     restored.current = true;
+    if (s?.msgs.length) setGreetShown(Infinity);
   }, []);
 
   useEffect(() => {
+    if (greetShown !== -1) return;
+    if (reduceMotion) {
+      setGreetShown(Infinity);
+      return;
+    }
+    let typing: ReturnType<typeof setInterval> | undefined;
+    const start = setTimeout(() => {
+      typing = setInterval(() => {
+        setGreetShown((n) => {
+          const next = Math.max(0, n) + 2;
+          if (next >= GREETING[language].length) clearInterval(typing);
+          return next;
+        });
+      }, 22);
+    }, 900);
+    return () => {
+      clearTimeout(start);
+      clearInterval(typing);
+    };
+    // só na abertura
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduceMotion]);
+
+  // Exemplos girando no texto de exemplo da caixa, até a primeira mensagem
+  useEffect(() => {
+    if (started || input) return;
+    const t = setInterval(
+      () => setExampleIdx((i) => (i + 1) % INPUT_EXAMPLES.pt.length),
+      3200,
+    );
+    return () => clearInterval(t);
+  }, [started, input]);
+
+  useEffect(() => {
     if (restored.current && !streaming)
-      save({ msgs, phase, estimate, code, name, sentTo });
-  }, [msgs, phase, estimate, code, name, sentTo, streaming]);
+      save({ msgs, phase, estimate, code, name, sentTo, contact, counterSent });
+  }, [
+    msgs,
+    phase,
+    estimate,
+    code,
+    name,
+    sentTo,
+    contact,
+    counterSent,
+    streaming,
+  ]);
 
   // ── Rolagem: acompanha o fim da conversa ──────────────────────────────────
   // Antes da primeira mensagem, o topo (título + modelo) é o que importa.
@@ -153,12 +230,30 @@ export default function EstimateChat() {
 
   const send = useCallback(
     async (text: string) => {
-      const content = text.trim();
+      const images = pending;
+      // Só imagem, sem texto: manda uma frase curta junto
+      const content =
+        text.trim() ||
+        (images.length
+          ? pt
+            ? images.length > 1
+              ? "Seguem as imagens."
+              : "Segue a imagem."
+            : images.length > 1
+              ? "Here are the images."
+              : "Here is the image."
+          : "");
       if (!content || streaming || turns >= MAX_USER_TURNS) return;
 
-      const history: Msg[] = [...msgs, { role: "user", content }];
+      const history: Msg[] = [
+        ...msgs,
+        { role: "user", content, ...(images.length ? { images } : {}) },
+      ];
       setMsgs([...history, { role: "assistant", content: "" }]);
       setInput("");
+      setPending([]);
+      setImageNotice(null);
+      if (images.length) track("orcamento_imagem", { qtd: images.length });
       setNotice(null);
       setStreaming(true);
       if (turns === 0) track("orcamento_inicio");
@@ -173,7 +268,7 @@ export default function EstimateChat() {
         const res = await fetch("/api/orcamento/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history }),
+          body: JSON.stringify({ messages: toApi(history) }),
         });
 
         if (!res.ok || !res.body) {
@@ -254,8 +349,47 @@ export default function EstimateChat() {
         setStreaming(false);
       }
     },
-    [msgs, pt, streaming, turns],
+    [msgs, pending, pt, streaming, turns],
   );
+
+  /** Upload, colar ou arrastar: reduz no navegador e põe na fila. */
+  const addFiles = async (files: File[]) => {
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    if (!images.length) return;
+    const room = MAX_IMAGES - usedImages;
+    if (room <= 0) {
+      setImageNotice(
+        pt
+          ? `Dá pra anexar até ${MAX_IMAGES} imagens por conversa.`
+          : `You can attach up to ${MAX_IMAGES} images per conversation.`,
+      );
+      return;
+    }
+    setImageNotice(null);
+    const ready: string[] = [];
+    let failed = false;
+    for (const file of images.slice(0, room)) {
+      try {
+        ready.push(await prepareImage(file));
+      } catch (e) {
+        failed = true;
+        if (!(e instanceof PrepareError)) console.error(e);
+      }
+    }
+    if (ready.length) setPending((p) => [...p, ...ready].slice(0, MAX_IMAGES));
+    if (failed || images.length > room) {
+      setImageNotice(
+        pt
+          ? images.length > room
+            ? `Anexei ${Math.min(room, ready.length)}: o limite é ${MAX_IMAGES} imagens por conversa.`
+            : "Não consegui abrir uma das imagens. Tenta em JPG ou PNG."
+          : images.length > room
+            ? `Attached ${Math.min(room, ready.length)}: the limit is ${MAX_IMAGES} images per conversation.`
+            : "Couldn't open one of the images. Try JPG or PNG.",
+      );
+    }
+    inputRef.current?.focus();
+  };
 
   const submitLead = async (lead: Lead) => {
     setBusy(true);
@@ -265,13 +399,15 @@ export default function EstimateChat() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: msgs,
+          messages: toApi(msgs),
+          images: msgs.flatMap((m) => m.images ?? []),
           lead: { ...lead, consent: true },
           lang: language,
         }),
       });
       const data = await res.json().catch(() => ({}));
       setName(lead.name);
+      setContact({ whatsapp: lead.whatsapp, email: lead.email.trim() });
       if (typeof data.code === "string") setCode(data.code);
       setSentTo(data.confirmationSent ? lead.email.trim() : "");
 
@@ -320,6 +456,8 @@ export default function EstimateChat() {
     setNotice(null);
     setLeadError(null);
     setInput("");
+    setPending([]);
+    setCounterSent(false);
     try {
       sessionStorage.removeItem(STORAGE_KEY);
     } catch {}
@@ -353,7 +491,10 @@ export default function EstimateChat() {
   // Modelo enviado em branco não diz nada: espera a pessoa preencher
   const blankTemplate = input.trim() === BRIEFING[language].trim();
   const canSend =
-    input.trim().length > 0 && !tooLong && !blankTemplate && !streaming;
+    (input.trim().length > 0 || pending.length > 0) &&
+    !tooLong &&
+    !blankTemplate &&
+    !streaming;
   const whatsappHref = `${SOCIALS.whatsapp}?text=${encodeURIComponent(
     pt
       ? "Oi Vitor! Queria um orçamento de um projeto."
@@ -401,55 +542,21 @@ export default function EstimateChat() {
               </h1>
               <p className="mt-3 max-w-xl text-base leading-relaxed text-on-surface-variant">
                 {pt
-                  ? "Converse uns 2 minutos com a assistente. No fim, você recebe o valor de partida e o prazo da primeira versão (MVP) do seu projeto. O preço final se ajusta ao escopo que a gente fechar junto."
-                  : "Chat with the assistant for about 2 minutes. At the end you get the starting price and timeline for the first version (MVP) of your project. The final price adjusts to the scope we agree on."}
+                  ? "Converse 2 minutos e receba o valor de partida do seu projeto."
+                  : "Chat for 2 minutes and get your project's starting price."}
               </p>
             </div>
           )}
 
-          <Bubble role="assistant">{GREETING[language]}</Bubble>
-
-          {!started && (
-            <div className="-mt-2 flex flex-col gap-4 pl-10">
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={applyTemplate}
-                  className="inline-flex h-9 items-center gap-2 rounded-full border border-on-surface/70 px-4 text-sm font-medium transition-colors hover:bg-on-surface hover:text-surface"
-                >
-                  <FileText size={15} />
-                  {pt ? "Usar modelo de briefing" : "Use briefing template"}
-                </button>
-                <button
-                  type="button"
-                  onClick={copyTemplate}
-                  aria-label={pt ? "Copiar modelo" : "Copy template"}
-                  className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
-                >
-                  {copied ? <Check size={15} /> : <Copy size={15} />}
-                  {copied
-                    ? pt
-                      ? "Copiado"
-                      : "Copied"
-                    : pt
-                      ? "Copiar"
-                      : "Copy"}
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {SUGGESTIONS[language].map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => send(s)}
-                    className="rounded-full border border-outline-variant bg-surface-low px-3.5 py-1.5 text-sm text-on-surface-variant transition-colors hover:border-on-surface/40 hover:text-on-surface"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          <Bubble role="assistant">
+            {greetShown < 0 ? (
+              <TypingDots label={pt ? "Digitando" : "Typing"} />
+            ) : (
+              <span aria-label={GREETING[language]}>
+                {GREETING[language].slice(0, greetShown)}
+              </span>
+            )}
+          </Bubble>
 
           <AnimatePresence initial={false}>
             {msgs.map((m, i) => (
@@ -459,7 +566,7 @@ export default function EstimateChat() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
               >
-                <Bubble role={m.role}>
+                <Bubble role={m.role} images={m.images}>
                   {m.content.trimEnd() || (
                     <TypingDots label={pt ? "Digitando" : "Typing"} />
                   )}
@@ -547,6 +654,9 @@ export default function EstimateChat() {
                 code={code}
                 name={name}
                 sentTo={sentTo}
+                contact={contact}
+                counterSent={counterSent}
+                onCounterSent={() => setCounterSent(true)}
                 pt={pt}
                 onRestart={restart}
               />
@@ -564,8 +674,119 @@ export default function EstimateChat() {
               if (canSend) send(input);
             }}
             className="mx-auto w-full max-w-2xl px-4 py-3 [@media(max-height:500px)]:py-2"
+            onDragOver={(e) => {
+              if (e.dataTransfer.types.includes("Files")) {
+                e.preventDefault();
+                setDragging(true);
+              }
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              addFiles(Array.from(e.dataTransfer.files));
+            }}
           >
-            <div className="flex items-end gap-2 rounded-2xl border border-outline-variant bg-surface-low p-2 pl-4 transition-colors focus-within:border-on-surface/50">
+            {/* Modelo de briefing logo acima da caixa: só antes da 1ª mensagem */}
+            {!started && (
+              <div className="mb-2 flex flex-wrap items-center gap-1">
+                <button
+                  type="button"
+                  onClick={applyTemplate}
+                  className="inline-flex h-8 items-center gap-2 rounded-full border border-outline-variant px-3.5 text-[13px] font-medium transition-colors hover:border-on-surface/60"
+                >
+                  <FileText size={14} />
+                  {pt ? "Usar modelo de briefing" : "Use briefing template"}
+                </button>
+                <button
+                  type="button"
+                  onClick={copyTemplate}
+                  aria-label={pt ? "Copiar modelo" : "Copy template"}
+                  className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[13px] text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
+                >
+                  {copied ? <Check size={14} /> : <Copy size={14} />}
+                  {copied
+                    ? pt
+                      ? "Copiado"
+                      : "Copied"
+                    : pt
+                      ? "Copiar"
+                      : "Copy"}
+                </button>
+              </div>
+            )}
+            {/* Imagens na fila, antes de enviar */}
+            {pending.length > 0 && (
+              <ul
+                className="mb-2 flex flex-wrap gap-2"
+                aria-label={pt ? "Imagens anexadas" : "Attached images"}
+              >
+                {pending.map((src, i) => (
+                  <li key={i} className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt=""
+                      className="h-16 w-16 rounded-lg border border-outline-variant object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPending((p) => p.filter((_, j) => j !== i))
+                      }
+                      aria-label={
+                        pt ? `Remover imagem ${i + 1}` : `Remove image ${i + 1}`
+                      }
+                      className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full border border-outline-variant bg-surface text-on-surface shadow-sm hover:bg-surface-high"
+                    >
+                      <X size={12} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {imageNotice && (
+              <p
+                role="status"
+                className="mb-2 px-1 text-xs text-on-surface-variant"
+              >
+                {imageNotice}
+              </p>
+            )}
+
+            <div
+              className={`flex items-end gap-1 rounded-2xl border bg-surface-low p-2 transition-colors focus-within:border-on-surface/50 ${
+                dragging
+                  ? "border-on-surface border-dashed"
+                  : "border-outline-variant"
+              }`}
+            >
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+                onChange={(e) => {
+                  addFiles(Array.from(e.target.files ?? []));
+                  e.target.value = "";
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                disabled={usedImages >= MAX_IMAGES || streaming}
+                aria-label={pt ? "Anexar imagem" : "Attach image"}
+                title={
+                  pt
+                    ? "Anexar imagem (ou cole/arraste aqui)"
+                    : "Attach image (or paste/drop here)"
+                }
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface disabled:opacity-30"
+              >
+                <Paperclip size={18} />
+              </button>
               <label htmlFor="orcamento-input" className="sr-only">
                 {pt ? "Sua mensagem" : "Your message"}
               </label>
@@ -575,6 +796,16 @@ export default function EstimateChat() {
                 rows={1}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onPaste={(e) => {
+                  // Print colado (Ctrl/⌘+V): vira anexo. Se também tem texto
+                  // no que foi copiado, o texto cola normalmente.
+                  const files = Array.from(e.clipboardData.files).filter((f) =>
+                    f.type.startsWith("image/"),
+                  );
+                  if (!files.length) return;
+                  if (!e.clipboardData.getData("text")) e.preventDefault();
+                  addFiles(files);
+                }}
                 onKeyDown={(e) => {
                   // Enter envia no computador; no celular, Enter é quebra de linha
                   const touch = window.matchMedia("(pointer: coarse)").matches;
@@ -593,9 +824,7 @@ export default function EstimateChat() {
                     ? pt
                       ? "Responda aqui..."
                       : "Reply here..."
-                    : pt
-                      ? "Descreva sua ideia..."
-                      : "Describe your idea..."
+                    : INPUT_EXAMPLES[language][exampleIdx]
                 }
                 className="max-h-[40vh] min-h-10 flex-1 resize-none bg-transparent py-2 text-base leading-6 outline-none placeholder:text-on-surface-variant sm:text-[15px]"
               />
@@ -644,14 +873,29 @@ export default function EstimateChat() {
 
 function Bubble({
   role,
+  images,
   children,
 }: {
   role: "user" | "assistant";
+  images?: string[];
   children: React.ReactNode;
 }) {
   if (role === "user") {
     return (
-      <div className="flex justify-end">
+      <div className="flex flex-col items-end gap-1.5">
+        {images?.length ? (
+          <div className="flex max-w-[85%] flex-wrap justify-end gap-1.5">
+            {images.map((src, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={i}
+                src={src}
+                alt=""
+                className="h-28 w-28 rounded-xl border border-outline-variant object-cover sm:h-32 sm:w-32"
+              />
+            ))}
+          </div>
+        ) : null}
         <p className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-surface-high px-4 py-2.5 text-[15px] leading-relaxed">
           {children}
         </p>

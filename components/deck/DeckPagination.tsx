@@ -209,14 +209,24 @@ export default function DeckPagination({
     "flex h-10 items-center gap-1 rounded-full border border-outline-variant bg-surface/90 p-1 backdrop-blur";
 
   /** Setas e convite nas laterais. A posição fica num wrapper: o transform
-   *  do botão é do Framer Motion. */
+   *  do botão é do Framer Motion. Ficam junto da moldura do conteúdo
+   *  (`--deck-frame`), não colados na borda: no ultrawide a borda fica a
+   *  mais de 1.000px do texto. Em tela menor, a conta dá menos que 1rem e
+   *  elas voltam pra borda. */
+  const SIDE = "max(1rem, calc(50vw - var(--deck-frame) / 2 - 3.5rem))";
   const atLeft = (node: React.ReactNode) => (
-    <div className="pointer-events-none fixed inset-y-0 left-4 z-50 flex items-center xl:left-8">
+    <div
+      className="pointer-events-none fixed inset-y-0 z-50 flex items-center"
+      style={{ left: SIDE }}
+    >
       <div className="pointer-events-auto">{node}</div>
     </div>
   );
   const atRight = (node: React.ReactNode) => (
-    <div className="pointer-events-none fixed inset-y-0 right-4 z-50 flex items-center xl:right-8">
+    <div
+      className="pointer-events-none fixed inset-y-0 z-50 flex items-center"
+      style={{ right: SIDE }}
+    >
       <div className="pointer-events-auto">{node}</div>
     </div>
   );

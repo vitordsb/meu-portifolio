@@ -26,7 +26,9 @@ export default function JourneySlide({
     <SlideFrame>
       <SlideHeader title={title} />
 
-      <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+      {/* Em tela larga a bio não estica (linha longa cansa): coluna de leitura
+          com teto e o card ao lado, empurrado pra borda da moldura */}
+      <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-20 3xl:grid-cols-[minmax(0,46rem)_minmax(0,34rem)] 3xl:justify-between">
         <div className="space-y-5">
           <Rise step={1.8}>
             <p className="text-2xl font-bold leading-snug tracking-[-0.02em] md:text-3xl">

@@ -9,6 +9,7 @@ initBotId({
   protect: [
     { path: "/api/orcamento/chat", method: "POST" },
     { path: "/api/orcamento/estimativa", method: "POST" },
+    { path: "/api/orcamento/contraproposta", method: "POST" },
     { path: "/api/pagamentos/checkout", method: "POST" },
     { path: "/api/pagamentos/pedido", method: "GET" },
   ],
