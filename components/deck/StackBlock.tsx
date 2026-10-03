@@ -74,7 +74,7 @@ export default function StackBlock({ skills }: { skills: Skill[] }) {
         </p>
       </Rise>
 
-      <div className="grid grid-cols-2 gap-x-6 gap-y-10 border-t border-outline-variant pt-10 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-x-6 gap-y-10 border-t border-outline-variant pt-10 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-6">
         {groups.map(([category, items], i) => (
           <Rise key={category} step={3.8 + Math.min(i, 8) * 0.2}>
             <h4 className="mb-3 flex items-baseline justify-between gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-on-surface-variant">
