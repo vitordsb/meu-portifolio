@@ -23,6 +23,7 @@ import {
   READY_MARKER,
   WRAP_UP_AT,
   WRAP_UP_NOTE,
+  imageNote,
 } from "@/lib/estimate/prompts";
 
 /**
@@ -63,8 +64,17 @@ export async function POST(req: Request) {
   // A nota de "hora de fechar" vai colada na última mensagem: o prefixo
   // (system + histórico) fica igual entre turnos e cai no cache da DeepSeek.
   // Marcador digitado pelo cliente não pode virar comando (SPEC S7)
-  const history = msgs.map((m) =>
-    m.role === "user" ? { ...m, content: stripMarker(m.content) } : { ...m },
+  // Contagem de imagens vira uma nota escrita pelo servidor (o arquivo não
+  // vem pra cá); o campo `images` não segue pra DeepSeek.
+  const history = msgs.map(({ role, content, images }) =>
+    role === "user"
+      ? {
+          role,
+          content: images
+            ? `${stripMarker(content)}\n\n${imageNote(images)}`
+            : stripMarker(content),
+        }
+      : { role, content },
   );
   if (turns >= WRAP_UP_AT) {
     const last = history[history.length - 1];

@@ -9,6 +9,8 @@ export type Email = {
   text: string;
   html?: string;
   replyTo?: string;
+  /** Anexos já validados (ex.: imagens do orçamento, regravadas pelo sharp). */
+  attachments?: { filename: string; content: Buffer }[];
 };
 
 export function senderAddress() {

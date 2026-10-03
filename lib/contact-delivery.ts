@@ -14,7 +14,10 @@ export type ContactPayload = {
   message: string;
 };
 
-export async function deliverContact(payload: ContactPayload): Promise<void> {
+export async function deliverContact(
+  payload: ContactPayload,
+  attachments?: { filename: string; content: Buffer }[],
+): Promise<void> {
   let saved = false;
 
   // 1) Sempre registra no banco (garante recebimento mesmo sem email configurado)
@@ -30,6 +33,7 @@ export async function deliverContact(payload: ContactPayload): Promise<void> {
   const mailed = await sendEmail({
     to: process.env.CONTACT_TO_EMAIL ?? "vitordsb2019@gmail.com",
     replyTo: payload.email ?? undefined,
+    attachments: attachments?.length ? attachments : undefined,
     subject: `[Portfolio] ${payload.subject || "Novo contato"} de ${payload.name}`,
     text: [
       `Nome: ${payload.name}`,

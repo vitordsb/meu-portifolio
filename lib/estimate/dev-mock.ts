@@ -47,5 +47,10 @@ export const MOCK_SCOPE: Scope = {
   login: true,
   painel_admin: true,
   urgente: false,
+  prazo: "normal",
+  referencias: "algumas",
+  investimento_max: null,
+  pagamento_preferido: "nao_disse",
+  pediu_desconto: false,
   confianca: "media",
 };

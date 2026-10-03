@@ -15,6 +15,9 @@ export const ConversationSchema = z
   .array(
     z.object({
       role: z.enum(["user", "assistant"]),
+      /** Quantas imagens o cliente anexou nesta mensagem (o arquivo não vem
+       *  aqui: só vai no pedido, por e-mail). */
+      images: z.number().int().min(0).max(4).optional(),
       content: z
         .string()
         .transform(cleanText)
@@ -34,6 +37,10 @@ export const ConversationSchema = z
     "Conversa longa demais.",
   )
   .refine(
+    (msgs) => msgs.reduce((n, m) => n + (m.images ?? 0), 0) <= 4,
+    "Imagens demais.",
+  )
+  .refine(
     (msgs) =>
       msgs.every(
         (m) => m.role !== "user" || m.content.length <= MAX_MESSAGE_CHARS,
@@ -50,7 +57,12 @@ export function countUserTurns(msgs: Conversation) {
 /** Transcrição em texto corrido, pra extração e pro e-mail do lead. */
 export function transcript(msgs: Conversation) {
   return msgs
-    .map((m) => `${m.role === "user" ? "Cliente" : "Assistente"}: ${m.content}`)
+    .map(
+      (m) =>
+        `${m.role === "user" ? "Cliente" : "Assistente"}: ${m.content}${
+          m.images ? ` [anexou ${m.images} imagem(ns)]` : ""
+        }`,
+    )
     .join("\n\n");
 }
 
