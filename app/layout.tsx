@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, UMAMI_WEBSITE_ID } from "@/lib/site";
 
 // Inter: a mesma do wireframe. Variável, então segura do texto corrido ao
 // display de 9rem sem baixar um arquivo por peso.
@@ -71,6 +72,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>{children}</Providers>
         <Analytics />
+        {/* Umami: visitas e eventos do funil. data-domains: só conta o site
+            oficial; local e preview da Vercel ficam fora dos números. */}
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id={UMAMI_WEBSITE_ID}
+          data-domains="www.vitordsb.com.br"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

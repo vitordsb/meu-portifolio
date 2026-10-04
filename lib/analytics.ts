@@ -1,14 +1,22 @@
 import { track } from "@vercel/analytics";
 
 /**
- * Ponto único dos eventos do funil. Hoje vai pro Vercel Web Analytics, que só
- * mostra evento personalizado nos planos Pro/Enterprise: trocar de ferramenta
- * é mexer só aqui.
+ * Ponto único dos eventos do funil. Vai pro Umami Cloud (plano grátis, sem
+ * cookie), que é onde o Vitor olha. Também vai pro Vercel Web Analytics, que
+ * só mostra evento personalizado no Pro: se um dia assinar, já tem histórico.
  */
+
+declare global {
+  interface Window {
+    umami?: { track: (name: string, data?: EventProps) => void };
+  }
+}
+
 export type EventProps = Record<string, string | number | boolean | null>;
 
 export function trackEvent(name: string, props?: EventProps) {
   try {
+    window.umami?.track(name, props);
     track(name, props);
   } catch {
     // medição nunca pode quebrar a navegação
