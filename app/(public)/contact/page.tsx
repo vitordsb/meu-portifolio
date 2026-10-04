@@ -1,6 +1,9 @@
 import ContactSection from "@/components/sections/ContactSection";
 
-export const metadata = { title: "Contato | Vitor Barreto" };
+export const metadata = {
+  title: "Contato | Vitor Barreto",
+  alternates: { canonical: "/contact" },
+};
 
 export default function ContactPage() {
   return (

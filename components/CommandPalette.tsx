@@ -28,6 +28,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useContactModal } from "@/contexts/ContactModalContext";
+import { linkEvent, trackEvent } from "@/lib/analytics";
 import { scoreItem } from "@/lib/search";
 import {
   SEARCH_INTENTS,
@@ -120,11 +121,16 @@ export default function CommandPalette({
         break;
       }
       case "route":
-        router.push(action.href);
+      case "link": {
+        // Busca navega por código, sem <a>: o ClickTracker não vê
+        const ev = linkEvent(action.href);
+        if (ev) {
+          trackEvent(ev.name, { ...ev.props, origem: "busca", pagina: pathname });
+        }
+        if (action.kind === "route") router.push(action.href);
+        else window.open(action.href, "_blank", "noopener,noreferrer");
         break;
-      case "link":
-        window.open(action.href, "_blank", "noopener,noreferrer");
-        break;
+      }
       case "contact":
         // Espera a paleta sair pra os dois diálogos não brigarem pelo foco
         setTimeout(() => openContact(action.subject?.[language]), 150);

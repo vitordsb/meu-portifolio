@@ -1,7 +1,10 @@
 import { getAllCertificates } from "@/lib/db";
 import CertificatesSection from "@/components/sections/CertificatesSection";
 
-export const metadata = { title: "Cursos | Vitor Barreto" };
+export const metadata = {
+  title: "Cursos | Vitor Barreto",
+  alternates: { canonical: "/certificates" },
+};
 export const revalidate = 0;
 
 export default async function CertificatesPage() {

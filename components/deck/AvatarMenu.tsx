@@ -98,6 +98,7 @@ export default function AvatarMenu({ className }: { className?: string }) {
 
       <Menu.Portal>
         <Menu.Content
+          data-origem="menu"
           side="top"
           align="start"
           sideOffset={12}

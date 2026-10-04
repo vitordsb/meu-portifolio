@@ -1,7 +1,10 @@
 import CVDocument from "@/components/sections/CVDocument";
 import { getAllProjects, getAllSkills, getAllCertificates } from "@/lib/db";
 
-export const metadata = { title: "CV | Vitor Barreto" };
+export const metadata = {
+  title: "CV | Vitor Barreto",
+  alternates: { canonical: "/cv" },
+};
 export const revalidate = 0;
 
 export default async function CVPage() {

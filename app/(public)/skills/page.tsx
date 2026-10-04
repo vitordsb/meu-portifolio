@@ -1,7 +1,10 @@
 import { getAllSkills, getAllProjects } from "@/lib/db";
 import SkillsSection from "@/components/sections/SkillsSection";
 
-export const metadata = { title: "Skills | Vitor Barreto" };
+export const metadata = {
+  title: "Skills | Vitor Barreto",
+  alternates: { canonical: "/skills" },
+};
 export const revalidate = 0;
 
 export default async function SkillsPage() {

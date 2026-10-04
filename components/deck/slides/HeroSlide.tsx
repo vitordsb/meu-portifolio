@@ -139,7 +139,10 @@ export default function HeroSlide({
           {l(HERO.tagline, language)}
         </Line>
 
-        <div className="mt-8 flex flex-col gap-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+        <div
+          data-origem="hero"
+          className="mt-8 flex flex-col gap-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between"
+        >
           <ul className="flex items-center gap-3">
             {SOCIAL_LINKS.map(({ href, label, Icon, color }, i) => (
               <Rise as="li" key={label} step={4 + i * 0.4}>
