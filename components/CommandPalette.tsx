@@ -19,6 +19,7 @@ import {
   Layers,
   MessageCircle,
   Route,
+  ScanSearch,
   Search,
   Sparkles,
   SunMoon,
@@ -55,6 +56,7 @@ const ICONS: Record<SearchIntent["icon"], LucideIcon | typeof GithubIcon> = {
   file: FileText,
   theme: SunMoon,
   language: Languages,
+  scan: ScanSearch,
   user: User,
 };
 

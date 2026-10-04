@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 import { ArrowRight, CheckCircle2, Loader2, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
@@ -53,7 +53,7 @@ export default function PayOrderPage() {
         const data = await res.json().catch(() => ({}));
         if (res.ok) {
           setOrder(data as Order);
-          track("pedido_consulta", { status: data.status });
+          trackEvent("pedido_consulta", { status: data.status });
         } else if (res.status === 404) {
           setError(
             pt
@@ -207,7 +207,7 @@ export default function PayOrderPage() {
               ) : order.invoiceUrl ? (
                 <a
                   href={order.invoiceUrl}
-                  onClick={() => track("pedido_pagar", { codigo: order.code })}
+                  onClick={() => trackEvent("pedido_pagar", { codigo: order.code })}
                   className="btn btn-filled h-12 w-full rounded-lg text-base sm:w-auto sm:px-7"
                 >
                   <span className="inline-flex items-center gap-2">

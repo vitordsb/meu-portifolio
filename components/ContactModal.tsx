@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { sendContactMessage } from "@/lib/actions";
+import { readAttribution } from "@/lib/attribution";
 import { linkEvent, trackEvent } from "@/lib/analytics";
 
 type Step = "channel" | "email" | "thanks";
@@ -103,7 +104,7 @@ export default function ContactModal({
     e.preventDefault();
     setError(null);
     startTransition(async () => {
-      const res = await sendContactMessage(form);
+      const res = await sendContactMessage({ ...form, origem: readAttribution() });
       if (res.ok) {
         trackEvent("contato_enviado", { pagina: window.location.pathname });
         setStep("thanks");

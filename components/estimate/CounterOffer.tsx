@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
 /**
@@ -100,7 +100,7 @@ export default function CounterOffer({
         }),
       });
       if (res.ok) {
-        track("orcamento_contraproposta", { pagamento });
+        trackEvent("orcamento_contraproposta", { pagamento });
         onSent();
         return;
       }

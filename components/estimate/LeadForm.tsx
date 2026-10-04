@@ -4,7 +4,7 @@ import { ArrowRight, Loader2 } from "lucide-react";
 export type Lead = { name: string; whatsapp: string; email: string };
 
 /** Máscara leve: (11) 91234-5678. Só visual, o servidor fica com os dígitos. */
-function maskPhone(raw: string) {
+export function maskPhone(raw: string) {
   const d = raw.replace(/\D/g, "").slice(0, 11);
   if (d.length <= 2) return d;
   if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;

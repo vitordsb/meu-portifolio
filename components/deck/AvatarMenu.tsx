@@ -62,6 +62,7 @@ export default function AvatarMenu({ className }: { className?: string }) {
         items: [
           { href: "/servicos", label: pt ? "Serviços e preços" : "Services" },
           { href: "/orcamento", label: pt ? "Orçamento com IA" : "AI quote" },
+          { href: "/raio-x", label: pt ? "Raio-X grátis do site" : "Free site check" },
           { href: "/pagar", label: pt ? "Pagar pedido" : "Pay order" },
         ],
       },

@@ -12,5 +12,7 @@ initBotId({
     { path: "/api/orcamento/contraproposta", method: "POST" },
     { path: "/api/pagamentos/checkout", method: "POST" },
     { path: "/api/pagamentos/pedido", method: "GET" },
+    { path: "/api/raio-x/analisar", method: "POST" },
+    { path: "/api/raio-x/lead", method: "POST" },
   ],
 });

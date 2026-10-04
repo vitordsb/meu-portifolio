@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { cleanLine } from "@/lib/sanitize";
 import { deliverContact } from "@/lib/contact-delivery";
+import { describeAttribution } from "@/lib/attribution-server";
 import { sendEmail } from "@/lib/mailer";
 import { buildClientEmail } from "@/lib/estimate/client-email";
 import {
@@ -171,6 +172,7 @@ export async function POST(req: Request) {
       subject: quoteSubject(code),
       message: [
         `Pedido #${code} · ${when}`,
+        describeAttribution(body?.origem),
         `WhatsApp: ${whatsapp}`,
         ...(imageNote ? [imageNote] : []),
         ...header,
