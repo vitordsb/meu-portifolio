@@ -513,10 +513,6 @@ export default function EstimateChat() {
             <ArrowLeft size={16} />
             Vitor de Souza
           </Link>
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
-            <Sparkles size={12} />
-            {pt ? "Orçamento com IA" : "AI quote"}
-          </span>
         </div>
         <motion.span
           aria-hidden

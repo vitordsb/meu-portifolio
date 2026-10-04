@@ -1,7 +1,13 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, type ReactNode } from "react";
-import { animate, motion, useIsPresent, useMotionValue } from "framer-motion";
+import {
+  animate,
+  motion,
+  PresenceContext,
+  useIsPresent,
+  useMotionValue,
+} from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const SETTLE = { type: "spring", stiffness: 420, damping: 40 } as const;
@@ -84,7 +90,12 @@ const SlidePane = forwardRef<
       // gesto lateral, cancela o ponteiro e o arraste entre sessões morre.
       className="absolute inset-0 touch-pan-y overflow-y-auto overscroll-contain"
     >
-      {children}
+      {/* O deck usa AnimatePresence initial={false} pra sessão não deslizar ao
+        abrir a página. Só que esse "sem animação inicial" vaza por contexto
+        pra todo motion de dentro, e o hero (Line/Rise) aparecia parado, tanto
+        ao abrir quanto ao voltar das páginas de venda. Cortar o contexto aqui
+        isola a regra na sessão; a saída dela não depende dos filhos. */}
+      <PresenceContext.Provider value={null}>{children}</PresenceContext.Provider>
     </motion.section>
   );
 });

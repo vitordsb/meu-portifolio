@@ -105,8 +105,8 @@ export const COMPANIES: Company[] = [
       en: "Platform that formalizes the relationship between architects and clients: proposals, PDF contracts, messaging and payments in one place, on web and mobile.",
     },
     role: {
-      pt: "Front-end do produto web e do app mobile: autenticação, área logada, propostas com PDF e o app na loja.",
-      en: "Front-end for the web product and the mobile app: auth, logged-in area, PDF proposals and the app in the store.",
+      pt: "Engenharia de ponta a ponta: arquitetura, front-end web, app mobile e back-end (API Node + MySQL), com autenticação, propostas e contratos em PDF, deploy em Docker e o app na loja.",
+      en: "End-to-end engineering: architecture, web front-end, mobile app and back-end (Node API + MySQL), with auth, PDF proposals and contracts, Docker deploys and the app in the store.",
     },
     period: "Abr/2025 - Abr/2026",
     products: [

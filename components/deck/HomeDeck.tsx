@@ -8,7 +8,6 @@ import {
   type ReactNode,
 } from "react";
 import { AnimatePresence, MotionConfig } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LANDING } from "@/lib/landing-data";
 import {
@@ -18,6 +17,10 @@ import {
   type DeckSectionId,
 } from "@/lib/deck-content";
 import { CursorFollower } from "@/components/motion/CursorFollower";
+import {
+  LEAVE_MS,
+  useLeaveTransition,
+} from "@/components/motion/useLeaveTransition";
 import AvatarMenu from "./AvatarMenu";
 import DeckPagination from "./DeckPagination";
 import SearchHint from "@/components/SearchHint";
@@ -46,8 +49,6 @@ const FLICK_SPEED = 0.45;
 const WHEEL_COMMIT = 140;
 /** Duração de uma troca (saída 0,32s, entrada 0,4s): trava contra sobreposição. */
 const NAV_LOCK_MS = 420;
-/** Desvanecer da home antes de ir pra outra página. */
-const LEAVE_MS = 180;
 
 function overlayOpen() {
   return !!document.querySelector("[role='dialog'], [role='menu']");
@@ -94,8 +95,9 @@ export default function HomeDeck() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [dragging, setDragging] = useState(false);
-  const [leaving, setLeaving] = useState(false);
-  const router = useRouter();
+  // Link pra outra rota (Serviços, Orçamento...): a home desvanece antes de
+  // navegar e a página nova entra com o PageTransition
+  const leaving = useLeaveTransition();
   const rootRef = useRef<HTMLDivElement>(null);
   // Uma alça por sessão montada. Um ref único seria zerado pelo React quando a
   // sessão antiga termina de sair, deixando a nova sem controle de arraste.
@@ -227,32 +229,6 @@ export default function HomeDeck() {
     // pane() só lê refs
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index]);
-
-  // ── Saída suave pra outra página ──────────────────────────────────────────
-  // Link interno pra outra rota (Serviços, Orçamento...): a home desvanece e
-  // só então navega, e a página nova entra com o PageTransition. Sem isso a
-  // home sumia de uma vez. Captura no document: roda antes do onClick do
-  // <Link>, que respeita o preventDefault.
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (e.defaultPrevented || e.button !== 0) return;
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      const a = (e.target as HTMLElement).closest?.("a");
-      if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
-      const url = new URL(a.href, window.location.href);
-      // Externo, ou sessão da própria home (/#experiencia): não é saída
-      if (url.origin !== window.location.origin || url.pathname === "/") return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      e.preventDefault();
-      setLeaving(true);
-      window.setTimeout(
-        () => router.push(url.pathname + url.search + url.hash),
-        LEAVE_MS,
-      );
-    };
-    document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
-  }, [router]);
 
   // ── Arrastar (mouse e toque) ──────────────────────────────────────────────
   const onPointerDown = (e: React.PointerEvent) => {

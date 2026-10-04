@@ -99,10 +99,7 @@ export default function PayOrderPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader
-        eyebrow={pt ? "Pagar pedido" : "Pay order"}
-        width="max-w-xl"
-      />
+      <PageHeader width="max-w-xl" />
 
       <main className="mx-auto w-full max-w-xl px-4 pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         <h1 className="text-[clamp(2rem,6vw,2.75rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">

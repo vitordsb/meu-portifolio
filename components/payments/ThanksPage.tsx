@@ -28,7 +28,7 @@ export default function ThanksPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader eyebrow={pt ? "Pagamento" : "Payment"} width="max-w-xl" />
+      <PageHeader width="max-w-xl" />
 
       <main className="mx-auto w-full max-w-xl px-4 pb-20 pt-14 sm:pt-20 [@media(max-height:500px)]:pt-6">
         <CheckCircle2 size={44} strokeWidth={1.75} className="text-[#25D366]" />
