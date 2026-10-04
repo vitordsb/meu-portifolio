@@ -5,6 +5,10 @@
  */
 export const SITE_URL = "https://www.vitordsb.com.br";
 
+/** Site no Umami Cloud (eventos em lib/analytics.ts). Não é segredo: aparece
+ *  no próprio script da página. */
+export const UMAMI_WEBSITE_ID = "63db9b7a-7930-428e-9640-5bc2f9b867c7";
+
 /** Páginas que o Google deve achar, com o peso de cada uma no sitemap. As de
  *  venda vêm logo depois da home: é por elas que chega cliente. */
 export const INDEXED_PAGES: { path: string; priority: number }[] = [
