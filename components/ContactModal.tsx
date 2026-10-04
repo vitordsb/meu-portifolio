@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { sendContactMessage } from "@/lib/actions";
+import { linkEvent, trackEvent } from "@/lib/analytics";
 
 type Step = "channel" | "email" | "thanks";
 
@@ -82,6 +83,15 @@ export default function ContactModal({
 
   const handleChannel = (href: string | null) => {
     if (href) {
+      // window.open não passa pelo ClickTracker (não é <a>): mede aqui
+      const ev = linkEvent(href);
+      if (ev) {
+        trackEvent(ev.name, {
+          ...ev.props,
+          origem: "contato",
+          pagina: window.location.pathname,
+        });
+      }
       window.open(href, "_blank", "noopener,noreferrer");
       onClose();
     } else {
@@ -94,7 +104,10 @@ export default function ContactModal({
     setError(null);
     startTransition(async () => {
       const res = await sendContactMessage(form);
-      if (res.ok) setStep("thanks");
+      if (res.ok) {
+        trackEvent("contato_enviado", { pagina: window.location.pathname });
+        setStep("thanks");
+      }
       else setError(res.error ?? (pt ? "Erro ao enviar." : "Failed to send."));
     });
   };

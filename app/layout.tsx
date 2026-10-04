@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { SITE_URL } from "@/lib/site";
 
 // Inter: a mesma do wireframe. Variável, então segura do texto corrido ao
 // display de 9rem sem baixar um arquivo por peso.
@@ -19,7 +20,10 @@ function normalizeUrl(raw: string): string {
   if (!raw) return "";
   return /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
 }
+// Produção usa sempre o endereço oficial (www): o domínio sem www redireciona
+// e imagem de prévia atrás de redirecionamento falha em alguns apps.
 const siteUrl =
+  (process.env.VERCEL_ENV === "production" ? SITE_URL : "") ||
   normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL ?? "") ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
