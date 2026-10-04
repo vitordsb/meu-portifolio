@@ -66,8 +66,8 @@ const ITEMS: JourneyItem[] = [
     period: { pt: "Abr/2025 - Abr/2026", en: "Apr/2025 - Apr/2026" },
     title: "ArqDoor",
     detail: {
-      pt: "Contrato no front-end do produto web e do app mobile.",
-      en: "Front-end contract for the web product and the mobile app.",
+      pt: "Engenharia full-stack: arquitetura, web, app mobile e API.",
+      en: "Full-stack engineering: architecture, web, mobile app and API.",
     },
   },
   {

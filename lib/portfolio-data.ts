@@ -27,8 +27,8 @@ export const allWork: Work[] = [
     company: "Cliente, SaaS para Arquitetos",
     category: "SaaS",
     description:
-      "Plataforma que formaliza a relação entre **arquitetos e clientes**: propostas, **contratos em PDF**, comunicação, pagamentos e dashboard do profissional. Atuei no **front-end (React + Vite + TypeScript)** cobrindo fluxos públicos, autenticação, área logada e jornadas comerciais.",
-    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "Radix UI", "TanStack Query"],
+      "Plataforma que formaliza a relação entre **arquitetos e clientes**: propostas, **contratos em PDF**, comunicação, pagamentos e dashboard do profissional. Atuei na **engenharia do produto inteiro**: arquitetura, **front-end (React + Vite + TypeScript)** e **back-end (Node + Express + MySQL)**, com autenticação, área logada, jornadas comerciais e deploy em Docker.",
+    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "TanStack Query", "Node.js", "Express", "MySQL", "Docker"],
     liveLink: "https://arqdoor.com",
     coverImageUrl: "/projects/arqdoor-web.jpg",
     featured: true,
@@ -262,8 +262,8 @@ const skillSeeds: SkillSeed[] = [
   { title: "Clean Architecture",category:"Estado & Padrões", iconSlug: null,               level: 4, projects: ["mtcprop-members","egp-iot"] },
   { title: "SOLID",            category: "Estado & Padrões", iconSlug: null,               level: 4, projects: ["mtcprop-members","egp-iot"] },
   // Backend
-  { title: "Node.js",          category: "Backend",          iconSlug: "nodedotjs",        level: 4, projects: ["egp-iot","oncoliving","jma"] },
-  { title: "Express",          category: "Backend",          iconSlug: "express",          level: 3, projects: ["oncoliving","jma"] },
+  { title: "Node.js",          category: "Backend",          iconSlug: "nodedotjs",        level: 4, projects: ["arqdoor","egp-iot","oncoliving","jma"] },
+  { title: "Express",          category: "Backend",          iconSlug: "express",          level: 3, projects: ["arqdoor","oncoliving","jma"] },
   { title: "NestJS",           category: "Backend",          iconSlug: "nestjs",           level: 3, projects: ["mtcprop-members"] },
   { title: "Fastify",          category: "Backend",          iconSlug: "fastify",          level: 3, projects: ["egp-iot"] },
   { title: "REST API",         category: "Backend",          iconSlug: null,               level: 4, projects: ["arqdoor","egp-iot","mtcprop-members"] },
@@ -715,11 +715,11 @@ export const aboutContent = {
         "Plataforma de infoprodutos. Construção e evolução de interfaces de venda com foco em conversão e padronização visual.",
     },
     {
-      role: "Desenvolvedor Front-end, React + TypeScript + Vite",
+      role: "Engenheiro de Software Full-Stack, React + Node",
       company: "ArqDoor",
       period: "Abr/2025 - Abr/2026",
       description:
-        "SaaS para arquitetos: autenticação, área logada, dashboard do prestador, fluxo de propostas com PDF e links compartilháveis.",
+        "SaaS para arquitetos: arquitetura, front-end web, app mobile e API (Node + Express + MySQL). Autenticação, dashboard do prestador, propostas e contratos em PDF, links compartilháveis e deploy em Docker.",
     },
     {
       role: "Desenvolvedor Full-Stack, React + Node",
@@ -745,9 +745,9 @@ export const aboutContent = {
     {
       name: "ArqDoor",
       type: "SaaS para Arquitetos",
-      stack: "React, Vite, TypeScript, Radix UI, TanStack Query",
+      stack: "React, Vite, TypeScript, React Native, Node.js, Express, MySQL, Docker",
       description:
-        "Front-end completo: landing comercial, autenticação, dashboard do prestador, propostas com PDF e links compartilháveis.",
+        "Produto completo, do banco à interface: arquitetura, API, landing comercial, autenticação, dashboard do prestador, propostas e contratos em PDF e app mobile.",
     },
     {
       name: "Zuptos",
@@ -888,7 +888,7 @@ const timelineSeeds: TimelineSeed[] = [
     sortDate: "2025-04-01",
     title: "Entrei na ArqDoor",
     description:
-      "Comecei como Desenvolvedor Front-end na ArqDoor (React + TypeScript + Vite): autenticação, dashboards e fluxo de propostas com PDF.",
+      "Entrei como engenheiro full-stack na ArqDoor: arquitetura, front-end (React + TypeScript + Vite), back-end (Node + MySQL) e app mobile.",
     category: "Cliente",
     icon: "Rocket",
   },

@@ -67,10 +67,7 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader
-        eyebrow={pt ? "Serviços" : "Services"}
-        width="max-w-5xl 2xl:max-w-[88rem]"
-      />
+      <PageHeader width="max-w-5xl 2xl:max-w-[88rem]" />
 
       <main className="mx-auto w-full max-w-5xl px-4 pb-20 2xl:max-w-[88rem] pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         <h1 className="max-w-2xl text-[clamp(2rem,6vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">

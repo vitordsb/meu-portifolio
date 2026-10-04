@@ -2,16 +2,12 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 /**
- * Topo das páginas de compra (/servicos, /pagar, /pagamento/obrigado): volta
- * pra home e diz onde a pessoa está. Mesmo desenho do /orcamento.
+ * Topo das páginas de compra (/servicos, /pagar, /pagamento/obrigado): só o
+ * voltar pra home. Mesmo desenho do /orcamento.
  */
 export default function PageHeader({
-  eyebrow,
-  icon,
   width = "max-w-5xl",
 }: {
-  eyebrow: string;
-  icon?: React.ReactNode;
   /** Mesma largura do conteúdo, pra o topo alinhar com ele. */
   width?: string;
 }) {
@@ -27,10 +23,6 @@ export default function PageHeader({
           <ArrowLeft size={16} />
           Vitor de Souza
         </Link>
-        <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
-          {icon}
-          {eyebrow}
-        </span>
       </div>
     </header>
   );
