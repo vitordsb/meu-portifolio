@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
+import { WORK_LINKS, l } from "@/lib/deck-content";
 
 /**
  * Botão do canto inferior esquerdo: o menu do site (sessões da home, portas
@@ -22,14 +23,7 @@ import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
  *
  * Easter egg herdado da rail: 7 cliques em 3s levam pro /admin.
  */
-export default function AvatarMenu({
-  className,
-  side = "top",
-}: {
-  className?: string;
-  /** "bottom" quando o botão mora no menu de topo da home (desktop). */
-  side?: "top" | "bottom";
-}) {
+export default function AvatarMenu({ className }: { className?: string }) {
   const { language, setLanguage, t } = useLanguage();
   const { theme, cycleTheme } = useTheme();
   const font = useFontScale();
@@ -68,12 +62,10 @@ export default function AvatarMenu({
       },
       {
         label: pt ? "Trabalhe comigo" : "Work with me",
-        items: [
-          { href: "/servicos", label: pt ? "Serviços e preços" : "Services" },
-          { href: "/orcamento", label: pt ? "Orçamento com IA" : "AI quote" },
-          { href: "/raio-x", label: pt ? "Raio-X grátis do site" : "Free site check" },
-          { href: "/pagar", label: pt ? "Pagar pedido" : "Pay order" },
-        ],
+        items: WORK_LINKS.map((w) => ({
+          href: w.href,
+          label: l(w.label, language),
+        })),
       },
     ];
 
@@ -109,11 +101,11 @@ export default function AvatarMenu({
       <Menu.Portal>
         <Menu.Content
           data-origem="menu"
-          side={side}
-          align={side === "top" ? "start" : "end"}
+          side="top"
+          align="start"
           sideOffset={12}
           collisionPadding={8}
-          className="z-[90] max-h-[var(--radix-dropdown-menu-content-available-height)] w-56 overflow-y-auto overscroll-contain rounded-xl border border-outline-variant bg-surface p-1.5 text-on-surface elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-bottom-2 data-[side=bottom]:slide-in-from-top-2"
+          className="z-[90] max-h-[var(--radix-dropdown-menu-content-available-height)] w-56 overflow-y-auto overscroll-contain rounded-xl border border-outline-variant bg-surface p-1.5 text-on-surface elev-3 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-bottom-2"
         >
           {groups.map((g) => (
             <Menu.Group key={g.label}>
