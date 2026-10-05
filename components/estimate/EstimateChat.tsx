@@ -11,6 +11,8 @@ import {
   Check,
   Copy,
   FileText,
+  Mic,
+  Square,
   Paperclip,
   Sparkles,
   X,
@@ -27,6 +29,8 @@ import {
   quoteWhatsappText,
 } from "@/lib/estimate/shared";
 import EstimateResult from "./EstimateResult";
+import GuidedStart from "./GuidedStart";
+import { speechErrorText, useSpeech } from "./useSpeech";
 import LeadForm, { type Lead } from "./LeadForm";
 import { prepareImage, PrepareError } from "./prepareImage";
 
@@ -137,6 +141,15 @@ export default function EstimateChat() {
 
   const turns = msgs.filter((m) => m.role === "user").length;
   const started = turns > 0;
+  // Começo guiado (toques + voz) antes da primeira mensagem. "Prefiro
+  // escrever" ou conversa já começada levam pro chat livre.
+  const [guided, setGuided] = useState(true);
+  const showGuided = guided && !started && phase === "chat";
+  // Ditado também na caixa de mensagem do chat
+  const speech = useSpeech(language, (text) => {
+    setInput((i) => (i.trim() ? `${i.trimEnd()} ${text}` : text));
+    trackEvent("orcamento_voz", { onde: "chat" });
+  });
   const usedImages =
     msgs.reduce((n, m) => n + (m.images?.length ?? 0), 0) + pending.length;
 
@@ -145,6 +158,7 @@ export default function EstimateChat() {
     const s = load();
     if (s) {
       setMsgs(s.msgs);
+      if (s.msgs.length) setGuided(false);
       setPhase(s.phase);
       setEstimate(s.estimate);
       setCode(s.code ?? "");
@@ -531,7 +545,28 @@ export default function EstimateChat() {
         className="flex-1 overflow-y-auto overscroll-contain"
       >
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 pb-8 pt-8 sm:pt-12 [@media(max-height:500px)]:pt-5">
-          {!started && (
+          {showGuided && (
+            <h1 className="-mb-2 text-base font-semibold text-on-surface-variant">
+              {pt
+                ? "Orçamento grátis do seu projeto, em 2 minutos"
+                : "Free quote for your project, in 2 minutes"}
+            </h1>
+          )}
+          {showGuided && (
+            <GuidedStart
+              lang={language}
+              onFinish={(message) => {
+                setGuided(false);
+                send(message);
+              }}
+              onWrite={() => {
+                setGuided(false);
+                requestAnimationFrame(() => inputRef.current?.focus());
+              }}
+            />
+          )}
+
+          {!started && !showGuided && (
             <div className="mb-2">
               <h1 className="text-[clamp(2rem,6vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.035em] [@media(max-height:500px)]:text-[1.75rem]">
                 {pt
@@ -546,15 +581,17 @@ export default function EstimateChat() {
             </div>
           )}
 
-          <Bubble role="assistant">
-            {greetShown < 0 ? (
-              <TypingDots label={pt ? "Digitando" : "Typing"} />
-            ) : (
-              <span aria-label={GREETING[language]}>
-                {GREETING[language].slice(0, greetShown)}
-              </span>
-            )}
-          </Bubble>
+          {!showGuided && (
+            <Bubble role="assistant">
+              {greetShown < 0 ? (
+                <TypingDots label={pt ? "Digitando" : "Typing"} />
+              ) : (
+                <span aria-label={GREETING[language]}>
+                  {GREETING[language].slice(0, greetShown)}
+                </span>
+              )}
+            </Bubble>
+          )}
 
           <AnimatePresence initial={false}>
             {msgs.map((m, i) => (
@@ -664,7 +701,7 @@ export default function EstimateChat() {
       </div>
 
       {/* ── Caixa de mensagem ── */}
-      {phase === "chat" && (
+      {phase === "chat" && !showGuided && (
         <div className="shrink-0 border-t border-outline-variant bg-surface pb-[env(safe-area-inset-bottom)]">
           <form
             onSubmit={(e) => {
@@ -744,6 +781,12 @@ export default function EstimateChat() {
               </ul>
             )}
 
+            {speech.error && (
+              <p role="alert" className="mb-2 px-1 text-sm text-error">
+                {speechErrorText(speech.error, pt)}
+              </p>
+            )}
+
             {imageNotice && (
               <p
                 role="status"
@@ -785,6 +828,37 @@ export default function EstimateChat() {
               >
                 <Paperclip size={18} />
               </button>
+              {speech.supported && (
+                <button
+                  type="button"
+                  onClick={speech.toggle}
+                  disabled={streaming}
+                  aria-pressed={speech.listening}
+                  aria-label={
+                    speech.listening
+                      ? pt
+                        ? "Parar de gravar"
+                        : "Stop recording"
+                      : pt
+                        ? "Falar em vez de digitar"
+                        : "Speak instead of typing"
+                  }
+                  title={
+                    pt ? "Falar em vez de digitar" : "Speak instead of typing"
+                  }
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-30 ${
+                    speech.listening
+                      ? "bg-[#d93025] text-white"
+                      : "text-on-surface-variant hover:bg-surface-high hover:text-on-surface"
+                  }`}
+                >
+                  {speech.listening ? (
+                    <Square size={14} fill="currentColor" />
+                  ) : (
+                    <Mic size={18} />
+                  )}
+                </button>
+              )}
               <label htmlFor="orcamento-input" className="sr-only">
                 {pt ? "Sua mensagem" : "Your message"}
               </label>
@@ -818,11 +892,15 @@ export default function EstimateChat() {
                   }
                 }}
                 placeholder={
-                  started
+                  speech.listening
                     ? pt
-                      ? "Responda aqui..."
-                      : "Reply here..."
-                    : INPUT_EXAMPLES[language][exampleIdx]
+                      ? "Estou ouvindo... fale sua mensagem"
+                      : "Listening... say your message"
+                    : started
+                      ? pt
+                        ? "Responda aqui..."
+                        : "Reply here..."
+                      : INPUT_EXAMPLES[language][exampleIdx]
                 }
                 className="max-h-[40vh] min-h-10 flex-1 resize-none bg-transparent py-2 text-base leading-6 outline-none placeholder:text-on-surface-variant sm:text-[15px]"
               />
