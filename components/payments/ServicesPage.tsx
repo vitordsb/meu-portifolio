@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 import {
   ArrowRight,
   Check,
   Loader2,
   ReceiptText,
+  ScanSearch,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
@@ -43,7 +44,7 @@ export default function ServicesPage() {
   const hire = async (pkg: ServicePackage) => {
     setBusy(pkg.id);
     setNotice(null);
-    track("pacote_contratar", { pacote: pkg.id });
+    trackEvent("pacote_contratar", { pacote: pkg.id });
     try {
       const res = await fetch("/api/pagamentos/checkout", {
         method: "POST",
@@ -58,7 +59,7 @@ export default function ServicesPage() {
       const kind = res.status === 429 ? "rate" : "fallback";
       setNotice({ pkg: pkg.id, kind });
       if (kind === "fallback")
-        track("pacote_fallback_whatsapp", { pacote: pkg.id });
+        trackEvent("pacote_fallback_whatsapp", { pacote: pkg.id });
     } catch {
       setNotice({ pkg: pkg.id, kind: "offline" });
     }
@@ -192,6 +193,28 @@ export default function ServicesPage() {
         </ul>
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <Link
+            href="/raio-x"
+            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40 md:col-span-2"
+          >
+            <span>
+              <span className="flex items-center gap-2 font-semibold">
+                <ScanSearch size={16} />
+                {pt
+                  ? "Já tem site? Faça o raio-x grátis"
+                  : "Already have a site? Run a free check"}
+              </span>
+              <span className="mt-1 block text-sm text-on-surface-variant">
+                {pt
+                  ? "Em 30 segundos você vê se ele precisa de ajustes ou de um site novo."
+                  : "In 30 seconds you'll see whether it needs tweaks or a new site."}
+              </span>
+            </span>
+            <ArrowRight
+              size={18}
+              className="shrink-0 transition-transform group-hover:translate-x-0.5"
+            />
+          </Link>
           <Link
             href="/orcamento"
             className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40"

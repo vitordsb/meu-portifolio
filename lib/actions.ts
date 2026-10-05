@@ -11,6 +11,7 @@ import { rateLimit, resetRateLimit } from "./rate-limit";
 import { deliverContact } from "./contact-delivery";
 import { cleanLine, cleanText } from "./sanitize";
 import { takeDaily } from "./security/daily-cap";
+import { describeAttribution } from "./attribution-server";
 import * as db from "./db";
 
 async function getRequestIp(): Promise<string | null> {
@@ -220,6 +221,8 @@ type ContactInput = {
   message: string;
   /** Campo-isca escondido: pessoa não vê, robô preenche (SPEC segurança S1). */
   website?: string;
+  /** De onde a pessoa veio (lib/attribution): só no e-mail do Vitor. */
+  origem?: unknown;
 };
 
 const CONTACT_MAX_PER_HOUR = 5;
@@ -273,7 +276,7 @@ export async function sendContactMessage(
     email: email || null,
     company: company || null,
     subject: subject || null,
-    message,
+    message: `${message}\n\n── ${describeAttribution(data.origem)}`,
   };
 
   await deliverContact(payload);

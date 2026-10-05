@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { linkEvent, trackEvent } from "@/lib/analytics";
+import { captureAttribution } from "@/lib/attribution";
 
 /**
  * Mede os cliques que levam a um lead: WhatsApp, redes, e-mail e entradas no
@@ -15,6 +16,9 @@ import { linkEvent, trackEvent } from "@/lib/analytics";
  * cancela o clique pra animar. Por isso não olha `defaultPrevented`.
  */
 export default function ClickTracker() {
+  // Origem da visita (UTM, ?ref=, site que trouxe): guardada pro pedido
+  useEffect(() => captureAttribution(), []);
+
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (e.button !== 0 && e.button !== 1) return;

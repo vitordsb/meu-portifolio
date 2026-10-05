@@ -41,6 +41,7 @@ export function linkEvent(
   if (url.origin === window.location.origin && url.pathname !== window.location.pathname) {
     if (url.pathname === "/orcamento") return { name: "clique_orcamento" };
     if (url.pathname === "/servicos") return { name: "clique_servicos" };
+    if (url.pathname === "/raio-x") return { name: "clique_raiox" };
   }
   return null;
 }

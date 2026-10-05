@@ -39,6 +39,7 @@ export type SearchIntent = {
     | "file"
     | "theme"
     | "language"
+    | "scan"
     | "user";
   label: L10n;
   /** A "resposta": aparece embaixo do rótulo, como se a busca entendesse. */
@@ -270,6 +271,37 @@ export const SEARCH_INTENTS: SearchIntent[] = [
       "estimate",
     ],
     action: { kind: "route", href: "/orcamento" },
+  },
+  {
+    id: "raio-x",
+    group: "falar",
+    icon: "scan",
+    label: { pt: "Raio-X grátis do seu site", en: "Free website check" },
+    answer: {
+      pt: "Cole o endereço e veja o que está afastando clientes no celular.",
+      en: "Paste the address and see what's pushing customers away on mobile.",
+    },
+    keywords: [
+      "raio",
+      "raiox",
+      "analise",
+      "analisar",
+      "auditoria",
+      "diagnostico",
+      "teste",
+      "lento",
+      "velocidade",
+      "google",
+      "seo",
+      "meu site",
+      "pagespeed",
+      "lighthouse",
+      "check",
+      "audit",
+      "slow",
+      "speed",
+    ],
+    action: { kind: "route", href: "/raio-x" },
   },
   {
     id: "consultoria",

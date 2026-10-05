@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
+import { readAttribution } from "@/lib/attribution";
 import {
   ArrowLeft,
   ArrowUp,
@@ -253,10 +254,10 @@ export default function EstimateChat() {
       setInput("");
       setPending([]);
       setImageNotice(null);
-      if (images.length) track("orcamento_imagem", { qtd: images.length });
+      if (images.length) trackEvent("orcamento_imagem", { qtd: images.length });
       setNotice(null);
       setStreaming(true);
-      if (turns === 0) track("orcamento_inicio");
+      if (turns === 0) trackEvent("orcamento_inicio");
 
       const fail = (message: string) => {
         // Tira a bolha vazia da assistente; a mensagem do cliente fica
@@ -337,7 +338,7 @@ export default function EstimateChat() {
           );
         } else if (ready) {
           setPhase("lead");
-          track("orcamento_pronto", { turnos: turns + 1 });
+          trackEvent("orcamento_pronto", { turnos: turns + 1 });
         }
       } catch {
         fail(
@@ -399,6 +400,7 @@ export default function EstimateChat() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          origem: readAttribution(),
           messages: toApi(msgs),
           images: msgs.flatMap((m) => m.images ?? []),
           lead: { ...lead, consent: true },
@@ -414,11 +416,11 @@ export default function EstimateChat() {
       if (res.ok && data.estimate) {
         setEstimate(data.estimate as Estimate);
         setPhase("done");
-        track("orcamento_lead", { faixaMin: data.estimate.min });
+        trackEvent("orcamento_lead", { faixaMin: data.estimate.min });
       } else if (data.saved) {
         // Contato salvo, só a conta falhou: vira pedido sem faixa na tela
         setPhase("done");
-        track("orcamento_lead", { faixaMin: 0 });
+        trackEvent("orcamento_lead", { faixaMin: 0 });
       } else if (res.status === 403 || res.status === 503) {
         setLeadError(
           pt
@@ -465,7 +467,7 @@ export default function EstimateChat() {
 
   const applyTemplate = () => {
     setInput(BRIEFING[language]);
-    track("orcamento_modelo");
+    trackEvent("orcamento_modelo");
     requestAnimationFrame(() => {
       const el = inputRef.current;
       if (!el) return;
