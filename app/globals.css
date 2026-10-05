@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is([data-theme="dark"], [data-theme="dark"] *));
+/* Home no desktop: menu lateral sempre aberto. Mesma conta do SIDE_QUERY da paginação. */
+@custom-variant deck-wide (@media (min-width: 64rem) and (min-height: 501px));
 
 /* ═══════════════════════════════════════════════════════════════════════════
    DESIGN SYSTEM
@@ -350,6 +352,9 @@
   /* Largura da moldura do conteúdo. Setas e menu do deck se alinham a ela. */
   :root { --deck-frame: 72rem; }
   @media (min-width: 120rem) { :root { --deck-frame: 110rem; } }
+  /* Menu lateral da home no desktop (DeckSideNav): o deck começa depois dele. */
+  :root { --deck-side: 15rem; --deck-off: 0px; }
+  @media (min-width: 64rem) and (min-height: 501px) { :root { --deck-off: var(--deck-side); } }
   /* Aparelho em outro idioma: esconde o português do HTML estático até o
      LanguageProvider trocar (ver langScript no layout). Se o JS falhar, a
      página aparece sozinha em 1,5 s. */

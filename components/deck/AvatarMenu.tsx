@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
+import { WORK_LINKS, l } from "@/lib/deck-content";
 
 /**
  * Botão do canto inferior esquerdo: o menu do site (sessões da home, portas
@@ -61,12 +62,10 @@ export default function AvatarMenu({ className }: { className?: string }) {
       },
       {
         label: pt ? "Trabalhe comigo" : "Work with me",
-        items: [
-          { href: "/servicos", label: pt ? "Serviços e preços" : "Services" },
-          { href: "/orcamento", label: pt ? "Orçamento com IA" : "AI quote" },
-          { href: "/raio-x", label: pt ? "Raio-X grátis do site" : "Free site check" },
-          { href: "/pagar", label: pt ? "Pagar pedido" : "Pay order" },
-        ],
+        items: WORK_LINKS.map((w) => ({
+          href: w.href,
+          label: l(w.label, language),
+        })),
       },
     ];
 

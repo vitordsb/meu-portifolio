@@ -23,6 +23,17 @@ export const DECK_SECTIONS: { id: DeckSectionId; label: L10n }[] = [
 ];
 
 /**
+ * Portas de venda do menu ("Trabalhe comigo"). `quote` marca o orçamento com
+ * IA: o menu lateral do desktop não repete ele, que já é o botão do banner.
+ */
+export const WORK_LINKS: { href: string; label: L10n; quote?: boolean }[] = [
+  { href: "/servicos", label: { pt: "Serviços e preços", en: "Services" } },
+  { href: "/orcamento", label: { pt: "Orçamento com IA", en: "AI quote" }, quote: true },
+  { href: "/raio-x", label: { pt: "Raio-X grátis do site", en: "Free site check" } },
+  { href: "/pagar", label: { pt: "Pagar pedido", en: "Pay order" } },
+];
+
+/**
  * Partes de uma sessão que têm link próprio: `/#tecnologias` abre
  * Especializações rolada até Tecnologias; `/#cursos`, Trajetória até Cursos.
  */

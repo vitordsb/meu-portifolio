@@ -89,14 +89,16 @@ export default function HeroSlide({
   return (
     // O espaço que sobra se divide 1 : 1.6 entre cima e embaixo: o banner fica
     // acima do centro (centralizado parecia baixo) sem largar tela alta vazia.
-    <div className="flex min-h-full flex-col px-4 pb-24 pt-[4.75rem] sm:px-8 sm:pb-36 sm:pt-24">
+    <div className="@container flex min-h-full flex-col px-4 pb-24 pt-[4.75rem] sm:px-8 sm:pb-36 sm:pt-24">
       <div aria-hidden className="flex-[1]" />
       <div className="mx-auto w-full max-w-[50rem]">
         {/* Cargo: o que eu sou. O título grande logo abaixo é a especialidade.
-            Abaixo de 1024px a foto mora aqui (não há margem pra pendurar). */}
+            Sem margem pra pendurar a foto ao lado do título (celular, menu
+            lateral aberto, letra grande), ela mora aqui. Container query em
+            rem: a conta acompanha o tamanho da letra. */}
         <Rise step={0}>
           <p className="mb-4 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-on-surface-variant sm:mb-5 sm:text-sm">
-            <Photo className="h-8 w-8 lg:hidden" />
+            <Photo className="h-8 w-8 @min-[62rem]:hidden" />
             {l(HERO.role, language)}
           </p>
         </Rise>
@@ -112,7 +114,7 @@ export default function HeroSlide({
               {i === 0 && (
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-y-0 right-full mr-6 hidden items-center lg:flex"
+                  className="pointer-events-none absolute inset-y-0 right-full mr-6 hidden items-center @min-[62rem]:flex"
                 >
                   <Rise step={0.6}>
                     <Photo className="h-12 w-12" />

@@ -18,10 +18,12 @@ import { ChevronLeft, ChevronRight, ChevronsLeft } from "lucide-react";
  * do "Próxima" fica um convite ("Arraste", com setas se mexendo) no ponto
  * exato onde a seta lateral aparece depois; ao sair da home ele VIRA a seta.
  *
- *   home, tela larga      -> números embaixo + convite na lateral direita
+ *   home, tela larga      -> só o convite, na lateral direita (abaixo de
+ *                            1280px no rodapé); as sessões estão no menu
+ *                            lateral, DeckSideNav
  *   home, tela média      -> números embaixo + convite ao lado deles
  *   home, celular         -> pontos + convite numa pílula no rodapé
- *   sessões, tela larga   -> setas redondas nas laterais + pontos embaixo
+ *   sessões, tela larga   -> só as setas redondas nas laterais
  *   sessões, tela estreita -> "‹ • • • ›" no rodapé
  */
 
@@ -37,6 +39,9 @@ const T = { layout: MORPH, opacity: { duration: 0.2 } };
 const FULL_QUERY = "(min-width: 640px) and (min-height: 501px)";
 /** Setas nas laterais a partir daqui: abaixo disso cobririam o conteúdo. */
 const SIDE_QUERY = "(min-width: 1024px) and (min-height: 501px)";
+/** Convite "Arraste" na lateral só daqui pra cima: com o menu lateral aberto,
+ *  numa tela de 1024px ele cairia em cima do texto do banner. */
+const HINT_SIDE_QUERY = "(min-width: 1280px) and (min-height: 501px)";
 
 function useMedia(query: string, fallback: boolean) {
   const [match, setMatch] = useState(fallback);
@@ -63,6 +68,7 @@ export default function DeckPagination({
 }) {
   const full = useMedia(FULL_QUERY, true);
   const side = useMedia(SIDE_QUERY, true);
+  const hintSide = useMedia(HINT_SIDE_QUERY, true);
   const touch = useMedia("(pointer: coarse)", false);
   const reduce = useReducedMotion();
   const total = labels.length;
@@ -212,12 +218,14 @@ export default function DeckPagination({
    *  do botão é do Framer Motion. Ficam junto da moldura do conteúdo
    *  (`--deck-frame`), não colados na borda: no ultrawide a borda fica a
    *  mais de 1.000px do texto. Em tela menor, a conta dá menos que 1rem e
-   *  elas voltam pra borda. */
-  const SIDE = "max(1rem, calc(50vw - var(--deck-frame) / 2 - 3.5rem))";
+   *  elas voltam pra borda. `--deck-off` é a largura do menu lateral do
+   *  desktop: o deck começa depois dele. */
+  const GAP =
+    "max(1rem, calc((100vw - var(--deck-off)) / 2 - var(--deck-frame) / 2 - 3.5rem))";
   const atLeft = (node: React.ReactNode) => (
     <div
       className="pointer-events-none fixed inset-y-0 z-50 flex items-center"
-      style={{ left: SIDE }}
+      style={{ left: `calc(var(--deck-off) + ${GAP})` }}
     >
       <div className="pointer-events-auto">{node}</div>
     </div>
@@ -225,7 +233,7 @@ export default function DeckPagination({
   const atRight = (node: React.ReactNode) => (
     <div
       className="pointer-events-none fixed inset-y-0 z-50 flex items-center"
-      style={{ right: SIDE }}
+      style={{ right: GAP }}
     >
       <div className="pointer-events-auto">{node}</div>
     </div>
@@ -236,15 +244,14 @@ export default function DeckPagination({
       <nav aria-label={pt ? "Sessões do portfólio" : "Portfolio sections"}>
         {/* Home em tela larga: números embaixo, convite na lateral (ou ao lado
             dos números quando a tela ainda não comporta as laterais) */}
-        {onHome && full && (
-          <>
-            <div className="flex items-center gap-3">
-              <ol className="flex items-center gap-1.5">{pages}</ol>
-              {!side && next}
-            </div>
-            {side && atRight(next)}
-          </>
+        {onHome && full && !side && (
+          <div className="flex items-center gap-3">
+            <ol className="flex items-center gap-1.5">{pages}</ol>
+            {next}
+          </div>
         )}
+
+        {onHome && side && (hintSide ? atRight(next) : next)}
 
         {onHome && !full && (
           <motion.div layoutId="pager-shell" transition={T} className={shell}>
@@ -255,7 +262,6 @@ export default function DeckPagination({
 
         {!onHome && side && (
           <>
-            <ol className="flex h-9 items-center">{pages}</ol>
             {atLeft(prev)}
             {atRight(next)}
           </>

@@ -23,6 +23,7 @@ import {
 } from "@/components/motion/useLeaveTransition";
 import AvatarMenu from "./AvatarMenu";
 import DeckPagination from "./DeckPagination";
+import DeckSideNav from "./DeckSideNav";
 import SearchHint from "@/components/SearchHint";
 import SlidePane, { type PaneHandle } from "./SlidePane";
 import HeroSlide from "./slides/HeroSlide";
@@ -369,7 +370,7 @@ export default function HomeDeck() {
         <div
           ref={rootRef}
           // pan-y: o dedo rola na vertical; o arraste lateral vem pra cá
-          className={`fixed inset-0 touch-pan-y overflow-hidden bg-surface text-on-surface ${
+          className={`fixed inset-0 touch-pan-y overflow-hidden bg-surface text-on-surface deck-wide:left-[var(--deck-side)] ${
             dragging ? "cursor-grabbing select-none" : ""
           }`}
           onPointerDown={onPointerDown}
@@ -415,12 +416,15 @@ export default function HomeDeck() {
           </p>
         </div>
 
-        {/* Rodapé: avatar/menu à esquerda, paginação no centro. Fixo e sem
+        <DeckSideNav current={index} labels={labels} onChange={go} />
+
+        {/* Rodapé: avatar/menu à esquerda, paginação no centro (no desktop o
+          menu vira o DeckSideNav, sempre aberto, e aqui ficam só as setas). Fixo e sem
           animação de entrada: é navegação, tem que estar lá desde o
           primeiro frame. O degradê esconde o conteúdo que rola por baixo. */}
-        <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 bg-gradient-to-t from-surface from-60% to-transparent pb-3 pt-6 sm:pb-6 sm:pt-10">
+        <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 deck-wide:left-[var(--deck-side)] bg-gradient-to-t from-surface from-60% to-transparent pb-3 pt-6 sm:pb-6 sm:pt-10">
           <div className="pointer-events-auto mx-auto grid max-w-[var(--deck-frame)] grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:px-8 lg:px-12">
-            <AvatarMenu />
+            <AvatarMenu className="deck-wide:invisible" />
             <div className="flex justify-center">
               <DeckPagination
                 current={index}
