@@ -39,9 +39,11 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  // Microfone só no próprio site: ditado por voz do orçamento (o navegador
+  // ainda pergunta à pessoa antes de ligar). O resto segue desligado.
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+    value: "camera=(), microphone=(self), geolocation=(), payment=(), usb=(), interest-cohort=()",
   },
   // Só HTTPS por 2 anos, subdomínios inclusos (admin.vitordsb.com.br já nasce assim)
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
