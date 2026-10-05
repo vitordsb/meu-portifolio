@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
 
 /**
  * Botão do canto inferior esquerdo: o menu do site (sessões da home, portas
@@ -24,6 +25,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 export default function AvatarMenu({ className }: { className?: string }) {
   const { language, setLanguage, t } = useLanguage();
   const { theme, cycleTheme } = useTheme();
+  const font = useFontScale();
   const router = useRouter();
   const pathname = usePathname();
   const pt = language === "pt";
@@ -81,7 +83,7 @@ export default function AvatarMenu({ className }: { className?: string }) {
   const ThemeIcon = theme === "light" ? Sun : theme === "dark" ? Moon : Monitor;
 
   const item =
-    "flex h-10 cursor-pointer select-none items-center justify-between gap-3 rounded-md px-3 text-sm outline-none [@media(max-height:500px)]:h-8 " +
+    "flex h-11 cursor-pointer select-none items-center justify-between gap-3 rounded-md px-3 text-sm outline-none [@media(max-height:500px)]:h-9 " +
     "data-[highlighted]:bg-surface-high";
 
   return (
@@ -108,7 +110,7 @@ export default function AvatarMenu({ className }: { className?: string }) {
         >
           {groups.map((g) => (
             <Menu.Group key={g.label}>
-              <Menu.Label className="px-3 pb-1 pt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-on-surface-variant">
+              <Menu.Label className="px-3 pb-1 pt-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
                 {g.label}
               </Menu.Label>
               {g.items.map((p) => {
@@ -144,6 +146,23 @@ export default function AvatarMenu({ className }: { className?: string }) {
           <Menu.Separator className="my-1 h-px bg-outline-variant" />
 
           {/* preventDefault no onSelect mantém o menu aberto pra ver a troca */}
+          <Menu.Item
+            className={item}
+            onSelect={(e) => {
+              e.preventDefault();
+              font.cycle();
+            }}
+          >
+            <span className="flex items-center gap-2.5">
+              <span aria-hidden className="w-4 text-center text-[0.8125rem] font-semibold leading-none">
+                A<span className="text-[1.25em]">A</span>
+              </span>
+              {pt ? "Tamanho da letra" : "Text size"}
+            </span>
+            <span className="text-xs text-on-surface-variant">
+              {FONT_LABELS[language][font.index]}
+            </span>
+          </Menu.Item>
           <Menu.Item
             className={item}
             onSelect={(e) => {

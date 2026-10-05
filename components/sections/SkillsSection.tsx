@@ -183,7 +183,7 @@ export default function SkillsSection({
                                 {skill.title}
                               </h4>
                               {skill.category && (
-                                <p className="text-[10px] font-mono text-primary tracking-widest uppercase">
+                                <p className="text-[0.75rem] font-mono text-primary tracking-widest uppercase">
                                   {catL10n[skill.category] ?? skill.category}
                                 </p>
                               )}
@@ -192,10 +192,10 @@ export default function SkillsSection({
 
                           <div className="mb-3">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+                              <span className="text-[0.75rem] font-bold uppercase tracking-wider text-on-surface-variant">
                                 {language === "pt" ? "Nível" : "Level"}
                               </span>
-                              <span className="text-[10px] font-bold text-primary">
+                              <span className="text-[0.75rem] font-bold text-primary">
                                 {lvl[language]} ({level}/5)
                               </span>
                             </div>
@@ -212,7 +212,7 @@ export default function SkillsSection({
                           </div>
 
                           <div>
-                            <p className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant mb-2">
+                            <p className="text-[0.75rem] font-bold uppercase tracking-wider text-on-surface-variant mb-2">
                               {language === "pt"
                                 ? `Aparece em ${projectTitles.length} projeto${projectTitles.length === 1 ? "" : "s"}`
                                 : `Used in ${projectTitles.length} project${projectTitles.length === 1 ? "" : "s"}`}
@@ -220,7 +220,7 @@ export default function SkillsSection({
                             {projectTitles.length > 0 ? (
                               <div className="flex flex-wrap gap-1">
                                 {projectTitles.map((title) => (
-                                  <span key={title} className="chip-static text-[10px]">
+                                  <span key={title} className="chip-static text-[0.75rem]">
                                     {title}
                                   </span>
                                 ))}

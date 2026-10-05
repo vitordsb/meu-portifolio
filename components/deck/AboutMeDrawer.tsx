@@ -20,7 +20,7 @@ export default function AboutMeDrawer({ language }: { language: "pt" | "en" }) {
           className="group flex w-full items-center justify-between gap-6 rounded-xl border border-outline-variant bg-surface-low p-6 text-left transition-colors hover:border-on-surface/40 md:p-8"
         >
           <span className="min-w-0">
-            <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+            <span className="mb-2 block font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
               {pt ? "Pessoal" : "Personal"}
             </span>
             <span className="block text-2xl font-extrabold tracking-[-0.03em] md:text-3xl">
@@ -46,7 +46,7 @@ export default function AboutMeDrawer({ language }: { language: "pt" | "en" }) {
         >
           <div className="flex items-start justify-between gap-4 border-b border-outline-variant px-6 pb-5 pt-6 md:px-8">
             <div>
-              <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+              <p className="mb-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
                 {pt ? "Pessoal" : "Personal"}
               </p>
               <Dialog.Title className="text-3xl font-extrabold tracking-[-0.03em]">
@@ -62,7 +62,7 @@ export default function AboutMeDrawer({ language }: { language: "pt" | "en" }) {
           </div>
 
           <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-8 md:px-8">
-            <p className="mb-8 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+            <p className="mb-8 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
               {pt ? "Trajetória" : "Journey"}
             </p>
             <ol className="relative border-l border-outline-variant">
@@ -77,10 +77,10 @@ export default function AboutMeDrawer({ language }: { language: "pt" | "en" }) {
                     }`}
                   />
                   <div className="mb-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="font-mono text-[11px] tracking-[0.08em] text-on-surface-variant">
+                    <span className="font-mono text-[0.75rem] tracking-[0.08em] text-on-surface-variant">
                       {item.period[language]}
                     </span>
-                    <span className="rounded border border-outline-variant px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.12em] text-on-surface-variant">
+                    <span className="rounded border border-outline-variant px-1.5 py-px font-mono text-[0.75rem] uppercase tracking-[0.12em] text-on-surface-variant">
                       {JOURNEY_KIND_LABEL[item.kind][language]}
                     </span>
                   </div>

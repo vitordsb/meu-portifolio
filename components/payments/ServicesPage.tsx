@@ -90,7 +90,7 @@ export default function ServicesPage() {
               }`}
             >
               {pkg.featured && (
-                <span className="absolute right-5 top-5 rounded-full bg-primary px-2.5 py-1 text-[11px] font-semibold text-on-primary">
+                <span className="absolute right-5 top-5 rounded-full bg-primary px-2.5 py-1 text-[0.75rem] font-semibold text-on-primary">
                   {pt ? "Mais pedido" : "Most popular"}
                 </span>
               )}

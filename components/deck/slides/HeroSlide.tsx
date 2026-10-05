@@ -152,7 +152,7 @@ export default function HeroSlide({
                   rel="noopener noreferrer"
                   aria-label={label}
                   title={label}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full transition hover:-translate-y-0.5 hover:opacity-90 ${color}`}
+                  className={`flex h-11 w-11 items-center justify-center rounded-full transition hover:-translate-y-0.5 hover:opacity-90 ${color}`}
                 >
                   <Icon size={17} />
                 </a>
@@ -164,18 +164,18 @@ export default function HeroSlide({
             {SERVICES.map((s, i) => {
               const label = l(s.label, language);
               return (
-                <Rise key={s.key} step={5.2 + i * 0.4}>
+                <Rise key={s.key} step={5.2 + i * 0.4} className="max-w-full">
                   {s.href ? (
                     <Link
                       href={s.href}
                       className={
                         s.primary
-                          ? "btn btn-filled h-12 rounded-lg px-6 text-base"
+                          ? "btn btn-filled h-auto min-h-12 max-w-full whitespace-normal rounded-lg px-6 py-2 text-center text-base"
                           : "link-underline"
                       }
                     >
                       <span className="inline-flex items-center gap-2">
-                        {s.primary && <Sparkles size={16} />}
+                        {s.primary && <Sparkles size={16} className="shrink-0" />}
                         {label}
                       </span>
                     </Link>
@@ -185,7 +185,7 @@ export default function HeroSlide({
                       onClick={() => openContact(label)}
                       className={
                         s.primary
-                          ? "btn btn-filled h-12 rounded-lg px-7 text-base"
+                          ? "btn btn-filled h-auto min-h-12 max-w-full whitespace-normal rounded-lg px-7 py-2 text-center text-base"
                           : "link-underline"
                       }
                     >
@@ -214,7 +214,7 @@ export default function HeroSlide({
                   </dd>
                   <dd
                     aria-hidden
-                    className="font-mono text-[11px] text-on-surface-variant sm:text-xs"
+                    className="font-mono text-[0.75rem] text-on-surface-variant sm:text-xs"
                   >
                     {st.label}
                   </dd>

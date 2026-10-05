@@ -86,7 +86,7 @@ export default function ContactSection() {
             >
               <div className="flex items-center gap-2 mb-2">
                 <item.icon size={14} className="text-primary shrink-0" />
-                <p className="text-[10px] font-bold uppercase tracking-widest text-on-primary/60">
+                <p className="text-[0.75rem] font-bold uppercase tracking-widest text-on-primary/60">
                   {language === "pt" ? item.labelPt : item.labelEn}
                 </p>
               </div>

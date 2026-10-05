@@ -64,7 +64,7 @@ function useTypewriter(phrases: string[], enabled: boolean) {
 
 function Key({ children }: { children: React.ReactNode }) {
   return (
-    <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded-md border border-outline-variant bg-surface-container px-1.5 font-mono text-[11px] font-medium text-on-surface">
+    <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded-md border border-outline-variant bg-surface-container px-1.5 font-mono text-[0.75rem] font-medium text-on-surface">
       {children}
     </kbd>
   );
@@ -213,13 +213,13 @@ export default function SearchHint({
       onClick={open}
       aria-label={label}
       {...enter}
-      className="inline-flex h-9 min-w-9 items-center justify-center gap-2 rounded-full border border-outline-variant bg-surface/80 px-2.5 text-xs text-on-surface-variant backdrop-blur transition-colors hover:border-on-surface/30 hover:text-on-surface sm:px-3.5"
+      className="inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-outline-variant bg-surface/80 px-2.5 text-xs text-on-surface-variant backdrop-blur transition-colors hover:border-on-surface/30 hover:text-on-surface sm:px-3.5"
     >
-      <Search size={14} className="shrink-0" />
+      <Search size={16} className="shrink-0" />
       {!touch && (
         <>
-          <span className="text-sm">{pt ? "Pesquisar" : "Search"}</span>
-          <span className="flex items-center gap-1">
+          <span className="hidden text-sm sm:inline">{pt ? "Pesquisar" : "Search"}</span>
+          <span className="hidden items-center gap-1 sm:flex">
             <Key>{keys[0]}</Key>
             <Key>{keys[1]}</Key>
           </span>

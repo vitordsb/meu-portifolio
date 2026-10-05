@@ -30,7 +30,7 @@ function WebShot({ src, url }: { src: string; url: string | null }) {
         <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
         <span className="h-2 w-2 rounded-full bg-[#28c840]" />
         {url && (
-          <span className="ml-2 truncate font-mono text-[10px] text-neutral-500">
+          <span className="ml-2 truncate font-mono text-[0.75rem] text-neutral-500">
             {linkLabelFor(url)}
           </span>
         )}
@@ -186,7 +186,7 @@ export default function CompanyCard({
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 font-mono text-[11px] leading-snug text-on-surface-variant">
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 font-mono text-[0.75rem] leading-snug text-on-surface-variant">
           <span className="uppercase tracking-[0.12em]">
             {company.sector[language]}
           </span>
@@ -218,7 +218,7 @@ export default function CompanyCard({
         {/* O que EU fiz lá: é isso que vende "Crie um software" */}
         <dl className="mb-6 flex-1 space-y-3">
           <div>
-            <dt className="mb-1 font-mono text-[11px] uppercase tracking-[0.12em] text-on-surface-variant">
+            <dt className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.12em] text-on-surface-variant">
               {pt ? "Meu papel" : "My role"}
             </dt>
             <dd className="text-sm leading-relaxed md:text-base">
@@ -227,7 +227,7 @@ export default function CompanyCard({
           </div>
           {company.result && (
             <div>
-              <dt className="mb-1 font-mono text-[11px] uppercase tracking-[0.12em] text-on-surface-variant">
+              <dt className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.12em] text-on-surface-variant">
                 {pt ? "Resultado" : "Result"}
               </dt>
               <dd className="text-sm font-semibold leading-relaxed md:text-base">

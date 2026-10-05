@@ -47,7 +47,7 @@ export default function LeadForm({
       }}
       className="rounded-2xl border border-outline-variant bg-surface-low p-5 sm:p-6"
     >
-      <p className="mb-1 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+      <p className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
         {pt ? "Quase lá" : "Almost there"}
       </p>
       <h2 className="text-xl font-extrabold tracking-[-0.02em]">

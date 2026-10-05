@@ -130,7 +130,7 @@ export default function ContactModal({
           {step === "channel" && (
             <>
               {subject && (
-                <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-brand">
+                <p className="mb-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-brand">
                   {subject}
                 </p>
               )}

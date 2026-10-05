@@ -115,7 +115,7 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
 
 const card = "rounded-2xl border border-outline-variant bg-surface-low p-6";
 const label =
-  "font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant";
+  "font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant";
 
 export default function PriceGuide() {
   return (

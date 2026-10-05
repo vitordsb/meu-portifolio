@@ -56,7 +56,7 @@ export default function EstimateResult({
       className="overflow-hidden rounded-2xl border border-outline-variant bg-surface-low"
     >
       <div className="p-5 sm:p-7">
-        <div className="mb-3 flex items-baseline justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+        <div className="mb-3 flex items-baseline justify-between gap-3 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
           <span>{pt ? "Primeira versão (MVP)" : "First version (MVP)"}</span>
           <span className="shrink-0 normal-case tracking-[0.08em]">
             {pt ? "Pedido" : "Quote"}{" "}
@@ -87,7 +87,7 @@ export default function EstimateResult({
 
         {items.length > 0 && (
           <>
-            <p className="mb-2.5 mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+            <p className="mb-2.5 mt-6 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
               {pt ? "O que entra no MVP" : "What's in the MVP"}
             </p>
             <ul className="flex flex-wrap gap-2">
@@ -105,7 +105,7 @@ export default function EstimateResult({
 
         {payment.length > 0 && (
           <>
-            <p className="mb-2.5 mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+            <p className="mb-2.5 mt-6 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
               {pt ? "Formas de pagamento" : "Payment options"}
             </p>
             <ul className="grid gap-2 sm:grid-cols-2">

@@ -28,6 +28,7 @@ import {
   MAX_USER_TURNS,
   quoteWhatsappText,
 } from "@/lib/estimate/shared";
+import FontSizeButton from "@/components/a11y/FontSizeButton";
 import EstimateResult from "./EstimateResult";
 import GuidedStart from "./GuidedStart";
 import { speechErrorText, useSpeech } from "./useSpeech";
@@ -529,6 +530,7 @@ export default function EstimateChat() {
             <ArrowLeft size={16} />
             Vitor de Souza
           </Link>
+          <FontSizeButton />
         </div>
         <motion.span
           aria-hidden
@@ -653,7 +655,7 @@ export default function EstimateChat() {
               animate={{ opacity: 1, y: 0 }}
               className="rounded-2xl border border-outline-variant bg-surface-low p-5 sm:p-7"
             >
-              <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+              <p className="mb-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
                 {pt ? "Pedido" : "Quote"} #{code}
               </p>
               <h2 className="text-xl font-extrabold tracking-[-0.02em]">
@@ -728,7 +730,7 @@ export default function EstimateChat() {
                 <button
                   type="button"
                   onClick={applyTemplate}
-                  className="inline-flex h-8 items-center gap-2 rounded-full border border-outline-variant px-3.5 text-[13px] font-medium transition-colors hover:border-on-surface/60"
+                  className="inline-flex h-8 items-center gap-2 rounded-full border border-outline-variant px-3.5 text-[0.8125rem] font-medium transition-colors hover:border-on-surface/60"
                 >
                   <FileText size={14} />
                   {pt ? "Usar modelo de briefing" : "Use briefing template"}
@@ -737,7 +739,7 @@ export default function EstimateChat() {
                   type="button"
                   onClick={copyTemplate}
                   aria-label={pt ? "Copiar modelo" : "Copy template"}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[13px] text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
+                  className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[0.8125rem] text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
                 >
                   {copied ? <Check size={14} /> : <Copy size={14} />}
                   {copied
@@ -902,7 +904,7 @@ export default function EstimateChat() {
                         : "Reply here..."
                       : INPUT_EXAMPLES[language][exampleIdx]
                 }
-                className="max-h-[40vh] min-h-10 flex-1 resize-none bg-transparent py-2 text-base leading-6 outline-none placeholder:text-on-surface-variant sm:text-[15px]"
+                className="max-h-[40vh] min-h-10 flex-1 resize-none bg-transparent py-2 text-base leading-6 outline-none placeholder:text-on-surface-variant sm:text-[0.9375rem]"
               />
               <button
                 type="submit"
@@ -972,7 +974,7 @@ function Bubble({
             ))}
           </div>
         ) : null}
-        <p className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-surface-high px-4 py-2.5 text-[15px] leading-relaxed">
+        <p className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-surface-high px-4 py-2.5 text-[0.9375rem] leading-relaxed">
           {children}
         </p>
       </div>
@@ -986,7 +988,7 @@ function Bubble({
       >
         <Sparkles size={13} />
       </span>
-      <div className="min-w-0 flex-1 whitespace-pre-wrap break-words pt-0.5 text-[15px] leading-relaxed">
+      <div className="min-w-0 flex-1 whitespace-pre-wrap break-words pt-0.5 text-[0.9375rem] leading-relaxed">
         {children}
       </div>
     </div>

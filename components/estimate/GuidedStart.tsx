@@ -296,7 +296,7 @@ export default function GuidedStart({
                 {o.label[lang]}
               </span>
               {o.hint && (
-                <span className="mt-0.5 block text-[15px] leading-snug text-on-surface-variant">
+                <span className="mt-0.5 block text-[0.9375rem] leading-snug text-on-surface-variant">
                   {o.hint[lang]}
                 </span>
               )}

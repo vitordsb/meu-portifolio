@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import FontSizeButton from "@/components/a11y/FontSizeButton";
 
 /**
  * Topo das páginas de compra (/servicos, /pagar, /pagamento/obrigado): só o
- * voltar pra home. Mesmo desenho do /orcamento.
+ * voltar pra home e o botão de tamanho da letra. Mesmo desenho do /orcamento.
  */
 export default function PageHeader({
   width = "max-w-5xl",
@@ -23,6 +24,7 @@ export default function PageHeader({
           <ArrowLeft size={16} />
           Vitor de Souza
         </Link>
+        <FontSizeButton />
       </div>
     </header>
   );

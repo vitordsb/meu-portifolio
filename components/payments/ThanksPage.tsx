@@ -36,7 +36,7 @@ export default function ThanksPage() {
           {pt ? "Pagamento enviado!" : "Payment sent!"}
         </h1>
         {code && (
-          <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+          <p className="mt-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
             {pt ? "Pedido" : "Order"} #{code}
           </p>
         )}
