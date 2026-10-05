@@ -1,17 +1,16 @@
 import { OG_CONTENT_TYPE, OG_SIZE, ogCard } from "@/lib/og/card";
 
 export const runtime = "nodejs";
-export const alt = "Vitor de Souza, engenheiro de software: UI/UX e Front-end";
+export const alt = "Serviços com preço fechado, Vitor de Souza";
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
 /** Prévia do link no WhatsApp/LinkedIn (ver lib/og/card.tsx). */
 export default function Image() {
   return ogCard({
-    hero: true,
-    eyebrow: "Engenheiro de software",
-    title: ["UI/UX", "Front-end"],
-    subtitle: "Sites, sistemas e aplicativos do Figma ao deploy.",
-    cta: "Orçamento grátis em 2 min",
+    eyebrow: "Serviços",
+    title: "Serviços com preço fechado",
+    subtitle: "Consultoria, revisão de UI/UX, landing page e site institucional. Pague com Pix ou cartão e eu começo.",
+    cta: "Ver pacotes e preços",
   });
 }

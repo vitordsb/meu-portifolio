@@ -6,7 +6,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { fontScript } from "@/lib/font-script";
-import { SITE_URL, UMAMI_WEBSITE_ID } from "@/lib/site";
+import { OG_BASE, SITE_URL, UMAMI_WEBSITE_ID } from "@/lib/site";
 
 // Inter: a mesma do wireframe. Variável, então segura do texto corrido ao
 // display de 9rem sem baixar um arquivo por peso.
@@ -35,10 +35,14 @@ export const metadata: Metadata = {
   description:
     "Engenheiro de software especialista em front-end. Do Figma ao deploy: software completo, com obsessão pela experiência do usuário.",
   openGraph: {
-    title: "Vitor de Souza Barreto | Engenheiro de Software",
-    description: "Portfolio profissional: projetos, competências e trabalho freelancer.",
-    type: "website",
+    ...OG_BASE,
+    title: "Vitor de Souza | Engenheiro de software, UI/UX e Front-end",
+    description:
+      "Sites, sistemas e aplicativos do Figma ao deploy. Orçamento grátis em 2 minutos, com faixa de preço na hora.",
+    url: SITE_URL,
   },
+  // Sem twitter-image próprio: o X usa a og:image de cada página
+  twitter: { card: "summary_large_image" },
 };
 
 // A cor da barra do navegador acompanha a superfície de cada esquema.
