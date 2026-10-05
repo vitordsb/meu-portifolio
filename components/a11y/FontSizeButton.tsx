@@ -8,17 +8,7 @@ import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
  * menos: fica no topo das páginas, com texto (não só ícone) e área de toque
  * de 44px. Cada toque aumenta um degrau; depois do maior, volta ao normal.
  */
-export default function FontSizeButton({
-  className = "",
-  prefixClass = "hidden sm:inline",
-  valueClass = "",
-}: {
-  className?: string;
-  /** Quando "Letra:" aparece (o menu de topo da home controla pelo espaço). */
-  prefixClass?: string;
-  /** Quando o valor ("Normal") aparece. */
-  valueClass?: string;
-}) {
+export default function FontSizeButton({ className = "" }: { className?: string }) {
   const { language } = useLanguage();
   const pt = language === "pt";
   const { index, cycle } = useFontScale();
@@ -33,8 +23,8 @@ export default function FontSizeButton({
       <span aria-hidden className="font-semibold leading-none">
         A<span className="text-[1.3em]">A</span>
       </span>
-      <span className={prefixClass}>{pt ? "Letra" : "Text"}:</span>
-      <span className={valueClass}>{label}</span>
+      <span className="hidden sm:inline">{pt ? "Letra" : "Text"}:</span>
+      <span>{label}</span>
     </button>
   );
 }

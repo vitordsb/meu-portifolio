@@ -18,11 +18,10 @@ import { ChevronLeft, ChevronRight, ChevronsLeft } from "lucide-react";
  * do "Próxima" fica um convite ("Arraste", com setas se mexendo) no ponto
  * exato onde a seta lateral aparece depois; ao sair da home ele VIRA a seta.
  *
- *   home, tela larga      -> só o convite na lateral direita (as sessões
- *                            estão no menu de topo, DeckTopNav)
+ *   home, tela larga      -> números embaixo + convite na lateral direita
  *   home, tela média      -> números embaixo + convite ao lado deles
  *   home, celular         -> pontos + convite numa pílula no rodapé
- *   sessões, tela larga   -> só as setas redondas nas laterais
+ *   sessões, tela larga   -> setas redondas nas laterais + pontos embaixo
  *   sessões, tela estreita -> "‹ • • • ›" no rodapé
  */
 
@@ -237,14 +236,15 @@ export default function DeckPagination({
       <nav aria-label={pt ? "Sessões do portfólio" : "Portfolio sections"}>
         {/* Home em tela larga: números embaixo, convite na lateral (ou ao lado
             dos números quando a tela ainda não comporta as laterais) */}
-        {onHome && full && !side && (
-          <div className="flex items-center gap-3">
-            <ol className="flex items-center gap-1.5">{pages}</ol>
-            {next}
-          </div>
+        {onHome && full && (
+          <>
+            <div className="flex items-center gap-3">
+              <ol className="flex items-center gap-1.5">{pages}</ol>
+              {!side && next}
+            </div>
+            {side && atRight(next)}
+          </>
         )}
-
-        {onHome && side && atRight(next)}
 
         {onHome && !full && (
           <motion.div layoutId="pager-shell" transition={T} className={shell}>
@@ -255,6 +255,7 @@ export default function DeckPagination({
 
         {!onHome && side && (
           <>
+            <ol className="flex h-9 items-center">{pages}</ol>
             {atLeft(prev)}
             {atRight(next)}
           </>

@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is([data-theme="dark"], [data-theme="dark"] *));
-/* Home no desktop: menu de topo fixo. Mesma conta do SIDE_QUERY da paginação. */
-@custom-variant deck-wide (@media (min-width: 64rem) and (min-height: 501px));
 
 /* ═══════════════════════════════════════════════════════════════════════════
    DESIGN SYSTEM
