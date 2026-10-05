@@ -352,8 +352,9 @@
   /* Largura da moldura do conteúdo. Setas e menu do deck se alinham a ela. */
   :root { --deck-frame: 72rem; }
   @media (min-width: 120rem) { :root { --deck-frame: 110rem; } }
-  /* Menu lateral da home no desktop (DeckSideNav): o deck começa depois dele. */
-  :root { --deck-side: 15rem; --deck-off: 0px; }
+  /* Faixa de ícones do menu da home no desktop (DeckSideNav, recolhido): o
+     deck começa depois dela. Aberto, o menu passa por cima do conteúdo. */
+  :root { --deck-side: 4.25rem; --deck-off: 0px; }
   @media (min-width: 64rem) and (min-height: 501px) { :root { --deck-off: var(--deck-side); } }
   /* Aparelho em outro idioma: esconde o português do HTML estático até o
      LanguageProvider trocar (ver langScript no layout). Se o JS falhar, a
