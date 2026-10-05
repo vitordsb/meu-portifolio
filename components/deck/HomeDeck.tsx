@@ -23,6 +23,7 @@ import {
 } from "@/components/motion/useLeaveTransition";
 import AvatarMenu from "./AvatarMenu";
 import DeckPagination from "./DeckPagination";
+import DeckTopNav from "./DeckTopNav";
 import SearchHint from "@/components/SearchHint";
 import SlidePane, { type PaneHandle } from "./SlidePane";
 import HeroSlide from "./slides/HeroSlide";
@@ -399,12 +400,13 @@ export default function HomeDeck() {
             ao rodapé faz com a paginação */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 z-30 h-16 bg-gradient-to-b from-surface from-40% to-transparent sm:h-24"
+            className="pointer-events-none absolute inset-x-0 top-0 z-30 h-16 bg-gradient-to-b from-surface from-40% to-transparent sm:h-24 deck-wide:h-28 deck-wide:from-65%"
           />
 
           {/* Busca no topo, centralizada (no celular, lupa à direita). Completa só
-            no Início; nas outras sessões encolhe pro atalho, animando. */}
-          <div className="pointer-events-none absolute right-4 top-4 z-40 flex sm:inset-x-0 sm:top-6 sm:justify-center [&>*]:pointer-events-auto">
+            no Início; nas outras sessões encolhe pro atalho, animando. No
+            desktop ela mora no menu de topo. */}
+          <div className="pointer-events-none absolute right-4 top-4 z-40 flex sm:inset-x-0 sm:top-6 sm:justify-center deck-wide:hidden [&>*]:pointer-events-auto">
             <SearchHint variant="hero" expanded={index === 0} delay={1.2} />
           </div>
 
@@ -415,12 +417,20 @@ export default function HomeDeck() {
           </p>
         </div>
 
-        {/* Rodapé: avatar/menu à esquerda, paginação no centro. Fixo e sem
+        <DeckTopNav
+          current={index}
+          labels={labels}
+          onChange={go}
+          language={language}
+        />
+
+        {/* Rodapé: avatar/menu à esquerda, paginação no centro (no desktop os
+          dois sobem pro menu de topo e aqui ficam só as setas laterais). Fixo e sem
           animação de entrada: é navegação, tem que estar lá desde o
           primeiro frame. O degradê esconde o conteúdo que rola por baixo. */}
         <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-50 bg-gradient-to-t from-surface from-60% to-transparent pb-3 pt-6 sm:pb-6 sm:pt-10">
           <div className="pointer-events-auto mx-auto grid max-w-[var(--deck-frame)] grid-cols-[1fr_auto_1fr] items-center gap-2 px-4 sm:px-8 lg:px-12">
-            <AvatarMenu />
+            <AvatarMenu className="deck-wide:invisible" />
             <div className="flex justify-center">
               <DeckPagination
                 current={index}

@@ -11,7 +11,7 @@ import { Line, Rise } from "./Reveal";
  */
 export function SlideFrame({ children }: { children: ReactNode }) {
   return (
-    <div className="mx-auto w-full max-w-[var(--deck-frame)] px-4 pb-40 pt-16 sm:px-8 sm:pt-28 lg:px-12 [@media(min-width:120rem)_and_(max-height:75rem)]:pt-16">
+    <div className="mx-auto w-full max-w-[var(--deck-frame)] px-4 pb-40 pt-16 sm:px-8 sm:pt-28 lg:px-12 [@media(min-width:120rem)_and_(max-height:75rem)]:pt-24">
       {children}
     </div>
   );
