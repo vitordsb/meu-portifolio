@@ -137,7 +137,7 @@ export default function TimelineSection({ events }: { events: TimelineEvent[] })
                           style={isAbove ? { bottom: 260 } : { top: 260 }}
                         >
                           <div className="card-filled hover:border-primary transition">
-                            <p className="text-[10px] font-mono text-primary tracking-widest mb-2">
+                            <p className="text-[0.75rem] font-mono text-primary tracking-widest mb-2">
                               {evt.dateLabel}
                               {L.category && (
                                 <span className="text-on-surface-variant/60 ml-2">

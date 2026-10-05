@@ -4,6 +4,7 @@ import Link from "next/link";
 import AvatarMenu from "./deck/AvatarMenu";
 import ContactFab from "./ContactFab";
 import SearchHint from "./SearchHint";
+import FontSizeButton from "./a11y/FontSizeButton";
 import { CursorFollower } from "./motion/CursorFollower";
 import { PageTransition } from "./motion/PageTransition";
 
@@ -24,7 +25,8 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           >
             Vitor de Souza
           </Link>
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto flex items-center gap-2">
+            <FontSizeButton />
             <SearchHint />
           </div>
         </div>

@@ -50,7 +50,7 @@ export default function CoursesBlock({
               step={3.8 + Math.min(i, 8) * 0.15}
               className="flex items-start gap-4 border-b border-outline-variant py-5 pr-4"
             >
-              <span className="pt-0.5 font-mono text-[11px] tabular-nums text-on-surface-variant">
+              <span className="pt-0.5 font-mono text-[0.75rem] tabular-nums text-on-surface-variant">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="min-w-0">

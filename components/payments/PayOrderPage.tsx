@@ -168,7 +168,7 @@ export default function PayOrderPage() {
             className="mt-8 overflow-hidden rounded-2xl border border-outline-variant bg-surface-low"
           >
             <div className="p-5 sm:p-7">
-              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-on-surface-variant">
+              <p className="mb-3 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
                 {pt ? "Pedido" : "Order"} #{order.code}
               </p>
               {order.description && (

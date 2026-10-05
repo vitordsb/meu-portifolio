@@ -88,7 +88,7 @@ export default function DeckPagination({
       className={
         side
           ? "inline-flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant bg-surface/90 text-on-surface backdrop-blur elev-1 hover:border-on-surface/40"
-          : "inline-flex h-8 w-8 items-center justify-center rounded-full text-on-surface hover:bg-surface-high"
+          : "inline-flex h-10 w-10 items-center justify-center rounded-full text-on-surface hover:bg-surface-high"
       }
     >
       <motion.span layout="position" transition={T} className="flex">
@@ -148,7 +148,7 @@ export default function DeckPagination({
       className={`disabled:pointer-events-none ${
         side
           ? "inline-flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant bg-surface/90 text-on-surface backdrop-blur elev-1 hover:border-on-surface/40"
-          : "inline-flex h-8 w-8 items-center justify-center rounded-full text-on-surface hover:bg-surface-high"
+          : "inline-flex h-10 w-10 items-center justify-center rounded-full text-on-surface hover:bg-surface-high"
       }`}
     >
       <motion.span layout="position" transition={T} className="flex">
@@ -169,7 +169,7 @@ export default function DeckPagination({
           title={labels[i]}
           aria-label={`${i + 1}: ${labels[i]}`}
           aria-current={active ? "step" : undefined}
-          className={`group flex items-center justify-center ${asNumber ? "" : "h-6 px-1"}`}
+          className={`group flex items-center justify-center ${asNumber ? "" : "h-10 min-w-7 px-1"}`}
         >
           <motion.span
             layoutId={`pager-page-${i}`}
@@ -206,7 +206,7 @@ export default function DeckPagination({
 
   const pages = Array.from({ length: total }, (_, i) => page(i));
   const shell =
-    "flex h-10 items-center gap-1 rounded-full border border-outline-variant bg-surface/90 p-1 backdrop-blur";
+    "flex h-12 items-center gap-0.5 rounded-full border border-outline-variant bg-surface/90 p-1 backdrop-blur";
 
   /** Setas e convite nas laterais. A posição fica num wrapper: o transform
    *  do botão é do Framer Motion. Ficam junto da moldura do conteúdo

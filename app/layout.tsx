@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { fontScript } from "@/lib/font-script";
 import { SITE_URL, UMAMI_WEBSITE_ID } from "@/lib/site";
 
 // Inter: a mesma do wireframe. Variável, então segura do texto corrido ao
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: langScript }} />
+        <script dangerouslySetInnerHTML={{ __html: fontScript }} />
       </head>
       <body>
         <Providers>{children}</Providers>

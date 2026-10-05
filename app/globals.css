@@ -208,6 +208,15 @@
 }
 
 /* ── Ponte com o Tailwind ─────────────────────────────────────────────────── */
+/* Leitura confortável (04/out/2026, público mais velho): letra mínima
+   maior no site todo. Padrão do Tailwind era 12px (xs) e 14px (sm). */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.4rem;
+}
+
 @theme inline {
   /* Tela grande (Full HD pra cima, inclusive ultrawide): mais colunas */
   --breakpoint-3xl: 120rem;
@@ -333,7 +342,10 @@
      senão o conteúdo crescido sairia pela altura. Em % pra respeitar o
      tamanho de fonte que a pessoa escolheu no navegador. Media queries em
      rem não mudam com isto (usam o padrão do navegador). */
-  html { font-size: clamp(100%, min(0.834vw, 1.482vh), 125%); }
+  /* --font-scale: botão "Tamanho da letra" (1, 1.125 ou 1.25), aplicado
+     antes da primeira pintura pelo fontScript do layout. Tudo é em rem, então
+     o site inteiro cresce junto e nada quebra. */
+  html { font-size: calc(clamp(100%, min(0.834vw, 1.482vh), 125%) * var(--font-scale, 1)); }
 
   /* Largura da moldura do conteúdo. Setas e menu do deck se alinham a ela. */
   :root { --deck-frame: 72rem; }

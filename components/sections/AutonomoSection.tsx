@@ -93,7 +93,7 @@ export default function AutonomoSection({ projects }: { projects: Project[] }) {
         {/* Featured (com cover image grande) */}
         {featured.length > 0 && (
           <div className="mb-14">
-            <p className="text-[10px] font-mono text-on-surface-variant tracking-widest mb-4">
+            <p className="text-[0.75rem] font-mono text-on-surface-variant tracking-widest mb-4">
               {t("autonomo.featured")}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -199,7 +199,7 @@ function WorkCard({
               strokeWidth={1.25}
               className="text-primary/40 group-hover:text-primary/60 transition-colors"
             />
-            <span className="absolute bottom-2.5 right-3 text-[10px] font-mono text-primary/40 uppercase tracking-widest">
+            <span className="absolute bottom-2.5 right-3 text-[0.75rem] font-mono text-primary/40 uppercase tracking-widest">
               {bucket}
             </span>
           </div>
@@ -208,14 +208,14 @@ function WorkCard({
 
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <p className="text-[10px] font-mono text-primary tracking-widest">
+          <p className="text-[0.75rem] font-mono text-primary tracking-widest">
             {project.category.toUpperCase()}
           </p>
           {/* Lock só quando NÃO há link público, pra evitar ruído nos 15 que têm link */}
           {!hasLink && (
             <span
               title={t("autonomo.privateTitle")}
-              className="flex items-center gap-1 text-[10px] font-bold text-on-surface-variant/60 shrink-0"
+              className="flex items-center gap-1 text-[0.75rem] font-bold text-on-surface-variant/60 shrink-0"
             >
               <Lock size={10} />
               {t("autonomo.private")}
@@ -232,7 +232,7 @@ function WorkCard({
         </h3>
         <p className="text-xs text-on-surface-variant mb-1">{project.company}</p>
         {project.period && (
-          <p className="text-[10px] font-mono text-on-surface-variant/70 mb-3">
+          <p className="text-[0.75rem] font-mono text-on-surface-variant/70 mb-3">
             {project.period}
           </p>
         )}
@@ -261,7 +261,7 @@ function WorkCard({
             {linkLabelFor(href!)}
           </span>
         ) : (
-          <p className="mt-auto text-[10px] font-mono text-on-surface-variant/50 border-t border-outline-variant pt-3">
+          <p className="mt-auto text-[0.75rem] font-mono text-on-surface-variant/50 border-t border-outline-variant pt-3">
             {t("autonomo.noLink")}
           </p>
         )}
@@ -339,7 +339,7 @@ function GalleryCard({
         ) : (
           <span
             title={t("autonomo.privateTitle")}
-            className="flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[10px] font-bold text-white/80 backdrop-blur-sm"
+            className="flex items-center gap-1 rounded-full bg-black/40 px-2.5 py-1 text-[0.75rem] font-bold text-white/80 backdrop-blur-sm"
           >
             <Lock size={10} />
             {t("autonomo.private")}
@@ -349,7 +349,7 @@ function GalleryCard({
 
       {/* Conteúdo: título/categoria sempre visíveis; descrição+tags no hover */}
       <div className="absolute inset-x-0 bottom-0 p-5">
-        <p className="mb-1 text-[10px] font-mono uppercase tracking-widest text-primary">
+        <p className="mb-1 text-[0.75rem] font-mono uppercase tracking-widest text-primary">
           {project.category}
         </p>
         <h3 className="text-lg font-extrabold leading-tight text-white">
@@ -367,7 +367,7 @@ function GalleryCard({
                 {tags.slice(0, 4).map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-full border border-white/25 px-2 py-0.5 text-[10px] font-semibold text-white/80"
+                    className="rounded-full border border-white/25 px-2 py-0.5 text-[0.75rem] font-semibold text-white/80"
                   >
                     {tech}
                   </span>

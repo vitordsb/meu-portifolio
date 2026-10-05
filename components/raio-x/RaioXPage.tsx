@@ -364,7 +364,7 @@ function IssueCard({ issue, pt, showFix }: { issue: Issue; pt: boolean; showFix:
   return (
     <li className="rounded-xl border border-outline-variant p-4 sm:p-5">
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.08em] ${imp.tone}`}>
+        <span className={`rounded-full px-2.5 py-0.5 text-[0.75rem] font-semibold uppercase tracking-[0.08em] ${imp.tone}`}>
           {pt ? imp.pt : imp.en}
         </span>
         <span className="text-xs text-on-surface-variant">{CAT_LABEL[issue.cat][pt ? "pt" : "en"]}</span>

@@ -74,7 +74,7 @@ const item =
   "data-[selected=true]:bg-surface-high";
 const heading =
   "[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:pb-1.5 [&_[cmdk-group-heading]]:pt-3 " +
-  "[&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:uppercase " +
+  "[&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[0.75rem] [&_[cmdk-group-heading]]:uppercase " +
   "[&_[cmdk-group-heading]]:tracking-[0.14em] [&_[cmdk-group-heading]]:text-on-surface-variant";
 
 /**
@@ -187,7 +187,7 @@ export default function CommandPalette({
                 }
                 className="h-14 w-full bg-transparent text-base outline-none placeholder:text-on-surface-variant/60"
               />
-              <kbd className="hidden shrink-0 rounded border border-outline-variant px-1.5 py-0.5 font-mono text-[10px] text-on-surface-variant sm:block">
+              <kbd className="hidden shrink-0 rounded border border-outline-variant px-1.5 py-0.5 font-mono text-[0.75rem] text-on-surface-variant sm:block">
                 esc
               </kbd>
             </div>
@@ -310,7 +310,7 @@ export default function CommandPalette({
                         <span className="min-w-0 flex-1 truncate">
                           {s.title}
                         </span>
-                        <span className="shrink-0 font-mono text-[10px] text-on-surface-variant">
+                        <span className="shrink-0 font-mono text-[0.75rem] text-on-surface-variant">
                           {s.category}
                         </span>
                       </Command.Item>
@@ -355,7 +355,7 @@ export default function CommandPalette({
               )}
             </Command.List>
 
-            <div className="hidden items-center gap-4 border-t border-outline-variant px-4 py-2 font-mono text-[10px] text-on-surface-variant sm:flex">
+            <div className="hidden items-center gap-4 border-t border-outline-variant px-4 py-2 font-mono text-[0.75rem] text-on-surface-variant sm:flex">
               <span>↑↓ {pt ? "navegar" : "navigate"}</span>
               <span>enter {pt ? "abrir" : "open"}</span>
               <span className="ml-auto">

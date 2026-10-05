@@ -65,7 +65,7 @@ export default function SpecialtiesSlide({
               {s.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-md border border-outline-variant px-2.5 py-1 font-mono text-[11px] text-on-surface-variant transition-colors group-hover:border-on-surface/30"
+                  className="rounded-md border border-outline-variant px-2.5 py-1 font-mono text-[0.75rem] text-on-surface-variant transition-colors group-hover:border-on-surface/30"
                 >
                   {tag}
                 </span>
