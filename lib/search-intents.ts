@@ -449,6 +449,18 @@ export const SEARCH_INTENTS: SearchIntent[] = [
     action: { kind: "link", href: SOCIALS.github },
   },
   {
+    id: "quanto-custa",
+    group: "navegar",
+    icon: "file",
+    label: { pt: "Quanto custa um site ou app", en: "How much a website or app costs" },
+    answer: {
+      pt: "Guia com os valores de partida de cada tipo de projeto e o que muda o preço.",
+      en: "Guide with starting prices for each type of project and what changes the price.",
+    },
+    keywords: ["quanto", "custa", "custo", "preco", "valor", "tabela", "guia", "cost", "price", "pricing"],
+    action: { kind: "route", href: "/quanto-custa" },
+  },
+  {
     id: "servicos",
     group: "navegar",
     icon: "briefcase",

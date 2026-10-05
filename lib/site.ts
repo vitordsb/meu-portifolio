@@ -16,6 +16,7 @@ export const INDEXED_PAGES: { path: string; priority: number }[] = [
   { path: "/servicos", priority: 0.9 },
   { path: "/orcamento", priority: 0.9 },
   { path: "/raio-x", priority: 0.9 },
+  { path: "/quanto-custa", priority: 0.8 },
   { path: "/autonomo", priority: 0.7 },
   { path: "/about", priority: 0.6 },
   { path: "/skills", priority: 0.5 },
