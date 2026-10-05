@@ -259,7 +259,20 @@ export default function ServicesPage() {
           </Link>
         </div>
 
-        <p className="mt-10 flex gap-2 text-xs leading-relaxed text-on-surface-variant">
+        <p className="mt-8 text-sm text-on-surface-variant">
+          {pt ? "Comparando preços? Veja " : "Comparing prices? See "}
+          <Link
+            href="/quanto-custa"
+            className="font-medium text-on-surface underline underline-offset-4"
+          >
+            {pt
+              ? "quanto custa cada tipo de projeto"
+              : "how much each type of project costs"}
+          </Link>
+          .
+        </p>
+
+        <p className="mt-6 flex gap-2 text-xs leading-relaxed text-on-surface-variant">
           <ShieldCheck size={14} className="mt-0.5 shrink-0" />
           <span>
             {pt
