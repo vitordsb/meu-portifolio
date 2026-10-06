@@ -62,13 +62,15 @@ export function SectionHeader({
   eyebrow,
   title,
   lead,
+  className = "",
 }: {
   eyebrow: string;
   title: string;
   lead?: string;
+  className?: string;
 }) {
   return (
-    <Reveal className="mb-10 max-w-2xl md:mb-14">
+    <Reveal className={`mb-10 max-w-2xl md:mb-14 ${className}`}>
       <p className="mb-3 font-mono text-xs uppercase tracking-[0.16em] text-on-surface-variant">
         {eyebrow}
       </p>
