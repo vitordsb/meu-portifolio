@@ -107,4 +107,12 @@ export type Estimate = {
   /** A faixa ficou acima do que o cliente disse que pode investir: a tela
    *  convida pra contraproposta. */
   aboveBudget: boolean;
+  /** Equipe que o projeto pede (1 a 5), calculada pelo código. */
+  team: Team;
+};
+
+/** Quem trabalha no projeto: o tamanho e o papel de cada pessoa. */
+export type Team = {
+  size: number;
+  roles: { pt: string; en: string }[];
 };

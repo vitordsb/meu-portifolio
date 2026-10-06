@@ -105,3 +105,9 @@ export const PRICE_NOTES = {
     "Nothing here is binding: the final price comes after a quick call with me.",
   ],
 };
+
+/** "Equipe: 1 profissional dedicado" / "Equipe de 3 profissionais". */
+export function teamText(size: number, pt: boolean) {
+  if (size <= 1) return pt ? "1 profissional dedicado" : "1 dedicated professional";
+  return pt ? `Equipe de ${size} profissionais` : `Team of ${size} professionals`;
+}

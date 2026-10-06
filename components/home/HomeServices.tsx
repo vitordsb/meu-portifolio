@@ -6,7 +6,12 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
+  Check,
   ChevronLeft,
+  Cloud,
+  MessageCircle,
+  Workflow,
+  Bot,
   ChevronRight,
   Globe,
   LayoutGrid,
@@ -21,6 +26,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { HOME_SECTIONS, SERVICE_TYPES } from "@/lib/home-content";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import ProjectTile from "./ProjectTile";
+import { whatsappHref } from "@/lib/home-links";
 import { Reveal, Section, SectionHeader } from "./ui";
 
 export type StartingPrice = { min: number; weeksMin: number; weeksMax: number };
@@ -31,6 +37,9 @@ const ICONS: Record<string, LucideIcon> = {
   loja: ShoppingBag,
   sistema: LayoutGrid,
   app: Smartphone,
+  api: Workflow,
+  cloud: Cloud,
+  ia: Bot,
 };
 
 export const brl = (n: number) =>
@@ -88,7 +97,7 @@ export default function HomeServices({
 
   useEffect(() => setMounted(true), []);
 
-  const byType = (id: string) => projects.filter((p) => p.type === id);
+  const byType = (id: string) => projects.filter((p) => p.type === id || p.tags.includes(id));
 
   const openFor = useCallback((id: string, el: HTMLElement, via: Open["via"]) => {
     const r = el.getBoundingClientRect();
@@ -220,13 +229,15 @@ export default function HomeServices({
                     <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-high">
                       <Icon size={26} />
                     </span>
-                    <span className="rounded-full border border-outline-variant px-3 py-1 text-sm text-on-surface-variant">
-                      {list.length === 0
-                        ? pt
-                          ? "Novo"
-                          : "New"
-                        : `${list.length} ${pt ? (list.length === 1 ? "projeto" : "projetos") : list.length === 1 ? "project" : "projects"}`}
-                    </span>
+                    {(list.length > 0 || !s.consult) && (
+                      <span className="rounded-full border border-outline-variant px-3 py-1 text-sm text-on-surface-variant">
+                        {list.length === 0
+                          ? pt
+                            ? "Novo"
+                            : "New"
+                          : `${list.length} ${pt ? (list.length === 1 ? "projeto" : "projetos") : list.length === 1 ? "project" : "projects"}`}
+                      </span>
+                    )}
                   </span>
                   <span className="mt-7 text-2xl font-bold tracking-[-0.025em]">{s.title[language]}</span>
                   <span className="mt-2 text-base leading-relaxed text-on-surface-variant">{s.text[language]}</span>
@@ -252,9 +263,13 @@ export default function HomeServices({
                     )}
                     <span className="text-sm text-on-surface-variant">
                       {list.length === 0
-                        ? pt
-                          ? "Seja o primeiro"
-                          : "Be the first"
+                        ? s.consult
+                          ? pt
+                            ? "Ver o que entra"
+                            : "See what's included"
+                          : pt
+                            ? "Seja o primeiro"
+                            : "Be the first"
                         : fine
                           ? pt
                             ? "Passe o mouse"
@@ -265,6 +280,14 @@ export default function HomeServices({
                     </span>
                   </span>
 
+                  {s.consult && (
+                    <span className="mt-auto flex items-end justify-between gap-3 border-t border-outline-variant pt-5">
+                      <span>
+                        <span className="block text-sm text-on-surface-variant">{pt ? "valor" : "price"}</span>
+                        <span className="text-xl font-bold">{pt ? "Sob consulta" : "On request"}</span>
+                      </span>
+                    </span>
+                  )}
                   {p && (
                     <span className="mt-auto flex items-end justify-between gap-3 border-t border-outline-variant pt-5">
                       <span>
@@ -383,6 +406,18 @@ export default function HomeServices({
                       </button>
                     </div>
 
+                    {active.bullets && (
+                      <ul className="mt-7 grid gap-3 sm:grid-cols-3">
+                        {active.bullets.map((b) => (
+                          <li key={b.pt} className="flex items-start gap-2.5 rounded-xl bg-surface-low p-4 text-base">
+                            <Check size={18} className="mt-0.5 shrink-0" />
+                            {b[language]}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {(activeProjects.length > 0 || !active.consult) && (
                     <p className="mb-4 mt-8 text-sm font-medium text-on-surface-variant">
                       {activeProjects.length
                         ? pt
@@ -392,6 +427,7 @@ export default function HomeServices({
                           ? "Ainda não temos um projeto desse tipo no portfólio. O seu pode ser o primeiro."
                           : "No project of this type in the portfolio yet. Yours could be the first."}
                     </p>
+                    )}
                     {activeProjects.length > 0 && (
                       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         {activeProjects.map((proj) => (
@@ -411,6 +447,19 @@ export default function HomeServices({
                           {pt ? "Orçar um projeto assim" : "Get a quote for one like this"}
                         </span>
                       </Link>
+                      {active.consult && (
+                        <a
+                          href={whatsappHref(pt)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-outlined h-auto min-h-12 rounded-xl px-6 py-3 text-base"
+                        >
+                          <span className="inline-flex items-center gap-2">
+                            <MessageCircle size={18} className="shrink-0" />
+                            {pt ? "Conversar no WhatsApp" : "Chat on WhatsApp"}
+                          </span>
+                        </a>
+                      )}
                     </div>
                   </motion.div>
                 </motion.div>
