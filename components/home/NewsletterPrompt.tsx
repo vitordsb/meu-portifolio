@@ -28,7 +28,8 @@ function saveState(status: "inscrito" | "dispensado") {
 }
 
 /**
- * "Quer receber nossas novidades?": cartão discreto no pé da home. Só pede
+ * "Quer receber nossas novidades?": cartão discreto no canto inferior direito
+ * (logo acima do botão flutuante de orçamento). Só pede
  * o e-mail depois que a pessoa diz que quer (nada de formulário de cara).
  * A lista fica nos Contatos do Resend (app/api/novidades).
  */
@@ -104,7 +105,7 @@ export default function NewsletterPrompt() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-x-4 bottom-20 z-[85] mx-auto max-w-2xl rounded-3xl border border-outline-variant bg-surface p-5 text-on-surface shadow-[var(--elev-3)] sm:bottom-24 sm:p-6 deck-wide:left-[calc(var(--deck-side)+1rem)]"
+          className="fixed bottom-20 left-4 right-4 z-[85] rounded-3xl border border-outline-variant bg-surface p-5 text-on-surface shadow-[var(--elev-3)] sm:bottom-24 sm:left-auto sm:right-6 sm:w-[24rem] sm:p-6"
         >
           {step === "done" ? (
             <p className="flex items-center gap-3 text-base font-semibold">
@@ -112,7 +113,7 @@ export default function NewsletterPrompt() {
               {pt ? "Pronto! Você vai receber nossas novidades." : "Done! You'll get our updates."}
             </p>
           ) : (
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-4">
               <div className="min-w-0">
                 <p className="text-base font-bold">{pt ? "Quer receber nossas novidades?" : "Want our updates?"}</p>
                 <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">
@@ -123,24 +124,24 @@ export default function NewsletterPrompt() {
               </div>
 
               {step === "ask" ? (
-                <div className="flex shrink-0 gap-2">
+                <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={dismiss}
-                    className="h-12 rounded-full border border-outline-variant px-5 text-base font-semibold transition-colors hover:border-on-surface/40"
+                    className="h-12 flex-1 rounded-full border border-outline-variant px-5 text-base font-semibold transition-colors hover:border-on-surface/40"
                   >
                     {pt ? "Agora não" : "Not now"}
                   </button>
                   <button
                     type="button"
                     onClick={() => setStep("form")}
-                    className="h-12 rounded-full bg-on-surface px-5 text-base font-semibold text-surface transition-opacity hover:opacity-90"
+                    className="h-12 flex-1 rounded-full bg-on-surface px-5 text-base font-semibold text-surface transition-opacity hover:opacity-90"
                   >
                     {pt ? "Quero receber" : "Sign me up"}
                   </button>
                 </div>
               ) : (
-                <form onSubmit={submit} className="flex w-full shrink-0 flex-col gap-2 sm:w-auto sm:flex-row">
+                <form onSubmit={submit} className="flex w-full flex-col gap-2">
                   {/* Campo-isca: escondido de quem usa o site */}
                   <input
                     ref={honeypot}
@@ -164,7 +165,7 @@ export default function NewsletterPrompt() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={pt ? "seu@email.com" : "you@email.com"}
-                    className="h-12 min-w-0 rounded-full border border-outline-variant bg-surface-low px-4 text-base outline-none focus:border-on-surface sm:w-56"
+                    className="h-12 w-full min-w-0 rounded-full border border-outline-variant bg-surface-low px-4 text-base outline-none focus:border-on-surface"
                   />
                   <button
                     type="submit"
