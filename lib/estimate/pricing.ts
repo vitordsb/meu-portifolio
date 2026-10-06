@@ -1,4 +1,4 @@
-import type { Estimate, PaymentOption, Scope } from "./scope";
+import type { Estimate, PaymentOption, Scope, Team } from "./scope";
 
 /**
  * As métricas do Vitor. A IA nunca vê este arquivo: ela só descreve o projeto
@@ -64,6 +64,21 @@ export const PRICING = {
 
   /** Horas produtivas por semana dedicadas ao projeto (pro prazo). */
   hoursPerWeek: 30,
+
+  /**
+   * Equipe (decisão do Vitor, 06/out/2026): de 1 a 5 pessoas, nunca mais.
+   * Uma pessoa sozinha leva o projeto até `soloWeeks` semanas (conforme o
+   * prazo pedido); passou disso, entra mais gente. O trabalho total é o mesmo,
+   * só dividido: o preço soma `coordination` por pessoa extra (alinhamento,
+   * revisão, integração do que cada um fez) e o prazo encurta, com a perda
+   * de ritmo de quem trabalha em grupo (`teamPace`).
+   */
+  team: {
+    max: 5,
+    soloWeeks: { urgente: 4, normal: 8, flexivel: 12 },
+    coordination: 0.12,
+    teamPace: 0.85,
+  },
 
   /**
    * Descontos automáticos (decisão do Vitor, 03/out/2026). Cada parte vai
@@ -187,6 +202,33 @@ export type PricingNotes = {
   budgetGap: boolean;
 };
 
+const ROLE = {
+  fullstack: { pt: "Desenvolvimento full-stack", en: "Full-stack development" },
+  design: { pt: "Design UI/UX", en: "UI/UX design" },
+  mobile: { pt: "Desenvolvimento mobile", en: "Mobile development" },
+  backend: { pt: "Back-end e integrações", en: "Back-end and integrations" },
+  qa: { pt: "Qualidade e testes", en: "Quality and testing" },
+  frontend: { pt: "Desenvolvimento front-end", en: "Front-end development" },
+  dev: { pt: "Desenvolvimento", en: "Development" },
+};
+
+/** Papéis da equipe, na ordem do que o projeto mais pede. */
+export function teamFor(scope: Scope, size: number): Team {
+  const extra = [
+    scope.design !== "pronto" && ROLE.design,
+    scope.plataformas.mobile && ROLE.mobile,
+    (scope.integracoes.length > 0 ||
+      scope.painel_admin ||
+      ["saas", "sistema_web", "ecommerce"].includes(scope.tipo)) &&
+      ROLE.backend,
+    ROLE.qa,
+    ROLE.frontend,
+  ].filter(Boolean) as Team["roles"];
+  const roles = [ROLE.fullstack, ...extra].slice(0, size);
+  while (roles.length < size) roles.push(ROLE.dev);
+  return { size, roles };
+}
+
 export function priceScope(
   scope: Scope,
   signals: { images?: number } = {},
@@ -210,6 +252,15 @@ export function priceScope(
   const rush = scope.urgente || scope.prazo === "urgente";
   const flexible = !rush && scope.prazo === "flexivel";
 
+  // ── Equipe: quantas pessoas pra caber no prazo ─────────────────────────
+  const prazoKey = rush ? "urgente" : flexible ? "flexivel" : "normal";
+  const soloWeeks = hours / p.hoursPerWeek;
+  const teamSize = Math.min(
+    p.team.max,
+    Math.max(1, Math.ceil(soloWeeks / p.team.soloWeeks[prazoKey])),
+  );
+  const coordination = 1 + p.team.coordination * (teamSize - 1);
+
   // ── Descontos (só pra baixo, teto de 15%) ──────────────────────────────
   const images = signals.images ?? 0;
   const referencias =
@@ -226,7 +277,11 @@ export function priceScope(
   let discount = Math.min(d.teto, referencias + prazo + negociacao);
 
   let central =
-    hours * p.hourlyRate * (rush ? p.rushFactor : 1) * (1 - discount);
+    hours *
+    p.hourlyRate *
+    coordination *
+    (rush ? p.rushFactor : 1) *
+    (1 - discount);
 
   // Orçamento do cliente abaixo da faixa: usa o que sobra do teto
   let orcamento = 0;
@@ -248,7 +303,8 @@ export function priceScope(
   // Urgência encurta o prazo (é por isso que custa mais); prazo flexível ou
   // ajuste pelo orçamento espaçam a entrega (é por isso que barateia).
   const stretch = flexible || orcamento > 0 ? p.flexibleWeeksFactor : 1;
-  const weeklyPace = (p.hoursPerWeek * (rush ? 1.4 : 1)) / stretch;
+  const crew = teamSize > 1 ? teamSize * p.team.teamPace : 1;
+  const weeklyPace = (p.hoursPerWeek * (rush ? 1.4 : 1) * crew) / stretch;
   const weeksMin = Math.max(1, Math.round((hours * p.spread.low) / weeklyPace));
   const weeksMax = Math.max(
     weeksMin + 1,
@@ -264,6 +320,7 @@ export function priceScope(
       scope,
       payment: paymentOptions(min),
       aboveBudget: Boolean(budget && budget < min),
+      team: teamFor(scope, teamSize),
     },
     notes: {
       discount: Math.round(discount * 1000) / 1000,

@@ -154,6 +154,7 @@ export async function POST(req: Request) {
     ? [
         `Faixa de partida mostrada (MVP): ${brl.format(estimate.min)} a ${brl.format(estimate.max)}`,
         `Prazo mostrado: ${estimate.weeksMin} a ${estimate.weeksMax} semanas`,
+        `Equipe mostrada: ${estimate.team.size} (${estimate.team.roles.map((r) => r.pt).join(", ")})`,
         "",
         `Resumo: ${estimate.scope.resumo}`,
         ...scopeLines(estimate.scope),

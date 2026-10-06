@@ -11,6 +11,7 @@ import {
   ListChecks,
   Sparkles,
   UserRound,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -21,6 +22,7 @@ import HomeHero from "./HomeHero";
 import HomeServices, { type StartingPrice } from "./HomeServices";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import HomeProjects from "./HomeProjects";
+import HomeEngagements from "./HomeEngagements";
 import HomeProcess from "./HomeProcess";
 import HomeAbout from "./HomeAbout";
 import HomeFaq from "./HomeFaq";
@@ -29,6 +31,7 @@ import HomeFooter from "./HomeFooter";
 const ICONS: Record<string, LucideIcon> = {
   inicio: House,
   servicos: LayoutGrid,
+  formatos: Users,
   projetos: Briefcase,
   "como-funciona": ListChecks,
   sobre: UserRound,
@@ -108,6 +111,7 @@ export default function CompanyHome({
       <div data-home-scroll className="bg-surface text-on-surface deck-wide:pl-[var(--deck-side)]">
         <HomeHero />
         <HomeServices prices={prices} projects={projects} />
+        <HomeEngagements />
         <HomeProjects projects={projects} />
         <HomeProcess />
         <HomeAbout projectCount={projectCount} courseCount={courseCount} />

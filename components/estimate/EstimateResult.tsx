@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HandCoins, RotateCcw } from "lucide-react";
+import { HandCoins, RotateCcw, Users } from "lucide-react";
 import CounterOffer from "./CounterOffer";
 import { SOCIALS } from "@/lib/deck-content";
 import type { Estimate } from "@/lib/estimate/scope";
@@ -7,6 +7,7 @@ import {
   mvpItems,
   PRICE_NOTES,
   quoteWhatsappText,
+  teamText,
 } from "@/lib/estimate/shared";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 
@@ -78,6 +79,22 @@ export default function EstimateResult({
           <span className="font-semibold text-on-surface">{weeks}</span>
           {plat.length > 0 && <> · {plat.join(" + ")}</>}
         </p>
+
+        {estimate.team && (
+          <div className="mt-5 rounded-xl border border-outline-variant bg-surface p-4">
+            <p className="flex items-center gap-2 text-base font-semibold">
+              <Users size={18} className="shrink-0" />
+              {teamText(estimate.team.size, pt)}
+            </p>
+            <ul className="mt-2.5 flex flex-wrap gap-2">
+              {estimate.team.roles.map((r, i) => (
+                <li key={i} className="rounded-full bg-surface-high px-3 py-1 text-sm">
+                  {pt ? r.pt : r.en}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {estimate.scope.resumo && (
           <p className="mt-5 text-base leading-relaxed">

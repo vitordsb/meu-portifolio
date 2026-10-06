@@ -63,7 +63,7 @@ export function buildRaioXEmail(opts: {
         nextLabel: "Próximo passo",
         next: `Se quiser, eu resolvo pra você. Me chama no WhatsApp citando o raio-x #${code}, ou é só responder este e-mail.`,
         cta: "Falar com o Vitor no WhatsApp",
-        role: "Engenheiro de software · Sites e sistemas",
+        role: "Fundador · Estúdio de software",
         footer:
           "Você recebeu este e-mail porque pediu um raio-x do site em vitordsb.com.br.",
       }
@@ -82,7 +82,7 @@ export function buildRaioXEmail(opts: {
         nextLabel: "Next step",
         next: `If you'd like, I can fix it for you. Message me on WhatsApp mentioning check #${code}, or just reply to this email.`,
         cta: "Talk to Vitor on WhatsApp",
-        role: "Software engineer · Websites and systems",
+        role: "Founder · Software studio",
         footer:
           "You received this email because you requested a site check at vitordsb.com.br.",
       };
