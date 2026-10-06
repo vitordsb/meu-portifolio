@@ -19,7 +19,8 @@ export type CapName =
   | "contato"
   | "contraproposta"
   | "raiox"
-  | "raiox_lead";
+  | "raiox_lead"
+  | "novidades";
 
 /** Limites padrão por dia; sobrescreva com CAP_<NOME>_DIA na Vercel. */
 const DEFAULTS: Record<CapName, number> = {
@@ -32,6 +33,7 @@ const DEFAULTS: Record<CapName, number> = {
   // função gasto esperando o Lighthouse (até ~40 s por análise)
   raiox: 300,
   raiox_lead: 80,
+  novidades: 100,
 };
 
 function limitFor(name: CapName) {

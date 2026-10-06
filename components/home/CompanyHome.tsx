@@ -23,6 +23,7 @@ import HomeServices, { type StartingPrice } from "./HomeServices";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import HomeProjects from "./HomeProjects";
 import HomeEngagements from "./HomeEngagements";
+import NewsletterPrompt from "./NewsletterPrompt";
 import HomeProcess from "./HomeProcess";
 import HomeAbout from "./HomeAbout";
 import HomeFaq from "./HomeFaq";
@@ -118,6 +119,8 @@ export default function CompanyHome({
         <HomeFaq prices={prices} />
         <HomeFooter />
       </div>
+
+      <NewsletterPrompt />
 
       {/* Celular e tablet: menu no canto (no desktop é o menu lateral) */}
       <div className="fixed bottom-5 left-4 z-[80] deck-wide:hidden">
