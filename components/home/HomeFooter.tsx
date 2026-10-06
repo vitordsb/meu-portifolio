@@ -109,9 +109,19 @@ export default function HomeFooter() {
           </div>
         </div>
 
-        <p className="mt-10 text-sm text-on-surface-variant">
-          © {year} {BRAND.name}. {pt ? "Todos os direitos reservados." : "All rights reserved."}
-        </p>
+        <div className="mt-10 flex flex-col gap-3 text-sm text-on-surface-variant sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {year} {BRAND.name}. {pt ? "Todos os direitos reservados." : "All rights reserved."}
+          </p>
+          <p className="flex gap-5">
+            <Link href="/privacidade" className="hover:underline">
+              {pt ? "Política de Privacidade" : "Privacy Policy"}
+            </Link>
+            <Link href="/termos" className="hover:underline">
+              {pt ? "Termos de Uso" : "Terms of Use"}
+            </Link>
+          </p>
+        </div>
       </div>
     </footer>
   );

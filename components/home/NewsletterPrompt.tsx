@@ -119,7 +119,10 @@ export default function NewsletterPrompt() {
                 <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">
                   {pt
                     ? "Avisamos por e-mail quando lançarmos algo novo. Sem spam, e você cancela quando quiser."
-                    : "We'll email you when we launch something new. No spam, and you can cancel anytime."}
+                    : "We'll email you when we launch something new. No spam, and you can cancel anytime."}{" "}
+                  <a href="/privacidade" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-on-surface">
+                    {pt ? "Privacidade" : "Privacy"}
+                  </a>
                 </p>
               </div>
 

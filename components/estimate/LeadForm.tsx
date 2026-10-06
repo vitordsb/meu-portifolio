@@ -120,7 +120,17 @@ export default function LeadForm({
         <span>
           {pt
             ? "Aceito ser contatado pelo Vitor sobre este projeto e sei que a conversa foi processada por uma IA (DeepSeek)."
-            : "I agree to be contacted by Vitor about this project and understand the chat was processed by an AI (DeepSeek)."}
+            : "I agree to be contacted by Vitor about this project and understand the chat was processed by an AI (DeepSeek)."}{" "}
+          {pt ? "Veja a" : "See the"}{" "}
+          <a
+            href="/privacidade"
+            target="_blank"
+            rel="noopener"
+            className="underline underline-offset-2 hover:text-on-surface"
+          >
+            {pt ? "Política de Privacidade" : "Privacy Policy (in Portuguese)"}
+          </a>
+          .
         </span>
       </label>
 

@@ -281,6 +281,15 @@ export default function ServicesPage() {
             <span className="whitespace-nowrap"> · CNPJ {CNPJ}</span>
           </span>
         </p>
+        <p className="mt-2 text-center text-xs text-on-surface-variant">
+          <Link href="/termos" className="underline underline-offset-2 hover:text-on-surface">
+            {pt ? "Termos de Uso" : "Terms of Use"}
+          </Link>
+          {" · "}
+          <Link href="/privacidade" className="underline underline-offset-2 hover:text-on-surface">
+            {pt ? "Política de Privacidade" : "Privacy Policy"}
+          </Link>
+        </p>
       </main>
     </div>
   );

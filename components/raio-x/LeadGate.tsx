@@ -102,7 +102,17 @@ export default function LeadGate({
         <span>
           {pt
             ? "Aceito ser contatado pelo Vitor sobre o meu site."
-            : "I agree to be contacted by Vitor about my site."}
+            : "I agree to be contacted by Vitor about my site."}{" "}
+          {pt ? "Veja a" : "See the"}{" "}
+          <a
+            href="/privacidade"
+            target="_blank"
+            rel="noopener"
+            className="underline underline-offset-2 hover:text-on-surface"
+          >
+            {pt ? "Política de Privacidade" : "Privacy Policy (in Portuguese)"}
+          </a>
+          .
         </span>
       </label>
 
