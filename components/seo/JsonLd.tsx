@@ -1,6 +1,6 @@
 import { SOCIALS } from "@/lib/deck-content";
 import { PACKAGES } from "@/lib/payments/packages";
-import { SITE_URL } from "@/lib/site";
+import { BRAND, CNPJ, SITE_URL } from "@/lib/site";
 
 /**
  * Dados estruturados (schema.org) pro Google entender quem é o Vitor e o que
@@ -37,10 +37,13 @@ const person = {
 const business = {
   "@type": "ProfessionalService",
   "@id": BUSINESS_ID,
-  name: "Vitor de Souza · Desenvolvimento de software",
+  name: BRAND.name,
+  alternateName: `${BRAND.name} · ${BRAND.descriptor.pt}`,
+  taxID: CNPJ,
+  email: BRAND.email,
   description:
     "Criação de sites, landing pages, sistemas web e apps, do design ao deploy. Orçamento com IA em 2 minutos e serviços com preço fechado.",
-  url: `${SITE_URL}/servicos`,
+  url: SITE_URL,
   founder: { "@id": PERSON_ID },
   areaServed: { "@type": "Country", name: "Brasil" },
   availableLanguage: ["pt-BR", "en"],

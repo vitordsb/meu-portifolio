@@ -16,6 +16,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
 import { WORK_LINKS, l } from "@/lib/deck-content";
+import { HOME_SECTIONS } from "@/lib/home-content";
 
 /**
  * Botão do canto inferior esquerdo: o menu do site (sessões da home, portas
@@ -43,25 +44,20 @@ export default function AvatarMenu({ className }: { className?: string }) {
     }
   }, [router]);
 
-  // Portfólio = sessões da home (o deck escuta o #); "Trabalhe comigo" = as
-  // portas de venda. As páginas internas antigas (/about, /cv...) saíram do
+  // Sessões da home (âncoras da página de rolagem; os # do deck antigo viram
+  // apelidos nelas) e as portas de venda. As páginas internas antigas (/about, /cv...) saíram do
   // menu em 02/out/2026: o conteúdo delas já vive na home.
   const groups: { label: string; items: { href: string; label: string }[] }[] =
     [
       {
-        label: pt ? "Portfólio" : "Portfolio",
-        items: [
-          { href: "/", label: pt ? "Início" : "Home" },
-          { href: "/#experiencia", label: pt ? "Experiência" : "Experience" },
-          {
-            href: "/#especializacoes",
-            label: pt ? "Especializações" : "Expertise",
-          },
-          { href: "/#trajetoria", label: pt ? "Trajetória" : "Journey" },
-        ],
+        label: pt ? "Página inicial" : "Homepage",
+        items: HOME_SECTIONS.map((sec) => ({
+          href: sec.id === "inicio" ? "/" : `/#${sec.id}`,
+          label: l(sec.label, language),
+        })),
       },
       {
-        label: pt ? "Trabalhe comigo" : "Work with me",
+        label: pt ? "Contratar" : "Hire us",
         items: WORK_LINKS.map((w) => ({
           href: w.href,
           label: l(w.label, language),

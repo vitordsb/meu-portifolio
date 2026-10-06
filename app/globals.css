@@ -349,6 +349,11 @@
      o site inteiro cresce junto e nada quebra. */
   html { font-size: calc(clamp(100%, min(0.834vw, 1.482vh), 125%) * var(--font-scale, 1)); }
 
+  /* Home de rolagem: âncoras (/#servicos) deslizam em vez de pular. */
+  @media (prefers-reduced-motion: no-preference) {
+    html:has([data-home-scroll]) { scroll-behavior: smooth; }
+  }
+
   /* Largura da moldura do conteúdo. Setas e menu do deck se alinham a ela. */
   :root { --deck-frame: 72rem; }
   @media (min-width: 120rem) { :root { --deck-frame: 110rem; } }

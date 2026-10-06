@@ -219,7 +219,7 @@ export default function CompanyCard({
         <dl className="mb-6 flex-1 space-y-3">
           <div>
             <dt className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.12em] text-on-surface-variant">
-              {pt ? "Meu papel" : "My role"}
+              {pt ? "O que foi entregue" : "What was delivered"}
             </dt>
             <dd className="text-sm leading-relaxed md:text-base">
               {company.role[language]}
