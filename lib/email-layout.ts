@@ -5,7 +5,8 @@
  * do site.
  */
 
-export const CNPJ = "69.283.538/0001-57";
+import { CNPJ } from "./site";
+export { CNPJ };
 export const SITE = "https://www.vitordsb.com.br";
 
 export const C = {

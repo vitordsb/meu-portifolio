@@ -31,14 +31,14 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Vitor de Souza Barreto | Engenheiro de Software",
+  title: "Vitor de Souza | Sites, sistemas e aplicativos para empresas",
   description:
-    "Engenheiro de software especialista em front-end. Do Figma ao deploy: software completo, com obsessão pela experiência do usuário.",
+    "Estúdio de software: sites, sistemas e aplicativos do desenho ao ar, com preço combinado antes de começar, contrato e nota fiscal. Orçamento grátis em 2 minutos.",
   openGraph: {
     ...OG_BASE,
-    title: "Vitor de Souza | Engenheiro de software, UI/UX e Front-end",
+    title: "Vitor de Souza | Sites, sistemas e aplicativos para empresas",
     description:
-      "Sites, sistemas e aplicativos do Figma ao deploy. Orçamento grátis em 2 minutos, com faixa de preço na hora.",
+      "Do desenho ao ar, com preço combinado antes de começar, contrato e nota fiscal. Orçamento grátis em 2 minutos.",
     url: SITE_URL,
   },
   // Sem twitter-image próprio: o X usa a og:image de cada página
