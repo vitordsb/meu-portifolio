@@ -45,35 +45,19 @@ const ICONS: Record<string, LucideIcon> = {
 export const brl = (n: number) =>
   n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
-/** Intenção antes de abrir no hover: o mouse só de passagem não abre nada. */
-const HOVER_OPEN_MS = 170;
-const HOVER_CLOSE_MS = 120;
-
 type Open = {
   id: string;
-  via: "hover" | "click";
   from: { left: number; top: number; width: number; height: number };
   to: { left: number; top: number; width: number; maxHeight: number };
 };
 
-function useFinePointer() {
-  const [fine, setFine] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const sync = () => setFine(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-  return fine;
-}
-
 /**
- * "O que a gente faz": carrossel de colunas, uma por tipo de projeto. Passar
- * o mouse numa coluna (ou tocar, no celular) abre a coluna num painel maior
- * com todos os projetos já entregues daquele tipo, com o resto da tela
- * borrado atrás. O painel nasce em cima da coluna e cresce a partir dela:
- * o mouse continua dentro dele, sem piscar.
+ * "O que a gente faz": carrossel de colunas, do mais complexo ao mais simples
+ * (sob consulta primeiro, depois do mais caro ao mais barato). Clicar ou
+ * tocar numa coluna abre um painel com todos os projetos já entregues
+ * daquele tipo, com o resto da tela borrado atrás; o painel nasce em cima da
+ * coluna e cresce a partir dela. Abrir no hover foi testado e reprovado pelo
+ * Vitor (06/out/2026): abria sem querer.
  */
 export default function HomeServices({
   prices,
@@ -85,21 +69,16 @@ export default function HomeServices({
   const { language } = useLanguage();
   const pt = language === "pt";
   const section = HOME_SECTIONS.find((s) => s.id === "servicos")!;
-  const fine = useFinePointer();
   const scroller = useRef<HTMLUListElement>(null);
   const [open, setOpen] = useState<Open | null>(null);
   const [mounted, setMounted] = useState(false);
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  // Coluna que acabou de fechar: só reabre no hover depois que o mouse sair dela
-  const suppressed = useRef<string | null>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
 
   useEffect(() => setMounted(true), []);
 
   const byType = (id: string) => projects.filter((p) => p.type === id || p.tags.includes(id));
 
-  const openFor = useCallback((id: string, el: HTMLElement, via: Open["via"]) => {
+  const openFor = useCallback((id: string, el: HTMLElement) => {
     const r = el.getBoundingClientRect();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
@@ -109,42 +88,25 @@ export default function HomeServices({
     const top = Math.max(16, Math.min(r.top, vh * 0.2));
     setOpen({
       id,
-      via,
       from: { left: r.left, top: r.top, width: r.width, height: r.height },
       to: { left, top, width, maxHeight: vh - top - 16 },
     });
   }, []);
 
-  const close = useCallback(() => {
-    clearTimeout(closeTimer.current);
-    setOpen((o) => {
-      if (o) suppressed.current = o.id;
-      return null;
-    });
-  }, []);
+  const close = useCallback(() => setOpen(null), []);
 
-  // Esc fecha; rolar a página fecha (o painel é fixo, a coluna andaria);
-  // aberto por toque/clique, a página trava pra rolar só o painel
+  // Aberto, a página trava (rola só o painel) e Esc fecha
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
-    let undo = () => {};
-    if (open.via === "hover") {
-      window.addEventListener("scroll", close, { passive: true });
-      undo = () => window.removeEventListener("scroll", close);
-    } else {
-      const html = document.documentElement;
-      const prev = html.style.overflow;
-      html.style.overflow = "hidden";
-      closeBtn.current?.focus({ preventScroll: true });
-      undo = () => {
-        html.style.overflow = prev;
-      };
-    }
+    const html = document.documentElement;
+    const prev = html.style.overflow;
+    html.style.overflow = "hidden";
+    closeBtn.current?.focus({ preventScroll: true });
     return () => {
       window.removeEventListener("keydown", onKey);
-      undo();
+      html.style.overflow = prev;
     };
   }, [open, close]);
 
@@ -156,6 +118,14 @@ export default function HomeServices({
     ul.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
+  // Do mais complexo ao mais simples: sob consulta primeiro, depois preço desc
+  const ordered = [
+    // IA > modernização > APIs: do mais complexo pro menos
+    ...SERVICE_TYPES.filter((s) => s.consult).reverse(),
+    ...SERVICE_TYPES.filter((s) => !s.consult).sort(
+      (a, b) => (prices[b.id]?.min ?? 0) - (prices[a.id]?.min ?? 0),
+    ),
+  ];
   const active = open ? SERVICE_TYPES.find((s) => s.id === open.id) : null;
   const activeProjects = open ? byType(open.id) : [];
   const ActiveIcon = active ? (ICONS[active.id] ?? Globe) : Globe;
@@ -172,8 +142,8 @@ export default function HomeServices({
           title={pt ? "O que a gente faz" : "What we build"}
           lead={
             pt
-              ? `O valor é de partida e fecha depois da conversa. ${fine ? "Passe o mouse" : "Toque"} numa coluna pra ver os projetos já entregues.`
-              : `Prices are starting points, finalized after we talk. ${fine ? "Hover" : "Tap"} a column to see delivered projects.`
+              ? "O valor é de partida e fecha depois da conversa. Abra uma coluna pra ver os projetos já entregues."
+              : "Prices are starting points, finalized after we talk. Open a column to see delivered projects."
           }
         />
         <div className="mb-10 hidden shrink-0 gap-2 md:mb-14 md:flex">
@@ -201,7 +171,7 @@ export default function HomeServices({
           ref={scroller}
           className="-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:-mx-12 lg:scroll-px-12 lg:px-12 [&::-webkit-scrollbar]:hidden"
         >
-          {SERVICE_TYPES.map((s) => {
+          {ordered.map((s) => {
             const Icon = ICONS[s.id] ?? Globe;
             const p = prices[s.id];
             const list = byType(s.id);
@@ -212,17 +182,7 @@ export default function HomeServices({
                   type="button"
                   aria-haspopup="dialog"
                   aria-expanded={isOpen}
-                  onMouseEnter={(e) => {
-                    if (!fine || suppressed.current === s.id) return;
-                    const el = e.currentTarget;
-                    clearTimeout(hoverTimer.current);
-                    hoverTimer.current = setTimeout(() => openFor(s.id, el, "hover"), HOVER_OPEN_MS);
-                  }}
-                  onMouseLeave={() => {
-                    clearTimeout(hoverTimer.current);
-                    if (suppressed.current === s.id) suppressed.current = null;
-                  }}
-                  onClick={(e) => openFor(s.id, e.currentTarget, "click")}
+onClick={(e) => openFor(s.id, e.currentTarget)}
                   className={`flex min-h-[27rem] w-full flex-col rounded-3xl border border-outline-variant bg-surface-low p-7 text-left transition-[border-color,opacity] hover:border-on-surface/40 ${isOpen ? "opacity-0" : ""}`}
                 >
                   <span className="flex items-center justify-between">
@@ -261,7 +221,7 @@ export default function HomeServices({
                           ))}
                       </span>
                     )}
-                    <span className="text-sm text-on-surface-variant">
+                    <span className="inline-flex items-center gap-1.5 text-base font-semibold">
                       {list.length === 0
                         ? s.consult
                           ? pt
@@ -270,13 +230,10 @@ export default function HomeServices({
                           : pt
                             ? "Seja o primeiro"
                             : "Be the first"
-                        : fine
-                          ? pt
-                            ? "Passe o mouse"
-                            : "Hover to see"
-                          : pt
-                            ? "Toque pra ver"
-                            : "Tap to see"}
+                        : pt
+                          ? `Ver ${list.length} ${list.length === 1 ? "projeto" : "projetos"}`
+                          : `See ${list.length} ${list.length === 1 ? "project" : "projects"}`}
+                      <ArrowRight size={16} className="shrink-0" />
                     </span>
                   </span>
 
@@ -358,13 +315,8 @@ export default function HomeServices({
                 <motion.div
                   key={`panel-${open.id}`}
                   role="dialog"
-                  aria-modal={open.via === "click"}
+                  aria-modal
                   aria-label={active.title[language]}
-                  onMouseEnter={() => clearTimeout(closeTimer.current)}
-                  onMouseLeave={() => {
-                    if (open.via !== "hover") return;
-                    closeTimer.current = setTimeout(close, HOVER_CLOSE_MS);
-                  }}
                   initial={{ ...open.from, opacity: 0.6 }}
                   animate={{ left: open.to.left, top: open.to.top, width: open.to.width, height: "auto", opacity: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}

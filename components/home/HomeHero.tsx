@@ -64,7 +64,7 @@ export default function HomeHero() {
 
       <div className={FRAME}>
         <div className="flex h-20 items-center justify-between gap-3">
-          <Link href="/" className="min-w-0 truncate text-lg font-extrabold tracking-[-0.03em]">
+          <Link href="/" className="min-w-0 text-lg font-extrabold leading-tight tracking-[-0.03em]">
             {BRAND.name}
           </Link>
           <div className="flex shrink-0 items-center gap-2">

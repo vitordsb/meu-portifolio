@@ -13,12 +13,13 @@ import { Reveal, Section, SectionHeader } from "./ui";
 type Tab = "destaques" | ProjectType;
 
 const TABS: { id: Tab; pt: string; en: string }[] = [
+  // Do mais complexo ao mais simples (mesma ordem dos serviços)
   { id: "destaques", pt: "Destaques", en: "Highlights" },
+  { id: "app", pt: "Aplicativos", en: "Apps" },
+  { id: "loja", pt: "Lojas virtuais", en: "Online stores" },
   { id: "sistema", pt: "Sistemas web", en: "Web systems" },
   { id: "site", pt: "Sites", en: "Websites" },
   { id: "landing", pt: "Landing pages", en: "Landing pages" },
-  { id: "app", pt: "Aplicativos", en: "Apps" },
-  { id: "loja", pt: "Lojas virtuais", en: "Online stores" },
 ];
 
 /**
