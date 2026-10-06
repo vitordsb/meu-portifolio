@@ -76,8 +76,8 @@ export default function ServicesPage() {
         </h1>
         <p className="mt-3 max-w-xl text-base leading-relaxed text-on-surface-variant">
           {pt
-            ? "Escolha, pague com Pix ou cartão e eu começo. Sem orçamento, sem espera."
-            : "Pick one, pay with Pix or card and I get started. No quote, no waiting."}
+            ? "Escolha, pague com Pix ou cartão e a gente começa. Sem orçamento, sem espera."
+            : "Pick one, pay with Pix or card and we get started. No quote, no waiting."}
         </p>
 
         <ul className="mt-10 grid gap-4 md:grid-cols-2 2xl:grid-cols-4">
@@ -156,8 +156,8 @@ export default function ServicesPage() {
                     <>
                       <p className="text-on-surface-variant">
                         {pt
-                          ? "O pagamento online está indisponível agora. Contrata comigo pelo WhatsApp que eu te mando o link."
-                          : "Online payment is unavailable right now. Hire me on WhatsApp and I'll send you the link."}
+                          ? "O pagamento online está indisponível agora. Contrata pelo WhatsApp que a gente te manda o link."
+                          : "Online payment is unavailable right now. Hire us on WhatsApp and we'll send you the link."}
                       </p>
                       <a
                         href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(
@@ -243,7 +243,7 @@ export default function ServicesPage() {
               <span className="flex items-center gap-2 font-semibold">
                 <ReceiptText size={16} />
                 {pt
-                  ? "Já combinou um valor comigo?"
+                  ? "Já combinou um valor com a gente?"
                   : "Already agreed on a price?"}
               </span>
               <span className="mt-1 block text-sm text-on-surface-variant">

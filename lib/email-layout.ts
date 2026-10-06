@@ -5,7 +5,7 @@
  * do site.
  */
 
-import { CNPJ } from "./site";
+import { BRAND, CNPJ } from "./site";
 export { CNPJ };
 export const SITE = "https://www.vitordsb.com.br";
 
@@ -99,7 +99,7 @@ export function emailShell(o: {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${C.card};border:1px solid ${C.border};border-radius:16px;">
       <tr><td style="padding:28px 32px 0;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-          <td style="font-size:15px;font-weight:800;letter-spacing:-0.3px;color:${C.text};">Vitor de Souza</td>
+          <td style="font-size:15px;font-weight:800;letter-spacing:-0.3px;color:${C.text};">${esc(BRAND.name)}</td>
           <td align="right" style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:${C.muted};">${esc(o.tag)}</td>
         </tr></table>
       </td></tr>
@@ -116,7 +116,7 @@ export function emailShell(o: {
         </td></tr></table>
       </td></tr>
       <tr><td style="padding:28px 32px 28px;">
-        <p style="margin:0;font-size:15px;font-weight:700;color:${C.text};">Vitor de Souza</p>
+        <p style="margin:0;font-size:15px;font-weight:700;color:${C.text};">${esc(BRAND.name)}</p>
         <p style="margin:2px 0 0;font-size:13px;color:${C.muted};">${esc(o.role)}</p>
         <p style="margin:2px 0 0;font-size:13px;"><a href="${SITE}" style="color:${C.text};">vitordsb.com.br</a></p>
       </td></tr>

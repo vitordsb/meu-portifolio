@@ -192,21 +192,21 @@ export default function EstimateResult({
             <>
               Seu pedido{" "}
               <span className="font-semibold text-on-surface">#{code}</span> já
-              está comigo. No WhatsApp, é só citar o número.
+              chegou pra gente. No WhatsApp, é só citar o número.
             </>
           ) : (
             <>
               Your quote{" "}
               <span className="font-semibold text-on-surface">#{code}</span> is
-              already with me. On WhatsApp, just mention the number.
+              already with us. On WhatsApp, just mention the number.
             </>
           )}
         </p>
         {sentTo && (
           <p className="-mt-1 w-full text-sm text-on-surface-variant">
             {pt
-              ? "Enviei uma cópia deste orçamento pra "
-              : "I sent a copy of this quote to "}
+              ? "Enviamos uma cópia deste orçamento pra "
+              : "We sent a copy of this quote to "}
             <span className="font-medium text-on-surface">{sentTo}</span>.
           </p>
         )}
@@ -218,7 +218,7 @@ export default function EstimateResult({
         >
           <span className="inline-flex items-center gap-2">
             <WhatsappIcon size={18} />
-            {pt ? "Falar com o Vitor" : "Talk to Vitor"}
+            {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}
           </span>
         </a>
         {!negotiating && (

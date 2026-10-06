@@ -6,7 +6,7 @@ import PriceGuide, {
 import { SITE_URL, OG_BASE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Quanto custa um site ou aplicativo em 2026? | Vitor de Souza",
+  title: "Quanto custa um site ou aplicativo em 2026?",
   description: GUIDE_ANSWER,
   alternates: { canonical: "/quanto-custa" },
   openGraph: {

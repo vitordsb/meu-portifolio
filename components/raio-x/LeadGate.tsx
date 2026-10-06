@@ -101,8 +101,8 @@ export default function LeadGate({
         />
         <span>
           {pt
-            ? "Aceito ser contatado pelo Vitor sobre o meu site."
-            : "I agree to be contacted by Vitor about my site."}{" "}
+            ? "Aceito ser contatado sobre o meu site."
+            : "I agree to be contacted about my site."}{" "}
           {pt ? "Veja a" : "See the"}{" "}
           <a
             href="/privacidade"

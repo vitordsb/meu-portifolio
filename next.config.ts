@@ -66,6 +66,18 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // Páginas pessoais do portfólio antigo (06/out/2026: o site fala como
+  // empresa e não mostra mais o Vitor como pessoa). Temporário (307) de
+  // propósito: se ele quiser um currículo pessoal de volta, é só tirar daqui.
+  // As páginas seguem no código em app/(public).
+  async redirects() {
+    const toProjects = ["/projects", "/autonomo", "/freelance"];
+    const toHome = ["/about", "/cv", "/skills", "/competencies", "/certificates", "/github", "/contact"];
+    return [
+      ...toProjects.map((source) => ({ source, destination: "/#projetos", permanent: false })),
+      ...toHome.map((source) => ({ source, destination: "/", permanent: false })),
+    ];
+  },
 };
 
 // withBotId cria as rotas internas do desafio anti-robô (SPEC S2)

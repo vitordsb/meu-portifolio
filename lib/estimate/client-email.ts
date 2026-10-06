@@ -14,6 +14,7 @@ import {
 } from "@/lib/email-layout";
 import type { Estimate } from "./scope";
 import { mvpItems, PRICE_NOTES, quoteWhatsappText, teamText } from "./shared";
+import { BRAND } from "@/lib/site";
 
 /**
  * E-mail de confirmação pro cliente que pediu orçamento: agradece, repete o
@@ -51,16 +52,16 @@ export function buildClientEmail(opts: {
 
   const t = pt
     ? {
-        subject: `Recebi seu pedido de orçamento #${code}`,
+        subject: `Recebemos seu pedido de orçamento #${code}`,
         preheader: range
           ? `Valor de partida do MVP: ${range}. Próximo passo: uma conversa rápida sobre o escopo.`
-          : "Já estou com a sua conversa. Te mando o valor de partida em breve.",
+          : "Já estamos com a sua conversa. Mandamos o valor de partida em breve.",
         label: `Pedido #${code}`,
         hello: first ? `Olá, ${first}!` : "Olá!",
         thanks:
-          "Agradeço por confiar a ideia do seu projeto a mim. Recebi a conversa inteira e o resumo do que você precisa.",
+          "Obrigado por confiar a ideia do seu projeto à gente. Recebemos a conversa inteira e o resumo do que você precisa.",
         failNote:
-          "A calculadora teve um problema na hora de gerar o valor, mas isso não atrapalha nada: já estou com tudo aqui e te mando o valor de partida em breve.",
+          "A calculadora teve um problema na hora de gerar o valor, mas isso não atrapalha nada: já estamos com tudo aqui e mandamos o valor de partida em breve.",
         rangeLabel: "Valor de partida da primeira versão (MVP)",
         weeksLabel: "Prazo estimado",
         teamLabel: "Equipe",
@@ -68,23 +69,23 @@ export function buildClientEmail(opts: {
         mvpLabel: "O que entra no MVP",
         notesLabel: "Como esse valor funciona",
         nextLabel: "Próximo passo",
-        next: `Vou te chamar em breve pra gente alinhar o escopo. Se quiser adiantar, me chama no WhatsApp citando o pedido #${code}, ou é só responder este e-mail.`,
-        cta: "Falar com o Vitor no WhatsApp",
-        role: "Fundador · Estúdio de software",
+        next: `A gente te chama em breve pra alinhar o escopo. Se quiser adiantar, chama a gente no WhatsApp citando o pedido #${code}, ou é só responder este e-mail.`,
+        cta: "Falar no WhatsApp",
+        role: BRAND.descriptor.pt,
         footer:
           "Você recebeu este e-mail porque pediu um orçamento em vitordsb.com.br.",
       }
     : {
-        subject: `I got your quote request #${code}`,
+        subject: `We got your quote request #${code}`,
         preheader: range
           ? `MVP starting price: ${range}. Next step: a quick call about the scope.`
-          : "I have your chat. I'll send you the starting price soon.",
+          : "We have your chat. We'll send you the starting price soon.",
         label: `Quote #${code}`,
         hello: first ? `Hi, ${first}!` : "Hi!",
         thanks:
-          "Thank you for trusting me with your project idea. I received the whole chat and the summary of what you need.",
+          "Thank you for trusting us with your project idea. We received the whole chat and the summary of what you need.",
         failNote:
-          "The calculator had a hiccup generating the price, but nothing is lost: I have everything here and will send you the starting price soon.",
+          "The calculator had a hiccup generating the price, but nothing is lost: we have everything here and will send you the starting price soon.",
         rangeLabel: "Starting price for the first version (MVP)",
         weeksLabel: "Estimated timeline",
         teamLabel: "Team",
@@ -92,9 +93,9 @@ export function buildClientEmail(opts: {
         mvpLabel: "What's in the MVP",
         notesLabel: "How this price works",
         nextLabel: "Next step",
-        next: `I'll reach out soon so we can align the scope. To speed things up, message me on WhatsApp mentioning quote #${code}, or just reply to this email.`,
-        cta: "Talk to Vitor on WhatsApp",
-        role: "Founder · Software studio",
+        next: `We'll reach out soon to align the scope. To speed things up, message us on WhatsApp mentioning quote #${code}, or just reply to this email.`,
+        cta: "Chat on WhatsApp",
+        role: BRAND.descriptor.en,
         footer:
           "You received this email because you requested a quote at vitordsb.com.br.",
       };
@@ -132,7 +133,7 @@ export function buildClientEmail(opts: {
     `${t.nextLabel}: ${t.next}`,
     `WhatsApp: ${whatsapp}`,
     "",
-    "Vitor de Souza",
+    BRAND.name,
     t.role,
     SITE.replace("https://", ""),
     "",

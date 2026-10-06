@@ -58,8 +58,8 @@ export default function PayOrderPage() {
         } else if (res.status === 404) {
           setError(
             pt
-              ? "Não achei esse pedido. Confere o número ou me chama no WhatsApp."
-              : "I couldn't find that order. Check the number or reach me on WhatsApp.",
+              ? "Não encontramos esse pedido. Confere o número ou chama a gente no WhatsApp."
+              : "We couldn't find that order. Check the number or reach us on WhatsApp.",
           );
         } else if (res.status === 429) {
           setError(

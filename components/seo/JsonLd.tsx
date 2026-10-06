@@ -3,36 +3,15 @@ import { PACKAGES } from "@/lib/payments/packages";
 import { BRAND, CNPJ, SITE_URL } from "@/lib/site";
 
 /**
- * Dados estruturados (schema.org) pro Google entender quem é o Vitor e o que
- * ele vende: pessoa + prestador de serviço com os pacotes e preços de
- * /servicos. Os preços saem de PACKAGES, então nunca divergem da página.
+ * Dados estruturados (schema.org) pro Google entender a empresa e o que ela
+ * vende: prestador de serviço com os pacotes e preços de /servicos. Sem a
+ * pessoa do Vitor desde 06/out/2026 (o site fala como empresa). Os preços saem de PACKAGES, então nunca divergem da página.
  */
 
 const brl = (n: number) => `R$ ${n.toLocaleString("pt-BR")}`;
 const prices = PACKAGES.map((p) => p.price);
 
-const PERSON_ID = `${SITE_URL}/#vitor`;
 const BUSINESS_ID = `${SITE_URL}/#servicos`;
-
-const person = {
-  "@type": "Person",
-  "@id": PERSON_ID,
-  name: "Vitor de Souza Barreto",
-  alternateName: "Vitor de Souza",
-  jobTitle: "Engenheiro de Software",
-  url: SITE_URL,
-  sameAs: [SOCIALS.linkedin, SOCIALS.github],
-  knowsAbout: [
-    "Desenvolvimento web",
-    "Criação de sites",
-    "Landing pages",
-    "UI/UX",
-    "React",
-    "Next.js",
-    "Node.js",
-    "Aplicativos mobile",
-  ],
-};
 
 const business = {
   "@type": "ProfessionalService",
@@ -44,7 +23,6 @@ const business = {
   description:
     "Criação de sites, landing pages, sistemas web e apps, do design ao deploy. Orçamento com IA em 2 minutos e serviços com preço fechado.",
   url: SITE_URL,
-  founder: { "@id": PERSON_ID },
   areaServed: { "@type": "Country", name: "Brasil" },
   availableLanguage: ["pt-BR", "en"],
   // "+" no fim: projeto sob medida (orçamento com IA) passa do maior pacote
@@ -75,7 +53,7 @@ const business = {
 export default function JsonLd() {
   const data = {
     "@context": "https://schema.org",
-    "@graph": [person, business],
+    "@graph": [business],
   };
   return (
     <script

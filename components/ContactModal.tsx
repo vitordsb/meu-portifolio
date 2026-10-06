@@ -43,8 +43,8 @@ const CHANNELS = [
 function whatsappHref(subject: string | null, pt: boolean): string {
   if (!subject) return WHATSAPP;
   const text = pt
-    ? `Oi Vitor! Vim pelo seu portfólio e quero falar sobre: ${subject}.`
-    : `Hi Vitor! I found your portfolio and I'd like to talk about: ${subject}.`;
+    ? `Olá! Vim pelo site e quero falar sobre: ${subject}.`
+    : `Hi! I found your website and I'd like to talk about: ${subject}.`;
   return `${WHATSAPP}?text=${encodeURIComponent(text)}`;
 }
 

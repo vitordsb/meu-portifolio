@@ -282,8 +282,8 @@ export default function PriceGuide() {
             ))}
           </div>
           <p className="mt-5 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
-            Eu trabalho como profissional especialista: contrato, CNPJ {CNPJ},
-            pagamento em etapas e contato direto comigo do começo ao fim.
+            Trabalhamos como empresa especializada: contrato, CNPJ {CNPJ},
+            pagamento em etapas e contato direto com quem desenvolve, do começo ao fim.
           </p>
         </section>
 

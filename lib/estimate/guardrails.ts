@@ -9,7 +9,7 @@ import { PROMPT_CANARY, READY_MARKER } from "./prompts";
 const LEAK_PATTERNS: RegExp[] = [
   new RegExp(PROMPT_CANARY.replace(/-/g, "[-\\s]?"), "i"),
   // Frases das instruções em português
-  /assistente de or[çc]amentos do Vitor de Souza,\s*engenheiro/i,
+  /assistente de or[çc]amentos de um est[úu]dio de software/i,
   /seu [úu]nico trabalho/i,
   /regras firmes/i,
   /como conversar\s*:/i,

@@ -107,8 +107,8 @@ function errorMessage(code: string, pt: boolean, retryMin?: number) {
       `You ran several checks in a row. Try again in ${retryMin ?? 10} min.`,
     ],
     sem_chave: [
-      "O Raio-X está em manutenção. Me chama no WhatsApp que eu analiso o seu site.",
-      "The site check is under maintenance. Message me on WhatsApp and I'll check your site.",
+      "O Raio-X está em manutenção. Chama a gente no WhatsApp que a gente analisa o seu site.",
+      "The site check is under maintenance. Message us on WhatsApp and we'll check your site.",
     ],
     offline: [
       "Sem conexão. Confere a internet e tenta de novo.",
@@ -116,8 +116,8 @@ function errorMessage(code: string, pt: boolean, retryMin?: number) {
     ],
   };
   const pair = m[code] ?? [
-    "Não deu certo agora. Tenta de novo, ou me chama no WhatsApp.",
-    "Something went wrong. Try again, or message me on WhatsApp.",
+    "Não deu certo agora. Tenta de novo, ou chama a gente no WhatsApp.",
+    "Something went wrong. Try again, or message us on WhatsApp.",
   ];
   return pt ? pair[0] : pair[1];
 }
@@ -511,7 +511,7 @@ function Offer({ pt, report, code, name }: { pt: boolean; report: Report; code: 
   return (
     <div data-origem="raio-x" className="mt-12 rounded-2xl bg-on-surface p-6 text-surface sm:p-8">
       <h3 className="text-2xl font-extrabold tracking-[-0.02em]">
-        {pt ? "Quer que eu resolva isso pra você?" : "Want me to fix this for you?"}
+        {pt ? "Quer que a gente resolva isso pra você?" : "Want us to fix this for you?"}
       </h3>
       <p className="mt-2 max-w-xl leading-relaxed text-surface/75">
         {rebuild
@@ -543,7 +543,7 @@ function Offer({ pt, report, code, name }: { pt: boolean; report: Report; code: 
           className="inline-flex h-12 items-center gap-2 rounded-lg bg-[#25D366] px-5 font-semibold text-white transition hover:brightness-95"
         >
           <WhatsappIcon size={18} />
-          {pt ? "Falar com o Vitor" : "Talk to Vitor"}
+          {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}
         </a>
         <Link
           href="/servicos"

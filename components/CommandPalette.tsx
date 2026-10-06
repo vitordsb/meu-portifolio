@@ -62,11 +62,9 @@ const ICONS: Record<SearchIntent["icon"], LucideIcon | typeof GithubIcon> = {
 
 const GROUP_LABELS: Record<string, { pt: string; en: string }> = {
   navegar: { pt: "Navegar", en: "Navigate" },
-  falar: { pt: "Falar comigo", en: "Get in touch" },
+  falar: { pt: "Fale com a gente", en: "Get in touch" },
   preferencias: { pt: "Preferências", en: "Preferences" },
   projetos: { pt: "Projetos", en: "Projects" },
-  skills: { pt: "Tecnologias", en: "Stack" },
-  cursos: { pt: "Cursos", en: "Courses" },
 };
 
 const item =
@@ -113,9 +111,12 @@ export default function CommandPalette({
     switch (action.kind) {
       case "section": {
         if (pathname === "/") {
-          // O deck escuta o hashchange e troca de sessão
-          window.location.hash =
-            action.anchor ?? (action.id === "inicio" ? "" : action.id);
+          // Home em rolagem: desliza até a sessão (o # é atualizado sem pular)
+          const target = action.anchor ?? action.id;
+          const el = target === "inicio" ? null : document.getElementById(target);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+          else window.scrollTo({ top: 0, behavior: "smooth" });
+          window.history.replaceState(null, "", target === "inicio" ? "/" : `#${target}`);
         } else {
           const target = action.anchor ?? action.id;
           router.push(target === "inicio" ? "/" : `/#${target}`);
@@ -263,7 +264,7 @@ export default function CommandPalette({
                           run(
                             p.link
                               ? { kind: "link", href: p.link }
-                              : { kind: "section", id: "experiencia" },
+                              : { kind: "section", id: "projetos" },
                           )
                         }
                         className={item}
@@ -284,70 +285,6 @@ export default function CommandPalette({
                             className="shrink-0 text-on-surface-variant"
                           />
                         )}
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-
-                  <Command.Group heading={GROUP_LABELS.skills[language]}>
-                    {data.skills.map((s) => (
-                      <Command.Item
-                        key={`s-${s.id}`}
-                        value={`s-${s.id}`}
-                        keywords={[s.title, s.category]}
-                        onSelect={() =>
-                          run({
-                            kind: "section",
-                            id: "especializacoes",
-                            anchor: "tecnologias",
-                          })
-                        }
-                        className={item}
-                      >
-                        <Layers
-                          size={16}
-                          className="shrink-0 text-on-surface-variant"
-                        />
-                        <span className="min-w-0 flex-1 truncate">
-                          {s.title}
-                        </span>
-                        <span className="shrink-0 font-mono text-[0.75rem] text-on-surface-variant">
-                          {s.category}
-                        </span>
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-
-                  <Command.Group heading={GROUP_LABELS.cursos[language]}>
-                    {data.certificates.map((c) => (
-                      <Command.Item
-                        key={`c-${c.id}`}
-                        value={`c-${c.id}`}
-                        keywords={[
-                          c.name,
-                          c.category,
-                          ...c.tags,
-                          "curso",
-                          "course",
-                        ]}
-                        onSelect={() =>
-                          run(
-                            c.link
-                              ? { kind: "link", href: c.link }
-                              : { kind: "route", href: "/certificates" },
-                          )
-                        }
-                        className={item}
-                      >
-                        <Award
-                          size={16}
-                          className="shrink-0 text-on-surface-variant"
-                        />
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate">{c.name}</span>
-                          <span className="block truncate text-xs text-on-surface-variant">
-                            {c.category}
-                          </span>
-                        </span>
                       </Command.Item>
                     ))}
                   </Command.Group>

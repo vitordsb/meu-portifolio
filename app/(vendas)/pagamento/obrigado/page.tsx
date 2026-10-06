@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import ThanksPage from "@/components/payments/ThanksPage";
 
 export const metadata: Metadata = {
-  title: "Pagamento enviado | Vitor de Souza",
+  title: "Pagamento enviado",
   robots: { index: false },
 };
 

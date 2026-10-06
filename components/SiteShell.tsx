@@ -4,6 +4,7 @@ import Link from "next/link";
 import AvatarMenu from "./deck/AvatarMenu";
 import ContactFab from "./ContactFab";
 import SearchHint from "./SearchHint";
+import { BRAND } from "@/lib/site";
 import FontSizeButton from "./a11y/FontSizeButton";
 import { CursorFollower } from "./motion/CursorFollower";
 import { PageTransition } from "./motion/PageTransition";
@@ -23,7 +24,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
             href="/"
             className="pointer-events-auto text-base font-extrabold tracking-[-0.03em] transition-opacity hover:opacity-70"
           >
-            Vitor de Souza
+            {BRAND.name}
           </Link>
           <div className="pointer-events-auto flex items-center gap-2">
             <FontSizeButton />

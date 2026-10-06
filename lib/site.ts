@@ -25,7 +25,7 @@ export const CNPJ = "69.283.538/0001-57";
  * próprios. A imagem vem do opengraph-image.tsx da pasta da rota.
  */
 export const OG_BASE = {
-  siteName: "Vitor de Souza",
+  siteName: BRAND.name,
   locale: "pt_BR",
   type: "website",
 } as const;
@@ -42,12 +42,6 @@ export const INDEXED_PAGES: { path: string; priority: number }[] = [
   { path: "/orcamento", priority: 0.9 },
   { path: "/raio-x", priority: 0.9 },
   { path: "/quanto-custa", priority: 0.8 },
-  { path: "/autonomo", priority: 0.7 },
-  { path: "/about", priority: 0.6 },
-  { path: "/skills", priority: 0.5 },
-  { path: "/certificates", priority: 0.4 },
-  { path: "/contact", priority: 0.5 },
-  { path: "/cv", priority: 0.3 },
   { path: "/privacidade", priority: 0.3 },
   { path: "/termos", priority: 0.3 },
 ];
