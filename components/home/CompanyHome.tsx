@@ -10,7 +10,6 @@ import {
   LayoutGrid,
   ListChecks,
   Sparkles,
-  UserRound,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -25,7 +24,6 @@ import HomeProjects from "./HomeProjects";
 import HomeEngagements from "./HomeEngagements";
 import NewsletterPrompt from "./NewsletterPrompt";
 import HomeProcess from "./HomeProcess";
-import HomeAbout from "./HomeAbout";
 import HomeFaq from "./HomeFaq";
 import HomeFooter from "./HomeFooter";
 
@@ -35,7 +33,6 @@ const ICONS: Record<string, LucideIcon> = {
   formatos: Users,
   projetos: Briefcase,
   "como-funciona": ListChecks,
-  sobre: UserRound,
   duvidas: CircleHelp,
 };
 
@@ -51,13 +48,9 @@ const ICONS: Record<string, LucideIcon> = {
 export default function CompanyHome({
   prices,
   projects,
-  projectCount,
-  courseCount,
 }: {
   prices: Record<string, StartingPrice>;
   projects: CatalogProject[];
-  projectCount: number;
-  courseCount: number;
 }) {
   const { language } = useLanguage();
   const pt = language === "pt";
@@ -115,7 +108,6 @@ export default function CompanyHome({
         <HomeEngagements />
         <HomeProjects projects={projects} />
         <HomeProcess />
-        <HomeAbout projectCount={projectCount} courseCount={courseCount} />
         <HomeFaq prices={prices} />
         <HomeFooter />
       </div>

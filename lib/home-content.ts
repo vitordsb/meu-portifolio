@@ -1,9 +1,9 @@
 /**
  * Conteúdo da home "de empresa" (rolagem vertical, desde 06/out/2026).
  *
- * Modelo: estúdio liderado pelo fundador. A marca fala como empresa
- * (serviços, projetos entregues, processo, garantias) e o Vitor aparece como
- * fundador em "Quem faz". Pouco texto de propósito: o público inclui gente
+ * A marca fala como empresa (serviços, projetos entregues, processo,
+ * garantias). Desde 06/out/2026 o site não mostra o Vitor como pessoa: a
+ * sessão "Quem faz" saiu. Pouco texto de propósito: o público inclui gente
  * mais velha, que lê melhor frase curta com ícone.
  *
  * Preços NÃO moram aqui: saem de lib/guide/examples (mesma tabela do
@@ -19,11 +19,10 @@ type L10n = { pt: string; en: string };
  *  links velhos (/#experiencia, busca, e-mails) continuam caindo no lugar. */
 export const HOME_SECTIONS: { id: string; label: L10n; aliases?: string[] }[] = [
   { id: "inicio", label: { pt: "Início", en: "Home" } },
-  { id: "servicos", label: { pt: "Serviços", en: "Services" }, aliases: ["especializacoes"] },
+  { id: "servicos", label: { pt: "Serviços", en: "Services" }, aliases: ["especializacoes", "tecnologias"] },
   { id: "formatos", label: { pt: "Equipe", en: "Team" } },
-  { id: "projetos", label: { pt: "Projetos", en: "Projects" }, aliases: ["experiencia"] },
+  { id: "projetos", label: { pt: "Projetos", en: "Projects" }, aliases: ["experiencia", "trajetoria", "cursos"] },
   { id: "como-funciona", label: { pt: "Como funciona", en: "How it works" } },
-  { id: "sobre", label: { pt: "Quem faz", en: "Who builds it" }, aliases: ["trajetoria", "cursos", "tecnologias"] },
   { id: "duvidas", label: { pt: "Dúvidas", en: "FAQ" } },
 ];
 
@@ -196,12 +195,3 @@ export const GUARANTEES: L10n[] = [
   { pt: "Pix, boleto ou cartão", en: "Pix, bank slip or card" },
   { pt: "Atendimento direto com quem desenvolve", en: "Direct contact with the developer" },
 ];
-
-export const FOUNDER = {
-  name: "Vitor de Souza",
-  role: { pt: "Fundador e desenvolvedor", en: "Founder and developer" },
-  bio: {
-    pt: "Engenheiro de software há mais de 5 anos, do design ao código. Você fala direto comigo, do primeiro contato à entrega.",
-    en: "Software engineer for 5+ years, from design to code. You talk to me directly, from the first contact to delivery.",
-  },
-};

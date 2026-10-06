@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import CompanyHome from "@/components/home/CompanyHome";
 import JsonLd from "@/components/seo/JsonLd";
 import { GUIDE_EXAMPLES } from "@/lib/guide/examples";
-import { LANDING } from "@/lib/landing-data";
 import { buildCatalog } from "@/lib/projects-catalog";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
@@ -26,8 +25,6 @@ export default function HomePage() {
       <CompanyHome
         prices={prices}
         projects={projects}
-        projectCount={LANDING.projectCount}
-        courseCount={LANDING.certificates.length}
       />
     </main>
   );
