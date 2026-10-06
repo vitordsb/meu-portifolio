@@ -1,11 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { BRAND } from "@/lib/site";
 
 /**
  * Imagem de prévia (Open Graph) que aparece quando o link é colado no
  * WhatsApp, LinkedIn, Instagram etc. Mesma cara do site: fundo escuro
- * monocromático, título pesado, foto do Vitor e um convite claro no canto.
+ * monocromático, título pesado, a marca e um convite claro no canto. Sem foto
+ * de pessoa: o site fala como empresa (06/out/2026).
  *
  * Cada página de venda tem a sua (opengraph-image.tsx na pasta da rota): um
  * link do Raio-X mandado pra um cliente tem que falar do Raio-X, não do
@@ -29,50 +31,29 @@ const C = {
 const ASSETS = join(process.cwd(), "lib/og/assets");
 
 async function assets() {
-  const [black, medium, mono, photo] = await Promise.all([
+  const [black, medium, mono] = await Promise.all([
     readFile(join(ASSETS, "Geist-Black.ttf")),
     readFile(join(ASSETS, "Geist-Medium.ttf")),
     readFile(join(ASSETS, "GeistMono-Medium.ttf")),
-    readFile(join(ASSETS, "vitor.jpg")),
   ]);
-  return {
-    fonts: [
-      { name: "Geist", data: black, weight: 900 as const, style: "normal" as const },
-      { name: "Geist", data: medium, weight: 500 as const, style: "normal" as const },
-      { name: "GeistMono", data: mono, weight: 500 as const, style: "normal" as const },
-    ],
-    photo: `data:image/jpeg;base64,${photo.toString("base64")}`,
-  };
+  return [
+    { name: "Geist", data: black, weight: 900 as const, style: "normal" as const },
+    { name: "Geist", data: medium, weight: 500 as const, style: "normal" as const },
+    { name: "GeistMono", data: mono, weight: 500 as const, style: "normal" as const },
+  ];
 }
 
 type Card = {
   /** Linha pequena em caixa alta acima do título. */
   eyebrow: string;
-  /** Uma string quebra sozinha; um array força as linhas (banner da home). */
-  title: string | string[];
+  title: string;
   subtitle?: string;
   /** Convite no canto inferior direito, em pílula clara. */
   cta: string;
-  /** Home: título gigante como o banner, com o nome embaixo. */
-  hero?: boolean;
 };
 
-function Photo({ src, size }: { src: string; size: number }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      width={size}
-      height={size}
-      alt=""
-      style={{ borderRadius: 9999, border: `2px solid ${C.line}` }}
-    />
-  );
-}
-
-export async function ogCard({ eyebrow, title, subtitle, cta, hero }: Card) {
-  const { fonts, photo } = await assets();
-  const lines = Array.isArray(title) ? title : [title];
+export async function ogCard({ eyebrow, title, subtitle, cta }: Card) {
+  const fonts = await assets();
 
   return new ImageResponse(
     (
@@ -104,46 +85,34 @@ export async function ogCard({ eyebrow, title, subtitle, cta, hero }: Card) {
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          {hero && <Photo src={photo} size={64} />}
-          <div
-            style={{
-              display: "flex",
-              fontFamily: "GeistMono",
-              fontSize: 22,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              color: C.muted,
-            }}
-          >
-            {eyebrow}
-          </div>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: "GeistMono",
+            fontSize: 22,
+            letterSpacing: 6,
+            textTransform: "uppercase",
+            color: C.muted,
+          }}
+        >
+          {eyebrow}
         </div>
 
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            marginTop: hero ? 22 : 40,
+            marginTop: 40,
             fontWeight: 900,
-            fontSize: hero ? 150 : 82,
-            lineHeight: hero ? 0.9 : 1.02,
-            letterSpacing: hero ? -7 : -3,
+            fontSize: 82,
+            lineHeight: 1.02,
+            letterSpacing: -3,
             maxWidth: 1000,
           }}
         >
-          {lines.map((line) => (
-            <span key={line}>{line}</span>
-          ))}
+          {title}
         </div>
 
-        {hero && (
-          <div style={{ display: "flex", marginTop: 22, fontSize: 50, fontWeight: 500, letterSpacing: -1 }}>
-            Vitor de Souza
-          </div>
-        )}
-
-        {!hero && subtitle && (
+        {subtitle && (
           <div
             style={{
               display: "flex",
@@ -168,21 +137,10 @@ export async function ogCard({ eyebrow, title, subtitle, cta, hero }: Card) {
             gap: 32,
           }}
         >
-          {hero ? (
-            <div style={{ display: "flex", fontSize: 26, fontWeight: 500, color: C.muted, maxWidth: 620, lineHeight: 1.35 }}>
-              {subtitle}
-            </div>
-          ) : (
-            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-              <Photo src={photo} size={60} />
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: 26, fontWeight: 500 }}>Vitor de Souza</span>
-                <span style={{ fontFamily: "GeistMono", fontSize: 18, color: C.muted }}>
-                  vitordsb.com.br
-                </span>
-              </div>
-            </div>
-          )}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span style={{ fontSize: 26, fontWeight: 500 }}>{BRAND.name}</span>
+            <span style={{ fontFamily: "GeistMono", fontSize: 18, color: C.muted }}>vitordsb.com.br</span>
+          </div>
           <div
             style={{
               display: "flex",

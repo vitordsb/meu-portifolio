@@ -4,7 +4,7 @@ import LegalPage, { Bullets, type LegalSection } from "@/components/legal/LegalP
 import { BRAND, CNPJ, OG_BASE, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Termos de Uso | Vitor de Souza",
+  title: "Termos de Uso",
   description:
     "Regras de uso do site, do orçamento com IA, do Raio-X grátis, dos pacotes com preço fechado e dos pagamentos.",
   alternates: { canonical: "/termos" },

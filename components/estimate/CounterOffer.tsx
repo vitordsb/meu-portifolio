@@ -107,11 +107,11 @@ export default function CounterOffer({
       setError(
         res.status === 429
           ? pt
-            ? "Muitas tentativas seguidas. Tenta de novo mais tarde ou me chama no WhatsApp."
-            : "Too many attempts. Try again later or reach me on WhatsApp."
+            ? "Muitas tentativas seguidas. Tenta de novo mais tarde ou chama a gente no WhatsApp."
+            : "Too many attempts. Try again later or reach us on WhatsApp."
           : pt
-            ? "Não consegui enviar agora. Me chama no WhatsApp citando o pedido."
-            : "Couldn't send it now. Reach me on WhatsApp mentioning the quote.",
+            ? "Não deu pra enviar agora. Chama a gente no WhatsApp citando o pedido."
+            : "Couldn't send it now. Reach us on WhatsApp mentioning the quote.",
       );
     } catch {
       setError(
@@ -134,8 +134,8 @@ export default function CounterOffer({
       </p>
       <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">
         {pt
-          ? "Me diz quanto você pode investir e como prefere pagar. O Vitor compara com o seu pedido e responde pelo WhatsApp."
-          : "Tell me how much you can invest and how you'd like to pay. Vitor compares it with your quote and replies on WhatsApp."}
+          ? "Diz quanto você pode investir e como prefere pagar. A gente compara com o seu pedido e responde pelo WhatsApp."
+          : "Tell us how much you can invest and how you'd like to pay. We compare it with your quote and reply on WhatsApp."}
       </p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">

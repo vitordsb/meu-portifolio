@@ -4,7 +4,7 @@ import LegalPage, { Bullets, type LegalSection } from "@/components/legal/LegalP
 import { BRAND, CNPJ, OG_BASE, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade | Vitor de Souza",
+  title: "Política de Privacidade",
   description:
     "Quais dados o site coleta, para quê, com quem compartilha, por quanto tempo guarda e como você exerce seus direitos pela LGPD.",
   alternates: { canonical: "/privacidade" },
@@ -35,7 +35,7 @@ const sections: LegalSection[] = [
           CNPJ {CNPJ}, dona do site vitordsb.com.br.
         </p>
         <p>
-          O encarregado pelo tratamento de dados é o próprio Vitor de Souza. Fale com ele pelo e-mail{" "}
+          Para qualquer assunto sobre os seus dados, fale com o encarregado de dados pelo e-mail{" "}
           <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a>.
         </p>
       </>
@@ -133,7 +133,7 @@ const sections: LegalSection[] = [
         />
         <p>
           Não usamos cookies de rastreamento nem de publicidade. O único cookie do site é o de acesso à área
-          administrativa, usado apenas pelo Vitor.
+          administrativa, usado apenas pela administração do site.
         </p>
       </>
     ),

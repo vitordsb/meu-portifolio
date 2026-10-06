@@ -1,7 +1,8 @@
 import { OG_CONTENT_TYPE, OG_SIZE, ogCard } from "@/lib/og/card";
+import { BRAND } from "@/lib/site";
 
 export const runtime = "nodejs";
-export const alt = "Pagar pedido, Vitor de Souza";
+export const alt = `Pagar pedido, ${BRAND.name}`;
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 

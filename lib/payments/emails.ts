@@ -9,6 +9,7 @@ import {
   label,
   row,
 } from "@/lib/email-layout";
+import { BRAND } from "@/lib/site";
 
 /**
  * E-mails de pagamento confirmado (disparados pelo webhook do Asaas): um aviso
@@ -65,11 +66,11 @@ export function clientPaidEmail(p: PaidInfo) {
 
   const t = {
     subject: `Pagamento confirmado: pedido #${p.code}`,
-    preheader: `Recebi seu pagamento de ${value}. Próximo passo: combinar o início.`,
+    preheader: `Recebemos seu pagamento de ${value}. Próximo passo: combinar o início.`,
     hello: first ? `Olá, ${first}!` : "Olá!",
     intro:
-      "Seu pagamento foi confirmado. Agradeço pela confiança: a partir daqui é comigo.",
-    next: `Vou te chamar em breve pra combinar o início. Se quiser adiantar, me chama no WhatsApp citando o pedido #${p.code}, ou responda este e-mail.`,
+      "Seu pagamento foi confirmado. Obrigado pela confiança: a partir daqui é com a gente.",
+    next: `A gente te chama em breve pra combinar o início. Se quiser adiantar, chama a gente no WhatsApp citando o pedido #${p.code}, ou responda este e-mail.`,
   };
 
   const body = [
@@ -100,10 +101,10 @@ export function clientPaidEmail(p: PaidInfo) {
     next: {
       label: "Próximo passo",
       text: t.next,
-      cta: "Falar com o Vitor no WhatsApp",
+      cta: "Falar no WhatsApp",
       href: whatsapp,
     },
-    role: "Engenheiro de software · UI/UX e Front-end",
+    role: BRAND.descriptor.pt,
     footer:
       "Você recebeu este e-mail porque fez um pagamento em vitordsb.com.br.",
   });
@@ -120,7 +121,7 @@ export function clientPaidEmail(p: PaidInfo) {
     `Próximo passo: ${t.next}`,
     `WhatsApp: ${whatsapp}`,
     "",
-    "Vitor de Souza",
+    BRAND.name,
     "Engenheiro de software · UI/UX e Front-end",
   ].join("\n");
 

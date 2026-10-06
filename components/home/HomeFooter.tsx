@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MessageCircle, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND, CNPJ } from "@/lib/site";
-import { SOCIALS, WORK_LINKS, l } from "@/lib/deck-content";
+import { WORK_LINKS, l } from "@/lib/deck-content";
 import { whatsappHref } from "@/lib/home-links";
 import { FRAME, Reveal } from "./ui";
 
@@ -48,7 +48,7 @@ export default function HomeFooter() {
           </div>
         </Reveal>
 
-        <div className="mt-16 grid gap-10 border-t border-outline-variant pt-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid gap-10 border-t border-outline-variant pt-10 sm:grid-cols-2 lg:grid-cols-3">
           <div>
             <p className="text-lg font-extrabold tracking-[-0.03em]">{BRAND.name}</p>
             <p className="mt-1 text-sm text-on-surface-variant">{BRAND.descriptor[language]}</p>
@@ -86,23 +86,6 @@ export default function HomeFooter() {
               <li>
                 <a href={`mailto:${BRAND.email}`} className="break-all hover:underline">
                   {BRAND.email}
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.16em] text-on-surface-variant">
-              {pt ? "Redes" : "Social"}
-            </p>
-            <ul className="space-y-2.5 text-base">
-              <li>
-                <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a href={SOCIALS.github} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                  GitHub
                 </a>
               </li>
             </ul>

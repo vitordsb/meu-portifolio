@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import FontSizeButton from "@/components/a11y/FontSizeButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 /**
  * Topo das páginas de compra (/servicos, /pagar, /pagamento/obrigado): só o
@@ -12,6 +15,7 @@ export default function PageHeader({
   /** Mesma largura do conteúdo, pra o topo alinhar com ele. */
   width?: string;
 }) {
+  const { language } = useLanguage();
   return (
     <header className="border-b border-outline-variant">
       <div
@@ -22,7 +26,7 @@ export default function PageHeader({
           className="inline-flex items-center gap-2 text-sm font-semibold tracking-[-0.01em] transition-opacity hover:opacity-70"
         >
           <ArrowLeft size={16} />
-          Vitor de Souza
+          {language === "pt" ? "Início" : "Home"}
         </Link>
         <FontSizeButton />
       </div>

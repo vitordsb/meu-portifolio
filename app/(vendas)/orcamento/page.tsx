@@ -3,9 +3,9 @@ import { OG_BASE, SITE_URL } from "@/lib/site";
 import EstimateChat from "@/components/estimate/EstimateChat";
 
 export const metadata: Metadata = {
-  title: "Orçamento com IA | Vitor de Souza",
+  title: "Orçamento com IA",
   description:
-    "Converse 2 minutos com a assistente e receba uma faixa de preço e prazo para o seu software, calculada com os critérios do Vitor.",
+    "Converse 2 minutos com a assistente e receba uma faixa de preço e prazo para o seu software, calculada pela nossa tabela de preços.",
   alternates: { canonical: "/orcamento" },
   openGraph: {
     ...OG_BASE,

@@ -12,6 +12,7 @@ import {
 } from "@/lib/email-layout";
 import { raioXWhatsappText } from "./shared";
 import type { Category, Issue, Report } from "./types";
+import { BRAND } from "@/lib/site";
 
 /**
  * Relatório do Raio-X por e-mail pra quem deixou o contato. Só leva texto
@@ -61,9 +62,9 @@ export function buildRaioXEmail(opts: {
         fix: "Como resolver",
         impact: { alto: "Urgente", medio: "Importante", baixo: "Simples" },
         nextLabel: "Próximo passo",
-        next: `Se quiser, eu resolvo pra você. Me chama no WhatsApp citando o raio-x #${code}, ou é só responder este e-mail.`,
-        cta: "Falar com o Vitor no WhatsApp",
-        role: "Fundador · Estúdio de software",
+        next: `Se quiser, a gente resolve pra você. Chama a gente no WhatsApp citando o raio-x #${code}, ou é só responder este e-mail.`,
+        cta: "Falar no WhatsApp",
+        role: BRAND.descriptor.pt,
         footer:
           "Você recebeu este e-mail porque pediu um raio-x do site em vitordsb.com.br.",
       }
@@ -80,9 +81,9 @@ export function buildRaioXEmail(opts: {
         fix: "How to fix it",
         impact: { alto: "Urgent", medio: "Important", baixo: "Simple" },
         nextLabel: "Next step",
-        next: `If you'd like, I can fix it for you. Message me on WhatsApp mentioning check #${code}, or just reply to this email.`,
-        cta: "Talk to Vitor on WhatsApp",
-        role: "Founder · Software studio",
+        next: `If you'd like, we can fix it for you. Message us on WhatsApp mentioning check #${code}, or just reply to this email.`,
+        cta: "Chat on WhatsApp",
+        role: BRAND.descriptor.en,
         footer:
           "You received this email because you requested a site check at vitordsb.com.br.",
       };
@@ -108,7 +109,7 @@ export function buildRaioXEmail(opts: {
     `${t.nextLabel}: ${t.next}`,
     `WhatsApp: ${whatsapp}`,
     "",
-    "Vitor de Souza",
+    BRAND.name,
     t.role,
     SITE.replace("https://", ""),
     "",

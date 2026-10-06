@@ -119,8 +119,8 @@ export default function LeadForm({
         />
         <span>
           {pt
-            ? "Aceito ser contatado pelo Vitor sobre este projeto e sei que a conversa foi processada por uma IA (DeepSeek)."
-            : "I agree to be contacted by Vitor about this project and understand the chat was processed by an AI (DeepSeek)."}{" "}
+            ? "Aceito ser contatado sobre este projeto e sei que a conversa foi processada por uma IA (DeepSeek)."
+            : "I agree to be contacted about this project and understand the chat was processed by an AI (DeepSeek)."}{" "}
           {pt ? "Veja a" : "See the"}{" "}
           <a
             href="/privacidade"

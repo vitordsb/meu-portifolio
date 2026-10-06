@@ -97,7 +97,7 @@ export const PRICE_NOTES = {
   pt: [
     "É o valor de partida da primeira versão (MVP): o essencial pra colocar sua ideia no ar e validar com usuários reais.",
     "O preço final muda conforme o escopo e a nossa conversa. Mais funcionalidades ou mais detalhe aumentam; deixar o que não é essencial pra depois diminui.",
-    "Nada aqui é compromisso: o valor fechado sai depois de uma conversa rápida comigo.",
+    "Nada aqui é compromisso: o valor fechado sai depois de uma conversa rápida com a gente.",
   ],
   en: [
     "This is the starting price for the first version (MVP): the essentials to launch your idea and validate it with real users.",

@@ -42,8 +42,8 @@ export default function ThanksPage() {
         )}
         <p className="mt-4 text-base leading-relaxed text-on-surface-variant">
           {pt
-            ? "Assim que o Asaas confirmar, você recebe a confirmação por e-mail. Pix confirma na hora; cartão, em alguns minutos. Já já eu te chamo pra combinar o início."
-            : "As soon as Asaas confirms it, you'll get a confirmation by email. Pix confirms instantly; card, within minutes. I'll reach out soon to plan the start."}
+            ? "Assim que o Asaas confirmar, você recebe a confirmação por e-mail. Pix confirma na hora; cartão, em alguns minutos. Já já a gente te chama pra combinar o início."
+            : "As soon as Asaas confirms it, you'll get a confirmation by email. Pix confirms instantly; card, within minutes. We'll reach out soon to plan the start."}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -55,7 +55,7 @@ export default function ThanksPage() {
           >
             <span className="inline-flex items-center gap-2">
               <WhatsappIcon size={18} />
-              {pt ? "Falar com o Vitor" : "Talk to Vitor"}
+              {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}
             </span>
           </a>
           <Link

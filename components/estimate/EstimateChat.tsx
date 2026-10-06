@@ -292,11 +292,11 @@ export default function EstimateChat() {
           fail(
             res.status === 429
               ? pt
-                ? `Muitas mensagens em pouco tempo. Tenta de novo em ${err.retryAfterMin ?? "alguns"} min, ou me chama no WhatsApp.`
-                : `Too many messages. Try again in ${err.retryAfterMin ?? "a few"} min, or reach me on WhatsApp.`
+                ? `Muitas mensagens em pouco tempo. Tenta de novo em ${err.retryAfterMin ?? "alguns"} min, ou chama a gente no WhatsApp.`
+                : `Too many messages. Try again in ${err.retryAfterMin ?? "a few"} min, or reach us on WhatsApp.`
               : pt
-                ? "A assistente está fora do ar agora. Me chama no WhatsApp que eu respondo pessoalmente."
-                : "The assistant is offline right now. Reach me on WhatsApp and I'll answer personally.",
+                ? "A assistente está fora do ar agora. Chama a gente no WhatsApp que a gente responde."
+                : "The assistant is offline right now. Reach us on WhatsApp and we'll answer.",
           );
           return;
         }
@@ -445,8 +445,8 @@ export default function EstimateChat() {
       } else if (res.status === 429) {
         setLeadError(
           pt
-            ? "Muitos orçamentos seguidos daqui. Tenta de novo mais tarde ou me chama no WhatsApp."
-            : "Too many quotes in a row. Try again later or reach me on WhatsApp.",
+            ? "Muitos orçamentos seguidos daqui. Tenta de novo mais tarde ou chama a gente no WhatsApp."
+            : "Too many quotes in a row. Try again later or reach us on WhatsApp.",
         );
       } else {
         setLeadError(
@@ -514,8 +514,8 @@ export default function EstimateChat() {
     !streaming;
   const whatsappHref = `${SOCIALS.whatsapp}?text=${encodeURIComponent(
     pt
-      ? "Oi Vitor! Queria um orçamento de um projeto."
-      : "Hi Vitor! I'd like a quote for a project.",
+      ? "Olá! Queria um orçamento de um projeto."
+      : "Hi! I'd like a quote for a project.",
   )}`;
 
   return (
@@ -528,7 +528,7 @@ export default function EstimateChat() {
             className="inline-flex items-center gap-2 text-sm font-semibold tracking-[-0.01em] transition-opacity hover:opacity-70"
           >
             <ArrowLeft size={16} />
-            Vitor de Souza
+            {pt ? "Início" : "Home"}
           </Link>
           <FontSizeButton />
         </div>
@@ -659,16 +659,16 @@ export default function EstimateChat() {
                 {pt ? "Pedido" : "Quote"} #{code}
               </p>
               <h2 className="text-xl font-extrabold tracking-[-0.02em]">
-                {pt ? "Recebi seu pedido" : "I got your request"}
+                {pt ? "Recebemos seu pedido" : "We got your request"}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-on-surface-variant">
                 {pt
-                  ? "A calculadora falhou agora, mas a conversa chegou inteira pra mim. Eu te mando o valor de partida pelo WhatsApp, ou me chama citando o número do pedido."
-                  : "The calculator failed just now, but the whole chat reached me. I'll send you the starting price on WhatsApp, or reach me mentioning the quote number."}
+                  ? "A calculadora falhou agora, mas a conversa chegou inteira pra gente. Mandamos o valor de partida pelo WhatsApp, ou chama a gente citando o número do pedido."
+                  : "The calculator failed just now, but the whole chat reached us. We'll send you the starting price on WhatsApp, or reach us mentioning the quote number."}
                 {sentTo &&
                   (pt
-                    ? ` Mandei a confirmação pra ${sentTo}.`
-                    : ` I sent a confirmation to ${sentTo}.`)}
+                    ? ` Mandamos a confirmação pra ${sentTo}.`
+                    : ` We sent a confirmation to ${sentTo}.`)}
               </p>
               <a
                 href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(quoteWhatsappText(name, code, pt))}`}
@@ -676,7 +676,7 @@ export default function EstimateChat() {
                 rel="noopener noreferrer"
                 className="btn mt-5 h-12 rounded-lg bg-[#25D366] px-6 text-base text-white"
               >
-                <span>{pt ? "Falar com o Vitor" : "Talk to Vitor"}</span>
+                <span>{pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}</span>
               </a>
             </motion.div>
           )}

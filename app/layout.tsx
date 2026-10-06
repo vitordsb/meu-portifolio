@@ -6,7 +6,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { fontScript } from "@/lib/font-script";
-import { OG_BASE, SITE_URL, UMAMI_WEBSITE_ID } from "@/lib/site";
+import { BRAND, OG_BASE, SITE_URL, UMAMI_WEBSITE_ID } from "@/lib/site";
 
 // Inter: a mesma do wireframe. Variável, então segura do texto corrido ao
 // display de 9rem sem baixar um arquivo por peso.
@@ -31,12 +31,16 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Vitor de Souza | Sites, sistemas e aplicativos para empresas",
+  // Cada página escreve só o próprio título; a marca entra pelo modelo
+  title: {
+    default: `${BRAND.name} | Sites, sistemas e aplicativos para empresas`,
+    template: `%s | ${BRAND.name}`,
+  },
   description:
     "Estúdio de software: sites, sistemas e aplicativos do desenho ao ar, com preço combinado antes de começar, contrato e nota fiscal. Orçamento grátis em 2 minutos.",
   openGraph: {
     ...OG_BASE,
-    title: "Vitor de Souza | Sites, sistemas e aplicativos para empresas",
+    title: `${BRAND.name} | Sites, sistemas e aplicativos para empresas`,
     description:
       "Do desenho ao ar, com preço combinado antes de começar, contrato e nota fiscal. Orçamento grátis em 2 minutos.",
     url: SITE_URL,

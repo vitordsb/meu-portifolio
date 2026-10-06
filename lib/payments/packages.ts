@@ -30,8 +30,8 @@ export const PACKAGES: ServicePackage[] = [
     price: 150,
     maxInstallments: 1,
     summary: {
-      pt: "Uma hora comigo pra destravar produto, código ou UX.",
-      en: "One hour with me to unblock product, code or UX.",
+      pt: "Uma hora com um especialista pra destravar produto, código ou UX.",
+      en: "One hour with a specialist to unblock product, code or UX.",
     },
     includes: {
       pt: [

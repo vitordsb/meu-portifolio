@@ -1,4 +1,3 @@
-import type { DeckSectionId } from "./deck-content";
 import { SOCIALS } from "./deck-content";
 
 /**
@@ -11,8 +10,8 @@ import { SOCIALS } from "./deck-content";
 type L10n = { pt: string; en: string };
 
 export type SearchAction =
-  /** `anchor` rola até uma parte da sessão (ex.: Tecnologias em Especializações) */
-  | { kind: "section"; id: DeckSectionId; anchor?: string }
+  /** Sessão da home (lib/home-content HOME_SECTIONS); `anchor` rola até uma parte dela */
+  | { kind: "section"; id: string; anchor?: string }
   | { kind: "contact"; subject?: L10n }
   | { kind: "link"; href: string }
   | { kind: "route"; href: string }
@@ -53,10 +52,10 @@ export const SEARCH_INTENTS: SearchIntent[] = [
     id: "experiencia",
     group: "navegar",
     icon: "folder",
-    label: { pt: "Experiência", en: "Experience" },
+    label: { pt: "Projetos entregues", en: "Delivered projects" },
     answer: {
-      pt: "Empresas onde atuei e o que construí em cada time.",
-      en: "Companies I worked at and what I built with each team.",
+      pt: "Sites, sistemas e apps no ar, por tipo de projeto.",
+      en: "Live websites, systems and apps, by project type.",
     },
     keywords: [
       "experiencia",
@@ -94,16 +93,16 @@ export const SEARCH_INTENTS: SearchIntent[] = [
       "clients",
       "products",
     ],
-    action: { kind: "section", id: "experiencia" },
+    action: { kind: "section", id: "projetos" },
   },
   {
     id: "especializacoes",
     group: "navegar",
     icon: "sparkles",
-    label: { pt: "Especializações", en: "Expertise" },
+    label: { pt: "Serviços", en: "Services" },
     answer: {
-      pt: "UI/UX, front-end, apps mobile e produto ponta a ponta.",
-      en: "UI/UX, front-end, mobile apps and end-to-end product.",
+      pt: "Sites, sistemas, apps, integrações, cloud e IA, com preço de partida.",
+      en: "Websites, systems, apps, integrations, cloud and AI, with starting prices.",
     },
     keywords: [
       "especializacoes",
@@ -127,99 +126,7 @@ export const SEARCH_INTENTS: SearchIntent[] = [
       "expertise",
       "services",
     ],
-    action: { kind: "section", id: "especializacoes" },
-  },
-  {
-    id: "tecnologias",
-    group: "navegar",
-    icon: "layers",
-    label: { pt: "Tecnologias", en: "Stack" },
-    answer: {
-      pt: "React, Next.js, TypeScript, Node e o resto da caixa de ferramentas.",
-      en: "React, Next.js, TypeScript, Node and the rest of the toolbox.",
-    },
-    keywords: [
-      "tecnologias",
-      "tecnologia",
-      "stack",
-      "linguagens",
-      "linguagem",
-      "ferramentas",
-      "ferramenta",
-      "habilidades",
-      "skills",
-      "frameworks",
-      "framework",
-      "sabe",
-      "conhece",
-      "domina",
-      "tech",
-      "tools",
-      "languages",
-      "react",
-      "next",
-      "nextjs",
-      "typescript",
-      "javascript",
-      "node",
-      "tailwind",
-      "supabase",
-      "postgres",
-      "aws",
-    ],
-    action: { kind: "section", id: "especializacoes", anchor: "tecnologias" },
-  },
-  {
-    id: "trajetoria",
-    group: "navegar",
-    icon: "route",
-    label: { pt: "Trajetória", en: "Journey" },
-    answer: {
-      pt: "Por onde passei e o que construí em cada lugar.",
-      en: "Where I've been and what I built at each place.",
-    },
-    keywords: [
-      "trajetoria",
-      "carreira",
-      "historia",
-      "quem",
-      "vitor",
-      "timeline",
-      "anos",
-      "senioridade",
-      "career",
-      "journey",
-      "story",
-    ],
-    action: { kind: "section", id: "trajetoria" },
-  },
-  {
-    id: "cursos",
-    group: "navegar",
-    icon: "award",
-    label: { pt: "Cursos e certificados", en: "Courses and certificates" },
-    answer: {
-      pt: "Formação contínua: cursos, certificados e faculdade.",
-      en: "Continuous learning: courses, certificates and college.",
-    },
-    keywords: [
-      "cursos",
-      "curso",
-      "certificados",
-      "certificado",
-      "certificacoes",
-      "formacao",
-      "faculdade",
-      "graduacao",
-      "estudos",
-      "estudou",
-      "diploma",
-      "courses",
-      "certificates",
-      "education",
-      "degree",
-    ],
-    action: { kind: "section", id: "trajetoria", anchor: "cursos" },
+    action: { kind: "section", id: "servicos" },
   },
   {
     id: "inicio",
@@ -334,47 +241,13 @@ export const SEARCH_INTENTS: SearchIntent[] = [
     },
   },
   {
-    id: "aprenda",
-    group: "falar",
-    icon: "graduation",
-    label: { pt: "Aprenda comigo", en: "Learn with me" },
-    answer: {
-      pt: "Mentoria e aulas de front-end, do zero ao primeiro emprego.",
-      en: "Front-end mentoring and classes, from zero to the first job.",
-    },
-    keywords: [
-      "aprenda",
-      "aprender",
-      "aprendizado",
-      "aula",
-      "aulas",
-      "mentoria",
-      "mentor",
-      "ensinar",
-      "ensina",
-      "professor",
-      "estudar",
-      "junior",
-      "iniciante",
-      "carreira dev",
-      "learn",
-      "teach",
-      "mentoring",
-      "classes",
-    ],
-    action: {
-      kind: "contact",
-      subject: { pt: "Aprenda comigo", en: "Learn with me" },
-    },
-  },
-  {
     id: "whatsapp",
     group: "falar",
     icon: "message",
     label: { pt: "Chamar no WhatsApp", en: "Message on WhatsApp" },
     answer: {
-      pt: "O jeito mais rápido de falar comigo.",
-      en: "The fastest way to reach me.",
+      pt: "O jeito mais rápido de falar com a gente.",
+      en: "The fastest way to reach us.",
     },
     keywords: [
       "whatsapp",
@@ -401,8 +274,8 @@ export const SEARCH_INTENTS: SearchIntent[] = [
     icon: "mail",
     label: { pt: "Mandar um e-mail", en: "Send an email" },
     answer: {
-      pt: "Respondo em até 24h úteis.",
-      en: "I reply within 24 business hours.",
+      pt: "Respondemos em até 24h úteis.",
+      en: "We reply within 24 business hours.",
     },
     keywords: [
       "email",
@@ -415,38 +288,6 @@ export const SEARCH_INTENTS: SearchIntent[] = [
       "contact",
     ],
     action: { kind: "contact" },
-  },
-  {
-    id: "linkedin",
-    group: "falar",
-    icon: "linkedin",
-    label: { pt: "LinkedIn", en: "LinkedIn" },
-    answer: {
-      pt: "Perfil profissional completo.",
-      en: "Full professional profile.",
-    },
-    keywords: ["linkedin", "linked", "perfil", "rede", "networking", "profile"],
-    action: { kind: "link", href: SOCIALS.linkedin },
-  },
-  {
-    id: "github",
-    group: "falar",
-    icon: "github",
-    label: { pt: "GitHub", en: "GitHub" },
-    answer: {
-      pt: "Código aberto e repositórios.",
-      en: "Open source and repositories.",
-    },
-    keywords: [
-      "github",
-      "git",
-      "codigo",
-      "repositorio",
-      "repos",
-      "open source",
-      "code",
-    ],
-    action: { kind: "link", href: SOCIALS.github },
   },
   {
     id: "quanto-custa",
@@ -507,38 +348,6 @@ export const SEARCH_INTENTS: SearchIntent[] = [
       "invoice",
     ],
     action: { kind: "route", href: "/pagar" },
-  },
-  {
-    id: "cv",
-    group: "navegar",
-    icon: "file",
-    label: { pt: "Currículo", en: "Résumé" },
-    answer: {
-      pt: "Versão pra imprimir ou salvar em PDF.",
-      en: "Printable, or save as PDF.",
-    },
-    keywords: [
-      "cv",
-      "curriculo",
-      "resume",
-      "pdf",
-      "baixar",
-      "download",
-      "imprimir",
-    ],
-    action: { kind: "route", href: "/cv" },
-  },
-  {
-    id: "sobre",
-    group: "navegar",
-    icon: "user",
-    label: { pt: "Sobre mim", en: "About me" },
-    answer: {
-      pt: "Quem eu sou, formação e a linha do tempo inteira.",
-      en: "Who I am, education and the full timeline.",
-    },
-    keywords: ["sobre", "quem", "bio", "biografia", "perfil", "about", "who"],
-    action: { kind: "route", href: "/about" },
   },
   {
     id: "tema",
