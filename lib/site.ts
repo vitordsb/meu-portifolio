@@ -48,4 +48,6 @@ export const INDEXED_PAGES: { path: string; priority: number }[] = [
   { path: "/certificates", priority: 0.4 },
   { path: "/contact", priority: 0.5 },
   { path: "/cv", priority: 0.3 },
+  { path: "/privacidade", priority: 0.3 },
+  { path: "/termos", priority: 0.3 },
 ];
