@@ -64,13 +64,8 @@ export default function HomeHero() {
 
       <div className={FRAME}>
         <div className="flex h-20 items-center justify-between gap-3">
-          <Link href="/" className="min-w-0 leading-tight">
-            <span className="block truncate text-base font-extrabold tracking-[-0.03em]">
-              {BRAND.name}
-            </span>
-            <span className="block truncate font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
-              {BRAND.descriptor[language]}
-            </span>
+          <Link href="/" className="min-w-0 truncate text-lg font-extrabold tracking-[-0.03em]">
+            {BRAND.name}
           </Link>
           <div className="flex shrink-0 items-center gap-2">
             {/* No desktop a letra fica no menu lateral */}
@@ -157,7 +152,7 @@ export default function HomeHero() {
       {/* Faixa de clientes: logos de quem já contratou */}
       <div className="border-y border-outline-variant bg-surface-low">
         <div className={`${FRAME} flex flex-col items-center gap-5 py-7 md:flex-row md:justify-between`}>
-          <p className="font-mono text-xs uppercase tracking-[0.16em] text-on-surface-variant">
+          <p className="text-base font-medium text-on-surface-variant">
             {pt ? "Projetos entregues para" : "Projects delivered for"}
           </p>
           <ul className="flex flex-wrap items-center justify-center gap-3">

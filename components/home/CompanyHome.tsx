@@ -19,6 +19,7 @@ import SideRail from "@/components/nav/SideRail";
 import AvatarMenu from "@/components/deck/AvatarMenu";
 import HomeHero from "./HomeHero";
 import HomeServices, { type StartingPrice } from "./HomeServices";
+import type { CatalogProject } from "@/lib/projects-catalog";
 import HomeProjects from "./HomeProjects";
 import HomeProcess from "./HomeProcess";
 import HomeAbout from "./HomeAbout";
@@ -45,10 +46,12 @@ const ICONS: Record<string, LucideIcon> = {
  */
 export default function CompanyHome({
   prices,
+  projects,
   projectCount,
   courseCount,
 }: {
   prices: Record<string, StartingPrice>;
+  projects: CatalogProject[];
   projectCount: number;
   courseCount: number;
 }) {
@@ -104,8 +107,8 @@ export default function CompanyHome({
 
       <div data-home-scroll className="bg-surface text-on-surface deck-wide:pl-[var(--deck-side)]">
         <HomeHero />
-        <HomeServices prices={prices} />
-        <HomeProjects />
+        <HomeServices prices={prices} projects={projects} />
+        <HomeProjects projects={projects} />
         <HomeProcess />
         <HomeAbout projectCount={projectCount} courseCount={courseCount} />
         <HomeFaq prices={prices} />
