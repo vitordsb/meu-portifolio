@@ -71,56 +71,67 @@ export const SERVICE_TYPES: { id: string; title: L10n; text: L10n }[] = [
   },
 ];
 
-/** Formatos de contratação: de 1 a 5 pessoas, preço fechado pela equipe. */
+/**
+ * Formatos de contratação: de 1 a 5 pessoas, preço fechado pela equipe.
+ * Sem lista de checks (pedido do Vitor, 06/out/2026): o individual apresenta
+ * o Vitor, a equipe mostra as funções e o projeto completo, o escopo maior.
+ */
 export const ENGAGEMENTS: {
   id: string;
-  kicker: L10n;
   title: L10n;
+  /** Linha logo abaixo do título (nunca acima: regra de 06/out/2026). */
+  subtitle: L10n;
   text: L10n;
-  checks: L10n[];
+  /** Funções da equipe ou partes do escopo, em etiquetas. */
+  tags?: L10n[];
+  /** Card do especialista: mostra a foto e o nome do Vitor. */
+  person?: { name: string; role: L10n };
   featured?: boolean;
 }[] = [
   {
     id: "especialista",
-    kicker: { pt: "1 pessoa no seu time", en: "1 person on your team" },
     title: { pt: "Especialista dedicado", en: "Dedicated specialist" },
-    text: {
-      pt: "Um desenvolvedor dedicado pra destravar o que está parado ou cobrir uma área que falta no seu time.",
-      en: "A dedicated developer to unblock what's stuck or cover a skill your team is missing.",
+    subtitle: { pt: "1 pessoa no seu time", en: "1 person on your team" },
+    person: {
+      name: "Vitor de Souza",
+      role: { pt: "UI/UX designer e engenheiro de software", en: "UI/UX designer and software engineer" },
     },
-    checks: [
-      { pt: "Perfil certo pra necessidade", en: "The right profile for the need" },
-      { pt: "Trabalha no seu ritmo e ferramentas", en: "Works in your flow and tools" },
-      { pt: "Acompanhamento das entregas", en: "Delivery follow-up" },
-    ],
+    text: {
+      pt: "Mais de 5 anos desenhando e construindo produtos digitais. Entra no seu time pra destravar o que está parado ou cobrir o que falta, do design ao código.",
+      en: "5+ years designing and building digital products. Joins your team to unblock what's stuck or cover what's missing, from design to code.",
+    },
   },
   {
     id: "equipe",
     featured: true,
-    kicker: { pt: "De 2 a 5 profissionais", en: "From 2 to 5 professionals" },
     title: { pt: "Equipe sob medida", en: "Tailored team" },
+    subtitle: { pt: "De 2 a 5 profissionais", en: "From 2 to 5 professionals" },
     text: {
-      pt: "Montamos a equipe com desenvolvimento, design, back-end e testes, do tamanho que o projeto pede. Preço fechado pela equipe necessária.",
-      en: "We build the team with development, design, back-end and testing, sized to the project. Fixed price for the team it needs.",
+      pt: "A equipe do tamanho que o projeto pede, com preço fechado pelas pessoas necessárias.",
+      en: "A team sized to the project, with a fixed price for the people it needs.",
     },
-    checks: [
-      { pt: "Equipe ajustável ao projeto", en: "Team adjusted to the project" },
-      { pt: "Prioridades sempre visíveis", en: "Priorities always visible" },
-      { pt: "Entregas curtas com demonstração", en: "Short cycles with demos" },
+    tags: [
+      { pt: "Product Manager", en: "Product Manager" },
+      { pt: "UX Designer", en: "UX Designer" },
+      { pt: "Software Engineer", en: "Software Engineer" },
+      { pt: "Cyber Security", en: "Cyber Security" },
+      { pt: "SEO e marketing", en: "SEO and marketing" },
     ],
   },
   {
     id: "completo",
-    kicker: { pt: "Da ideia ao ar", en: "From idea to launch" },
     title: { pt: "Projeto completo", en: "Full project" },
+    subtitle: { pt: "Um escopo maior, de ponta a ponta", en: "A bigger scope, end to end" },
     text: {
-      pt: "Cuidamos de tudo: entender o problema, desenhar, desenvolver, testar, publicar e evoluir depois do lançamento.",
-      en: "We handle everything: understanding the problem, design, development, testing, launch and evolution.",
+      pt: "A gente assume o produto inteiro: das primeiras decisões à evolução depois do lançamento.",
+      en: "We take on the whole product: from the first decisions to evolving it after launch.",
     },
-    checks: [
-      { pt: "Gestão de ponta a ponta", en: "End-to-end management" },
-      { pt: "Publicação e servidores", en: "Launch and servers" },
-      { pt: "Evolução depois do lançamento", en: "Evolution after launch" },
+    tags: [
+      { pt: "Arquitetura", en: "Architecture" },
+      { pt: "Decisão de produto", en: "Product decisions" },
+      { pt: "Design e pesquisa", en: "Design and research" },
+      { pt: "Desenvolvimento", en: "Development" },
+      { pt: "Manutenção e evolução", en: "Maintenance and evolution" },
     ],
   },
 ];
