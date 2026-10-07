@@ -42,7 +42,6 @@ export default function HomeProjects({ projects }: { projects: CatalogProject[] 
       <div className="lg:flex lg:items-end lg:justify-between lg:gap-10">
         <SectionHeader
           className="lg:shrink-0"
-          eyebrow={pt ? "Projetos" : "Projects"}
           title={pt ? "Projetos entregues" : "Delivered projects"}
           lead={
             pt

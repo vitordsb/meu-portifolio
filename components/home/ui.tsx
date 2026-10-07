@@ -58,22 +58,22 @@ export function Reveal({
   );
 }
 
+/**
+ * Título de sessão: só título e, se precisar, uma frase. SEM rótulo pequeno
+ * em caixa alta acima do título ("SERVIÇOS", "COMO FUNCIONA"): o Vitor
+ * reprovou em 06/out/2026, tem cara de site feito por IA.
+ */
 export function SectionHeader({
-  eyebrow,
   title,
   lead,
   className = "",
 }: {
-  eyebrow: string;
   title: string;
   lead?: string;
   className?: string;
 }) {
   return (
     <Reveal className={`mb-10 max-w-2xl md:mb-14 ${className}`}>
-      <p className="mb-3 font-mono text-xs uppercase tracking-[0.16em] text-on-surface-variant">
-        {eyebrow}
-      </p>
       <h2 className="text-balance text-[2rem] font-extrabold leading-[1.05] tracking-[-0.035em] md:text-5xl">
         {title}
       </h2>

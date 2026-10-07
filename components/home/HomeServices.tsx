@@ -138,7 +138,6 @@ export default function HomeServices({
     <Section id="servicos" aliases={section.aliases}>
       <div className="flex items-end justify-between gap-6">
         <SectionHeader
-          eyebrow={pt ? "Serviços" : "Services"}
           title={pt ? "O que a gente faz" : "What we build"}
           lead={
             pt
@@ -202,8 +201,8 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                   <span className="mt-7 text-2xl font-bold tracking-[-0.025em]">{s.title[language]}</span>
                   <span className="mt-2 text-base leading-relaxed text-on-surface-variant">{s.text[language]}</span>
 
-                  {/* Prévia: as capas dos projetos desse tipo */}
-                  <span className="mt-6 flex items-center gap-3">
+                  {/* Prévia: as capas dos projetos desse tipo (sob consulta: no pé da coluna) */}
+                  <span className={`flex items-center gap-3 ${s.consult ? "mt-auto pt-6" : "mt-6"}`}>
                     {list.some((x) => x.cover) && (
                       <span className="flex shrink-0 -space-x-3">
                         {list
@@ -237,14 +236,6 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                     </span>
                   </span>
 
-                  {s.consult && (
-                    <span className="mt-auto flex items-end justify-between gap-3 border-t border-outline-variant pt-5">
-                      <span>
-                        <span className="block text-sm text-on-surface-variant">{pt ? "valor" : "price"}</span>
-                        <span className="text-xl font-bold">{pt ? "Sob consulta" : "On request"}</span>
-                      </span>
-                    </span>
-                  )}
                   {p && (
                     <span className="mt-auto flex items-end justify-between gap-3 border-t border-outline-variant pt-5">
                       <span>
