@@ -44,18 +44,8 @@ export const TRUST = [
   { key: "price", label: { pt: "Preço combinado antes", en: "Price agreed upfront" } },
 ] as const;
 
-/**
- * Tipos de projeto. O id é o mesmo de lib/guide/examples (preço e prazo).
- * `consult`: serviço sob consulta (sem preço de partida na tabela), com o
- * que entra listado no painel.
- */
-export const SERVICE_TYPES: {
-  id: string;
-  title: L10n;
-  text: L10n;
-  consult?: boolean;
-  bullets?: L10n[];
-}[] = [
+/** Tipos de projeto. O id é o mesmo de lib/guide/examples (preço e prazo). */
+export const SERVICE_TYPES: { id: string; title: L10n; text: L10n }[] = [
   {
     id: "landing",
     title: { pt: "Landing page", en: "Landing page" },
@@ -80,39 +70,6 @@ export const SERVICE_TYPES: {
     id: "app",
     title: { pt: "Aplicativo de celular", en: "Mobile app" },
     text: { pt: "Para iPhone e Android, publicado nas lojas.", en: "For iPhone and Android, published in the stores." },
-  },
-  {
-    id: "api",
-    consult: true,
-    title: { pt: "APIs e integrações", en: "APIs and integrations" },
-    text: { pt: "Conecte pagamentos, ERP, WhatsApp e outros sistemas.", en: "Connect payments, ERP, WhatsApp and other systems." },
-    bullets: [
-      { pt: "Pix, cartão e meios de pagamento", en: "Pix, cards and payment providers" },
-      { pt: "ERP, logística e planilhas", en: "ERP, logistics and spreadsheets" },
-      { pt: "Login e serviços externos", en: "Login and external services" },
-    ],
-  },
-  {
-    id: "cloud",
-    consult: true,
-    title: { pt: "Modernização e cloud", en: "Modernization and cloud" },
-    text: { pt: "Seu sistema antigo mais rápido, seguro e estável.", en: "Your old system faster, safer and more stable." },
-    bullets: [
-      { pt: "Atualização de sistemas antigos", en: "Upgrading legacy systems" },
-      { pt: "Publicação automática e servidores", en: "Automated deploys and servers" },
-      { pt: "Banco de dados e monitoramento", en: "Databases and monitoring" },
-    ],
-  },
-  {
-    id: "ia",
-    consult: true,
-    title: { pt: "Automação e IA aplicada", en: "Automation and applied AI" },
-    text: { pt: "Robôs e IA onde economizam tempo de verdade.", en: "Bots and AI where they truly save time." },
-    bullets: [
-      { pt: "Atendimento e triagem automáticos", en: "Automated support and triage" },
-      { pt: "Orçamentos e relatórios automáticos", en: "Automated quotes and reports" },
-      { pt: "Exemplo: o orçamento com IA deste site", en: "Example: this website's AI quote" },
-    ],
   },
 ];
 
