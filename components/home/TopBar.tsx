@@ -72,7 +72,7 @@ export default function TopBar({
         scrolled ? "border-outline-variant" : "border-transparent"
       }`}
     >
-      <div className={`@container mx-auto flex h-16 w-full items-center gap-6 ${frame}`}>
+      <div className={`@container mx-auto flex h-16 w-full items-center gap-6 [@media(max-height:500px)]:h-12 ${frame}`}>
         <button
           type="button"
           onClick={() => select("inicio")}

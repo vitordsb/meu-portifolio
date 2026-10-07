@@ -14,7 +14,7 @@ export function maskPhone(raw: string) {
 }
 
 const field =
-  "w-full rounded-[var(--shape-md)] border border-outline-variant bg-surface px-4 py-3 text-base outline-none transition focus:border-on-surface focus:ring-2 focus:ring-on-surface/10 sm:text-sm";
+  "w-full border border-outline-variant bg-surface px-4 py-3 text-base outline-none transition focus:border-on-surface focus:ring-2 focus:ring-on-surface/10 sm:text-sm";
 
 /**
  * O portão antes do preço: nome e WhatsApp liberam a faixa. Fica dentro da
@@ -45,18 +45,15 @@ export default function LeadForm({
         e.preventDefault();
         if (valid && !busy) onSubmit(lead);
       }}
-      className="rounded-2xl border border-outline-variant bg-surface-low p-5 sm:p-6"
+      className="border border-outline-variant bg-surface-low p-5 sm:p-6"
     >
-      <p className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
-        {pt ? "Quase lá" : "Almost there"}
-      </p>
       <h2 className="text-xl font-extrabold tracking-[-0.02em]">
         {pt ? "Seu orçamento está pronto" : "Your quote is ready"}
       </h2>
       <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">
         {pt
-          ? "Me diz pra quem eu mando o detalhamento e o valor de partida do MVP aparece na hora."
-          : "Tell me who to send the details to and the MVP starting price shows up right away."}
+          ? "Diz pra quem a gente manda o detalhamento e o valor de partida do MVP aparece na hora."
+          : "Tell us who to send the details to and the MVP starting price shows up right away."}
       </p>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -147,7 +144,7 @@ export default function LeadForm({
           // o envio duplo é barrado no onSubmit
           disabled={!valid}
           aria-busy={busy}
-          className="btn btn-filled h-12 rounded-lg px-6 text-base"
+          className="btn btn-filled h-12 rounded-none px-6 text-base"
         >
           <span className="inline-flex items-center gap-2">
             {busy ? (

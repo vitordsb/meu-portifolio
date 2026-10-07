@@ -26,7 +26,7 @@ const OPTIONS: { id: Pagamento; pt: string; en: string }[] = [
 ];
 
 const field =
-  "w-full rounded-[var(--shape-md)] border border-outline-variant bg-surface px-4 py-3 text-base outline-none transition focus:border-on-surface focus:ring-2 focus:ring-on-surface/10 sm:text-sm";
+  "w-full border border-outline-variant bg-surface px-4 py-3 text-base outline-none transition focus:border-on-surface focus:ring-2 focus:ring-on-surface/10 sm:text-sm";
 
 /** "4.500" ou "4500" -> 4500 */
 function parseMoney(raw: string) {
@@ -64,7 +64,7 @@ export default function CounterOffer({
     return (
       <div
         role="status"
-        className="flex gap-3 rounded-xl border border-outline-variant bg-surface p-4"
+        className="flex gap-3 border border-outline-variant bg-surface p-4"
       >
         <CheckCircle2 size={20} className="mt-0.5 shrink-0 text-[#25D366]" />
         <p className="text-sm leading-relaxed">
@@ -125,7 +125,7 @@ export default function CounterOffer({
   return (
     <form
       onSubmit={submit}
-      className="rounded-xl border border-outline-variant bg-surface p-4 sm:p-5"
+      className="border border-outline-variant bg-surface p-4 sm:p-5"
     >
       <p className="text-sm font-semibold">
         {pt
@@ -145,7 +145,7 @@ export default function CounterOffer({
               ? "Quanto pode investir nessa primeira versão"
               : "How much you can invest in this first version"}
           </span>
-          <div className="flex items-center rounded-[var(--shape-md)] border border-outline-variant bg-surface pl-4 focus-within:border-on-surface focus-within:ring-2 focus-within:ring-on-surface/10">
+          <div className="flex items-center border border-outline-variant bg-surface pl-4 focus-within:border-on-surface focus-within:ring-2 focus-within:ring-on-surface/10">
             <span className="text-sm text-on-surface-variant">R$</span>
             <input
               inputMode="numeric"
@@ -201,7 +201,7 @@ export default function CounterOffer({
       <button
         type="submit"
         disabled={!valid}
-        className="btn btn-filled mt-4 h-11 rounded-lg px-5 text-sm"
+        className="btn btn-filled mt-4 h-11 rounded-none px-5 text-sm"
       >
         <span className="inline-flex items-center gap-2">
           {busy && <Loader2 size={16} className="animate-spin" />}

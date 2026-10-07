@@ -6,7 +6,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { trackEvent } from "@/lib/analytics";
 import { readAttribution } from "@/lib/attribution";
 import {
-  ArrowLeft,
   ArrowUp,
   Check,
   Copy,
@@ -28,7 +27,7 @@ import {
   MAX_USER_TURNS,
   quoteWhatsappText,
 } from "@/lib/estimate/shared";
-import FontSizeButton from "@/components/a11y/FontSizeButton";
+import TopBar from "@/components/home/TopBar";
 import EstimateResult from "./EstimateResult";
 import GuidedStart from "./GuidedStart";
 import { speechErrorText, useSpeech } from "./useSpeech";
@@ -439,8 +438,8 @@ export default function EstimateChat() {
       } else if (res.status === 403 || res.status === 503) {
         setLeadError(
           pt
-            ? "Não consegui gerar o orçamento agora. Me chama no WhatsApp que eu te respondo pessoalmente."
-            : "I couldn't generate the quote right now. Reach me on WhatsApp and I'll answer personally.",
+            ? "Não consegui gerar o orçamento agora. Chama a gente no WhatsApp que a gente responde pessoalmente."
+            : "I couldn't generate the quote right now. Reach us on WhatsApp and we'll answer personally.",
         );
       } else if (res.status === 429) {
         setLeadError(
@@ -521,17 +520,9 @@ export default function EstimateChat() {
   return (
     <div className="flex h-dvh flex-col bg-surface text-on-surface">
       {/* ── Topo ── */}
-      <header className="relative shrink-0 border-b border-outline-variant">
-        <div className="mx-auto flex h-14 w-full max-w-2xl items-center justify-between gap-4 px-4 [@media(max-height:500px)]:h-11">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm font-semibold tracking-[-0.01em] transition-opacity hover:opacity-70"
-          >
-            <ArrowLeft size={16} />
-            {pt ? "Início" : "Home"}
-          </Link>
-          <FontSizeButton />
-        </div>
+      {/* Mesmo topo do site; a linha de progresso corre por baixo dele */}
+      <div className="relative shrink-0 border-b border-outline-variant">
+        <TopBar />
         <motion.span
           aria-hidden
           className="absolute bottom-[-1px] left-0 h-px origin-left bg-on-surface"
@@ -539,7 +530,7 @@ export default function EstimateChat() {
           animate={{ width: `${progress * 100}%` }}
           transition={{ type: "spring", stiffness: 120, damping: 24 }}
         />
-      </header>
+      </div>
 
       {/* ── Conversa ── */}
       <div
@@ -653,10 +644,10 @@ export default function EstimateChat() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border border-outline-variant bg-surface-low p-5 sm:p-7"
+              className="border border-outline-variant bg-surface-low p-5 sm:p-7"
             >
-              <p className="mb-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
-                {pt ? "Pedido" : "Quote"} #{code}
+              <p className="mb-2 text-sm text-on-surface-variant">
+                {pt ? "Pedido" : "Quote"} <span className="font-mono">#{code}</span>
               </p>
               <h2 className="text-xl font-extrabold tracking-[-0.02em]">
                 {pt ? "Recebemos seu pedido" : "We got your request"}
@@ -674,7 +665,7 @@ export default function EstimateChat() {
                 href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(quoteWhatsappText(name, code, pt))}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn mt-5 h-12 rounded-lg bg-[#25D366] px-6 text-base text-white"
+                className="btn btn-outlined mt-5 h-12 rounded-none px-6 text-base"
               >
                 <span>{pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}</span>
               </a>
@@ -730,7 +721,7 @@ export default function EstimateChat() {
                 <button
                   type="button"
                   onClick={applyTemplate}
-                  className="inline-flex h-8 items-center gap-2 rounded-full border border-outline-variant px-3.5 text-[0.8125rem] font-medium transition-colors hover:border-on-surface/60"
+                  className="inline-flex h-8 items-center gap-2 border border-outline-variant px-3.5 text-[0.8125rem] font-medium transition-colors hover:border-on-surface/60"
                 >
                   <FileText size={14} />
                   {pt ? "Usar modelo de briefing" : "Use briefing template"}
@@ -739,7 +730,7 @@ export default function EstimateChat() {
                   type="button"
                   onClick={copyTemplate}
                   aria-label={pt ? "Copiar modelo" : "Copy template"}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[0.8125rem] text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
+                  className="inline-flex h-8 items-center gap-1.5 px-3 text-[0.8125rem] text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface"
                 >
                   {copied ? <Check size={14} /> : <Copy size={14} />}
                   {copied
@@ -764,7 +755,7 @@ export default function EstimateChat() {
                     <img
                       src={src}
                       alt=""
-                      className="h-16 w-16 rounded-lg border border-outline-variant object-cover"
+                      className="h-16 w-16 border border-outline-variant object-cover"
                     />
                     <button
                       type="button"
@@ -774,7 +765,7 @@ export default function EstimateChat() {
                       aria-label={
                         pt ? `Remover imagem ${i + 1}` : `Remove image ${i + 1}`
                       }
-                      className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full border border-outline-variant bg-surface text-on-surface shadow-sm hover:bg-surface-high"
+                      className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center border border-outline-variant bg-surface text-on-surface shadow-sm hover:bg-surface-high"
                     >
                       <X size={12} />
                     </button>
@@ -799,7 +790,7 @@ export default function EstimateChat() {
             )}
 
             <div
-              className={`flex items-end gap-1 rounded-2xl border bg-surface-low p-2 transition-colors focus-within:border-on-surface/50 ${
+              className={`flex items-end gap-1 border bg-surface-low p-2 transition-colors focus-within:border-on-surface/50 ${
                 dragging
                   ? "border-on-surface border-dashed"
                   : "border-outline-variant"
@@ -826,7 +817,7 @@ export default function EstimateChat() {
                     ? "Anexar imagem (ou cole/arraste aqui)"
                     : "Attach image (or paste/drop here)"
                 }
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface disabled:opacity-30"
+                className="flex h-10 w-10 shrink-0 items-center justify-center text-on-surface-variant transition-colors hover:bg-surface-high hover:text-on-surface disabled:opacity-30"
               >
                 <Paperclip size={18} />
               </button>
@@ -848,7 +839,7 @@ export default function EstimateChat() {
                   title={
                     pt ? "Falar em vez de digitar" : "Speak instead of typing"
                   }
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-30 ${
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center transition-colors disabled:opacity-30 ${
                     speech.listening
                       ? "bg-[#d93025] text-white"
                       : "text-on-surface-variant hover:bg-surface-high hover:text-on-surface"
@@ -910,7 +901,7 @@ export default function EstimateChat() {
                 type="submit"
                 disabled={!canSend}
                 aria-label={pt ? "Enviar" : "Send"}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition-opacity disabled:opacity-30"
+                className="flex h-10 w-10 shrink-0 items-center justify-center bg-on-surface text-surface transition-opacity disabled:opacity-30"
               >
                 <ArrowUp size={18} />
               </button>
@@ -969,12 +960,12 @@ function Bubble({
                 key={i}
                 src={src}
                 alt=""
-                className="h-28 w-28 rounded-xl border border-outline-variant object-cover sm:h-32 sm:w-32"
+                className="h-28 w-28 border border-outline-variant object-cover sm:h-32 sm:w-32"
               />
             ))}
           </div>
         ) : null}
-        <p className="max-w-[85%] whitespace-pre-wrap break-words rounded-2xl rounded-br-md bg-surface-high px-4 py-2.5 text-[0.9375rem] leading-relaxed">
+        <p className="max-w-[85%] whitespace-pre-wrap break-words bg-surface-high px-4 py-2.5 text-[0.9375rem] leading-relaxed">
           {children}
         </p>
       </div>
