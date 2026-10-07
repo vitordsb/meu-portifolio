@@ -34,7 +34,7 @@ export default function HomeFooter() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/orcamento"
-                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-xl bg-surface px-7 py-3 text-center text-base font-semibold text-on-surface transition-opacity hover:opacity-90"
+                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-none bg-surface px-7 py-3 text-center text-base font-semibold text-on-surface transition-opacity hover:opacity-90"
               >
                 <Sparkles size={18} className="shrink-0" />
                 {pt ? "Orçamento grátis em 2 min" : "Free quote in 2 min"}
@@ -43,7 +43,7 @@ export default function HomeFooter() {
                 href={whatsappHref(pt)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-xl border border-surface/30 px-7 py-3 text-center text-base font-semibold transition-colors hover:bg-surface/10"
+                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-none border border-surface/30 px-7 py-3 text-center text-base font-semibold transition-colors hover:bg-surface/10"
               >
                 <MessageCircle size={18} className="shrink-0" />
                 {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}

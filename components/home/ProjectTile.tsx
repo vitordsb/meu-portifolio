@@ -37,7 +37,7 @@ export default function ProjectTile({
       <ClayMockup
         shots={project.shots}
         label={title}
-        className="rounded-xl ring-1 ring-outline-variant"
+        className="ring-1 ring-outline-variant"
       />
       <div className={`flex items-start justify-between gap-3 ${compact ? "mt-2.5" : "mt-4"}`}>
         <div className="min-w-0">

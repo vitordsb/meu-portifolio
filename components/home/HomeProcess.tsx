@@ -28,7 +28,7 @@ export default function HomeProcess() {
           const Icon = ICONS[i];
           return (
             <Reveal key={step.title.pt} delay={0.08 * i} className="flex">
-              <li className="relative flex w-full flex-col rounded-2xl border border-outline-variant p-6">
+              <li className="relative flex w-full flex-col border border-outline-variant p-6">
                 <span className="flex items-center justify-between">
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-on-surface text-surface">
                     <Icon size={22} />
@@ -44,7 +44,7 @@ export default function HomeProcess() {
       </ol>
 
       <Reveal className="mt-8">
-        <ul className="grid gap-x-6 gap-y-4 rounded-2xl bg-surface-low p-6 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-x-6 gap-y-4 bg-surface-low p-6 sm:grid-cols-2 lg:grid-cols-4">
           {GUARANTEES.map((g) => (
             <li key={g.pt} className="flex items-center gap-3 text-base">
               <ShieldCheck size={20} className="shrink-0" />

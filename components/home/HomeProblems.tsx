@@ -38,9 +38,9 @@ export default function HomeProblems() {
             <Reveal key={p.id} delay={0.08 * i} className="flex">
               <Link
                 href={p.href}
-                className="group flex w-full flex-col rounded-3xl border border-outline-variant bg-surface-low p-7 transition-colors hover:border-on-surface/40"
+                className="group flex w-full flex-col border border-outline-variant bg-surface-low p-7 transition-colors hover:border-on-surface/40"
               >
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-high">
+                <span className="flex h-14 w-14 items-center justify-center bg-surface-high">
                   <Icon size={26} />
                 </span>
                 <span className="mt-6 text-xl font-bold leading-snug tracking-[-0.02em]">{p.title[language]}</span>

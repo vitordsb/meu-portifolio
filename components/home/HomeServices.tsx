@@ -138,7 +138,7 @@ export default function HomeServices({
             type="button"
             onClick={() => scrollBy(-1)}
             aria-label={pt ? "Anterior" : "Previous"}
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant transition-colors hover:border-on-surface/40"
+            className="flex h-12 w-12 items-center justify-center rounded-none border border-outline-variant transition-colors hover:border-on-surface/40"
           >
             <ChevronLeft size={20} />
           </button>
@@ -146,7 +146,7 @@ export default function HomeServices({
             type="button"
             onClick={() => scrollBy(1)}
             aria-label={pt ? "Próximo" : "Next"}
-            className="flex h-12 w-12 items-center justify-center rounded-full border border-outline-variant transition-colors hover:border-on-surface/40"
+            className="flex h-12 w-12 items-center justify-center rounded-none border border-outline-variant transition-colors hover:border-on-surface/40"
           >
             <ChevronRight size={20} />
           </button>
@@ -170,10 +170,10 @@ export default function HomeServices({
                   aria-haspopup="dialog"
                   aria-expanded={isOpen}
 onClick={(e) => openFor(s.id, e.currentTarget)}
-                  className={`flex min-h-[27rem] w-full flex-col rounded-3xl border border-outline-variant bg-surface-low p-7 text-left transition-[border-color,opacity] hover:border-on-surface/40 ${isOpen ? "opacity-0" : ""}`}
+                  className={`flex min-h-[27rem] w-full flex-col border border-outline-variant bg-surface-low p-7 text-left transition-[border-color,opacity] hover:border-on-surface/40 ${isOpen ? "opacity-0" : ""}`}
                 >
                   <span className="flex items-center justify-between">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-high">
+                    <span className="flex h-14 w-14 items-center justify-center bg-surface-high">
                       <Icon size={26} />
                     </span>
                     <span className="rounded-full border border-outline-variant px-3 py-1 text-sm text-on-surface-variant">
@@ -201,7 +201,7 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                               src={x.cover!}
                               alt=""
                               loading="lazy"
-                              className="h-10 w-14 rounded-lg object-cover object-top ring-2 ring-surface-low"
+                              className="h-10 w-14 rounded-none object-cover object-top ring-2 ring-surface-low"
                             />
                           ))}
                       </span>
@@ -295,7 +295,7 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                   style={{ position: "fixed", maxHeight: open.to.maxHeight }}
-                  className="z-[96] flex flex-col overflow-hidden rounded-3xl border border-outline-variant bg-surface text-on-surface shadow-[var(--elev-3)]"
+                  className="z-[96] flex flex-col overflow-hidden border border-outline-variant bg-surface text-on-surface shadow-[var(--elev-3)]"
                 >
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -305,7 +305,7 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-4">
-                        <span className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-surface-high sm:flex">
+                        <span className="hidden h-14 w-14 shrink-0 items-center justify-center bg-surface-high sm:flex">
                           <ActiveIcon size={26} />
                         </span>
                         <div>
@@ -325,7 +325,7 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                         type="button"
                         onClick={close}
                         aria-label={pt ? "Fechar" : "Close"}
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-outline-variant transition-colors hover:border-on-surface/40"
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-none border border-outline-variant transition-colors hover:border-on-surface/40"
                       >
                         <X size={20} />
                       </button>
@@ -352,7 +352,7 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                       <Link
                         href="/orcamento"
                         onClick={close}
-                        className="btn btn-filled h-auto min-h-12 rounded-xl px-6 py-3 text-base"
+                        className="btn btn-filled h-auto min-h-12 rounded-none px-6 py-3 text-base"
                       >
                         <span className="inline-flex items-center gap-2">
                           <Sparkles size={18} className="shrink-0" />

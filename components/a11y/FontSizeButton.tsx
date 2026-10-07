@@ -25,7 +25,7 @@ export default function FontSizeButton({
       type="button"
       onClick={cycle}
       aria-label={pt ? `Tamanho da letra: ${label}. Toque pra mudar` : `Text size: ${label}. Tap to change`}
-      className={`inline-flex h-11 shrink-0 items-center gap-2 rounded-full border border-outline-variant bg-surface/90 px-3.5 text-sm font-medium text-on-surface backdrop-blur transition-colors hover:border-on-surface/40 ${className}`}
+      className={`inline-flex h-11 shrink-0 items-center gap-2 rounded-none border border-outline-variant bg-surface/90 px-3.5 text-sm font-medium text-on-surface backdrop-blur transition-colors hover:border-on-surface/40 ${className}`}
     >
       <span aria-hidden className="font-semibold leading-none">
         A<span className="text-[1.3em]">A</span>

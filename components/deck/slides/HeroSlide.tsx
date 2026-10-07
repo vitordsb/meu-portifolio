@@ -9,7 +9,7 @@ import { HERO, SERVICES, SOCIALS, l } from "@/lib/deck-content";
 import { CountUp } from "@/components/motion/CountUp";
 import { Line, Rise } from "../Reveal";
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from "../SocialIcons";
-import photo from "@/app/(public)/images/vitu.jpeg";
+import photo from "@/app/(public)/images/vitor-perfil.jpg";
 
 // Cada bolinha na cor da marca. O GitHub é preto, então inverte no tema
 // escuro pra não sumir no fundo.

@@ -87,7 +87,7 @@ export default function ServicesPage() {
             <li
               key={pkg.id}
               id={pkg.id}
-              className={`relative flex flex-col rounded-2xl border bg-surface-low p-6 sm:p-7 ${
+              className={`relative flex flex-col border bg-surface-low p-6 sm:p-7 ${
                 pkg.featured ? "border-on-surface/60" : "border-outline-variant"
               }`}
             >
@@ -144,7 +144,7 @@ export default function ServicesPage() {
                 onClick={() => hire(pkg)}
                 disabled={busy !== null}
                 aria-busy={busy === pkg.id}
-                className={`btn mt-7 h-12 w-full rounded-lg text-base ${
+                className={`btn mt-7 h-12 w-full rounded-none text-base ${
                   pkg.featured ? "btn-filled" : "btn-outlined"
                 }`}
               >
@@ -184,7 +184,7 @@ export default function ServicesPage() {
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn mt-3 h-11 w-full rounded-lg bg-[#25D366] text-base text-white"
+                        className="btn mt-3 h-11 w-full rounded-none bg-[#25D366] text-base text-white"
                       >
                         <span className="inline-flex items-center gap-2">
                           <WhatsappIcon size={18} />

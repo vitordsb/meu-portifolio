@@ -124,7 +124,7 @@ export default function CompanyHome({
           >
             <Link
               href="/orcamento"
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-on-surface px-5 text-base font-semibold text-surface shadow-[var(--elev-3)] transition-opacity hover:opacity-90 sm:h-14 sm:px-6"
+              className="inline-flex h-12 items-center gap-2 rounded-none bg-on-surface px-5 text-base font-semibold text-surface shadow-[var(--elev-3)] transition-opacity hover:opacity-90 sm:h-14 sm:px-6"
             >
               <Sparkles size={18} className="shrink-0" />
               {pt ? "Orçamento grátis" : "Free quote"}

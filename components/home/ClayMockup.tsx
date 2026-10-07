@@ -41,11 +41,14 @@ export default function ClayMockup({
   shots,
   label,
   className = "",
+  bare = false,
 }: {
   shots?: ProjectShots;
   /** Nome do projeto, pra leitor de tela. */
   label: string;
   className?: string;
+  /** Sem fundo nem luz próprios: o card de fora já tem. */
+  bare?: boolean;
 }) {
   const desktop = shots?.desktop;
   const mobile = shots?.mobile;
@@ -56,10 +59,14 @@ export default function ClayMockup({
     <div
       role="img"
       aria-label={label}
-      className={`relative aspect-[16/10] overflow-hidden bg-[linear-gradient(150deg,#ebe6de_0%,#d9d2c6_100%)] dark:bg-[linear-gradient(150deg,#3b3834_0%,#292724_100%)] ${className}`}
+      className={`relative aspect-[16/10] ${
+        bare ? "" : "overflow-hidden bg-[linear-gradient(150deg,#ebe6de_0%,#d9d2c6_100%)] dark:bg-[linear-gradient(150deg,#3b3834_0%,#292724_100%)]"
+      } ${className}`}
     >
       {/* Luz suave no alto: dá volume sem cor */}
-      <div aria-hidden className="absolute -left-[10%] -top-[30%] h-[80%] w-[70%] rounded-full bg-white/40 blur-3xl dark:bg-white/[0.06]" />
+      {!bare && (
+        <div aria-hidden className="absolute -left-[10%] -top-[30%] h-[80%] w-[70%] rounded-full bg-white/40 blur-3xl dark:bg-white/[0.06]" />
+      )}
 
       {showLaptop && (
         <div

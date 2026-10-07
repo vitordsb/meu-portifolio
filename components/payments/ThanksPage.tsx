@@ -50,7 +50,7 @@ export default function ThanksPage() {
             href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(text)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn h-12 rounded-lg bg-[#25D366] px-6 text-base text-white"
+            className="btn h-12 rounded-none bg-[#25D366] px-6 text-base text-white"
           >
             <span className="inline-flex items-center gap-2">
               <WhatsappIcon size={18} />

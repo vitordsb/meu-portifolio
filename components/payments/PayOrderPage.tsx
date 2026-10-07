@@ -123,7 +123,7 @@ export default function PayOrderPage() {
           <label htmlFor="pedido" className="sr-only">
             {pt ? "Número do pedido" : "Order number"}
           </label>
-          <div className="flex h-12 flex-1 items-center rounded-lg border border-outline-variant bg-surface-low px-4 focus-within:border-on-surface/60">
+          <div className="flex h-12 flex-1 items-center rounded-none border border-outline-variant bg-surface-low px-4 focus-within:border-on-surface/60">
             <span className="mr-1 text-lg text-on-surface-variant">#</span>
             <input
               id="pedido"
@@ -141,7 +141,7 @@ export default function PayOrderPage() {
           <button
             type="submit"
             disabled={code.length !== 5 || busy}
-            className="btn btn-filled h-12 shrink-0 rounded-lg px-5 text-base"
+            className="btn btn-filled h-12 shrink-0 rounded-none px-5 text-base"
           >
             <span className="inline-flex items-center gap-2">
               {busy ? <Loader2 size={18} className="animate-spin" /> : null}
@@ -167,7 +167,7 @@ export default function PayOrderPage() {
         {order && (
           <section
             aria-label={pt ? "Seu pedido" : "Your order"}
-            className="mt-8 overflow-hidden rounded-2xl border border-outline-variant bg-surface-low"
+            className="mt-8 overflow-hidden border border-outline-variant bg-surface-low"
           >
             <div className="p-5 sm:p-7">
               <p className="mb-3 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
@@ -215,7 +215,7 @@ export default function PayOrderPage() {
                 <a
                   href={order.invoiceUrl}
                   onClick={() => trackEvent("pedido_pagar", { codigo: order.code })}
-                  className="btn btn-filled h-12 w-full rounded-lg text-base sm:w-auto sm:px-7"
+                  className="btn btn-filled h-12 w-full rounded-none text-base sm:w-auto sm:px-7"
                 >
                   <span className="inline-flex items-center gap-2">
                     {order.installments > 1 && order.paidInstallments > 0

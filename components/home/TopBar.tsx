@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Globe, Menu, MessageCircle, Monitor, Moon, Sparkles, Sun, X } from "lucide-react";
+import { Globe, Menu, MessageCircle, Monitor, Moon, Sun, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { BRAND } from "@/lib/site";
@@ -23,8 +22,9 @@ export const TOP_LINKS = [
  * Barra fina no topo da home (substituiu o menu lateral em 06/out/2026: o
  * Vitor não gostou da barra lateral). Container query em rem: com a letra
  * grande ou tela estreita, os links viram o botão "Menu" antes de apertar. Desktop: marca, links das sessões com
- * a ativa marcada, busca, tema, idioma e "Orçamento grátis" (a letra fica no
- * rodapé e no Menu, pedido do Vitor). Celular: marca e um
+ * a ativa marcada, busca, tema e idioma, todos com texto (só ícone não diz o
+ * que faz). Sem botão de orçamento no topo, pedido do Vitor; a letra fica no
+ * rodapé e no Menu. Celular: marca e um
  * "Menu" que abre os links em tela cheia, com letra grande.
  */
 export default function TopBar({
@@ -56,7 +56,7 @@ export default function TopBar({
   };
 
   const pref =
-    "flex h-14 w-full items-center justify-between rounded-xl border border-outline-variant px-4 text-base";
+    "flex h-14 w-full items-center justify-between rounded-none border border-outline-variant px-4 text-base";
 
   return (
     <header
@@ -68,13 +68,13 @@ export default function TopBar({
         <button
           type="button"
           onClick={() => onSelect("inicio")}
-          className="min-w-0 truncate text-lg font-extrabold tracking-[-0.03em]"
+          className="shrink-0 whitespace-nowrap text-lg font-extrabold tracking-[-0.03em]"
         >
           {BRAND.name}
         </button>
 
-        <nav aria-label={pt ? "Sessões" : "Sections"} className="ml-auto hidden @min-[62rem]:block">
-          <ul className="flex items-center gap-1">
+        <nav aria-label={pt ? "Sessões" : "Sections"} className="ml-auto hidden @min-[64rem]:block">
+          <ul className="flex items-center gap-0.5">
             {TOP_LINKS.map((l) => {
               const active = current === l.id;
               return (
@@ -86,7 +86,7 @@ export default function TopBar({
                       onSelect(l.id);
                     }}
                     aria-current={active ? "true" : undefined}
-                    className={`inline-flex h-10 items-center whitespace-nowrap rounded-full px-4 text-base transition-colors ${
+                    className={`inline-flex h-10 items-center whitespace-nowrap rounded-none px-3 text-base transition-colors ${
                       active ? "bg-surface-high font-semibold text-on-surface" : "text-on-surface-variant hover:text-on-surface"
                     }`}
                   >
@@ -98,43 +98,39 @@ export default function TopBar({
           </ul>
         </nav>
 
-        <div className="ml-auto flex shrink-0 items-center gap-2 @min-[62rem]:ml-0">
-          <span className="hidden @min-[62rem]:block">
-            <SearchHint variant="icon" />
+        <div className="ml-auto flex shrink-0 items-center gap-2 @min-[64rem]:ml-0">
+          {/* Preferências com texto: só o ícone não diz o que o botão faz */}
+          <span className="hidden @min-[64rem]:block">
+            <SearchHint variant="label" />
           </span>
-          {/* Tema e idioma à mão; a letra fica no Menu e no rodapé */}
           <span className="hidden items-center gap-2 @min-[40rem]:flex">
             <button
               type="button"
               onClick={cycleTheme}
-              aria-label={`${t("common.theme.label")}: ${t(`common.theme.${theme}`)}`}
-              title={`${t("common.theme.label")}: ${t(`common.theme.${theme}`)}`}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant transition-colors hover:border-on-surface/40"
+              title={pt ? "Trocar o tema" : "Change theme"}
+              className="inline-flex h-11 items-center gap-2 border border-outline-variant px-3.5 text-sm font-medium transition-colors hover:border-on-surface/40"
             >
-              <ThemeIcon size={18} />
+              <ThemeIcon size={16} className="shrink-0" />
+              <span className="whitespace-nowrap">
+                {t("common.theme.label")}: {t(`common.theme.${theme}`)}
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setLanguage(pt ? "en" : "pt")}
-              aria-label={pt ? "Mudar para inglês" : "Switch to Portuguese"}
-              className="inline-flex h-11 items-center gap-1.5 rounded-full border border-outline-variant px-3.5 text-sm font-semibold transition-colors hover:border-on-surface/40"
+              title={pt ? "Mudar para inglês" : "Switch to Portuguese"}
+              className="inline-flex h-11 items-center gap-2 border border-outline-variant px-3.5 text-sm font-medium transition-colors hover:border-on-surface/40"
             >
-              <Globe size={16} />
-              {language.toUpperCase()}
+              <Globe size={16} className="shrink-0" />
+              <span className="whitespace-nowrap">{pt ? "Português" : "English"}</span>
             </button>
           </span>
-          <Link href="/orcamento" className="btn btn-filled hidden h-11 rounded-full px-5 text-base @min-[34rem]:inline-flex">
-            <span className="inline-flex items-center gap-2">
-              <Sparkles size={16} className="shrink-0" />
-              {pt ? "Orçamento grátis" : "Free quote"}
-            </span>
-          </Link>
 
           <Dialog.Root open={open} onOpenChange={setOpen}>
             <Dialog.Trigger asChild>
               <button
                 type="button"
-                className="inline-flex h-11 items-center gap-2 rounded-full border border-outline-variant px-4 text-base font-semibold @min-[62rem]:hidden"
+                className="inline-flex h-11 items-center gap-2 rounded-none border border-outline-variant px-4 text-base font-semibold @min-[64rem]:hidden"
               >
                 <Menu size={18} />
                 Menu
@@ -149,7 +145,7 @@ export default function TopBar({
                     <button
                       type="button"
                       aria-label={pt ? "Fechar menu" : "Close menu"}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant"
+                      className="flex h-11 w-11 items-center justify-center rounded-none border border-outline-variant"
                     >
                       <X size={20} />
                     </button>
@@ -179,13 +175,7 @@ export default function TopBar({
                 </nav>
 
                 <div className="mt-8 grid gap-3">
-                  <Link href="/orcamento" onClick={() => setOpen(false)} className="btn btn-filled h-14 rounded-xl text-base">
-                    <span className="inline-flex items-center gap-2">
-                      <Sparkles size={18} />
-                      {pt ? "Orçamento grátis em 2 min" : "Free quote in 2 min"}
-                    </span>
-                  </Link>
-                  <a href={whatsappHref(pt)} target="_blank" rel="noopener noreferrer" className="btn btn-outlined h-14 rounded-xl text-base">
+                  <a href={whatsappHref(pt)} target="_blank" rel="noopener noreferrer" className="btn btn-outlined h-14 rounded-none text-base">
                     <span className="inline-flex items-center gap-2">
                       <MessageCircle size={18} />
                       {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}

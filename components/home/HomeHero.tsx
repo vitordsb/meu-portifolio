@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BadgeCheck, FileSignature, HandCoins, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowUpRight, BadgeCheck, FileSignature, HandCoins, MessageCircle, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { HOME_HERO, TRUST } from "@/lib/home-content";
 import { COMPANIES } from "@/lib/companies";
@@ -51,7 +51,7 @@ export default function HomeHero() {
           <motion.div {...enter(2)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Link
               href="/orcamento"
-              className="btn btn-filled h-auto min-h-14 whitespace-normal rounded-xl px-7 py-3 text-center text-base sm:whitespace-nowrap"
+              className="btn btn-filled h-auto min-h-14 whitespace-normal rounded-none px-7 py-3 text-center text-base sm:whitespace-nowrap"
             >
               <span className="inline-flex items-center gap-2">
                 <Sparkles size={18} className="shrink-0" />
@@ -62,7 +62,7 @@ export default function HomeHero() {
               href={whatsappHref(pt)}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outlined h-auto min-h-14 whitespace-normal rounded-xl px-7 py-3 text-center text-base sm:whitespace-nowrap"
+              className="btn btn-outlined h-auto min-h-14 whitespace-normal rounded-none px-7 py-3 text-center text-base sm:whitespace-nowrap"
             >
               <span className="inline-flex items-center gap-2">
                 <MessageCircle size={18} className="shrink-0" />
@@ -92,16 +92,92 @@ export default function HomeHero() {
           </motion.ul>
         </div>
 
-        {/* Projeto entregue em mockup de argila, em largura total */}
+        {/* Case em destaque: é chamada de efeito, então o card é arredondado */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="group mx-auto w-full max-w-5xl pb-16 md:pb-24"
+          className="pb-16 md:pb-24"
         >
-          <ClayMockup shots={PROJECT_SHOTS.arqdoor} label="ArqDoor" className="rounded-3xl" />
+          <FeaturedCase pt={pt} />
         </motion.div>
       </div>
     </section>
+  );
+}
+
+/**
+ * ArqDoor como case de sucesso logo abaixo do banner: o problema resolvido
+ * em uma frase, o que foi entregue e o mockup grande. "Ver o case" desce até
+ * a linha do ArqDoor em Projetos.
+ */
+function FeaturedCase({ pt }: { pt: boolean }) {
+  const language = pt ? "pt" : "en";
+  const company = COMPANIES.find((c) => c.id === "arqdoor");
+  if (!company) return null;
+  const facts = pt
+    ? ["Plataforma web", "App na Play Store", "12 meses de projeto"]
+    : ["Web platform", "App on Play Store", "12-month project"];
+
+  return (
+    <article className="group relative overflow-hidden rounded-[2rem] bg-[linear-gradient(150deg,#ebe6de_0%,#d9d2c6_100%)] text-neutral-900 dark:bg-[linear-gradient(150deg,#3b3834_0%,#242220_100%)] dark:text-neutral-50">
+      {/* Laranja da marca ArqDoor atrás dos aparelhos */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-1/4 right-0 h-[90%] w-[70%] rounded-full bg-[radial-gradient(circle,rgb(241_90_36/0.28),transparent_65%)] dark:bg-[radial-gradient(circle,rgb(241_90_36/0.22),transparent_65%)]"
+      />
+      <div className="relative grid items-center gap-2 lg:grid-cols-12">
+        <div className="px-6 pt-8 sm:px-10 sm:pt-10 lg:col-span-5 lg:py-12 lg:pl-12 lg:pr-0">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 shrink-0 items-center bg-white px-2.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={company.logo} alt="" aria-hidden className="h-6 w-auto max-w-[6.5rem] object-contain" />
+            </span>
+            <span className="leading-tight">
+              <span className="block text-base font-semibold">{company.name}</span>
+              <span className="block text-sm opacity-70">{company.sector[language]}</span>
+            </span>
+          </div>
+          <h2 className="mt-6 text-[clamp(1.6rem,3vw,2.3rem)] font-semibold leading-[1.12] tracking-[-0.03em]">
+            {company.headline?.[language]}
+          </h2>
+          <p className="mt-4 text-base leading-relaxed opacity-80">{company.problem?.[language]}</p>
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {facts.map((f) => (
+              <li key={f} className="rounded-full border border-current/20 px-3 py-1 text-sm font-medium">
+                {f}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={`#case-${company.id}`}
+              onClick={(e) => {
+                const el = document.getElementById(`case-${company.id}`);
+                if (!el) return;
+                e.preventDefault();
+                el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex min-h-12 items-center gap-2 bg-neutral-900 px-5 text-base font-semibold text-neutral-50 transition-opacity hover:opacity-90 dark:bg-neutral-50 dark:text-neutral-900"
+            >
+              {pt ? "Ver o case" : "See the case"}
+              <ArrowDown size={18} className="shrink-0" />
+            </a>
+            <a
+              href={company.products[0].link ?? undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-12 items-center gap-2 border border-current/25 px-5 text-base font-semibold transition-colors hover:border-current/60"
+            >
+              {pt ? "Abrir o ArqDoor" : "Open ArqDoor"}
+              <ArrowUpRight size={18} className="shrink-0" />
+            </a>
+          </div>
+        </div>
+        <div className="lg:col-span-7">
+          <ClayMockup bare shots={PROJECT_SHOTS.arqdoor} label="ArqDoor" className="scale-[1.04] lg:scale-[1.1]" />
+        </div>
+      </div>
+    </article>
   );
 }

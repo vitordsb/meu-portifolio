@@ -53,7 +53,7 @@ export default function CompanyCard({
   const store = storeOf(link);
 
   return (
-    <article className="group flex w-full flex-col overflow-hidden rounded-xl border border-outline-variant bg-surface-low transition-colors hover:border-on-surface/30">
+    <article className="group flex w-full flex-col overflow-hidden rounded-none border border-outline-variant bg-surface-low transition-colors hover:border-on-surface/30">
       <div className="relative aspect-[16/10] overflow-hidden border-b border-outline-variant bg-surface-high">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -75,7 +75,7 @@ export default function CompanyCard({
         {products.length > 1 && (
           <div
             data-no-swipe
-            className="absolute left-3 top-3 z-10 inline-flex rounded-full border border-outline-variant bg-surface/90 p-0.5 backdrop-blur"
+            className="absolute left-3 top-3 z-10 inline-flex rounded-none border border-outline-variant bg-surface/90 p-0.5 backdrop-blur"
           >
             {products.map((p, i) => (
               <button
@@ -84,7 +84,7 @@ export default function CompanyCard({
                 onClick={() => setActive(i)}
                 aria-pressed={i === active}
                 title={p.title}
-                className={`h-7 rounded-full px-3 text-xs font-medium transition-colors ${
+                className={`h-7 rounded-none px-3 text-xs font-medium transition-colors ${
                   i === active
                     ? "bg-primary text-on-primary"
                     : "text-on-surface-variant hover:text-on-surface"
@@ -157,13 +157,13 @@ export default function CompanyCard({
               href={store ? localizedStoreLink(link, language) : link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-9 items-center gap-2 rounded-md border border-outline-variant px-3 text-sm font-medium transition-colors hover:border-on-surface hover:bg-surface-high"
+              className="inline-flex h-9 items-center gap-2 rounded-none border border-outline-variant px-3 text-sm font-medium transition-colors hover:border-on-surface hover:bg-surface-high"
             >
               {store ? storeCta(store, language) : linkLabelFor(link)}
               <ArrowUpRight size={14} />
             </a>
           ) : (
-            <span className="inline-flex h-9 items-center gap-2 rounded-md bg-surface-high px-3 text-sm text-on-surface-variant">
+            <span className="inline-flex h-9 items-center gap-2 rounded-none bg-surface-high px-3 text-sm text-on-surface-variant">
               <Lock size={13} />
               {product.title}
             </span>

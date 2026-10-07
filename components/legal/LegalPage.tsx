@@ -34,7 +34,7 @@ export default function LegalPage({
           {title}
         </h1>
 
-        <section aria-label="Em poucas palavras" className="mt-8 rounded-2xl border border-outline-variant bg-surface-low p-6">
+        <section aria-label="Em poucas palavras" className="mt-8 border border-outline-variant bg-surface-low p-6">
           <h2 className="text-lg font-bold">Em poucas palavras</h2>
           <ul className="mt-3 space-y-2.5 text-base leading-relaxed">
             {summary.map((s) => (

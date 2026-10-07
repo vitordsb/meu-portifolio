@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Code, LayoutGrid, Sparkles, Users, type LucideIcon } from "lucide-react";
-import photo from "@/app/(public)/images/vitu.jpeg";
+import photo from "@/app/(public)/images/vitor-perfil.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ENGAGEMENTS } from "@/lib/home-content";
 import { Reveal, Section, SectionHeader } from "./ui";
@@ -41,7 +41,7 @@ export default function HomeEngagements() {
           return (
             <Reveal key={e.id} delay={0.08 * i} className="flex">
               <article
-                className={`relative flex w-full flex-col rounded-3xl p-7 sm:p-8 ${
+                className={`relative flex w-full flex-col p-7 sm:p-8 ${
                   dark ? "bg-on-surface text-surface" : "border border-outline-variant bg-surface-low"
                 }`}
               >
@@ -51,7 +51,7 @@ export default function HomeEngagements() {
                   </span>
                 )}
                 <span
-                  className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
+                  className={`flex h-14 w-14 items-center justify-center ${
                     dark ? "bg-surface/15" : "bg-surface-high"
                   }`}
                 >
@@ -104,7 +104,7 @@ export default function HomeEngagements() {
         </p>
         <Link
           href="/orcamento"
-          className="btn btn-filled h-auto min-h-12 shrink-0 rounded-xl px-6 py-3 text-base"
+          className="btn btn-filled h-auto min-h-12 shrink-0 rounded-none px-6 py-3 text-base"
         >
           <span className="inline-flex items-center gap-2">
             <Sparkles size={18} className="shrink-0" />

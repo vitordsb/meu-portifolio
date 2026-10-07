@@ -41,7 +41,7 @@ function ProjectRow({ company, pt }: { company: Company; pt: boolean }) {
   const store = storeOf(link);
 
   return (
-    <li className="grid gap-8 border-t border-outline-variant py-12 md:py-16 lg:grid-cols-12 lg:gap-10">
+    <li id={`case-${company.id}`} className="grid scroll-mt-20 gap-8 border-t border-outline-variant py-12 md:py-16 lg:grid-cols-12 lg:gap-10">
       <div className="lg:col-span-3">
         <div className="flex items-center gap-3">
           <span className="flex h-10 shrink-0 items-center rounded-lg border border-outline-variant bg-white px-2.5">
@@ -97,14 +97,14 @@ function ProjectRow({ company, pt }: { company: Company; pt: boolean }) {
 
       <div className="lg:col-span-5">
         {company.products.length > 1 && (
-          <div className="mb-3 inline-flex rounded-full border border-outline-variant p-0.5">
+          <div className="mb-3 inline-flex rounded-none border border-outline-variant p-0.5">
             {company.products.map((p, i) => (
               <button
                 key={p.title}
                 type="button"
                 onClick={() => setActive(i)}
                 aria-pressed={i === active}
-                className={`h-9 rounded-full px-4 text-sm font-medium transition-colors ${
+                className={`h-9 rounded-none px-4 text-sm font-medium transition-colors ${
                   i === active ? "bg-on-surface text-surface" : "text-on-surface-variant hover:text-on-surface"
                 }`}
               >
@@ -125,7 +125,6 @@ function ProjectRow({ company, pt }: { company: Company; pt: boolean }) {
               <ClayMockup
                 shots={product.slug ? PROJECT_SHOTS[product.slug] : undefined}
                 label={`${company.name}: ${product.title}`}
-                className="rounded-2xl"
               />
             </motion.div>
           </AnimatePresence>
@@ -187,7 +186,7 @@ export default function HomeProjects({ projects }: { projects: CatalogProject[] 
                     role="tab"
                     aria-selected={on}
                     onClick={() => setTab(t.id)}
-                    className={`relative inline-flex h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-base transition-colors ${
+                    className={`relative inline-flex h-11 shrink-0 items-center gap-2 rounded-none border px-4 text-base transition-colors ${
                       on ? "border-transparent text-surface" : "border-outline-variant text-on-surface hover:border-on-surface/40"
                     }`}
                   >
@@ -195,7 +194,7 @@ export default function HomeProjects({ projects }: { projects: CatalogProject[] 
                       <motion.span
                         layoutId="projetos-aba"
                         aria-hidden
-                        className="absolute inset-0 rounded-full bg-on-surface"
+                        className="absolute inset-0 rounded-none bg-on-surface"
                         transition={{ type: "spring", stiffness: 420, damping: 38 }}
                       />
                     )}

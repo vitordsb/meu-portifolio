@@ -3,6 +3,13 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
+/**
+ * Regra de forma (Vitor, 06/out/2026): card de INFORMAÇÃO é quadrado (sem
+ * rounded). Borda arredondada só em chamada pra ação / lead (convite final,
+ * "Calcular minha equipe", "Não sabe qual escolher?", novidades) e em
+ * botões, etiquetas e abas.
+ */
+
 /** Largura e respiro de todas as sessões da home. */
 export const FRAME = "mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12";
 

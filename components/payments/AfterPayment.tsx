@@ -41,7 +41,7 @@ export default function AfterPayment({ title }: { title?: string }) {
       ];
 
   return (
-    <section aria-label={title ?? (pt ? "Depois de pagar" : "After you pay")} className="rounded-2xl border border-outline-variant bg-surface-low p-5 sm:p-6">
+    <section aria-label={title ?? (pt ? "Depois de pagar" : "After you pay")} className="border border-outline-variant bg-surface-low p-5 sm:p-6">
       <h2 className="text-lg font-bold">{title ?? (pt ? "Depois de pagar" : "After you pay")}</h2>
       <ol className="mt-4 grid gap-4 sm:grid-cols-3">
         {steps.map((s, i) => (
