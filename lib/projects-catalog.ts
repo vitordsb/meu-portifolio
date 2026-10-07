@@ -19,8 +19,6 @@ export type CatalogProject = {
   type: ProjectType;
   link: string | null;
   cover: string | null;
-  /** Serviços sob consulta que o projeto também mostra (api, cloud, ia). */
-  tags: string[];
 };
 
 /** Tipo de cada trabalho. Projeto novo em allWork sem entrada aqui não aparece. */
@@ -44,13 +42,6 @@ const TYPE_BY_SLUG: Record<string, ProjectType> = {
   "gap-ads": "landing",
 };
 
-/** Capacidades além do tipo, pelo que foi entregue em cada um (lib/companies). */
-const TAGS_BY_SLUG: Record<string, string[]> = {
-  arqdoor: ["api", "cloud"],
-  "mtcprop-members": ["api"],
-  "egp-iot": ["api"],
-};
-
 function clientOf(company: string): string {
   const c = company.replace(/^Cliente,\s*/, "").trim();
   if (c === "Cliente" || !c) return "";
@@ -68,7 +59,6 @@ export function buildCatalog(): CatalogProject[] {
       type: TYPE_BY_SLUG[w.slug],
       link: w.liveLink,
       cover: w.coverImageUrl,
-      tags: TAGS_BY_SLUG[w.slug] ?? [],
     }))
     // Com imagem primeiro: a vitrine abre pelo que dá pra ver
     .sort((a, b) => Number(!!b.cover) - Number(!!a.cover));

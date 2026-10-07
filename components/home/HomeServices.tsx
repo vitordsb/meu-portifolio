@@ -6,12 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
-  Check,
   ChevronLeft,
-  Cloud,
-  MessageCircle,
-  Workflow,
-  Bot,
   ChevronRight,
   Globe,
   LayoutGrid,
@@ -26,7 +21,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { HOME_SECTIONS, SERVICE_TYPES } from "@/lib/home-content";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import ProjectTile from "./ProjectTile";
-import { whatsappHref } from "@/lib/home-links";
 import { Reveal, Section, SectionHeader } from "./ui";
 
 export type StartingPrice = { min: number; weeksMin: number; weeksMax: number };
@@ -37,9 +31,6 @@ const ICONS: Record<string, LucideIcon> = {
   loja: ShoppingBag,
   sistema: LayoutGrid,
   app: Smartphone,
-  api: Workflow,
-  cloud: Cloud,
-  ia: Bot,
 };
 
 export const brl = (n: number) =>
@@ -53,7 +44,8 @@ type Open = {
 
 /**
  * "O que a gente faz": carrossel de colunas, do mais complexo ao mais simples
- * (sob consulta primeiro, depois do mais caro ao mais barato). Clicar ou
+ * (do mais caro ao mais barato). Só serviços com preço de partida: os sob
+ * consulta (APIs, cloud, IA) saíram em 06/out/2026 a pedido do Vitor. Clicar ou
  * tocar numa coluna abre um painel com todos os projetos já entregues
  * daquele tipo, com o resto da tela borrado atrás; o painel nasce em cima da
  * coluna e cresce a partir dela. Abrir no hover foi testado e reprovado pelo
@@ -76,7 +68,7 @@ export default function HomeServices({
 
   useEffect(() => setMounted(true), []);
 
-  const byType = (id: string) => projects.filter((p) => p.type === id || p.tags.includes(id));
+  const byType = (id: string) => projects.filter((p) => p.type === id);
 
   const openFor = useCallback((id: string, el: HTMLElement) => {
     const r = el.getBoundingClientRect();
@@ -118,14 +110,10 @@ export default function HomeServices({
     ul.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
-  // Do mais complexo ao mais simples: sob consulta primeiro, depois preço desc
-  const ordered = [
-    // IA > modernização > APIs: do mais complexo pro menos
-    ...SERVICE_TYPES.filter((s) => s.consult).reverse(),
-    ...SERVICE_TYPES.filter((s) => !s.consult).sort(
-      (a, b) => (prices[b.id]?.min ?? 0) - (prices[a.id]?.min ?? 0),
-    ),
-  ];
+  // Do mais complexo ao mais simples: do mais caro ao mais barato
+  const ordered = [...SERVICE_TYPES].sort(
+    (a, b) => (prices[b.id]?.min ?? 0) - (prices[a.id]?.min ?? 0),
+  );
   const active = open ? SERVICE_TYPES.find((s) => s.id === open.id) : null;
   const activeProjects = open ? byType(open.id) : [];
   const ActiveIcon = active ? (ICONS[active.id] ?? Globe) : Globe;
@@ -188,21 +176,19 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                     <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-high">
                       <Icon size={26} />
                     </span>
-                    {(list.length > 0 || !s.consult) && (
-                      <span className="rounded-full border border-outline-variant px-3 py-1 text-sm text-on-surface-variant">
-                        {list.length === 0
-                          ? pt
-                            ? "Novo"
-                            : "New"
-                          : `${list.length} ${pt ? (list.length === 1 ? "projeto" : "projetos") : list.length === 1 ? "project" : "projects"}`}
-                      </span>
-                    )}
+                    <span className="rounded-full border border-outline-variant px-3 py-1 text-sm text-on-surface-variant">
+                      {list.length === 0
+                        ? pt
+                          ? "Novo"
+                          : "New"
+                        : `${list.length} ${pt ? (list.length === 1 ? "projeto" : "projetos") : list.length === 1 ? "project" : "projects"}`}
+                    </span>
                   </span>
                   <span className="mt-7 text-2xl font-bold tracking-[-0.025em]">{s.title[language]}</span>
                   <span className="mt-2 text-base leading-relaxed text-on-surface-variant">{s.text[language]}</span>
 
-                  {/* Prévia: as capas dos projetos desse tipo (sob consulta: no pé da coluna) */}
-                  <span className={`flex items-center gap-3 ${s.consult ? "mt-auto pt-6" : "mt-6"}`}>
+                  {/* Prévia: as capas dos projetos desse tipo */}
+                  <span className="mt-6 flex items-center gap-3">
                     {list.some((x) => x.cover) && (
                       <span className="flex shrink-0 -space-x-3">
                         {list
@@ -222,13 +208,9 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                     )}
                     <span className="inline-flex items-center gap-1.5 text-base font-semibold">
                       {list.length === 0
-                        ? s.consult
-                          ? pt
-                            ? "Ver o que entra"
-                            : "See what's included"
-                          : pt
-                            ? "Seja o primeiro"
-                            : "Be the first"
+                        ? pt
+                          ? "Seja o primeiro"
+                          : "Be the first"
                         : pt
                           ? `Ver ${list.length} ${list.length === 1 ? "projeto" : "projetos"}`
                           : `See ${list.length} ${list.length === 1 ? "project" : "projects"}`}
@@ -349,18 +331,6 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                       </button>
                     </div>
 
-                    {active.bullets && (
-                      <ul className="mt-7 grid gap-3 sm:grid-cols-3">
-                        {active.bullets.map((b) => (
-                          <li key={b.pt} className="flex items-start gap-2.5 rounded-xl bg-surface-low p-4 text-base">
-                            <Check size={18} className="mt-0.5 shrink-0" />
-                            {b[language]}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {(activeProjects.length > 0 || !active.consult) && (
                     <p className="mb-4 mt-8 text-sm font-medium text-on-surface-variant">
                       {activeProjects.length
                         ? pt
@@ -370,7 +340,6 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                           ? "Ainda não temos um projeto desse tipo no portfólio. O seu pode ser o primeiro."
                           : "No project of this type in the portfolio yet. Yours could be the first."}
                     </p>
-                    )}
                     {activeProjects.length > 0 && (
                       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         {activeProjects.map((proj) => (
@@ -390,19 +359,6 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                           {pt ? "Orçar um projeto assim" : "Get a quote for one like this"}
                         </span>
                       </Link>
-                      {active.consult && (
-                        <a
-                          href={whatsappHref(pt)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-outlined h-auto min-h-12 rounded-xl px-6 py-3 text-base"
-                        >
-                          <span className="inline-flex items-center gap-2">
-                            <MessageCircle size={18} className="shrink-0" />
-                            {pt ? "Conversar no WhatsApp" : "Chat on WhatsApp"}
-                          </span>
-                        </a>
-                      )}
                     </div>
                   </motion.div>
                 </motion.div>
