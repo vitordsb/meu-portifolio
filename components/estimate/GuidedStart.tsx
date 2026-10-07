@@ -18,7 +18,6 @@ import {
   Mic,
   Palette,
   PenLine,
-  ShoppingBag,
   ShoppingCart,
   Smartphone,
   Sparkles,
@@ -42,7 +41,24 @@ import { speechErrorText, useSpeech } from "./useSpeech";
 type L = { pt: string; en: string };
 type Option = { id: string; icon: LucideIcon; label: L; hint?: L };
 
+// Do mais complexo ao mais simples, como na home. Loja virtual saiu da
+// oferta (Vitor, 07/out/2026): quem quer vender online cai em "sistema".
 const TYPES: Option[] = [
+  {
+    id: "sistema",
+    icon: LayoutDashboard,
+    label: { pt: "Sistema pra empresa", en: "Business system" },
+    hint: {
+      pt: "Organizar agenda, pedidos, estoque",
+      en: "Organize bookings, orders, stock",
+    },
+  },
+  {
+    id: "app",
+    icon: Smartphone,
+    label: { pt: "Aplicativo de celular", en: "Mobile app" },
+    hint: { pt: "Pra iPhone e Android", en: "For iPhone and Android" },
+  },
   {
     id: "site",
     icon: Globe,
@@ -59,27 +75,6 @@ const TYPES: Option[] = [
     hint: {
       pt: "Uma página pra um produto ou evento",
       en: "One page for a product or event",
-    },
-  },
-  {
-    id: "loja",
-    icon: ShoppingBag,
-    label: { pt: "Loja virtual", en: "Online store" },
-    hint: { pt: "Vender pela internet", en: "Sell online" },
-  },
-  {
-    id: "app",
-    icon: Smartphone,
-    label: { pt: "Aplicativo de celular", en: "Mobile app" },
-    hint: { pt: "Pra iPhone e Android", en: "For iPhone and Android" },
-  },
-  {
-    id: "sistema",
-    icon: LayoutDashboard,
-    label: { pt: "Sistema pra empresa", en: "Business system" },
-    hint: {
-      pt: "Organizar agenda, pedidos, estoque",
-      en: "Organize bookings, orders, stock",
     },
   },
   {
@@ -286,7 +281,7 @@ export default function GuidedStart({
             type="button"
             onClick={() => pick(key, o.id)}
             aria-pressed={on}
-            className={`${tile} min-h-[76px] ${on ? "border-on-surface bg-surface-high" : "border-outline-variant bg-surface-low hover:border-on-surface/50"}`}
+            className={`${tile} min-h-[76px] ${cols === "sm:grid-cols-2" ? "sm:[&:last-child:nth-child(odd)]:col-span-2" : ""} ${on ? "border-on-surface bg-surface-high" : "border-outline-variant bg-surface-low hover:border-on-surface/50"}`}
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-surface text-on-surface">
               <o.icon size={26} strokeWidth={1.75} />
