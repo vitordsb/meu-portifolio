@@ -131,14 +131,14 @@ export default function NewsletterPrompt() {
                   <button
                     type="button"
                     onClick={dismiss}
-                    className="h-12 flex-1 rounded-full border border-outline-variant px-5 text-base font-semibold transition-colors hover:border-on-surface/40"
+                    className="h-12 flex-1 rounded-none border border-outline-variant px-5 text-base font-semibold transition-colors hover:border-on-surface/40"
                   >
                     {pt ? "Agora não" : "Not now"}
                   </button>
                   <button
                     type="button"
                     onClick={() => setStep("form")}
-                    className="h-12 flex-1 rounded-full bg-on-surface px-5 text-base font-semibold text-surface transition-opacity hover:opacity-90"
+                    className="h-12 flex-1 rounded-none bg-on-surface px-5 text-base font-semibold text-surface transition-opacity hover:opacity-90"
                   >
                     {pt ? "Quero receber" : "Sign me up"}
                   </button>
@@ -168,12 +168,12 @@ export default function NewsletterPrompt() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={pt ? "seu@email.com" : "you@email.com"}
-                    className="h-12 w-full min-w-0 rounded-full border border-outline-variant bg-surface-low px-4 text-base outline-none focus:border-on-surface"
+                    className="h-12 w-full min-w-0 rounded-none border border-outline-variant bg-surface-low px-4 text-base outline-none focus:border-on-surface"
                   />
                   <button
                     type="submit"
                     disabled={step === "sending"}
-                    className="h-12 shrink-0 rounded-full bg-on-surface px-5 text-base font-semibold text-surface transition-opacity hover:opacity-90 disabled:opacity-60"
+                    className="h-12 shrink-0 rounded-none bg-on-surface px-5 text-base font-semibold text-surface transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
                     {step === "sending" ? (pt ? "Enviando..." : "Sending...") : pt ? "Enviar" : "Send"}
                   </button>
@@ -193,7 +193,7 @@ export default function NewsletterPrompt() {
               type="button"
               onClick={dismiss}
               aria-label={pt ? "Fechar" : "Close"}
-              className="absolute -right-2 -top-2 flex h-9 w-9 items-center justify-center rounded-full border border-outline-variant bg-surface text-on-surface-variant shadow-sm transition-colors hover:text-on-surface"
+              className="absolute -right-2 -top-2 flex h-9 w-9 items-center justify-center rounded-none border border-outline-variant bg-surface text-on-surface-variant shadow-sm transition-colors hover:text-on-surface"
             >
               <X size={16} />
             </button>

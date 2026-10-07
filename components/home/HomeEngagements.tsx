@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { CircleCheck, Code, LayoutGrid, Sparkles, Users, type LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { Code, LayoutGrid, Sparkles, Users, type LucideIcon } from "lucide-react";
+import photo from "@/app/(public)/images/vitor-perfil.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ENGAGEMENTS } from "@/lib/home-content";
 import { Reveal, Section, SectionHeader } from "./ui";
@@ -39,7 +41,7 @@ export default function HomeEngagements() {
           return (
             <Reveal key={e.id} delay={0.08 * i} className="flex">
               <article
-                className={`relative flex w-full flex-col rounded-3xl p-7 sm:p-8 ${
+                className={`relative flex w-full flex-col p-7 sm:p-8 ${
                   dark ? "bg-on-surface text-surface" : "border border-outline-variant bg-surface-low"
                 }`}
               >
@@ -49,34 +51,52 @@ export default function HomeEngagements() {
                   </span>
                 )}
                 <span
-                  className={`flex h-14 w-14 items-center justify-center rounded-2xl ${
+                  className={`flex h-14 w-14 items-center justify-center ${
                     dark ? "bg-surface/15" : "bg-surface-high"
                   }`}
                 >
                   <Icon size={26} />
                 </span>
-                <p className={`mt-6 text-sm font-semibold ${dark ? "opacity-70" : "text-on-surface-variant"}`}>
-                  {e.kicker[language]}
-                </p>
-                <h3 className="mt-1 text-2xl font-bold tracking-[-0.025em] sm:text-[1.75rem]">{e.title[language]}</h3>
-                <p className={`mt-3 text-base leading-relaxed ${dark ? "opacity-80" : "text-on-surface-variant"}`}>
+                <h3 className="mt-6 text-2xl font-bold tracking-[-0.025em] sm:text-[1.75rem]">{e.title[language]}</h3>
+                <p className={`mt-1 text-base ${dark ? "opacity-70" : "text-on-surface-variant"}`}>{e.subtitle[language]}</p>
+
+                {e.person && (
+                  <div className="mt-6 flex items-center gap-4">
+                    <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-1 ring-outline-variant">
+                      <Image src={photo} alt={e.person.name} fill sizes="4rem" className="object-cover object-top" />
+                    </span>
+                    <span>
+                      <span className="block text-lg font-semibold">{e.person.name}</span>
+                      <span className="block text-sm text-on-surface-variant">{e.person.role[language]}</span>
+                    </span>
+                  </div>
+                )}
+
+                <p className={`mt-5 text-base leading-relaxed ${dark ? "opacity-80" : "text-on-surface-variant"}`}>
                   {e.text[language]}
                 </p>
-                <ul className={`mt-6 space-y-3 border-t pt-6 ${dark ? "border-surface/20" : "border-outline-variant"}`}>
-                  {e.checks.map((c) => (
-                    <li key={c.pt} className="flex items-center gap-3 text-base">
-                      <CircleCheck size={20} className="shrink-0 text-emerald-500" />
-                      {c[language]}
-                    </li>
-                  ))}
-                </ul>
+
+                {e.tags && (
+                  <ul className={`mt-6 flex flex-wrap gap-2 border-t pt-6 ${dark ? "border-surface/20" : "border-outline-variant"}`}>
+                    {e.tags.map((t) => (
+                      <li
+                        key={t.pt}
+                        className={`rounded-full px-3.5 py-1.5 text-sm font-medium ${
+                          dark ? "bg-surface/15" : "border border-outline-variant"
+                        }`}
+                      >
+                        {t[language]}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </article>
             </Reveal>
           );
         })}
       </div>
 
-      <Reveal className="mt-8 flex flex-col items-start gap-4 rounded-2xl bg-surface-low p-6 sm:flex-row sm:items-center sm:justify-between">
+      <Reveal className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-xl text-base leading-relaxed">
           {pt
             ? "O orçamento grátis calcula quantas pessoas o seu projeto precisa e o preço fechado pela equipe."
@@ -84,7 +104,7 @@ export default function HomeEngagements() {
         </p>
         <Link
           href="/orcamento"
-          className="btn btn-filled h-auto min-h-12 shrink-0 rounded-xl px-6 py-3 text-base"
+          className="btn btn-filled h-auto min-h-12 shrink-0 rounded-none px-6 py-3 text-base"
         >
           <span className="inline-flex items-center gap-2">
             <Sparkles size={18} className="shrink-0" />

@@ -28,13 +28,13 @@ export default function LegalPage({
   return (
     <>
       <PageHeader />
-      <main className="mx-auto w-full max-w-3xl px-4 pb-24 pt-10 sm:pt-14">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-24 pt-10 sm:pt-14 [&>*]:max-w-3xl">
         <p className="text-sm text-on-surface-variant">Atualizado em {updated}</p>
         <h1 className="mt-2 text-balance text-4xl font-extrabold leading-[1.05] tracking-[-0.035em] sm:text-5xl">
           {title}
         </h1>
 
-        <section aria-label="Em poucas palavras" className="mt-8 rounded-2xl border border-outline-variant bg-surface-low p-6">
+        <section aria-label="Em poucas palavras" className="mt-8 border border-outline-variant bg-surface-low p-6">
           <h2 className="text-lg font-bold">Em poucas palavras</h2>
           <ul className="mt-3 space-y-2.5 text-base leading-relaxed">
             {summary.map((s) => (

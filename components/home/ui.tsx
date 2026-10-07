@@ -3,6 +3,15 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
+/**
+ * Regra de forma (Vitor, 06 e 07/out/2026): card de INFORMAÇÃO e todo botão
+ * ou controle (abas, campos, alternadores) são quadrados. Borda arredondada
+ * só em card de chamada (convite final, "Não sabe qual escolher?", novidades,
+ * case em destaque) e em etiquetas que não são clicáveis. Faixa simples de
+ * chamada nem card tem ("Calcular minha equipe"). Link de texto: sublinhado
+ * monocromático, sem cor viva.
+ */
+
 /** Largura e respiro de todas as sessões da home. */
 export const FRAME = "mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12";
 
@@ -25,10 +34,10 @@ export function Section({
     <section
       id={id}
       data-home-section
-      className={`scroll-mt-4 py-20 md:py-28 ${className}`}
+      className={`scroll-mt-20 py-20 md:py-28 ${className}`}
     >
       {aliases?.map((a) => (
-        <span key={a} id={a} aria-hidden className="block scroll-mt-4" />
+        <span key={a} id={a} aria-hidden className="block scroll-mt-20" />
       ))}
       <div className={FRAME}>{children}</div>
     </section>
@@ -74,7 +83,7 @@ export function SectionHeader({
 }) {
   return (
     <Reveal className={`mb-10 max-w-2xl md:mb-14 ${className}`}>
-      <h2 className="text-balance text-[2rem] font-extrabold leading-[1.05] tracking-[-0.035em] md:text-5xl">
+      <h2 className="text-balance text-[2rem] font-semibold leading-[1.05] tracking-[-0.04em] md:text-5xl">
         {title}
       </h2>
       {lead && (

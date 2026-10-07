@@ -5,7 +5,7 @@ import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import {
   ArrowRight,
-  Check,
+  Clock,
   Loader2,
   ReceiptText,
   ScanSearch,
@@ -18,6 +18,7 @@ import { CNPJ } from "@/lib/email-layout";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 import { PACKAGES, type ServicePackage } from "@/lib/payments/packages";
 import PageHeader from "./PageHeader";
+import AfterPayment from "./AfterPayment";
 
 const brl = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -68,9 +69,9 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader width="max-w-5xl 2xl:max-w-[88rem]" />
+      <PageHeader />
 
-      <main className="mx-auto w-full max-w-5xl px-4 pb-20 2xl:max-w-[88rem] pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         <h1 className="max-w-2xl text-[clamp(2rem,6vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
           {pt ? "Serviços com preço fechado" : "Fixed-price services"}
         </h1>
@@ -80,122 +81,155 @@ export default function ServicesPage() {
             : "Pick one, pay with Pix or card and we get started. No quote, no waiting."}
         </p>
 
-        <ul className="mt-10 grid gap-4 md:grid-cols-2 2xl:grid-cols-4">
-          {PACKAGES.map((pkg) => (
-            <li
-              key={pkg.id}
-              id={pkg.id}
-              className={`relative flex flex-col rounded-2xl border bg-surface-low p-6 sm:p-7 ${
-                pkg.featured ? "border-on-surface/60" : "border-outline-variant"
-              }`}
-            >
-              {pkg.featured && (
-                <span className="absolute right-5 top-5 rounded-full bg-primary px-2.5 py-1 text-[0.75rem] font-semibold text-on-primary">
-                  {pt ? "Mais pedido" : "Most popular"}
-                </span>
-              )}
-              <h2 className="pr-24 text-xl font-extrabold tracking-[-0.02em]">
-                {pkg.name[language]}
-              </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-on-surface-variant">
-                {pkg.summary[language]}
-              </p>
-
-              <p className="mt-5 text-[2rem] font-extrabold leading-none tracking-[-0.03em] tabular-nums">
-                {brl.format(pkg.price)}
-              </p>
-              <p className="mt-1.5 text-sm text-on-surface-variant">
-                {pkg.maxInstallments > 1
-                  ? pt
-                    ? `ou até ${pkg.maxInstallments}x no cartão`
-                    : `or up to ${pkg.maxInstallments}x on card`
-                  : pt
-                    ? "Pix ou cartão"
-                    : "Pix or card"}
-              </p>
-
-              <ul className="mt-5 space-y-2 text-sm">
-                {pkg.includes[language].map((it) => (
-                  <li key={it} className="flex gap-2.5">
-                    <Check
-                      size={16}
-                      className="mt-0.5 shrink-0 text-on-surface-variant"
-                    />
-                    <span>{it}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                type="button"
-                onClick={() => hire(pkg)}
-                disabled={busy !== null}
-                aria-busy={busy === pkg.id}
-                className={`btn mt-7 h-12 w-full rounded-lg text-base ${
-                  pkg.featured ? "btn-filled" : "btn-outlined"
+        {/* Do mais caro pro mais barato, como na home */}
+        <ul className="mt-10 grid gap-4 md:grid-cols-2">
+          {[...PACKAGES]
+            .sort((a, b) => b.price - a.price)
+            .map((pkg) => (
+              <li
+                key={pkg.id}
+                id={pkg.id}
+                className={`relative flex flex-col border bg-surface-low p-6 sm:p-7 ${
+                  pkg.featured
+                    ? "border-on-surface/60"
+                    : "border-outline-variant"
                 }`}
               >
-                <span className="inline-flex items-center gap-2">
-                  {busy === pkg.id ? (
-                    <>
-                      <Loader2 size={18} className="animate-spin" />
-                      {pt ? "Abrindo pagamento..." : "Opening payment..."}
-                    </>
-                  ) : (
-                    <>
-                      {pt ? "Contratar" : "Hire"}
-                      <ArrowRight size={18} />
-                    </>
-                  )}
-                </span>
-              </button>
+                {pkg.featured && (
+                  <span className="absolute -top-3 left-6 rounded-full bg-on-surface px-2.5 py-1 text-[0.75rem] font-semibold text-surface">
+                    {pt ? "Mais pedido" : "Most popular"}
+                  </span>
+                )}
+                <h2 className="text-xl font-extrabold tracking-[-0.02em]">
+                  {pkg.name[language]}
+                </h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-on-surface-variant">
+                  {pkg.summary[language]}
+                </p>
 
-              {notice?.pkg === pkg.id && (
-                <div role="alert" className="mt-4 text-sm">
-                  {notice.kind === "fallback" ? (
-                    <>
-                      <p className="text-on-surface-variant">
-                        {pt
-                          ? "O pagamento online está indisponível agora. Contrata pelo WhatsApp que a gente te manda o link."
-                          : "Online payment is unavailable right now. Hire us on WhatsApp and we'll send you the link."}
-                      </p>
-                      <a
-                        href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(
-                          pt
-                            ? `Olá! Quero contratar o pacote ${pkg.name.pt} (${brl.format(pkg.price)}).`
-                            : `Hi! I'd like to hire the ${pkg.name.en} package (${brl.format(pkg.price)}).`,
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn mt-3 h-11 w-full rounded-lg bg-[#25D366] text-base text-white"
-                      >
-                        <span className="inline-flex items-center gap-2">
-                          <WhatsappIcon size={18} />
-                          {pt ? "Contratar pelo WhatsApp" : "Hire on WhatsApp"}
-                        </span>
-                      </a>
-                    </>
-                  ) : (
-                    <p className="text-error">
-                      {notice.kind === "rate"
-                        ? pt
-                          ? "Muitas tentativas seguidas. Tenta de novo em alguns minutos."
-                          : "Too many attempts. Try again in a few minutes."
-                        : pt
-                          ? "Sem conexão. Tenta de novo."
-                          : "No connection. Try again."}
-                    </p>
-                  )}
+                <p className="mt-5 text-[2rem] font-extrabold leading-none tracking-[-0.03em] tabular-nums">
+                  {brl.format(pkg.price)}
+                </p>
+                <p className="mt-1.5 min-h-[2.5rem] text-sm text-on-surface-variant">
+                  {pkg.maxInstallments > 1
+                    ? pt
+                      ? `Pagamento único no Pix, ou em até ${pkg.maxInstallments}x no cartão`
+                      : `One-time payment by Pix, or up to ${pkg.maxInstallments}x on card`
+                    : pt
+                      ? "Pagamento único, no Pix ou cartão"
+                      : "One-time payment, by Pix or card"}
+                </p>
+
+                {/* O que a pessoa leva pelo valor: preço ligado ao entregável
+                  dói menos (Prelec e Loewenstein, "pain of paying"). Uma frase,
+                  não lista: os cards ficam do mesmo tamanho. */}
+                <p className="mt-5 text-sm leading-relaxed">
+                  <span className="font-semibold">
+                    {pt ? "O que você recebe: " : "What you get: "}
+                  </span>
+                  <span className="text-on-surface-variant">
+                    {pkg.receives[language]}
+                  </span>
+                </p>
+                {pkg.delivery && (
+                  <p className="mt-4 flex items-center gap-2 text-sm text-on-surface-variant">
+                    <Clock size={16} className="shrink-0" />
+                    {pkg.delivery[language]}
+                  </p>
+                )}
+
+                <div className="mt-auto pt-7">
+                  <button
+                    type="button"
+                    onClick={() => hire(pkg)}
+                    disabled={busy !== null}
+                    aria-busy={busy === pkg.id}
+                    className={`btn h-12 w-full rounded-none text-base ${
+                      pkg.featured ? "btn-filled" : "btn-outlined"
+                    }`}
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      {busy === pkg.id ? (
+                        <>
+                          <Loader2 size={18} className="animate-spin" />
+                          {pt ? "Abrindo pagamento..." : "Opening payment..."}
+                        </>
+                      ) : (
+                        <>
+                          {pt
+                            ? `Contratar por ${brl.format(pkg.price)}`
+                            : `Hire for ${brl.format(pkg.price)}`}
+                          <ArrowRight size={18} />
+                        </>
+                      )}
+                    </span>
+                  </button>
+
+                  <p className="mt-2 text-center text-xs text-on-surface-variant">
+                    {pt
+                      ? "Você vai pra página segura do Asaas pra pagar."
+                      : "You'll go to Asaas's secure page to pay."}
+                  </p>
                 </div>
-              )}
-            </li>
-          ))}
+
+                {notice?.pkg === pkg.id && (
+                  <div role="alert" className="mt-4 text-sm">
+                    {notice.kind === "fallback" ? (
+                      <>
+                        <p className="text-on-surface-variant">
+                          {pt
+                            ? "O pagamento online está indisponível agora. Contrata pelo WhatsApp que a gente te manda o link."
+                            : "Online payment is unavailable right now. Hire us on WhatsApp and we'll send you the link."}
+                        </p>
+                        <a
+                          href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(
+                            pt
+                              ? `Olá! Quero contratar o pacote ${pkg.name.pt} (${brl.format(pkg.price)}).`
+                              : `Hi! I'd like to hire the ${pkg.name.en} package (${brl.format(pkg.price)}).`,
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-outlined mt-3 h-11 w-full rounded-none text-base"
+                        >
+                          <span className="inline-flex items-center gap-2">
+                            <WhatsappIcon size={18} />
+                            {pt
+                              ? "Contratar pelo WhatsApp"
+                              : "Hire on WhatsApp"}
+                          </span>
+                        </a>
+                      </>
+                    ) : (
+                      <p className="text-error">
+                        {notice.kind === "rate"
+                          ? pt
+                            ? "Muitas tentativas seguidas. Tenta de novo em alguns minutos."
+                            : "Too many attempts. Try again in a few minutes."
+                          : pt
+                            ? "Sem conexão. Tenta de novo."
+                            : "No connection. Try again."}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
         </ul>
+
+        <div className="mt-6">
+          <AfterPayment
+            title={
+              pt
+                ? "Como funciona depois que você contrata"
+                : "What happens after you hire"
+            }
+          />
+        </div>
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <Link
             href="/raio-x"
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40 md:col-span-2"
+            className="group flex items-center justify-between gap-4 border border-outline-variant p-6 transition-colors hover:border-on-surface/40 md:col-span-2"
           >
             <span>
               <span className="flex items-center gap-2 font-semibold">
@@ -217,7 +251,7 @@ export default function ServicesPage() {
           </Link>
           <Link
             href="/orcamento"
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
+            className="group flex items-center justify-between gap-4 border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
           >
             <span>
               <span className="flex items-center gap-2 font-semibold">
@@ -237,7 +271,7 @@ export default function ServicesPage() {
           </Link>
           <Link
             href="/pagar"
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
+            className="group flex items-center justify-between gap-4 border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
           >
             <span>
               <span className="flex items-center gap-2 font-semibold">
@@ -282,11 +316,17 @@ export default function ServicesPage() {
           </span>
         </p>
         <p className="mt-2 text-center text-xs text-on-surface-variant">
-          <Link href="/termos" className="underline underline-offset-2 hover:text-on-surface">
+          <Link
+            href="/termos"
+            className="underline underline-offset-2 hover:text-on-surface"
+          >
             {pt ? "Termos de Uso" : "Terms of Use"}
           </Link>
           {" · "}
-          <Link href="/privacidade" className="underline underline-offset-2 hover:text-on-surface">
+          <Link
+            href="/privacidade"
+            className="underline underline-offset-2 hover:text-on-surface"
+          >
             {pt ? "Política de Privacidade" : "Privacy Policy"}
           </Link>
         </p>

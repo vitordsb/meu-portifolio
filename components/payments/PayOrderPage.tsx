@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
 import { CNPJ } from "@/lib/email-layout";
 import PageHeader from "./PageHeader";
+import AfterPayment from "./AfterPayment";
 
 type Order = {
   code: string;
@@ -100,9 +101,9 @@ export default function PayOrderPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader width="max-w-xl" />
+      <PageHeader />
 
-      <main className="mx-auto w-full max-w-xl px-4 pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 [&>*]:max-w-xl pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         <h1 className="text-[clamp(2rem,6vw,2.75rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
           {pt ? "Pagar meu pedido" : "Pay my order"}
         </h1>
@@ -122,7 +123,7 @@ export default function PayOrderPage() {
           <label htmlFor="pedido" className="sr-only">
             {pt ? "Número do pedido" : "Order number"}
           </label>
-          <div className="flex h-12 flex-1 items-center rounded-lg border border-outline-variant bg-surface-low px-4 focus-within:border-on-surface/60">
+          <div className="flex h-12 flex-1 items-center rounded-none border border-outline-variant bg-surface-low px-4 focus-within:border-on-surface/60">
             <span className="mr-1 text-lg text-on-surface-variant">#</span>
             <input
               id="pedido"
@@ -140,7 +141,7 @@ export default function PayOrderPage() {
           <button
             type="submit"
             disabled={code.length !== 5 || busy}
-            className="btn btn-filled h-12 shrink-0 rounded-lg px-5 text-base"
+            className="btn btn-filled h-12 shrink-0 rounded-none px-5 text-base"
           >
             <span className="inline-flex items-center gap-2">
               {busy ? <Loader2 size={18} className="animate-spin" /> : null}
@@ -166,16 +167,21 @@ export default function PayOrderPage() {
         {order && (
           <section
             aria-label={pt ? "Seu pedido" : "Your order"}
-            className="mt-8 overflow-hidden rounded-2xl border border-outline-variant bg-surface-low"
+            className="mt-8 overflow-hidden border border-outline-variant bg-surface-low"
           >
             <div className="p-5 sm:p-7">
-              <p className="mb-3 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
-                {pt ? "Pedido" : "Order"} #{order.code}
+              <p className="mb-3 text-sm text-on-surface-variant">
+                {pt ? "Pedido" : "Order"} <span className="font-mono">#{order.code}</span>
               </p>
               {order.description && (
-                <p className="text-lg font-semibold leading-snug">
-                  {order.description}
-                </p>
+                <>
+                  <p className="text-sm font-semibold text-on-surface-variant">
+                    {pt ? "O que você está pagando" : "What you're paying for"}
+                  </p>
+                  <p className="mt-1 text-lg font-semibold leading-snug">
+                    {order.description}
+                  </p>
+                </>
               )}
               <p className="mt-4 text-[2rem] font-extrabold leading-none tracking-[-0.03em] tabular-nums">
                 {brl.format(order.total)}
@@ -209,7 +215,7 @@ export default function PayOrderPage() {
                 <a
                   href={order.invoiceUrl}
                   onClick={() => trackEvent("pedido_pagar", { codigo: order.code })}
-                  className="btn btn-filled h-12 w-full rounded-lg text-base sm:w-auto sm:px-7"
+                  className="btn btn-filled h-12 w-full rounded-none text-base sm:w-auto sm:px-7"
                 >
                   <span className="inline-flex items-center gap-2">
                     {order.installments > 1 && order.paidInstallments > 0
@@ -225,6 +231,12 @@ export default function PayOrderPage() {
               ) : null}
             </div>
           </section>
+        )}
+
+        {order && order.status !== "pago" && (
+          <div className="mt-6">
+            <AfterPayment />
+          </div>
         )}
 
         <p className="mt-10 flex gap-2 text-xs leading-relaxed text-on-surface-variant">

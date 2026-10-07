@@ -17,7 +17,11 @@ export type ServicePackage = {
   /** Parcelas máximas no cartão (1 = só à vista). */
   maxInstallments: number;
   summary: L10n;
-  includes: { pt: string[]; en: string[] };
+  /** "O que você recebe", numa frase: entregáveis concretos, sem jargão
+   *  (lista de checks deixava os cards desiguais, Vitor 07/out/2026). */
+  receives: L10n;
+  /** Prazo de entrega, quando o pacote tem um. */
+  delivery?: L10n;
   /** Destaque visual (um por vez). */
   featured?: boolean;
 };
@@ -33,18 +37,11 @@ export const PACKAGES: ServicePackage[] = [
       pt: "Uma hora com um especialista pra destravar produto, código ou UX.",
       en: "One hour with a specialist to unblock product, code or UX.",
     },
-    includes: {
-      pt: [
-        "Videochamada de 1 hora",
-        "Revisão do que você mandar antes",
-        "Próximos passos por escrito",
-      ],
-      en: [
-        "1-hour video call",
-        "Review of what you send beforehand",
-        "Written next steps",
-      ],
+    receives: {
+      pt: "Videochamada de 1 hora, revisão do que você mandar antes e os próximos passos por escrito.",
+      en: "A 1-hour video call, a review of what you send beforehand and written next steps.",
     },
+    delivery: { pt: "No dia e horário que você escolher", en: "On the day and time you choose" },
   },
   {
     id: "revisao-ux",
@@ -56,17 +53,9 @@ export const PACKAGES: ServicePackage[] = [
       pt: "Raio-X das telas do seu site ou app, com o que mudar primeiro.",
       en: "An X-ray of your site or app screens, with what to fix first.",
     },
-    includes: {
-      pt: [
-        "Análise de até 5 telas",
-        "Relatório com melhorias priorizadas",
-        "30 min de conversa pra explicar",
-      ],
-      en: [
-        "Review of up to 5 screens",
-        "Report with prioritized improvements",
-        "30-min call to walk you through it",
-      ],
+    receives: {
+      pt: "Análise de até 5 telas, relatório com as melhorias em ordem de prioridade e 30 min de conversa pra explicar.",
+      en: "A review of up to 5 screens, a report with prioritized improvements and a 30-min call to walk you through it.",
     },
   },
   {
@@ -80,20 +69,11 @@ export const PACKAGES: ServicePackage[] = [
       pt: "Uma página que apresenta seu produto e capta contatos.",
       en: "A page that presents your product and captures leads.",
     },
-    includes: {
-      pt: [
-        "Página única, responsiva",
-        "Formulário de contato ou WhatsApp",
-        "Publicada no seu domínio",
-        "Pronta em até 1 semana",
-      ],
-      en: [
-        "Single responsive page",
-        "Contact form or WhatsApp",
-        "Published on your domain",
-        "Ready within 1 week",
-      ],
+    receives: {
+      pt: "Uma página responsiva, com formulário ou WhatsApp, publicada no seu domínio.",
+      en: "A responsive page with a contact form or WhatsApp, published on your domain.",
     },
+    delivery: { pt: "Pronta em até 1 semana", en: "Ready within 1 week" },
   },
   {
     id: "site",
@@ -105,20 +85,12 @@ export const PACKAGES: ServicePackage[] = [
       pt: "O site da sua empresa, completo e fácil de atualizar.",
       en: "Your company website, complete and easy to update.",
     },
-    includes: {
-      pt: [
-        "Até 5 páginas",
-        "Textos editáveis por você",
-        "SEO básico e Google Analytics",
-        "Domínio e e-mail configurados",
-      ],
-      en: [
-        "Up to 5 pages",
-        "Text you can edit yourself",
-        "Basic SEO and Google Analytics",
-        "Domain and email set up",
-      ],
+    receives: {
+      pt: "Até 5 páginas com textos que você mesmo edita, SEO básico, Google Analytics, domínio e e-mail configurados.",
+      en: "Up to 5 pages with text you edit yourself, basic SEO, Google Analytics, and domain and email set up.",
     },
+    // Mesmo prazo do guia de preços (lib/guide/examples, site institucional)
+    delivery: { pt: "Pronto em 1 a 2 semanas", en: "Ready in 1 to 2 weeks" },
   },
 ];
 

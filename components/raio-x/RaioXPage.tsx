@@ -29,7 +29,6 @@ import ScoreRing from "./ScoreRing";
 
 const STORAGE_KEY = "raiox:v1";
 const FREE_ISSUES = 3;
-const WIDTH = "max-w-3xl";
 
 type Saved = { report: Report; unlocked: boolean; code: string | null; name: string };
 
@@ -255,9 +254,9 @@ export default function RaioXPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader width={WIDTH} />
+      <PageHeader />
 
-      <main className={`mx-auto w-full ${WIDTH} px-4 pb-24 pt-10 sm:pt-16 [@media(max-height:500px)]:pt-6`}>
+      <main className={`mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 [&>*]:max-w-3xl pb-24 pt-10 sm:pt-16 [@media(max-height:500px)]:pt-6`}>
         <h1 className="text-[clamp(2rem,7vw,3.25rem)] font-extrabold leading-[1.02] tracking-[-0.035em]">
           {pt ? "Raio-X grátis do seu site" : "Free website check"}
         </h1>
@@ -268,7 +267,7 @@ export default function RaioXPage() {
         </p>
 
         <form onSubmit={analyze} className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <label className="flex h-14 w-full items-center gap-3 rounded-xl sm:flex-1 border border-outline-variant bg-surface px-4 transition focus-within:border-on-surface focus-within:ring-2 focus-within:ring-on-surface/10">
+          <label className="flex h-14 w-full items-center gap-3 sm:flex-1 border border-outline-variant bg-surface px-4 transition focus-within:border-on-surface focus-within:ring-2 focus-within:ring-on-surface/10">
             <Globe size={18} className="shrink-0 text-on-surface-variant" />
             <span className="sr-only">{pt ? "Endereço do site" : "Website address"}</span>
             <input
@@ -287,7 +286,7 @@ export default function RaioXPage() {
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="btn btn-filled h-14 shrink-0 rounded-xl px-6 text-base"
+            className="btn btn-filled h-14 shrink-0 rounded-none px-6 text-base"
           >
             <span className="inline-flex items-center gap-2">
               {loading ? <Loader2 size={18} className="animate-spin" /> : <ScanSearch size={18} />}
@@ -302,7 +301,7 @@ export default function RaioXPage() {
         </p>
 
         {phase.kind === "error" && (
-          <p role="alert" className="mt-5 rounded-xl border border-outline-variant bg-surface-low p-4 text-sm leading-relaxed">
+          <p role="alert" className="mt-5 border border-outline-variant bg-surface-low p-4 text-sm leading-relaxed">
             {phase.message}
           </p>
         )}
@@ -337,7 +336,7 @@ function Analyzing({ pt, url }: { pt: boolean; url: string }) {
   }, [steps.length]);
 
   return (
-    <div role="status" aria-live="polite" className="mt-10 rounded-2xl border border-outline-variant p-5 sm:p-6">
+    <div role="status" aria-live="polite" className="mt-10 border border-outline-variant p-5 sm:p-6">
       <p className="truncate font-mono text-xs text-on-surface-variant">{displayUrl(url)}</p>
       <p className="mt-2 text-lg font-semibold">{steps[step]}...</p>
       <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-on-surface/[0.08]">
@@ -362,9 +361,9 @@ function Analyzing({ pt, url }: { pt: boolean; url: string }) {
 function IssueCard({ issue, pt, showFix }: { issue: Issue; pt: boolean; showFix: boolean }) {
   const imp = IMPACT_LABEL[issue.impact];
   return (
-    <li className="rounded-xl border border-outline-variant p-4 sm:p-5">
+    <li className="border border-outline-variant p-4 sm:p-5">
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-2.5 py-0.5 text-[0.75rem] font-semibold uppercase tracking-[0.08em] ${imp.tone}`}>
+        <span className={`rounded-full px-2.5 py-0.5 text-[0.75rem] font-semibold ${imp.tone}`}>
           {pt ? imp.pt : imp.en}
         </span>
         <span className="text-xs text-on-surface-variant">{CAT_LABEL[issue.cat][pt ? "pt" : "en"]}</span>
@@ -526,7 +525,7 @@ function Offer({ pt, report, code, name }: { pt: boolean; report: Report; code: 
       {pkgs.length > 0 && (
         <ul className="mt-6 grid gap-3 sm:grid-cols-2">
           {pkgs.map((p) => (
-            <li key={p.id} className="rounded-xl border border-surface/15 p-4">
+            <li key={p.id} className="border border-surface/15 p-4">
               <p className="font-semibold">{p.name[lang]}</p>
               <p className="mt-1 text-sm text-surface/70">{p.summary[lang]}</p>
               <p className="mt-3 text-xl font-extrabold">{brl(p.price)}</p>
@@ -540,14 +539,14 @@ function Offer({ pt, report, code, name }: { pt: boolean; report: Report; code: 
           href={wa}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-12 items-center gap-2 rounded-lg bg-[#25D366] px-5 font-semibold text-white transition hover:brightness-95"
+          className="inline-flex h-12 items-center gap-2 bg-surface px-5 font-semibold text-on-surface transition-opacity hover:opacity-90"
         >
           <WhatsappIcon size={18} />
           {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}
         </a>
         <Link
           href="/servicos"
-          className="inline-flex h-12 items-center gap-2 rounded-lg border border-surface/25 px-5 font-semibold transition hover:bg-surface/10"
+          className="inline-flex h-12 items-center gap-2 border border-surface/25 px-5 font-semibold transition hover:bg-surface/10"
         >
           {pt ? "Ver serviços e preços" : "See services & pricing"}
           <ArrowRight size={17} />

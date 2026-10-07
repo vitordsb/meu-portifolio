@@ -17,12 +17,20 @@ type L10n = { pt: string; en: string };
 export type ProductKind = "web" | "app" | "site";
 
 export type CompanyProduct = {
+  /** Chave em lib/project-shots (prints do mockup de argila). */
+  slug?: string;
   title: string;
   kind: ProductKind;
   /** Link público. `null` = produto privado (aparece com cadeado). */
   link: string | null;
   /** Imagem em /public. `null` = sem print público. */
   cover: string | null;
+};
+
+/** Canais públicos do cliente (tirados do site dele). Sem link = não aparece. */
+export type CompanyLink = {
+  kind: "site" | "instagram" | "youtube" | "tiktok" | "facebook" | "linkedin" | "whatsapp";
+  url: string;
 };
 
 export type Company = {
@@ -34,12 +42,20 @@ export type Company = {
   sector: L10n;
   /** O que a empresa é. Sem stack: tecnologia mora em Especializações. */
   about: L10n;
-  /** O que EU fiz lá. Sem nome de tecnologia: o card fala de entrega. */
+  /** Título da linha editorial: a história do projeto numa frase (problema
+   *  e saída), como os cases do apparicio.com. Sem número que não seja real. */
+  headline?: L10n;
+  /** A situação do cliente antes: o card abre pelo problema (06/out/2026). */
+  problem?: L10n;
+  /** O que a gente fez (voz da empresa). Sem nome de tecnologia: o card fala
+   *  de negócio, e a stack de cliente costuma ser privada. */
   role: L10n;
   /** Resultado mensurável, só se for real. Vazio = não aparece. */
   result?: L10n;
   period: string;
   products: CompanyProduct[];
+  /** Site institucional, redes e contato do cliente, na coluna de links. */
+  links?: CompanyLink[];
 };
 
 export const COMPANIES: Company[] = [
@@ -52,13 +68,29 @@ export const COMPANIES: Company[] = [
       pt: "Plataforma de criação e venda de infoprodutos, com checkout próprio, painel do produtor e programa de afiliados.",
       en: "Platform for creating and selling digital products, with its own checkout, producer dashboard and affiliate program.",
     },
+    headline: {
+      pt: "Checkouts que o próprio produtor edita, pra perder menos venda no último passo.",
+      en: "Checkouts creators edit themselves, to lose fewer sales at the last step.",
+    },
+    problem: {
+      pt: "Quem vende curso e produto digital perde venda a cada passo complicado no pagamento, e o produtor precisa enxergar suas vendas e seus afiliados sem depender de planilha.",
+      en: "Creators selling courses and digital products lose sales at every confusing checkout step, and they need to see sales and affiliates without spreadsheets.",
+    },
     role: {
-      pt: "Front-end do painel do produtor, da jornada do afiliado e dos checkouts editáveis, com foco em conversão.",
-      en: "Front-end for the producer dashboard, the affiliate journey and the editable checkouts, focused on conversion.",
+      pt: "O painel do produtor, a jornada do afiliado e os checkouts que o próprio produtor edita, pensados pra vender mais.",
+      en: "The creator dashboard, the affiliate journey and checkouts the creator can edit, built to sell more.",
     },
     period: "Jun/2026 - Hoje",
+    links: [
+      { kind: "site", url: "https://zuptos.com.br" },
+      { kind: "instagram", url: "https://www.instagram.com/zuptos/" },
+      { kind: "youtube", url: "https://www.youtube.com/@Zuptos" },
+      { kind: "tiktok", url: "https://www.tiktok.com/@zuptos.com.br" },
+      { kind: "facebook", url: "https://www.facebook.com/zuptos.com.br/" },
+    ],
     products: [
       {
+        slug: "zuptos",
         title: "Zuptos",
         kind: "web",
         link: "https://app.zuptos.com.br",
@@ -75,19 +107,33 @@ export const COMPANIES: Company[] = [
       pt: "Mesa proprietária de trading. Os traders contratam planos e acompanham certificados, benefícios, financeiro e a academy numa área de membros.",
       en: "Proprietary trading firm. Traders subscribe to plans and follow certificates, benefits, payouts and the academy in a members area.",
     },
+    headline: {
+      pt: "Plano, certificados, pagamentos e cursos do trader numa área só, em vez de espalhados.",
+      en: "Plans, certificates, payouts and courses in one place for traders, instead of scattered.",
+    },
+    problem: {
+      pt: "Os traders acompanhavam plano, certificados, pagamentos e cursos em lugares diferentes, e cada dúvida virava mensagem pro suporte.",
+      en: "Traders tracked plans, certificates, payouts and courses in different places, and every question turned into a support message.",
+    },
     role: {
-      pt: "Área de membros de ponta a ponta: da interface à API, com planos, certificados, financeiro e academy.",
-      en: "End-to-end members area: from interface to API, with plans, certificates, payouts and academy.",
+      pt: "Uma área de membros única, onde o trader vê tudo do próprio plano, do desenho das telas ao funcionamento por trás.",
+      en: "A single members area where traders see everything about their plan, from screen design to everything behind it.",
     },
     period: "Abr/2026 - Hoje",
+    links: [
+      { kind: "instagram", url: "https://www.instagram.com/mtcprop/" },
+      { kind: "whatsapp", url: "https://wa.me/message/MIG7GAAXP7J6K1" },
+    ],
     products: [
       {
+        slug: "mtcprop-members",
         title: "Área de Membros",
         kind: "web",
         link: "https://app.mtcprop.com.br",
         cover: "/projects/mtcprop-members.png",
       },
       {
+        slug: "mtcprop-site",
         title: "Site",
         kind: "site",
         link: "https://mtcprop.com.br",
@@ -104,19 +150,30 @@ export const COMPANIES: Company[] = [
       pt: "Plataforma que formaliza a relação entre arquitetos e clientes: propostas, contratos em PDF, comunicação e pagamentos num lugar só, na web e no celular.",
       en: "Platform that formalizes the relationship between architects and clients: proposals, PDF contracts, messaging and payments in one place, on web and mobile.",
     },
+    headline: {
+      pt: "De acordo na conversa a contrato assinado e pagamento combinado, pra arquitetos.",
+      en: "From verbal agreements to signed contracts and agreed payments, for architects.",
+    },
+    problem: {
+      pt: "Arquitetos fechavam projetos na conversa, sem contrato, e tinham dificuldade de cobrar e de organizar a relação com o cliente.",
+      en: "Architects closed projects verbally, without contracts, and struggled to get paid and keep the client relationship organized.",
+    },
     role: {
-      pt: "Engenharia de ponta a ponta: arquitetura, front-end web, app mobile e back-end (API Node + MySQL), com autenticação, propostas e contratos em PDF, deploy em Docker e o app na loja.",
-      en: "End-to-end engineering: architecture, web front-end, mobile app and back-end (Node API + MySQL), with auth, PDF proposals and contracts, Docker deploys and the app in the store.",
+      pt: "A plataforma inteira, no computador e no celular: propostas, contratos, conversas e pagamentos num lugar só, com o app publicado na loja.",
+      en: "The whole platform, on desktop and mobile: proposals, contracts, messages and payments in one place, with the app published in the store.",
     },
     period: "Abr/2025 - Abr/2026",
+    links: [{ kind: "whatsapp", url: "https://wa.me/message/WYONYONWQG5XG1" }],
     products: [
       {
+        slug: "arqdoor",
         title: "ArqDoor",
         kind: "web",
         link: "https://arqdoor.com",
         cover: "/projects/arqdoor-web.jpg",
       },
       {
+        slug: "arqdoor-mobile",
         title: "ArqDoor Mobile",
         kind: "app",
         link: "https://play.google.com/store/apps/details?id=com.arqdoor.app&hl=pt_BR",
@@ -133,19 +190,29 @@ export const COMPANIES: Company[] = [
       pt: "Fabricante de equipamentos eletrônicos de segurança, como alarmes, portões e fechaduras, com plataforma IoT própria pra controle remoto.",
       en: "Manufacturer of electronic security equipment such as alarms, gates and locks, with its own IoT platform for remote control.",
     },
+    headline: {
+      pt: "Alarmes e portões controlados à distância, e os processos internos fora do papel.",
+      en: "Alarms and gates controlled remotely, and internal processes off paper.",
+    },
+    problem: {
+      pt: "O fabricante precisava que os clientes controlassem alarmes e portões à distância, e os processos internos ainda dependiam de controles manuais.",
+      en: "The manufacturer needed customers to control alarms and gates remotely, and internal processes still relied on manual controls.",
+    },
     role: {
-      pt: "Full-stack: sistemas internos, site institucional e a estruturação da plataforma IoT, do app ao servidor.",
-      en: "Full-stack: internal systems, the company website and the IoT platform structure, from app to server.",
+      pt: "Os sistemas internos, o site da empresa e a estrutura da plataforma de controle à distância, do aplicativo ao servidor.",
+      en: "The internal systems, the company website and the structure of the remote-control platform, from the app to the server.",
     },
     period: "Jan/2022 - Dez/2023",
     products: [
       {
+        slug: "egp-iot",
         title: "Plataforma IoT de Segurança",
         kind: "app",
-        link: null,
+        link: "https://play.google.com/store/apps/details?id=br.com.egp_app&hl=pt_BR",
         cover: null,
       },
       {
+        slug: "egp-industria",
         title: "Site",
         kind: "site",
         link: "https://www.grupoegp.com.br",

@@ -95,7 +95,7 @@ Formato do JSON (exemplo):
 
 Campos:
 - resumo: 1 ou 2 frases, no idioma do cliente, descrevendo o projeto.
-- tipo: um de "landing", "site", "sistema_web", "app_mobile", "ecommerce", "saas", "outro".
+- tipo: um de "landing", "site", "sistema_web", "app_mobile", "saas", "outro". Loja virtual não está entre os serviços: se o cliente quer vender pela internet (catálogo, carrinho, pedidos, pagamento), use "sistema_web", porque vira um sistema sob medida.
 - plataformas.web / plataformas.mobile: o que o cliente precisa. App de celular = mobile true.
 - design: "pronto" (já tem layout/Figma), "referencias" (tem identidade visual ou exemplos), "do_zero" (nada definido ou não disse).
 - funcionalidades: as funcionalidades de negócio que o cliente pediu ou que são claramente necessárias. complexidade: "simples" (tela ou CRUD básico), "media" (regras de negócio, fluxos com etapas), "complexa" (tempo real, algoritmos, muita regra).

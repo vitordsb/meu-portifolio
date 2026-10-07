@@ -7,6 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 import PageHeader from "./PageHeader";
+import AfterPayment from "./AfterPayment";
 
 /**
  * Volta do checkout do Asaas. Chegar aqui NÃO prova que pagou (qualquer um
@@ -28,30 +29,28 @@ export default function ThanksPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader width="max-w-xl" />
+      <PageHeader />
 
-      <main className="mx-auto w-full max-w-xl px-4 pb-20 pt-14 sm:pt-20 [@media(max-height:500px)]:pt-6">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 [&>*]:max-w-xl pb-20 pt-14 sm:pt-20 [@media(max-height:500px)]:pt-6">
         <CheckCircle2 size={44} strokeWidth={1.75} className="text-[#25D366]" />
         <h1 className="mt-5 text-[clamp(2rem,6vw,2.75rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
           {pt ? "Pagamento enviado!" : "Payment sent!"}
         </h1>
         {code && (
-          <p className="mt-2 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
-            {pt ? "Pedido" : "Order"} #{code}
+          <p className="mt-2 text-sm text-on-surface-variant">
+            {pt ? "Pedido" : "Order"} <span className="font-mono">#{code}</span>
           </p>
         )}
-        <p className="mt-4 text-base leading-relaxed text-on-surface-variant">
-          {pt
-            ? "Assim que o Asaas confirmar, você recebe a confirmação por e-mail. Pix confirma na hora; cartão, em alguns minutos. Já já a gente te chama pra combinar o início."
-            : "As soon as Asaas confirms it, you'll get a confirmation by email. Pix confirms instantly; card, within minutes. We'll reach out soon to plan the start."}
-        </p>
+        <div className="mt-6">
+          <AfterPayment title={pt ? "O que acontece agora" : "What happens now"} />
+        </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
           <a
             href={`${SOCIALS.whatsapp}?text=${encodeURIComponent(text)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn h-12 rounded-lg bg-[#25D366] px-6 text-base text-white"
+            className="btn btn-outlined h-12 rounded-none px-6 text-base"
           >
             <span className="inline-flex items-center gap-2">
               <WhatsappIcon size={18} />

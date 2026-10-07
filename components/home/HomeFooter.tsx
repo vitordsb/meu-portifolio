@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { MessageCircle, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
 import { BRAND, CNPJ } from "@/lib/site";
 import { WORK_LINKS, l } from "@/lib/deck-content";
 import { whatsappHref } from "@/lib/home-links";
@@ -10,7 +12,9 @@ import { FRAME, Reveal } from "./ui";
 
 /** Convite final + rodapé de empresa (marca, CNPJ, contato, links). */
 export default function HomeFooter() {
-  const { language } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
+  const { theme, cycleTheme } = useTheme();
+  const font = useFontScale();
   const pt = language === "pt";
   const year = new Date().getFullYear();
 
@@ -24,13 +28,13 @@ export default function HomeFooter() {
             </h2>
             <p className="mt-4 max-w-xl text-lg opacity-75">
               {pt
-                ? "Faça o orçamento grátis ou chame no WhatsApp. A resposta vem de quem vai desenvolver."
-                : "Get a free quote or message us on WhatsApp. The reply comes from the person who will build it."}
+                ? "Cada semana com site lento ou pedido perdido é cliente indo pro concorrente. Faça o orçamento grátis ou chame no WhatsApp."
+                : "Every week with a slow site or lost orders is customers going to a competitor. Get a free quote or message us on WhatsApp."}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/orcamento"
-                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-xl bg-surface px-7 py-3 text-center text-base font-semibold text-on-surface transition-opacity hover:opacity-90"
+                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-none bg-surface px-7 py-3 text-center text-base font-semibold text-on-surface transition-opacity hover:opacity-90"
               >
                 <Sparkles size={18} className="shrink-0" />
                 {pt ? "Orçamento grátis em 2 min" : "Free quote in 2 min"}
@@ -39,7 +43,7 @@ export default function HomeFooter() {
                 href={whatsappHref(pt)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-xl border border-surface/30 px-7 py-3 text-center text-base font-semibold transition-colors hover:bg-surface/10"
+                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-none border border-surface/30 px-7 py-3 text-center text-base font-semibold transition-colors hover:bg-surface/10"
               >
                 <MessageCircle size={18} className="shrink-0" />
                 {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}
@@ -96,7 +100,17 @@ export default function HomeFooter() {
           <p>
             © {year} {BRAND.name}. {pt ? "Todos os direitos reservados." : "All rights reserved."}
           </p>
-          <p className="flex gap-5">
+          <p className="flex flex-wrap gap-x-5 gap-y-2">
+            {/* Letra, tema e idioma também aqui (no topo ficam tema e idioma) */}
+            <button type="button" onClick={font.cycle} className="hover:underline">
+              {pt ? "Tamanho da letra" : "Text size"}: {FONT_LABELS[language][font.index]}
+            </button>
+            <button type="button" onClick={cycleTheme} className="hover:underline">
+              {t("common.theme.label")}: {t(`common.theme.${theme}`)}
+            </button>
+            <button type="button" onClick={() => setLanguage(pt ? "en" : "pt")} className="hover:underline">
+              {pt ? "English" : "Português"}
+            </button>
             <Link href="/privacidade" className="hover:underline">
               {pt ? "Política de Privacidade" : "Privacy Policy"}
             </Link>

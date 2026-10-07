@@ -777,19 +777,19 @@
     font-weight: 500;
     color: var(--on-surface);
   }
+  /* Sublinhado monocromático (Vitor, 07/out/2026: sem cor viva) */
   .link-underline::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0.6rem;
-    height: 2px;
-    background: var(--accent);
-    transform-origin: left;
-    transition: height var(--dur-short) var(--ease-standard),
-                transform var(--dur-medium) var(--ease-emphasized);
+    bottom: 0.65rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.45;
+    transition: opacity var(--dur-short) var(--ease-standard);
   }
-  .link-underline:hover::after { height: 4px; }
+  .link-underline:hover::after { opacity: 1; }
 }
 
 /* Busca da home: o convite é o texto sendo digitado, em tons neutros. No

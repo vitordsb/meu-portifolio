@@ -1,35 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import FontSizeButton from "@/components/a11y/FontSizeButton";
-import { useLanguage } from "@/contexts/LanguageContext";
+import TopBar from "@/components/home/TopBar";
 
 /**
- * Topo das páginas de compra (/servicos, /pagar, /pagamento/obrigado): só o
- * voltar pra home e o botão de tamanho da letra. Mesmo desenho do /orcamento.
+ * Topo das páginas internas (/servicos, /pagar, /quanto-custa, /raio-x,
+ * jurídicas): a mesma barra da home, na mesma largura, pra o site inteiro ter
+ * um topo só (marca, sessões, busca, tema e idioma com texto).
  */
-export default function PageHeader({
-  width = "max-w-5xl",
-}: {
-  /** Mesma largura do conteúdo, pra o topo alinhar com ele. */
-  width?: string;
-}) {
-  const { language } = useLanguage();
-  return (
-    <header className="border-b border-outline-variant">
-      <div
-        className={`mx-auto flex h-14 w-full ${width} items-center justify-between gap-4 px-4`}
-      >
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm font-semibold tracking-[-0.01em] transition-opacity hover:opacity-70"
-        >
-          <ArrowLeft size={16} />
-          {language === "pt" ? "Início" : "Home"}
-        </Link>
-        <FontSizeButton />
-      </div>
-    </header>
-  );
+export default function PageHeader() {
+  return <TopBar />;
 }

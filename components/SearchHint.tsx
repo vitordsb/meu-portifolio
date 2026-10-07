@@ -87,7 +87,7 @@ export default function SearchHint({
   expanded = true,
 }: {
   delay?: number;
-  variant?: "hero" | "compact";
+  variant?: "hero" | "compact" | "icon" | "label";
   /** Só no `hero`: barra completa (Início) ou só o atalho (outras sessões). */
   expanded?: boolean;
 }) {
@@ -113,17 +113,33 @@ export default function SearchHint({
     transition: { delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
   };
 
-  if (variant === "hero" && touch) {
+  if (variant === "icon" || (variant === "hero" && touch)) {
     return (
       <motion.button
         type="button"
         onClick={open}
         aria-label={label}
+        title={variant === "icon" ? `${label} (${keys.join(" + ")})` : undefined}
         {...enter}
-        className="search-pulse relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant bg-surface/90 text-on-surface backdrop-blur"
+        className={`${variant === "hero" ? "search-pulse " : ""}relative inline-flex h-11 w-11 items-center justify-center rounded-none border border-outline-variant bg-surface/90 text-on-surface backdrop-blur transition-colors hover:border-on-surface/40`}
       >
         <Search size={18} />
       </motion.button>
+    );
+  }
+
+  // Barra do topo: ícone + palavra, sem atalho (o atalho vai no title)
+  if (variant === "label") {
+    return (
+      <button
+        type="button"
+        onClick={open}
+        title={`${label} (${keys.join(" + ")})`}
+        className="inline-flex h-11 items-center gap-2 border border-outline-variant px-3.5 text-sm font-medium text-on-surface transition-colors hover:border-on-surface/40"
+      >
+        <Search size={16} className="shrink-0" />
+        {pt ? "Pesquisar" : "Search"}
+      </button>
     );
   }
 
@@ -213,7 +229,7 @@ export default function SearchHint({
       onClick={open}
       aria-label={label}
       {...enter}
-      className="inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-outline-variant bg-surface/80 px-2.5 text-xs text-on-surface-variant backdrop-blur transition-colors hover:border-on-surface/30 hover:text-on-surface sm:px-3.5"
+      className="inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-none border border-outline-variant bg-surface/80 px-2.5 text-xs text-on-surface-variant backdrop-blur transition-colors hover:border-on-surface/30 hover:text-on-surface sm:px-3.5"
     >
       <Search size={16} className="shrink-0" />
       {!touch && (

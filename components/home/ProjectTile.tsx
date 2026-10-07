@@ -3,8 +3,9 @@
 import { ArrowUpRight, Lock } from "lucide-react";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import { linkLabelFor, storeOf } from "@/lib/store-links";
+import ClayMockup from "./ClayMockup";
 
-/** Projeto entregue: print (ou letra inicial, sem print), nome, cliente e link. */
+/** Projeto entregue: mockup de argila com os prints, nome, cliente e link. */
 export default function ProjectTile({
   project,
   pt,
@@ -15,12 +16,16 @@ export default function ProjectTile({
   /** Dentro do painel dos serviços: menor. */
   compact?: boolean;
 }) {
-  const { title, client, link, cover } = project;
+  const { title, client, link } = project;
   const store = storeOf(link);
   const linkText = !link
-    ? pt
-      ? "Projeto privado"
-      : "Private project"
+    ? project.offline
+      ? pt
+        ? "Projeto entregue"
+        : "Delivered project"
+      : pt
+        ? "Projeto privado"
+        : "Private project"
     : store
       ? pt
         ? "Ver na loja"
@@ -29,27 +34,17 @@ export default function ProjectTile({
 
   const body = (
     <>
-      <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-surface-high ring-1 ring-outline-variant">
-        {cover ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={cover}
-            alt=""
-            loading="lazy"
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-        ) : (
-          <span className="flex h-full w-full items-center justify-center text-5xl font-extrabold tracking-[-0.04em] text-on-surface/25">
-            {title.charAt(0)}
-          </span>
-        )}
-      </div>
+      <ClayMockup
+        shots={project.shots}
+        label={title}
+        className="ring-1 ring-outline-variant"
+      />
       <div className={`flex items-start justify-between gap-3 ${compact ? "mt-2.5" : "mt-4"}`}>
         <div className="min-w-0">
           <p className={`truncate font-bold tracking-[-0.02em] ${compact ? "text-base" : "text-lg"}`}>{title}</p>
           {client && <p className="truncate text-sm text-on-surface-variant">{client}</p>}
           <p className="mt-1 flex items-center gap-1.5 truncate text-sm text-on-surface-variant">
-            {!link && <Lock size={12} className="shrink-0" />}
+            {!link && !project.offline && <Lock size={12} className="shrink-0" />}
             {linkText}
           </p>
         </div>

@@ -23,8 +23,11 @@ const brl = (n: number) =>
 const byId = Object.fromEntries(GUIDE_EXAMPLES.map((e) => [e.id, e]));
 const landing = byId.landing;
 const site = byId.site;
-const loja = byId.loja;
+const sistema = byId.sistema;
 const app = byId.app;
+
+/** Loja virtual saiu da oferta (Vitor, 06/out/2026): o guia mostra só o que a gente faz. */
+const SHOWN = GUIDE_EXAMPLES.filter((e) => e.id !== "loja");
 
 export const GUIDE_UPDATED = new Intl.DateTimeFormat("pt-BR", {
   month: "long",
@@ -33,7 +36,7 @@ export const GUIDE_UPDATED = new Intl.DateTimeFormat("pt-BR", {
 }).format(new Date());
 
 /** Resposta direta (topo da página e primeira pergunta do FAQ). */
-export const GUIDE_ANSWER = `Uma landing page sai a partir de ${brl(landing.min)} e um site institucional a partir de ${brl(site.min)}. Loja virtual começa em ${brl(loja.min)} e aplicativo de celular em ${brl(app.min)}. O valor final depende do que o projeto precisa fazer, e a maior parte da diferença vem das funcionalidades.`;
+export const GUIDE_ANSWER = `Uma landing page sai a partir de ${brl(landing.min)} e um site institucional a partir de ${brl(site.min)}. Aplicativo de celular começa em ${brl(app.min)} e sistema sob medida em ${brl(sistema.min)}. O valor final depende do que o projeto precisa fazer, e a maior parte da diferença vem das funcionalidades.`;
 
 const FACTORS: { title: string; text: string }[] = [
   {
@@ -97,7 +100,7 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Quanto tempo leva pra ficar pronto?",
-    a: `Uma landing page fica pronta em ${landing.weeksMin} a ${landing.weeksMax} semanas e um site institucional em ${site.weeksMin} a ${site.weeksMax}. Loja virtual e aplicativo levam de ${loja.weeksMin} a ${app.weeksMax} semanas na primeira versão.`,
+    a: `Uma landing page fica pronta em ${landing.weeksMin} a ${landing.weeksMax} semanas e um site institucional em ${site.weeksMin} a ${site.weeksMax}. Aplicativo e sistema sob medida levam de ${Math.min(app.weeksMin, sistema.weeksMin)} a ${Math.max(app.weeksMax, sistema.weeksMax)} semanas na primeira versão.`,
   },
   {
     q: "Dá pra parcelar?",
@@ -113,31 +116,30 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
 ];
 
-const card = "rounded-2xl border border-outline-variant bg-surface-low p-6";
-const label =
-  "font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant";
+// Card de informação é quadrado (regra de forma do site)
+const card = "border border-outline-variant bg-surface-low p-6";
 
 export default function PriceGuide() {
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
       <PageHeader />
 
-      <main className="mx-auto w-full max-w-5xl px-4 pb-24 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-24 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         {/* ── Resposta direta ─────────────────────────────────────────── */}
-        <p className={label}>Guia de preços · atualizado em {GUIDE_UPDATED}</p>
-        <h1 className="mt-3 max-w-3xl text-[clamp(2rem,6vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
+        <h1 className="max-w-3xl text-[clamp(2rem,6vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
           Quanto custa um site ou aplicativo em 2026?
         </h1>
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-on-surface-variant">
           {GUIDE_ANSWER}
         </p>
+        <p className="mt-3 text-sm text-on-surface-variant">Atualizado em {GUIDE_UPDATED}.</p>
         <div
           data-origem="guia-topo"
           className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3"
         >
           <Link
             href="/orcamento"
-            className="btn btn-filled h-12 rounded-lg px-6 text-base"
+            className="btn btn-filled h-12 rounded-none px-6 text-base"
           >
             <span className="inline-flex items-center gap-2">
               <Sparkles size={16} />
@@ -158,12 +160,12 @@ export default function PriceGuide() {
             Quanto custa cada tipo de projeto
           </h2>
           <p className="mt-2 max-w-2xl text-on-surface-variant">
-            Valores de partida da primeira versão, com os critérios que eu uso
-            nos meus projetos. O valor fechado sai depois de entender o seu
+            Valores de partida da primeira versão, com os critérios que a gente
+            usa nos projetos. O valor fechado sai depois de entender o seu
             escopo.
           </p>
           <ul className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {GUIDE_EXAMPLES.map((e) => (
+            {SHOWN.map((e) => (
               <li key={e.id} className={`${card} flex flex-col`}>
                 <h3 className="text-xl font-extrabold tracking-[-0.02em]">
                   {e.title}
@@ -207,7 +209,7 @@ export default function PriceGuide() {
               </div>
               <Link
                 href="/orcamento"
-                className="mt-6 inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-surface px-5 font-semibold text-on-surface"
+                className="mt-6 inline-flex h-12 items-center justify-center gap-2 rounded-none bg-surface px-5 font-semibold text-on-surface"
               >
                 Calcular agora <ArrowRight size={16} />
               </Link>
@@ -290,7 +292,7 @@ export default function PriceGuide() {
         {/* ── Já tem site ─────────────────────────────────────────────── */}
         <section
           data-origem="guia-raiox"
-          className={`${card} mt-16 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between`}
+          className="mt-16 flex flex-col gap-5 border-y border-outline-variant py-8 sm:flex-row sm:items-center sm:justify-between"
         >
           <div className="max-w-xl">
             <h2 className="text-xl font-extrabold tracking-[-0.02em]">
@@ -304,7 +306,7 @@ export default function PriceGuide() {
           </div>
           <Link
             href="/raio-x"
-            className="btn btn-outlined h-12 shrink-0 rounded-lg px-5 text-base"
+            className="btn btn-outlined h-12 shrink-0 rounded-none px-5 text-base"
           >
             <span className="inline-flex items-center gap-2">
               <ScanSearch size={16} />
@@ -353,13 +355,13 @@ export default function PriceGuide() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/orcamento"
-              className="inline-flex h-12 items-center gap-2 rounded-lg bg-surface px-6 font-semibold text-on-surface"
+              className="inline-flex h-12 items-center gap-2 rounded-none bg-surface px-6 font-semibold text-on-surface"
             >
               <Sparkles size={16} /> Orçamento com IA
             </Link>
             <Link
               href="/servicos"
-              className="inline-flex h-12 items-center gap-2 rounded-lg border border-surface/30 px-6 font-semibold"
+              className="inline-flex h-12 items-center gap-2 rounded-none border border-surface/30 px-6 font-semibold"
             >
               Ver pacotes com preço fechado
             </Link>

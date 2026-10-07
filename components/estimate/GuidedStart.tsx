@@ -18,7 +18,6 @@ import {
   Mic,
   Palette,
   PenLine,
-  ShoppingBag,
   ShoppingCart,
   Smartphone,
   Sparkles,
@@ -42,7 +41,24 @@ import { speechErrorText, useSpeech } from "./useSpeech";
 type L = { pt: string; en: string };
 type Option = { id: string; icon: LucideIcon; label: L; hint?: L };
 
+// Do mais complexo ao mais simples, como na home. Loja virtual saiu da
+// oferta (Vitor, 07/out/2026): quem quer vender online cai em "sistema".
 const TYPES: Option[] = [
+  {
+    id: "sistema",
+    icon: LayoutDashboard,
+    label: { pt: "Sistema pra empresa", en: "Business system" },
+    hint: {
+      pt: "Organizar agenda, pedidos, estoque",
+      en: "Organize bookings, orders, stock",
+    },
+  },
+  {
+    id: "app",
+    icon: Smartphone,
+    label: { pt: "Aplicativo de celular", en: "Mobile app" },
+    hint: { pt: "Pra iPhone e Android", en: "For iPhone and Android" },
+  },
   {
     id: "site",
     icon: Globe,
@@ -59,27 +75,6 @@ const TYPES: Option[] = [
     hint: {
       pt: "Uma página pra um produto ou evento",
       en: "One page for a product or event",
-    },
-  },
-  {
-    id: "loja",
-    icon: ShoppingBag,
-    label: { pt: "Loja virtual", en: "Online store" },
-    hint: { pt: "Vender pela internet", en: "Sell online" },
-  },
-  {
-    id: "app",
-    icon: Smartphone,
-    label: { pt: "Aplicativo de celular", en: "Mobile app" },
-    hint: { pt: "Pra iPhone e Android", en: "For iPhone and Android" },
-  },
-  {
-    id: "sistema",
-    icon: LayoutDashboard,
-    label: { pt: "Sistema pra empresa", en: "Business system" },
-    hint: {
-      pt: "Organizar agenda, pedidos, estoque",
-      en: "Organize bookings, orders, stock",
     },
   },
   {
@@ -204,7 +199,7 @@ export function composeMessage(a: Answers, lang: "pt" | "en") {
 }
 
 const tile =
-  "group flex w-full items-center gap-4 rounded-2xl border-2 p-4 text-left transition-colors sm:p-5";
+  "group flex w-full items-center gap-4 border-2 p-4 text-left transition-colors sm:p-5";
 
 export default function GuidedStart({
   lang,
@@ -286,9 +281,9 @@ export default function GuidedStart({
             type="button"
             onClick={() => pick(key, o.id)}
             aria-pressed={on}
-            className={`${tile} min-h-[76px] ${on ? "border-on-surface bg-surface-high" : "border-outline-variant bg-surface-low hover:border-on-surface/50"}`}
+            className={`${tile} min-h-[76px] ${cols === "sm:grid-cols-2" ? "sm:[&:last-child:nth-child(odd)]:col-span-2" : ""} ${on ? "border-on-surface bg-surface-high" : "border-outline-variant bg-surface-low hover:border-on-surface/50"}`}
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-surface text-on-surface">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-surface text-on-surface">
               <o.icon size={26} strokeWidth={1.75} />
             </span>
             <span className="min-w-0">
@@ -370,7 +365,7 @@ export default function GuidedStart({
                           {o.label[lang]}
                         </span>
                         <span
-                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 ${on ? "border-on-surface bg-on-surface text-surface" : "border-outline-variant"}`}
+                          className={`flex h-7 w-7 shrink-0 items-center justify-center border-2 ${on ? "border-on-surface bg-on-surface text-surface" : "border-outline-variant"}`}
                           aria-hidden
                         >
                           {on && <Check size={16} strokeWidth={3} />}
@@ -382,7 +377,7 @@ export default function GuidedStart({
                 <button
                   type="button"
                   onClick={() => go(2)}
-                  className="btn btn-filled mt-6 h-14 w-full rounded-xl text-lg"
+                  className="btn btn-filled mt-6 h-14 w-full rounded-none text-lg"
                 >
                   <span className="inline-flex items-center gap-2">
                     {a.recursos.length
@@ -408,12 +403,12 @@ export default function GuidedStart({
                     type="button"
                     onClick={speech.toggle}
                     aria-pressed={speech.listening}
-                    className={`relative mx-auto flex h-28 w-28 items-center justify-center rounded-full text-surface transition-colors ${speech.listening ? "bg-[#d93025]" : "bg-on-surface"}`}
+                    className={`relative mx-auto flex h-28 w-28 items-center justify-center text-surface transition-colors ${speech.listening ? "bg-[#d93025]" : "bg-on-surface"}`}
                   >
                     {speech.listening && !reduce && (
                       <motion.span
                         aria-hidden
-                        className="absolute inset-0 rounded-full bg-[#d93025]"
+                        className="absolute inset-0 bg-[#d93025]"
                         animate={{ scale: [1, 1.35], opacity: [0.45, 0] }}
                         transition={{
                           duration: 1.2,
@@ -490,13 +485,13 @@ export default function GuidedStart({
                       ? "Ex.: tenho um salão de beleza e quero que as clientes marquem horário pelo celular."
                       : "E.g.: I run a salon and want clients to book from their phone."
                   }
-                  className="mt-2 w-full resize-none rounded-xl border-2 border-outline-variant bg-surface-low p-4 text-lg leading-relaxed outline-none placeholder:text-on-surface-variant focus:border-on-surface/60"
+                  className="mt-2 w-full resize-none border-2 border-outline-variant bg-surface-low p-4 text-lg leading-relaxed outline-none placeholder:text-on-surface-variant focus:border-on-surface/60"
                 />
 
                 <button
                   type="button"
                   onClick={finish}
-                  className="btn btn-filled mt-6 h-14 w-full rounded-xl text-lg"
+                  className="btn btn-filled mt-6 h-14 w-full rounded-none text-lg"
                 >
                   <span className="inline-flex items-center gap-2">
                     <Sparkles size={20} />
@@ -514,7 +509,7 @@ export default function GuidedStart({
           <button
             type="button"
             onClick={() => go(step - 1)}
-            className="inline-flex h-12 items-center gap-1.5 rounded-xl px-3 text-base font-semibold text-on-surface hover:bg-surface-high"
+            className="inline-flex h-12 items-center gap-1.5 px-3 text-base font-semibold text-on-surface hover:bg-surface-high"
           >
             <ChevronLeft size={22} />
             {pt ? "Voltar" : "Back"}
@@ -529,7 +524,7 @@ export default function GuidedStart({
             trackEvent("orcamento_guiado_pular", { passo: step + 1 });
             onWrite();
           }}
-          className="inline-flex h-12 items-center gap-2 rounded-xl px-3 text-base text-on-surface-variant underline-offset-4 hover:text-on-surface hover:underline"
+          className="inline-flex h-12 items-center gap-2 px-3 text-base text-on-surface-variant underline-offset-4 hover:text-on-surface hover:underline"
         >
           <PenLine size={18} />
           {pt ? "Prefiro escrever do meu jeito" : "I'd rather type it myself"}

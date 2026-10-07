@@ -54,14 +54,14 @@ export default function EstimateResult({
   return (
     <section
       aria-label={pt ? "Seu orçamento" : "Your quote"}
-      className="overflow-hidden rounded-2xl border border-outline-variant bg-surface-low"
+      className="overflow-hidden border border-outline-variant bg-surface-low"
     >
       <div className="p-5 sm:p-7">
-        <div className="mb-3 flex items-baseline justify-between gap-3 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
+        <div className="mb-3 flex items-baseline justify-between gap-3 text-sm text-on-surface-variant">
           <span>{pt ? "Primeira versão (MVP)" : "First version (MVP)"}</span>
-          <span className="shrink-0 normal-case tracking-[0.08em]">
+          <span className="shrink-0">
             {pt ? "Pedido" : "Quote"}{" "}
-            <span className="font-semibold text-on-surface">#{code}</span>
+            <span className="font-mono font-semibold text-on-surface">#{code}</span>
           </span>
         </div>
         <p className="text-[clamp(1.75rem,7vw,2.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] tabular-nums">
@@ -81,7 +81,7 @@ export default function EstimateResult({
         </p>
 
         {estimate.team && (
-          <div className="mt-5 rounded-xl border border-outline-variant bg-surface p-4">
+          <div className="mt-5 border border-outline-variant bg-surface p-4">
             <p className="flex items-center gap-2 text-base font-semibold">
               <Users size={18} className="shrink-0" />
               {teamText(estimate.team.size, pt)}
@@ -104,7 +104,7 @@ export default function EstimateResult({
 
         {items.length > 0 && (
           <>
-            <p className="mb-2.5 mt-6 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
+            <p className="mb-2.5 mt-6 text-base font-semibold">
               {pt ? "O que entra no MVP" : "What's in the MVP"}
             </p>
             <ul className="flex flex-wrap gap-2">
@@ -122,14 +122,14 @@ export default function EstimateResult({
 
         {payment.length > 0 && (
           <>
-            <p className="mb-2.5 mt-6 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
+            <p className="mb-2.5 mt-6 text-base font-semibold">
               {pt ? "Formas de pagamento" : "Payment options"}
             </p>
             <ul className="grid gap-2 sm:grid-cols-2">
               {payment.map((p) => (
                 <li
                   key={p.id}
-                  className="rounded-xl border border-outline-variant bg-surface px-4 py-3"
+                  className="border border-outline-variant bg-surface px-4 py-3"
                 >
                   <p className="text-sm font-semibold">
                     {pt ? p.label.pt : p.label.en}
@@ -153,7 +153,7 @@ export default function EstimateResult({
 
         {/* Visível de propósito, não letra miúda: o valor é de partida e
             quem vê isso antes de conversar não se sente enganado depois */}
-        <div className="mt-6 rounded-xl border border-outline-variant bg-surface p-4">
+        <div className="mt-6 border border-outline-variant bg-surface p-4">
           <p className="mb-2 text-sm font-semibold">
             {pt ? "Como esse valor funciona" : "How this price works"}
           </p>
@@ -214,7 +214,7 @@ export default function EstimateResult({
           href={whatsapp}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn h-12 rounded-lg bg-[#25D366] px-6 text-base text-white"
+          className="btn btn-filled h-12 rounded-none px-6 text-base"
         >
           <span className="inline-flex items-center gap-2">
             <WhatsappIcon size={18} />
@@ -225,7 +225,7 @@ export default function EstimateResult({
           <button
             type="button"
             onClick={() => setNegotiating(true)}
-            className="btn btn-outlined h-12 rounded-lg px-5 text-base"
+            className="btn btn-outlined h-12 rounded-none px-5 text-base"
           >
             <span className="inline-flex items-center gap-2">
               <HandCoins size={18} />

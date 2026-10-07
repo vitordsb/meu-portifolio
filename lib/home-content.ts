@@ -19,6 +19,7 @@ type L10n = { pt: string; en: string };
  *  links velhos (/#experiencia, busca, e-mails) continuam caindo no lugar. */
 export const HOME_SECTIONS: { id: string; label: L10n; aliases?: string[] }[] = [
   { id: "inicio", label: { pt: "Início", en: "Home" } },
+  { id: "problemas", label: { pt: "Isso acontece?", en: "Sound familiar?" } },
   { id: "servicos", label: { pt: "Serviços", en: "Services" }, aliases: ["especializacoes", "tecnologias"] },
   { id: "formatos", label: { pt: "Equipe", en: "Team" } },
   { id: "projetos", label: { pt: "Projetos", en: "Projects" }, aliases: ["experiencia", "trajetoria", "cursos"] },
@@ -31,9 +32,10 @@ export const HOME_HERO = {
     pt: "Sites, sistemas e aplicativos para a sua empresa crescer.",
     en: "Websites, systems and apps to help your business grow.",
   },
+  /** Nomeia o aperto do cliente (Jobs to be Done) antes de prometer. */
   lead: {
-    pt: "Do desenho ao ar, com preço combinado antes de começar e atendimento direto com quem desenvolve.",
-    en: "From design to launch, with the price agreed before we start and direct contact with the person who builds it.",
+    pt: "Seu negócio perde cliente com site lento ou pedido perdido no WhatsApp? A gente resolve, com preço combinado antes de começar.",
+    en: "Losing customers to a slow website or orders lost in WhatsApp? We fix it, with the price agreed before we start.",
   },
 };
 
@@ -44,86 +46,130 @@ export const TRUST = [
   { key: "price", label: { pt: "Preço combinado antes", en: "Price agreed upfront" } },
 ] as const;
 
-/** Tipos de projeto. O id é o mesmo de lib/guide/examples (preço e prazo). */
+/** Tipos de projeto. O id é o mesmo de lib/guide/examples (preço e prazo).
+ *  Loja virtual saiu dos cards em 06/out/2026 (pedido do Vitor). */
 export const SERVICE_TYPES: { id: string; title: L10n; text: L10n }[] = [
   {
     id: "landing",
     title: { pt: "Landing page", en: "Landing page" },
-    text: { pt: "Uma página pra vender um produto ou captar contatos.", en: "One page to sell a product or capture leads." },
+    text: { pt: "Anuncia e não recebe contato? Uma página feita pra vender.", en: "Running ads but getting no leads? One page built to sell." },
   },
   {
     id: "site",
     title: { pt: "Site da empresa", en: "Company website" },
-    text: { pt: "Mostre quem você é e seja encontrado no Google.", en: "Show who you are and get found on Google." },
-  },
-  {
-    id: "loja",
-    title: { pt: "Loja virtual", en: "Online store" },
-    text: { pt: "Venda pela internet com Pix e cartão.", en: "Sell online with Pix and card." },
+    text: { pt: "Ninguém te encontra no Google? Um site que mostra quem você é.", en: "Nobody finds you on Google? A site that shows who you are." },
   },
   {
     id: "sistema",
     title: { pt: "Sistema sob medida", en: "Custom system" },
-    text: { pt: "Agenda, pedidos, estoque e relatórios num lugar só.", en: "Bookings, orders, stock and reports in one place." },
+    text: { pt: "Agenda, pedidos e estoque espalhados? Tudo num lugar só.", en: "Bookings, orders and stock all over the place? All in one place." },
   },
   {
     id: "app",
     title: { pt: "Aplicativo de celular", en: "Mobile app" },
-    text: { pt: "Para iPhone e Android, publicado nas lojas.", en: "For iPhone and Android, published in the stores." },
+    text: { pt: "Seus clientes vivem no celular? App pra iPhone e Android.", en: "Your customers live on their phones? An app for iPhone and Android." },
   },
 ];
 
-/** Formatos de contratação: de 1 a 5 pessoas, preço fechado pela equipe. */
+/**
+ * Formatos de contratação: de 1 a 5 pessoas, preço fechado pela equipe.
+ * Sem lista de checks (pedido do Vitor, 06/out/2026): o individual apresenta
+ * o Vitor, a equipe mostra as funções e o projeto completo, o escopo maior.
+ */
 export const ENGAGEMENTS: {
   id: string;
-  kicker: L10n;
   title: L10n;
+  /** Linha logo abaixo do título (nunca acima: regra de 06/out/2026). */
+  subtitle: L10n;
   text: L10n;
-  checks: L10n[];
+  /** Funções da equipe ou partes do escopo, em etiquetas. */
+  tags?: L10n[];
+  /** Card do especialista: mostra a foto e o nome do Vitor. */
+  person?: { name: string; role: L10n };
   featured?: boolean;
 }[] = [
   {
     id: "especialista",
-    kicker: { pt: "1 pessoa no seu time", en: "1 person on your team" },
     title: { pt: "Especialista dedicado", en: "Dedicated specialist" },
-    text: {
-      pt: "Um desenvolvedor dedicado pra destravar o que está parado ou cobrir uma área que falta no seu time.",
-      en: "A dedicated developer to unblock what's stuck or cover a skill your team is missing.",
+    subtitle: { pt: "1 pessoa no seu time", en: "1 person on your team" },
+    person: {
+      name: "Vitor de Souza",
+      role: { pt: "UI/UX designer e engenheiro de software", en: "UI/UX designer and software engineer" },
     },
-    checks: [
-      { pt: "Perfil certo pra necessidade", en: "The right profile for the need" },
-      { pt: "Trabalha no seu ritmo e ferramentas", en: "Works in your flow and tools" },
-      { pt: "Acompanhamento das entregas", en: "Delivery follow-up" },
-    ],
+    text: {
+      pt: "Mais de 5 anos desenhando e construindo produtos digitais. Entra no seu time pra destravar o que está parado ou cobrir o que falta, do design ao código.",
+      en: "5+ years designing and building digital products. Joins your team to unblock what's stuck or cover what's missing, from design to code.",
+    },
   },
   {
     id: "equipe",
     featured: true,
-    kicker: { pt: "De 2 a 5 profissionais", en: "From 2 to 5 professionals" },
     title: { pt: "Equipe sob medida", en: "Tailored team" },
+    subtitle: { pt: "De 2 a 5 profissionais", en: "From 2 to 5 professionals" },
     text: {
-      pt: "Montamos a equipe com desenvolvimento, design, back-end e testes, do tamanho que o projeto pede. Preço fechado pela equipe necessária.",
-      en: "We build the team with development, design, back-end and testing, sized to the project. Fixed price for the team it needs.",
+      pt: "A equipe do tamanho que o projeto pede, com preço fechado pelas pessoas necessárias.",
+      en: "A team sized to the project, with a fixed price for the people it needs.",
     },
-    checks: [
-      { pt: "Equipe ajustável ao projeto", en: "Team adjusted to the project" },
-      { pt: "Prioridades sempre visíveis", en: "Priorities always visible" },
-      { pt: "Entregas curtas com demonstração", en: "Short cycles with demos" },
+    tags: [
+      { pt: "Product Manager", en: "Product Manager" },
+      { pt: "UX Designer", en: "UX Designer" },
+      { pt: "Software Engineer", en: "Software Engineer" },
+      { pt: "Cyber Security", en: "Cyber Security" },
+      { pt: "SEO e marketing", en: "SEO and marketing" },
     ],
   },
   {
     id: "completo",
-    kicker: { pt: "Da ideia ao ar", en: "From idea to launch" },
     title: { pt: "Projeto completo", en: "Full project" },
+    subtitle: { pt: "Um escopo maior, de ponta a ponta", en: "A bigger scope, end to end" },
     text: {
-      pt: "Cuidamos de tudo: entender o problema, desenhar, desenvolver, testar, publicar e evoluir depois do lançamento.",
-      en: "We handle everything: understanding the problem, design, development, testing, launch and evolution.",
+      pt: "A gente assume o produto inteiro: das primeiras decisões à evolução depois do lançamento.",
+      en: "We take on the whole product: from the first decisions to evolving it after launch.",
     },
-    checks: [
-      { pt: "Gestão de ponta a ponta", en: "End-to-end management" },
-      { pt: "Publicação e servidores", en: "Launch and servers" },
-      { pt: "Evolução depois do lançamento", en: "Evolution after launch" },
+    tags: [
+      { pt: "Arquitetura", en: "Architecture" },
+      { pt: "Decisão de produto", en: "Product decisions" },
+      { pt: "Design e pesquisa", en: "Design and research" },
+      { pt: "Desenvolvimento", en: "Development" },
+      { pt: "Manutenção e evolução", en: "Maintenance and evolution" },
     ],
+  },
+];
+
+/**
+ * "Isso acontece com você?": os apertos que trazem o cliente (Jobs to be
+ * Done) e o medo de contratar. Cada um aponta pra saída certa no site.
+ */
+export const PROBLEMS: { id: string; title: L10n; text: L10n; cta: L10n; href: string }[] = [
+  {
+    id: "site",
+    title: { pt: "Seu site não traz clientes", en: "Your website brings no customers" },
+    text: {
+      pt: "Lento no celular, não aparece no Google ou nem existe ainda. O cliente procura e acha o concorrente.",
+      en: "Slow on mobile, missing from Google or not there at all. Customers search and find your competitor.",
+    },
+    cta: { pt: "Fazer o Raio-X grátis", en: "Get the free site check" },
+    href: "/raio-x",
+  },
+  {
+    id: "operacao",
+    title: { pt: "Pedidos e agenda no WhatsApp e na planilha", en: "Orders and bookings in WhatsApp and spreadsheets" },
+    text: {
+      pt: "Informação espalhada, retrabalho e cliente esperando resposta. Quanto mais cresce, mais se perde.",
+      en: "Scattered information, rework and customers waiting for answers. The more you grow, the more you lose.",
+    },
+    cta: { pt: "Ver o que dá pra organizar", en: "See what we can organize" },
+    href: "#servicos",
+  },
+  {
+    id: "medo",
+    title: { pt: "Medo de contratar e se arrepender", en: "Afraid of hiring and regretting it" },
+    text: {
+      pt: "Preço que muda no meio, prazo que estoura e quem faz some. Aqui o valor é combinado antes e você aprova cada etapa.",
+      en: "Prices that change midway, deadlines that slip, developers who vanish. Here the price is agreed upfront and you approve every stage.",
+    },
+    cta: { pt: "Ver como funciona", en: "See how it works" },
+    href: "#como-funciona",
   },
 ];
 

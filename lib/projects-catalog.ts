@@ -1,4 +1,5 @@
 import { allWork } from "./portfolio-data";
+import { OFFLINE_PROJECTS, PROJECT_SHOTS, type ProjectShots } from "./project-shots";
 
 /**
  * Catálogo de projetos entregues da home, por tipo de serviço. Sai de
@@ -18,7 +19,12 @@ export type CatalogProject = {
   client: string;
   type: ProjectType;
   link: string | null;
+  /** Miniatura (print de desktop, ou o de celular se só houver ele). */
   cover: string | null;
+  /** Prints pro mockup de argila. */
+  shots?: ProjectShots;
+  /** Site fora do ar no momento: sem link, mas não é "privado". */
+  offline?: boolean;
 };
 
 /** Tipo de cada trabalho. Projeto novo em allWork sem entrada aqui não aparece. */
@@ -57,8 +63,10 @@ export function buildCatalog(): CatalogProject[] {
       title: w.title,
       client: clientOf(w.company),
       type: TYPE_BY_SLUG[w.slug],
-      link: w.liveLink,
-      cover: w.coverImageUrl,
+      link: OFFLINE_PROJECTS.has(w.slug) ? null : w.liveLink,
+      cover: PROJECT_SHOTS[w.slug]?.desktop ?? PROJECT_SHOTS[w.slug]?.mobile ?? w.coverImageUrl,
+      shots: PROJECT_SHOTS[w.slug],
+      offline: OFFLINE_PROJECTS.has(w.slug) || undefined,
     }))
     // Com imagem primeiro: a vitrine abre pelo que dá pra ver
     .sort((a, b) => Number(!!b.cover) - Number(!!a.cover));

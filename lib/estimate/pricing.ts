@@ -28,6 +28,14 @@ export const PRICING = {
     outro: 20,
   } satisfies Record<Scope["tipo"], number>,
 
+  /**
+   * Piso de horas por tipo (decisão do Vitor, 06/out/2026): sistema sob
+   * medida "a partir de R$ 7.500". 196 h x R$ 45 = R$ 8.820 de centro, e o
+   * mínimo da faixa (85%, arredondado) dá R$ 7.500. SaaS segue o mesmo piso
+   * pra não sair mais barato que um sistema.
+   */
+  minimumHours: { sistema_web: 196, saas: 196 } as Partial<Record<Scope["tipo"], number>>,
+
   /** Horas por funcionalidade, pela complexidade. */
   featureHours: { simples: 4, media: 9, complexa: 18 },
 
@@ -248,6 +256,7 @@ export function priceScope(
   if (scope.plataformas.web && scope.plataformas.mobile) {
     hours *= 1 + p.secondPlatformFactor;
   }
+  hours = Math.max(hours, p.minimumHours[scope.tipo] ?? 0);
 
   const rush = scope.urgente || scope.prazo === "urgente";
   const flexible = !rush && scope.prazo === "flexivel";
