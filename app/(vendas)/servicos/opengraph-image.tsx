@@ -9,7 +9,7 @@ export const contentType = OG_CONTENT_TYPE;
 /** Prévia do link no WhatsApp/LinkedIn (ver lib/og/card.tsx). */
 export default function Image() {
   return ogCard({
-    eyebrow: "Serviços",
+    label: "Serviços",
     title: "Serviços com preço fechado",
     subtitle: "Consultoria, revisão de UI/UX, landing page e site institucional. Pague com Pix ou cartão e a gente começa.",
     cta: "Ver pacotes e preços",

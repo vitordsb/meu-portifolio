@@ -8,7 +8,7 @@ export const contentType = OG_CONTENT_TYPE;
 /** Prévia do link no WhatsApp/LinkedIn (ver lib/og/card.tsx). */
 export default function Image() {
   return ogCard({
-    eyebrow: "Raio-X grátis",
+    label: "Raio-X grátis",
     title: "O que está afastando clientes do seu site?",
     subtitle: "Velocidade no celular, Google, acessibilidade e segurança. Resultado em 30 segundos, com o teste do próprio Google.",
     cta: "Fazer o Raio-X grátis",
