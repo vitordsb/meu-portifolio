@@ -19,6 +19,7 @@ type L10n = { pt: string; en: string };
  *  links velhos (/#experiencia, busca, e-mails) continuam caindo no lugar. */
 export const HOME_SECTIONS: { id: string; label: L10n; aliases?: string[] }[] = [
   { id: "inicio", label: { pt: "Início", en: "Home" } },
+  { id: "problemas", label: { pt: "Isso acontece?", en: "Sound familiar?" } },
   { id: "servicos", label: { pt: "Serviços", en: "Services" }, aliases: ["especializacoes", "tecnologias"] },
   { id: "formatos", label: { pt: "Equipe", en: "Team" } },
   { id: "projetos", label: { pt: "Projetos", en: "Projects" }, aliases: ["experiencia", "trajetoria", "cursos"] },
@@ -31,9 +32,10 @@ export const HOME_HERO = {
     pt: "Sites, sistemas e aplicativos para a sua empresa crescer.",
     en: "Websites, systems and apps to help your business grow.",
   },
+  /** Nomeia o aperto do cliente (Jobs to be Done) antes de prometer. */
   lead: {
-    pt: "Do desenho ao ar, com preço combinado antes de começar e atendimento direto com quem desenvolve.",
-    en: "From design to launch, with the price agreed before we start and direct contact with the person who builds it.",
+    pt: "Seu negócio perde cliente com site lento ou pedido perdido no WhatsApp? A gente resolve, com preço combinado antes de começar.",
+    en: "Losing customers to a slow website or orders lost in WhatsApp? We fix it, with the price agreed before we start.",
   },
 };
 
@@ -49,27 +51,27 @@ export const SERVICE_TYPES: { id: string; title: L10n; text: L10n }[] = [
   {
     id: "landing",
     title: { pt: "Landing page", en: "Landing page" },
-    text: { pt: "Uma página pra vender um produto ou captar contatos.", en: "One page to sell a product or capture leads." },
+    text: { pt: "Anuncia e não recebe contato? Uma página feita pra vender.", en: "Running ads but getting no leads? One page built to sell." },
   },
   {
     id: "site",
     title: { pt: "Site da empresa", en: "Company website" },
-    text: { pt: "Mostre quem você é e seja encontrado no Google.", en: "Show who you are and get found on Google." },
+    text: { pt: "Ninguém te encontra no Google? Um site que mostra quem você é.", en: "Nobody finds you on Google? A site that shows who you are." },
   },
   {
     id: "loja",
     title: { pt: "Loja virtual", en: "Online store" },
-    text: { pt: "Venda pela internet com Pix e cartão.", en: "Sell online with Pix and card." },
+    text: { pt: "Quer vender sem depender de marketplace? Loja com Pix e cartão.", en: "Want to sell without relying on marketplaces? A store with Pix and card." },
   },
   {
     id: "sistema",
     title: { pt: "Sistema sob medida", en: "Custom system" },
-    text: { pt: "Agenda, pedidos, estoque e relatórios num lugar só.", en: "Bookings, orders, stock and reports in one place." },
+    text: { pt: "Agenda, pedidos e estoque espalhados? Tudo num lugar só.", en: "Bookings, orders and stock all over the place? All in one place." },
   },
   {
     id: "app",
     title: { pt: "Aplicativo de celular", en: "Mobile app" },
-    text: { pt: "Para iPhone e Android, publicado nas lojas.", en: "For iPhone and Android, published in the stores." },
+    text: { pt: "Seus clientes vivem no celular? App pra iPhone e Android.", en: "Your customers live on their phones? An app for iPhone and Android." },
   },
 ];
 
@@ -124,6 +126,43 @@ export const ENGAGEMENTS: {
       { pt: "Publicação e servidores", en: "Launch and servers" },
       { pt: "Evolução depois do lançamento", en: "Evolution after launch" },
     ],
+  },
+];
+
+/**
+ * "Isso acontece com você?": os apertos que trazem o cliente (Jobs to be
+ * Done) e o medo de contratar. Cada um aponta pra saída certa no site.
+ */
+export const PROBLEMS: { id: string; title: L10n; text: L10n; cta: L10n; href: string }[] = [
+  {
+    id: "site",
+    title: { pt: "Seu site não traz clientes", en: "Your website brings no customers" },
+    text: {
+      pt: "Lento no celular, não aparece no Google ou nem existe ainda. O cliente procura e acha o concorrente.",
+      en: "Slow on mobile, missing from Google or not there at all. Customers search and find your competitor.",
+    },
+    cta: { pt: "Fazer o Raio-X grátis", en: "Get the free site check" },
+    href: "/raio-x",
+  },
+  {
+    id: "operacao",
+    title: { pt: "Pedidos e agenda no WhatsApp e na planilha", en: "Orders and bookings in WhatsApp and spreadsheets" },
+    text: {
+      pt: "Informação espalhada, retrabalho e cliente esperando resposta. Quanto mais cresce, mais se perde.",
+      en: "Scattered information, rework and customers waiting for answers. The more you grow, the more you lose.",
+    },
+    cta: { pt: "Ver o que dá pra organizar", en: "See what we can organize" },
+    href: "#servicos",
+  },
+  {
+    id: "medo",
+    title: { pt: "Medo de contratar e se arrepender", en: "Afraid of hiring and regretting it" },
+    text: {
+      pt: "Preço que muda no meio, prazo que estoura e quem faz some. Aqui o valor é combinado antes e você aprova cada etapa.",
+      en: "Prices that change midway, deadlines that slip, developers who vanish. Here the price is agreed upfront and you approve every stage.",
+    },
+    cta: { pt: "Ver como funciona", en: "See how it works" },
+    href: "#como-funciona",
   },
 ];
 

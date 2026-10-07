@@ -9,6 +9,7 @@ import {
   House,
   LayoutGrid,
   ListChecks,
+  MessageCircleWarning,
   Sparkles,
   Users,
   type LucideIcon,
@@ -18,6 +19,7 @@ import { HOME_SECTIONS } from "@/lib/home-content";
 import SideRail from "@/components/nav/SideRail";
 import AvatarMenu from "@/components/deck/AvatarMenu";
 import HomeHero from "./HomeHero";
+import HomeProblems from "./HomeProblems";
 import HomeServices, { type StartingPrice } from "./HomeServices";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import HomeProjects from "./HomeProjects";
@@ -29,6 +31,7 @@ import HomeFooter from "./HomeFooter";
 
 const ICONS: Record<string, LucideIcon> = {
   inicio: House,
+  problemas: MessageCircleWarning,
   servicos: LayoutGrid,
   formatos: Users,
   projetos: Briefcase,
@@ -104,6 +107,7 @@ export default function CompanyHome({
 
       <div data-home-scroll className="bg-surface text-on-surface deck-wide:pl-[var(--deck-side)]">
         <HomeHero />
+        <HomeProblems />
         <HomeServices prices={prices} projects={projects} />
         <HomeEngagements />
         <HomeProjects projects={projects} />

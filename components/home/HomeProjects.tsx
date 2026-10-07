@@ -45,8 +45,8 @@ export default function HomeProjects({ projects }: { projects: CatalogProject[] 
           title={pt ? "Projetos entregues" : "Delivered projects"}
           lead={
             pt
-              ? "Tudo no ar e em uso pelos clientes. Escolha o tipo de projeto."
-              : "All live and used by our clients. Pick a project type."
+              ? "O problema de cada cliente e o que a gente fez. Tudo no ar e em uso."
+              : "Each client's problem and what we did. All live and in use."
           }
         />
 

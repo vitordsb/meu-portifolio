@@ -16,6 +16,11 @@ export default function HomeProcess() {
     <Section id="como-funciona">
       <SectionHeader
         title={pt ? "Do primeiro contato ao site no ar" : "From first contact to launch"}
+        lead={
+          pt
+            ? "Sem preço que muda no meio, sem prazo que estoura e sem ninguém sumir: você sabe o que vai acontecer em cada passo."
+            : "No price changes midway, no slipping deadlines, nobody vanishing: you know what happens at every step."
+        }
       />
 
       <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

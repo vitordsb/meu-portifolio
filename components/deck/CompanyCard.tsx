@@ -186,10 +186,8 @@ export default function CompanyCard({
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 font-mono text-[0.75rem] leading-snug text-on-surface-variant">
-          <span className="uppercase tracking-[0.12em]">
-            {company.sector[language]}
-          </span>
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-sm text-on-surface-variant">
+          <span>{company.sector[language]}</span>
           {period && <span className="shrink-0">{period}</span>}
         </div>
 
@@ -211,26 +209,29 @@ export default function CompanyCard({
           </h3>
         </div>
 
-        <p className="mb-5 text-sm leading-relaxed text-on-surface-variant md:text-base">
-          {company.about[language]}
-        </p>
-
-        {/* O que EU fiz lá: é isso que vende "Crie um software" */}
-        <dl className="mb-6 flex-1 space-y-3">
+        {/* História curta: o problema do cliente, o que a gente fez e, se
+            houver número real, o resultado. Sem nome de tecnologia. */}
+        <dl className="mb-6 flex-1 space-y-4">
           <div>
-            <dt className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.12em] text-on-surface-variant">
-              {pt ? "O que foi entregue" : "What was delivered"}
+            <dt className="mb-1 text-sm font-semibold text-on-surface-variant">
+              {pt ? "O problema" : "The problem"}
             </dt>
-            <dd className="text-sm leading-relaxed md:text-base">
-              {company.role[language]}
+            <dd className="text-base leading-relaxed">
+              {(company.problem ?? company.about)[language]}
             </dd>
+          </div>
+          <div>
+            <dt className="mb-1 text-sm font-semibold text-on-surface-variant">
+              {pt ? "O que a gente fez" : "What we did"}
+            </dt>
+            <dd className="text-base leading-relaxed">{company.role[language]}</dd>
           </div>
           {company.result && (
             <div>
-              <dt className="mb-1 font-mono text-[0.75rem] uppercase tracking-[0.12em] text-on-surface-variant">
+              <dt className="mb-1 text-sm font-semibold text-on-surface-variant">
                 {pt ? "Resultado" : "Result"}
               </dt>
-              <dd className="text-sm font-semibold leading-relaxed md:text-base">
+              <dd className="text-base font-semibold leading-relaxed">
                 {company.result[language]}
               </dd>
             </div>

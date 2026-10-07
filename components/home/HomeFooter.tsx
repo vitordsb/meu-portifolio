@@ -24,8 +24,8 @@ export default function HomeFooter() {
             </h2>
             <p className="mt-4 max-w-xl text-lg opacity-75">
               {pt
-                ? "Faça o orçamento grátis ou chame no WhatsApp. A resposta vem de quem vai desenvolver."
-                : "Get a free quote or message us on WhatsApp. The reply comes from the person who will build it."}
+                ? "Cada semana com site lento ou pedido perdido é cliente indo pro concorrente. Faça o orçamento grátis ou chame no WhatsApp."
+                : "Every week with a slow site or lost orders is customers going to a competitor. Get a free quote or message us on WhatsApp."}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
