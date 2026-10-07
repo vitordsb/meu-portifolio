@@ -37,6 +37,20 @@ function Screen({ src, focus, label }: { src?: string; focus?: string; label: st
   );
 }
 
+function Phone({ src, focus, label }: { src?: string; focus?: string; label: string }) {
+  return (
+    <div className="relative h-full w-full rounded-[17%/7.8%] p-[4%]" style={{ background: CLAY, boxShadow: SHADOW }}>
+      <div className="h-full w-full overflow-hidden rounded-[13%/6%] bg-neutral-200">
+        <Screen src={src} focus={focus} label={label} />
+      </div>
+      <span
+        className="absolute left-1/2 top-[3.2%] aspect-[4/1] w-[30%] -translate-x-1/2 rounded-full"
+        style={{ background: CLAY_SHADE }}
+      />
+    </div>
+  );
+}
+
 export default function ClayMockup({
   shots,
   label,
@@ -55,6 +69,7 @@ export default function ClayMockup({
 }) {
   const desktop = shots?.desktop;
   const mobile = shots?.mobile;
+  const mobileAlt = shots?.mobileAlt;
   const showLaptop = Boolean(desktop) || !mobile;
   const both = showLaptop && Boolean(mobile);
 
@@ -99,6 +114,16 @@ export default function ClayMockup({
         </div>
       )}
 
+      {/* App só de celular com duas telas: dois aparelhos lado a lado */}
+      {mobileAlt && !showLaptop && (
+        <div
+          aria-hidden
+          className="absolute bottom-[11%] right-[52%] aspect-[9/19.5] h-[78%] transition-transform duration-500 group-hover:-translate-y-[1.5%]"
+        >
+          <Phone src={mobileAlt} label={label} />
+        </div>
+      )}
+
       {mobile && (
         <div
           aria-hidden
@@ -107,18 +132,12 @@ export default function ClayMockup({
               ? tallOnMobile
                 ? "bottom-[5%] right-[4%] h-[60%] sm:bottom-[7%] sm:right-[8%] sm:h-[76%]"
                 : "bottom-[7%] right-[8%] h-[76%]"
-              : "bottom-[7%] left-1/2 h-[86%] -translate-x-1/2"
+              : mobileAlt
+                ? "bottom-[6%] left-[50%] h-[86%]"
+                : "bottom-[7%] left-1/2 h-[86%] -translate-x-1/2"
           }`}
         >
-          <div className="relative h-full w-full rounded-[17%/7.8%] p-[4%]" style={{ background: CLAY, boxShadow: SHADOW }}>
-            <div className="h-full w-full overflow-hidden rounded-[13%/6%] bg-neutral-200">
-              <Screen src={mobile} focus={shots?.mobileFocus} label={label} />
-            </div>
-            <span
-              className="absolute left-1/2 top-[3.2%] aspect-[4/1] w-[30%] -translate-x-1/2 rounded-full"
-              style={{ background: CLAY_SHADE }}
-            />
-          </div>
+          <Phone src={mobile} focus={shots?.mobileFocus} label={label} />
         </div>
       )}
     </div>
