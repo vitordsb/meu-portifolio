@@ -17,7 +17,7 @@ export const contentType = OG_CONTENT_TYPE;
 /** Prévia do link no WhatsApp/LinkedIn (ver lib/og/card.tsx). */
 export default function Image() {
   return ogCard({
-    eyebrow: "Guia de preços 2026",
+    label: "Guia de preços 2026",
     title: "Quanto custa um site ou aplicativo em 2026?",
     subtitle: `Landing page a partir de ${min("landing")} e site institucional a partir de ${min("site")}. Veja o que muda o preço.`,
     cta: "Ler o guia",

@@ -9,7 +9,7 @@ export const contentType = OG_CONTENT_TYPE;
 /** Prévia do link de pagamento que vai pro cliente (ver lib/og/card.tsx). */
 export default function Image() {
   return ogCard({
-    eyebrow: "Pagamento seguro",
+    label: "Pagamento seguro",
     title: "Pagar pedido",
     subtitle: "Pague o pedido que combinamos com Pix, boleto ou cartão, direto no site.",
     cta: "Pagar agora",
