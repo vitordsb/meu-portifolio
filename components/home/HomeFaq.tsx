@@ -64,7 +64,7 @@ export default function HomeFaq({ prices }: { prices: Record<string, StartingPri
 
   return (
     <Section id="duvidas">
-      <SectionHeader eyebrow={pt ? "Dúvidas" : "FAQ"} title={pt ? "Perguntas frequentes" : "Common questions"} />
+      <SectionHeader title={pt ? "Perguntas frequentes" : "Common questions"} />
       <Reveal>
         <div className="divide-y divide-outline-variant border-y border-outline-variant">
           {items.map((it) => (

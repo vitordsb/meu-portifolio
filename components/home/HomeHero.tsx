@@ -149,28 +149,6 @@ export default function HomeHero() {
         </div>
       </div>
 
-      {/* Faixa de clientes: logos de quem já contratou */}
-      <div className="border-y border-outline-variant bg-surface-low">
-        <div className={`${FRAME} flex flex-col items-center gap-5 py-7 md:flex-row md:justify-between`}>
-          <p className="text-base font-medium text-on-surface-variant">
-            {pt ? "Projetos entregues para" : "Projects delivered for"}
-          </p>
-          <ul className="flex flex-wrap items-center justify-center gap-3">
-            {COMPANIES.map((c) => (
-              <li key={c.id}>
-                <a
-                  href="#projetos"
-                  title={c.name}
-                  className="flex h-12 items-center rounded-lg bg-white px-4 ring-1 ring-black/5 transition-transform hover:-translate-y-0.5"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.logo} alt={c.name} className="h-7 w-auto max-w-[7.5rem] object-contain" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
     </section>
   );
 }

@@ -24,7 +24,6 @@ export default function HomeEngagements() {
   return (
     <Section id="formatos">
       <SectionHeader
-        eyebrow={pt ? "Equipe" : "Team"}
         title={pt ? "Do tamanho que o projeto pede" : "Sized to what the project needs"}
         lead={
           pt

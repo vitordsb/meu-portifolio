@@ -15,7 +15,6 @@ export default function HomeProcess() {
   return (
     <Section id="como-funciona">
       <SectionHeader
-        eyebrow={pt ? "Como funciona" : "How it works"}
         title={pt ? "Do primeiro contato ao site no ar" : "From first contact to launch"}
       />
 
