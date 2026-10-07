@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Globe, Menu, MessageCircle, Monitor, Moon, Sun, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -28,12 +29,19 @@ export const TOP_LINKS = [
  * "Menu" que abre os links em tela cheia, com letra grande.
  */
 export default function TopBar({
-  current,
+  current = "",
   onSelect,
+  frame = "max-w-6xl px-5 sm:px-8 lg:px-12",
 }: {
-  current: string;
-  onSelect: (id: string) => void;
+  current?: string;
+  /** Na home, desliza até a sessão. Fora dela (sem onSelect), os links levam pra /#sessão. */
+  onSelect?: (id: string) => void;
+  /** Largura e respiro do miolo, pra alinhar com o conteúdo da página. */
+  frame?: string;
 }) {
+  const router = useRouter();
+  const select = (id: string) =>
+    onSelect ? onSelect(id) : router.push(id === "inicio" ? "/" : `/#${id}`);
   const { language, setLanguage, t } = useLanguage();
   const { theme, cycleTheme } = useTheme();
   const font = useFontScale();
@@ -52,7 +60,7 @@ export default function TopBar({
   const go = (id: string) => {
     setOpen(false);
     // Espera o menu fechar (e destravar a rolagem) antes de deslizar
-    setTimeout(() => onSelect(id), 10);
+    setTimeout(() => select(id), 10);
   };
 
   const pref =
@@ -64,10 +72,10 @@ export default function TopBar({
         scrolled ? "border-outline-variant" : "border-transparent"
       }`}
     >
-      <div className="@container mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-5 sm:px-8 lg:px-12">
+      <div className={`@container mx-auto flex h-16 w-full items-center gap-6 ${frame}`}>
         <button
           type="button"
-          onClick={() => onSelect("inicio")}
+          onClick={() => select("inicio")}
           className="shrink-0 whitespace-nowrap text-lg font-extrabold tracking-[-0.03em]"
         >
           {BRAND.name}
@@ -80,10 +88,10 @@ export default function TopBar({
               return (
                 <li key={l.id}>
                   <a
-                    href={`#${l.id}`}
+                    href={onSelect ? `#${l.id}` : `/#${l.id}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      onSelect(l.id);
+                      select(l.id);
                     }}
                     aria-current={active ? "true" : undefined}
                     className={`inline-flex h-10 items-center whitespace-nowrap rounded-none px-3 text-base transition-colors ${
@@ -158,7 +166,7 @@ export default function TopBar({
                     {[{ id: "inicio", pt: "Início", en: "Home" }, ...TOP_LINKS].map((l) => (
                       <li key={l.id} className="border-b border-outline-variant">
                         <a
-                          href={`#${l.id}`}
+                          href={onSelect ? `#${l.id}` : `/#${l.id}`}
                           onClick={(e) => {
                             e.preventDefault();
                             go(l.id);

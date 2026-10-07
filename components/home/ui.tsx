@@ -4,10 +4,12 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 /**
- * Regra de forma (Vitor, 06/out/2026): card de INFORMAÇÃO é quadrado (sem
- * rounded). Borda arredondada só em chamada pra ação / lead (convite final,
- * "Calcular minha equipe", "Não sabe qual escolher?", novidades) e em
- * botões, etiquetas e abas.
+ * Regra de forma (Vitor, 06 e 07/out/2026): card de INFORMAÇÃO e todo botão
+ * ou controle (abas, campos, alternadores) são quadrados. Borda arredondada
+ * só em card de chamada (convite final, "Não sabe qual escolher?", novidades,
+ * case em destaque) e em etiquetas que não são clicáveis. Faixa simples de
+ * chamada nem card tem ("Calcular minha equipe"). Link de texto: sublinhado
+ * monocromático, sem cor viva.
  */
 
 /** Largura e respiro de todas as sessões da home. */

@@ -101,9 +101,9 @@ export default function PayOrderPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader width="max-w-xl" />
+      <PageHeader />
 
-      <main className="mx-auto w-full max-w-xl px-4 pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 [&>*]:max-w-xl pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         <h1 className="text-[clamp(2rem,6vw,2.75rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
           {pt ? "Pagar meu pedido" : "Pay my order"}
         </h1>
@@ -170,8 +170,8 @@ export default function PayOrderPage() {
             className="mt-8 overflow-hidden border border-outline-variant bg-surface-low"
           >
             <div className="p-5 sm:p-7">
-              <p className="mb-3 font-mono text-[0.75rem] uppercase tracking-[0.14em] text-on-surface-variant">
-                {pt ? "Pedido" : "Order"} #{order.code}
+              <p className="mb-3 text-sm text-on-surface-variant">
+                {pt ? "Pedido" : "Order"} <span className="font-mono">#{order.code}</span>
               </p>
               {order.description && (
                 <>

@@ -95,7 +95,7 @@ export const allWork: Work[] = [
     description:
       "Plataforma proprietária de **controle remoto de equipamentos de segurança** (alarmes, portões, fechaduras). App em **React Native + Expo**, backend **Node.js + Fastify + Drizzle + Postgres** e bridge **MQTT** com firmware ESP32.",
     stack: ["React Native", "Expo", "Fastify", "Drizzle", "Postgres", "MQTT"],
-    liveLink: null,
+    liveLink: "https://play.google.com/store/apps/details?id=br.com.egp_app&hl=pt_BR",
     coverImageUrl: null,
     featured: false,
     period: "Ago/2023 - Abr/2025",

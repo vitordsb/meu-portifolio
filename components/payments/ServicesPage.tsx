@@ -70,9 +70,9 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
-      <PageHeader width="max-w-5xl 2xl:max-w-[88rem]" />
+      <PageHeader />
 
-      <main className="mx-auto w-full max-w-5xl px-4 pb-20 2xl:max-w-[88rem] pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-20 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
         <h1 className="max-w-2xl text-[clamp(2rem,6vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.035em]">
           {pt ? "Serviços com preço fechado" : "Fixed-price services"}
         </h1>
@@ -92,7 +92,7 @@ export default function ServicesPage() {
               }`}
             >
               {pkg.featured && (
-                <span className="absolute right-5 top-5 rounded-full bg-primary px-2.5 py-1 text-[0.75rem] font-semibold text-on-primary">
+                <span className="absolute right-5 top-5 rounded-full bg-on-surface px-2.5 py-1 text-[0.75rem] font-semibold text-surface">
                   {pt ? "Mais pedido" : "Most popular"}
                 </span>
               )}
@@ -184,7 +184,7 @@ export default function ServicesPage() {
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn mt-3 h-11 w-full rounded-none bg-[#25D366] text-base text-white"
+                        className="btn btn-outlined mt-3 h-11 w-full rounded-none text-base"
                       >
                         <span className="inline-flex items-center gap-2">
                           <WhatsappIcon size={18} />
@@ -216,7 +216,7 @@ export default function ServicesPage() {
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <Link
             href="/raio-x"
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40 md:col-span-2"
+            className="group flex items-center justify-between gap-4 border border-outline-variant p-6 transition-colors hover:border-on-surface/40 md:col-span-2"
           >
             <span>
               <span className="flex items-center gap-2 font-semibold">
@@ -238,7 +238,7 @@ export default function ServicesPage() {
           </Link>
           <Link
             href="/orcamento"
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
+            className="group flex items-center justify-between gap-4 border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
           >
             <span>
               <span className="flex items-center gap-2 font-semibold">
@@ -258,7 +258,7 @@ export default function ServicesPage() {
           </Link>
           <Link
             href="/pagar"
-            className="group flex items-center justify-between gap-4 rounded-2xl border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
+            className="group flex items-center justify-between gap-4 border border-outline-variant p-6 transition-colors hover:border-on-surface/40"
           >
             <span>
               <span className="flex items-center gap-2 font-semibold">

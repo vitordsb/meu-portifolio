@@ -208,7 +208,7 @@ export const COMPANIES: Company[] = [
         slug: "egp-iot",
         title: "Plataforma IoT de Segurança",
         kind: "app",
-        link: null,
+        link: "https://play.google.com/store/apps/details?id=br.com.egp_app&hl=pt_BR",
         cover: null,
       },
       {

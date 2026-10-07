@@ -5,7 +5,7 @@ import { maskPhone } from "@/components/estimate/LeadForm";
 export type RaioXLead = { name: string; whatsapp: string; email: string };
 
 const field =
-  "w-full rounded-[var(--shape-md)] border border-outline-variant bg-surface px-4 py-3 text-base outline-none transition focus:border-on-surface focus:ring-2 focus:ring-on-surface/10 sm:text-sm";
+  "w-full border border-outline-variant bg-surface px-4 py-3 text-base outline-none transition focus:border-on-surface focus:ring-2 focus:ring-on-surface/10 sm:text-sm";
 
 /**
  * Portão do relatório completo: nome e WhatsApp mostram todos os pontos com
@@ -36,7 +36,7 @@ export default function LeadGate({
         e.preventDefault();
         if (valid && !busy) onSubmit(lead);
       }}
-      className="rounded-2xl border border-outline-variant bg-surface-low p-5 sm:p-6"
+      className="border border-outline-variant bg-surface-low p-5 sm:p-6"
     >
       <p className="inline-flex items-center gap-2 text-sm font-semibold">
         <Lock size={15} />
@@ -47,7 +47,7 @@ export default function LeadGate({
       <p className="mt-1 text-sm leading-relaxed text-on-surface-variant">
         {pt
           ? "Me diz pra quem é o relatório e ele abre aqui na hora. Com e-mail, você recebe uma cópia pra mostrar pra quem cuida do site."
-          : "Tell me who it's for and it opens right here. With an email, you get a copy to share with whoever runs the site."}
+          : "Tell us who it's for and it opens right here. With an email, you get a copy to share with whoever runs the site."}
       </p>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -126,7 +126,7 @@ export default function LeadGate({
         type="submit"
         disabled={!valid}
         aria-busy={busy}
-        className="btn btn-filled mt-5 h-12 rounded-lg px-6 text-base"
+        className="btn btn-filled mt-5 h-12 rounded-none px-6 text-base"
       >
         <span className="inline-flex items-center gap-2">
           {busy ? (

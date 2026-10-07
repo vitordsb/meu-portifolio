@@ -96,7 +96,7 @@ export default function HomeEngagements() {
         })}
       </div>
 
-      <Reveal className="mt-8 flex flex-col items-start gap-4 rounded-2xl bg-surface-low p-6 sm:flex-row sm:items-center sm:justify-between">
+      <Reveal className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-xl text-base leading-relaxed">
           {pt
             ? "O orçamento grátis calcula quantas pessoas o seu projeto precisa e o preço fechado pela equipe."

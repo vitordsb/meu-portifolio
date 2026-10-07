@@ -28,7 +28,7 @@ export default function LegalPage({
   return (
     <>
       <PageHeader />
-      <main className="mx-auto w-full max-w-3xl px-4 pb-24 pt-10 sm:pt-14">
+      <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-24 pt-10 sm:pt-14 [&>*]:max-w-3xl">
         <p className="text-sm text-on-surface-variant">Atualizado em {updated}</p>
         <h1 className="mt-2 text-balance text-4xl font-extrabold leading-[1.05] tracking-[-0.035em] sm:text-5xl">
           {title}
