@@ -17,6 +17,8 @@ type L10n = { pt: string; en: string };
 export type ProductKind = "web" | "app" | "site";
 
 export type CompanyProduct = {
+  /** Chave em lib/project-shots (prints do mockup de argila). */
+  slug?: string;
   title: string;
   kind: ProductKind;
   /** Link público. `null` = produto privado (aparece com cadeado). */
@@ -66,6 +68,7 @@ export const COMPANIES: Company[] = [
     period: "Jun/2026 - Hoje",
     products: [
       {
+        slug: "zuptos",
         title: "Zuptos",
         kind: "web",
         link: "https://app.zuptos.com.br",
@@ -93,12 +96,14 @@ export const COMPANIES: Company[] = [
     period: "Abr/2026 - Hoje",
     products: [
       {
+        slug: "mtcprop-members",
         title: "Área de Membros",
         kind: "web",
         link: "https://app.mtcprop.com.br",
         cover: "/projects/mtcprop-members.png",
       },
       {
+        slug: "mtcprop-site",
         title: "Site",
         kind: "site",
         link: "https://mtcprop.com.br",
@@ -126,12 +131,14 @@ export const COMPANIES: Company[] = [
     period: "Abr/2025 - Abr/2026",
     products: [
       {
+        slug: "arqdoor",
         title: "ArqDoor",
         kind: "web",
         link: "https://arqdoor.com",
         cover: "/projects/arqdoor-web.jpg",
       },
       {
+        slug: "arqdoor-mobile",
         title: "ArqDoor Mobile",
         kind: "app",
         link: "https://play.google.com/store/apps/details?id=com.arqdoor.app&hl=pt_BR",
@@ -159,12 +166,14 @@ export const COMPANIES: Company[] = [
     period: "Jan/2022 - Dez/2023",
     products: [
       {
+        slug: "egp-iot",
         title: "Plataforma IoT de Segurança",
         kind: "app",
         link: null,
         cover: null,
       },
       {
+        slug: "egp-industria",
         title: "Site",
         kind: "site",
         link: "https://www.grupoegp.com.br",

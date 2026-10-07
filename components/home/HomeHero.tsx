@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { BadgeCheck, FileSignature, HandCoins, MessageCircle, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,37 +11,10 @@ import { whatsappHref } from "@/lib/home-links";
 import SearchHint from "@/components/SearchHint";
 import FontSizeButton from "@/components/a11y/FontSizeButton";
 import { FRAME } from "./ui";
+import ClayMockup from "./ClayMockup";
+import { PROJECT_SHOTS } from "@/lib/project-shots";
 
 const TRUST_ICONS = { clients: BadgeCheck, contract: FileSignature, price: HandCoins };
-
-/** Telas de projetos entregues, em leque: mostra trabalho real logo de cara. */
-const SHOTS = [
-  { src: "/projects/arqdoor-web.jpg", url: "arqdoor.com", w: 2000, h: 1038 },
-  { src: "/projects/zuptos.png", url: "app.zuptos.com.br", w: 1280, h: 720 },
-  { src: "/projects/mtcprop-site.png", url: "mtcprop.com.br", w: 1902, h: 959 },
-];
-
-function BrowserShot({ shot, className }: { shot: (typeof SHOTS)[number]; className: string }) {
-  return (
-    <div className={`overflow-hidden rounded-xl border border-black/10 bg-white shadow-2xl ${className}`}>
-      <div className="flex h-6 items-center gap-1.5 border-b border-black/10 bg-[#f4f4f5] px-3">
-        <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
-        <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
-        <span className="h-2 w-2 rounded-full bg-[#28c840]" />
-        <span className="ml-2 truncate font-mono text-[0.6875rem] text-neutral-500">{shot.url}</span>
-      </div>
-      <Image
-        src={shot.src}
-        alt=""
-        width={shot.w}
-        height={shot.h}
-        sizes="(min-width: 1024px) 36rem, 90vw"
-        className="aspect-[16/10] w-full object-cover object-top"
-        priority
-      />
-    </div>
-  );
-}
 
 export default function HomeHero() {
   const { language } = useLanguage();
@@ -134,17 +106,14 @@ export default function HomeHero() {
             </motion.ul>
           </div>
 
-          {/* Leque de telas de projetos entregues */}
+          {/* Projeto entregue em mockup de argila (mesmo estilo dos cards) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto aspect-[5/4] w-full max-w-xl"
-            aria-hidden
+            className="group mx-auto w-full max-w-xl"
           >
-            <BrowserShot shot={SHOTS[2]} className="absolute right-0 top-0 w-[72%] rotate-[4deg] opacity-90" />
-            <BrowserShot shot={SHOTS[1]} className="absolute bottom-2 left-0 w-[66%] -rotate-[5deg]" />
-            <BrowserShot shot={SHOTS[0]} className="absolute left-[14%] top-[22%] w-[76%]" />
+            <ClayMockup shots={PROJECT_SHOTS.arqdoor} label="ArqDoor" className="rounded-3xl" />
           </motion.div>
         </div>
       </div>
