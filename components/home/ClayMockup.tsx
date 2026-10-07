@@ -42,6 +42,7 @@ export default function ClayMockup({
   label,
   className = "",
   bare = false,
+  tallOnMobile = false,
 }: {
   shots?: ProjectShots;
   /** Nome do projeto, pra leitor de tela. */
@@ -49,6 +50,8 @@ export default function ClayMockup({
   className?: string;
   /** Sem fundo nem luz próprios: o card de fora já tem. */
   bare?: boolean;
+  /** No celular, caixa mais alta e aparelhos maiores (cases: imagem sempre grande). */
+  tallOnMobile?: boolean;
 }) {
   const desktop = shots?.desktop;
   const mobile = shots?.mobile;
@@ -59,7 +62,7 @@ export default function ClayMockup({
     <div
       role="img"
       aria-label={label}
-      className={`relative aspect-[16/10] ${
+      className={`relative ${tallOnMobile ? "aspect-[4/3.4] sm:aspect-[16/10]" : "aspect-[16/10]"} ${
         bare ? "" : "overflow-hidden bg-[linear-gradient(150deg,#ebe6de_0%,#d9d2c6_100%)] dark:bg-[linear-gradient(150deg,#3b3834_0%,#292724_100%)]"
       } ${className}`}
     >
@@ -72,7 +75,13 @@ export default function ClayMockup({
         <div
           aria-hidden
           className={`absolute transition-transform duration-500 group-hover:-translate-y-[1.5%] ${
-            both ? "left-[7%] top-[13%] w-[72%]" : "left-[10%] top-[11%] w-[80%]"
+            tallOnMobile
+              ? both
+                ? "left-[4%] top-[9%] w-[86%] sm:left-[7%] sm:top-[13%] sm:w-[72%]"
+                : "left-[5%] top-[16%] w-[90%] sm:left-[10%] sm:top-[11%] sm:w-[80%]"
+              : both
+                ? "left-[7%] top-[13%] w-[72%]"
+                : "left-[10%] top-[11%] w-[80%]"
           }`}
         >
           <div className="rounded-[3.2%/5.2%] p-[2.4%]" style={{ background: CLAY, boxShadow: SHADOW }}>
@@ -94,7 +103,11 @@ export default function ClayMockup({
         <div
           aria-hidden
           className={`absolute aspect-[9/19.5] transition-transform delay-75 duration-500 group-hover:-translate-y-[2.5%] ${
-            both ? "bottom-[7%] right-[8%] h-[76%]" : "bottom-[7%] left-1/2 h-[86%] -translate-x-1/2"
+            both
+              ? tallOnMobile
+                ? "bottom-[5%] right-[4%] h-[60%] sm:bottom-[7%] sm:right-[8%] sm:h-[76%]"
+                : "bottom-[7%] right-[8%] h-[76%]"
+              : "bottom-[7%] left-1/2 h-[86%] -translate-x-1/2"
           }`}
         >
           <div className="relative h-full w-full rounded-[17%/7.8%] p-[4%]" style={{ background: CLAY, boxShadow: SHADOW }}>

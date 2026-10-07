@@ -27,6 +27,12 @@ export type CompanyProduct = {
   cover: string | null;
 };
 
+/** Canais públicos do cliente (tirados do site dele). Sem link = não aparece. */
+export type CompanyLink = {
+  kind: "site" | "instagram" | "youtube" | "tiktok" | "facebook" | "linkedin" | "whatsapp";
+  url: string;
+};
+
 export type Company = {
   id: string;
   name: string;
@@ -48,6 +54,8 @@ export type Company = {
   result?: L10n;
   period: string;
   products: CompanyProduct[];
+  /** Site institucional, redes e contato do cliente, na coluna de links. */
+  links?: CompanyLink[];
 };
 
 export const COMPANIES: Company[] = [
@@ -73,6 +81,13 @@ export const COMPANIES: Company[] = [
       en: "The creator dashboard, the affiliate journey and checkouts the creator can edit, built to sell more.",
     },
     period: "Jun/2026 - Hoje",
+    links: [
+      { kind: "site", url: "https://zuptos.com.br" },
+      { kind: "instagram", url: "https://www.instagram.com/zuptos/" },
+      { kind: "youtube", url: "https://www.youtube.com/@Zuptos" },
+      { kind: "tiktok", url: "https://www.tiktok.com/@zuptos.com.br" },
+      { kind: "facebook", url: "https://www.facebook.com/zuptos.com.br/" },
+    ],
     products: [
       {
         slug: "zuptos",
@@ -105,6 +120,10 @@ export const COMPANIES: Company[] = [
       en: "A single members area where traders see everything about their plan, from screen design to everything behind it.",
     },
     period: "Abr/2026 - Hoje",
+    links: [
+      { kind: "instagram", url: "https://www.instagram.com/mtcprop/" },
+      { kind: "whatsapp", url: "https://wa.me/message/MIG7GAAXP7J6K1" },
+    ],
     products: [
       {
         slug: "mtcprop-members",
@@ -144,6 +163,7 @@ export const COMPANIES: Company[] = [
       en: "The whole platform, on desktop and mobile: proposals, contracts, messages and payments in one place, with the app published in the store.",
     },
     period: "Abr/2025 - Abr/2026",
+    links: [{ kind: "whatsapp", url: "https://wa.me/message/WYONYONWQG5XG1" }],
     products: [
       {
         slug: "arqdoor",

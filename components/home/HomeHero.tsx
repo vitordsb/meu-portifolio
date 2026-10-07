@@ -128,17 +128,9 @@ function FeaturedCase({ pt }: { pt: boolean }) {
       />
       <div className="relative grid items-center gap-2 lg:grid-cols-12">
         <div className="px-6 pt-8 sm:px-10 sm:pt-10 lg:col-span-5 lg:py-12 lg:pl-12 lg:pr-0">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 shrink-0 items-center bg-white px-2.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={company.logo} alt="" aria-hidden className="h-6 w-auto max-w-[6.5rem] object-contain" />
-            </span>
-            <span className="leading-tight">
-              <span className="block text-base font-semibold">{company.name}</span>
-              <span className="block text-sm opacity-70">{company.sector[language]}</span>
-            </span>
-          </div>
-          <h2 className="mt-6 text-[clamp(1.6rem,3vw,2.3rem)] font-semibold leading-[1.12] tracking-[-0.03em]">
+          <p className="text-3xl font-semibold tracking-[-0.03em] md:text-4xl">{company.name}</p>
+          <p className="mt-1 text-base opacity-70">{company.sector[language]}</p>
+          <h2 className="mt-6 text-[clamp(1.5rem,2.6vw,2rem)] font-semibold leading-[1.12] tracking-[-0.03em]">
             {company.headline?.[language]}
           </h2>
           <p className="mt-4 text-base leading-relaxed opacity-80">{company.problem?.[language]}</p>
@@ -175,7 +167,7 @@ function FeaturedCase({ pt }: { pt: boolean }) {
           </div>
         </div>
         <div className="lg:col-span-7">
-          <ClayMockup bare shots={PROJECT_SHOTS.arqdoor} label="ArqDoor" className="scale-[1.04] lg:scale-[1.1]" />
+          <ClayMockup bare tallOnMobile shots={PROJECT_SHOTS.arqdoor} label="ArqDoor" className="scale-[1.04] lg:scale-[1.1]" />
         </div>
       </div>
     </article>
