@@ -10,12 +10,17 @@
  *   suspensa e erro de certificado) no dia dos prints.
  * - arqdoor-mobile: arte de divulgação do app; o mockup mostra o recorte da
  *   tela que aparece nela (`mobileFocus`).
+ * - egp-iot: telas "Módulos" e "Eventos" do app EGP PLUG IN, tiradas da
+ *   ficha da Play Store (07/out/2026). Só celular: o app não tem versão de
+ *   computador, então o mockup mostra dois aparelhos.
  */
 export type ProjectShots = {
   desktop?: string;
   mobile?: string;
   /** object-position do print de celular (padrão: topo). */
   mobileFocus?: string;
+  /** Segunda tela de celular, pra app sem versão de computador (dois aparelhos). */
+  mobileAlt?: string;
 };
 
 const fresh = (slug: string): ProjectShots => ({
@@ -37,6 +42,7 @@ export const PROJECT_SHOTS: Record<string, ProjectShots> = {
   "norte-premium": { desktop: "/projects/norte-premium.png" },
   oncoliving: { desktop: "/projects/oncoliving.png" },
   "arqdoor-mobile": { mobile: "/projects/arqdoor-app.jpg", mobileFocus: "78% 88%" },
+  "egp-iot": { mobile: "/projects/shots/egp-iot-mobile.jpg", mobileAlt: "/projects/shots/egp-iot-mobile-2.jpg" },
 };
 
 /** Sites que estavam fora do ar nos prints: o card não manda ninguém pra lá. */
