@@ -17,7 +17,10 @@ export type ServicePackage = {
   /** Parcelas máximas no cartão (1 = só à vista). */
   maxInstallments: number;
   summary: L10n;
+  /** "O que você recebe": entregáveis concretos, sem jargão. */
   includes: { pt: string[]; en: string[] };
+  /** Prazo de entrega, quando o pacote tem um. */
+  delivery?: L10n;
   /** Destaque visual (um por vez). */
   featured?: boolean;
 };
@@ -45,6 +48,7 @@ export const PACKAGES: ServicePackage[] = [
         "Written next steps",
       ],
     },
+    delivery: { pt: "No dia e horário que você escolher", en: "On the day and time you choose" },
   },
   {
     id: "revisao-ux",
@@ -85,15 +89,14 @@ export const PACKAGES: ServicePackage[] = [
         "Página única, responsiva",
         "Formulário de contato ou WhatsApp",
         "Publicada no seu domínio",
-        "Pronta em até 1 semana",
       ],
       en: [
         "Single responsive page",
         "Contact form or WhatsApp",
         "Published on your domain",
-        "Ready within 1 week",
       ],
     },
+    delivery: { pt: "Pronta em até 1 semana", en: "Ready within 1 week" },
   },
   {
     id: "site",
@@ -119,6 +122,8 @@ export const PACKAGES: ServicePackage[] = [
         "Domain and email set up",
       ],
     },
+    // Mesmo prazo do guia de preços (lib/guide/examples, site institucional)
+    delivery: { pt: "Pronto em 1 a 2 semanas", en: "Ready in 1 to 2 weeks" },
   },
 ];
 

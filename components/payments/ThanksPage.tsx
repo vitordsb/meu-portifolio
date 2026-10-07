@@ -7,6 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 import PageHeader from "./PageHeader";
+import AfterPayment from "./AfterPayment";
 
 /**
  * Volta do checkout do Asaas. Chegar aqui NÃO prova que pagou (qualquer um
@@ -40,11 +41,9 @@ export default function ThanksPage() {
             {pt ? "Pedido" : "Order"} #{code}
           </p>
         )}
-        <p className="mt-4 text-base leading-relaxed text-on-surface-variant">
-          {pt
-            ? "Assim que o Asaas confirmar, você recebe a confirmação por e-mail. Pix confirma na hora; cartão, em alguns minutos. Já já a gente te chama pra combinar o início."
-            : "As soon as Asaas confirms it, you'll get a confirmation by email. Pix confirms instantly; card, within minutes. We'll reach out soon to plan the start."}
-        </p>
+        <div className="mt-6">
+          <AfterPayment title={pt ? "O que acontece agora" : "What happens now"} />
+        </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
           <a

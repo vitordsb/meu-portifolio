@@ -6,6 +6,7 @@ import { trackEvent } from "@/lib/analytics";
 import {
   ArrowRight,
   Check,
+  Clock,
   Loader2,
   ReceiptText,
   ScanSearch,
@@ -18,6 +19,7 @@ import { CNPJ } from "@/lib/email-layout";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 import { PACKAGES, type ServicePackage } from "@/lib/payments/packages";
 import PageHeader from "./PageHeader";
+import AfterPayment from "./AfterPayment";
 
 const brl = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -107,14 +109,19 @@ export default function ServicesPage() {
               <p className="mt-1.5 text-sm text-on-surface-variant">
                 {pkg.maxInstallments > 1
                   ? pt
-                    ? `ou até ${pkg.maxInstallments}x no cartão`
-                    : `or up to ${pkg.maxInstallments}x on card`
+                    ? `Pagamento único no Pix, ou em até ${pkg.maxInstallments}x no cartão`
+                    : `One-time payment by Pix, or up to ${pkg.maxInstallments}x on card`
                   : pt
-                    ? "Pix ou cartão"
-                    : "Pix or card"}
+                    ? "Pagamento único, no Pix ou cartão"
+                    : "One-time payment, by Pix or card"}
               </p>
 
-              <ul className="mt-5 space-y-2 text-sm">
+              {/* O que a pessoa leva pelo valor: preço ligado ao entregável
+                  dói menos (Prelec e Loewenstein, "pain of paying") */}
+              <p className="mt-5 text-sm font-semibold">
+                {pt ? "O que você recebe" : "What you get"}
+              </p>
+              <ul className="mt-2 space-y-2 text-sm">
                 {pkg.includes[language].map((it) => (
                   <li key={it} className="flex gap-2.5">
                     <Check
@@ -125,6 +132,12 @@ export default function ServicesPage() {
                   </li>
                 ))}
               </ul>
+              {pkg.delivery && (
+                <p className="mt-4 flex items-center gap-2 text-sm text-on-surface-variant">
+                  <Clock size={16} className="shrink-0" />
+                  {pkg.delivery[language]}
+                </p>
+              )}
 
               <button
                 type="button"
@@ -143,12 +156,16 @@ export default function ServicesPage() {
                     </>
                   ) : (
                     <>
-                      {pt ? "Contratar" : "Hire"}
+                      {pt ? `Contratar por ${brl.format(pkg.price)}` : `Hire for ${brl.format(pkg.price)}`}
                       <ArrowRight size={18} />
                     </>
                   )}
                 </span>
               </button>
+
+              <p className="mt-2 text-center text-xs text-on-surface-variant">
+                {pt ? "Você vai pra página segura do Asaas pra pagar." : "You'll go to Asaas's secure page to pay."}
+              </p>
 
               {notice?.pkg === pkg.id && (
                 <div role="alert" className="mt-4 text-sm">
@@ -191,6 +208,10 @@ export default function ServicesPage() {
             </li>
           ))}
         </ul>
+
+        <div className="mt-6">
+          <AfterPayment title={pt ? "Como funciona depois que você contrata" : "What happens after you hire"} />
+        </div>
 
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <Link

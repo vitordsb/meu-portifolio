@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
 import { CNPJ } from "@/lib/email-layout";
 import PageHeader from "./PageHeader";
+import AfterPayment from "./AfterPayment";
 
 type Order = {
   code: string;
@@ -173,9 +174,14 @@ export default function PayOrderPage() {
                 {pt ? "Pedido" : "Order"} #{order.code}
               </p>
               {order.description && (
-                <p className="text-lg font-semibold leading-snug">
-                  {order.description}
-                </p>
+                <>
+                  <p className="text-sm font-semibold text-on-surface-variant">
+                    {pt ? "O que você está pagando" : "What you're paying for"}
+                  </p>
+                  <p className="mt-1 text-lg font-semibold leading-snug">
+                    {order.description}
+                  </p>
+                </>
               )}
               <p className="mt-4 text-[2rem] font-extrabold leading-none tracking-[-0.03em] tabular-nums">
                 {brl.format(order.total)}
@@ -225,6 +231,12 @@ export default function PayOrderPage() {
               ) : null}
             </div>
           </section>
+        )}
+
+        {order && order.status !== "pago" && (
+          <div className="mt-6">
+            <AfterPayment />
+          </div>
         )}
 
         <p className="mt-10 flex gap-2 text-xs leading-relaxed text-on-surface-variant">
