@@ -46,7 +46,8 @@ export const TRUST = [
   { key: "price", label: { pt: "Preço combinado antes", en: "Price agreed upfront" } },
 ] as const;
 
-/** Tipos de projeto. O id é o mesmo de lib/guide/examples (preço e prazo). */
+/** Tipos de projeto. O id é o mesmo de lib/guide/examples (preço e prazo).
+ *  Loja virtual saiu dos cards em 06/out/2026 (pedido do Vitor). */
 export const SERVICE_TYPES: { id: string; title: L10n; text: L10n }[] = [
   {
     id: "landing",
@@ -57,11 +58,6 @@ export const SERVICE_TYPES: { id: string; title: L10n; text: L10n }[] = [
     id: "site",
     title: { pt: "Site da empresa", en: "Company website" },
     text: { pt: "Ninguém te encontra no Google? Um site que mostra quem você é.", en: "Nobody finds you on Google? A site that shows who you are." },
-  },
-  {
-    id: "loja",
-    title: { pt: "Loja virtual", en: "Online store" },
-    text: { pt: "Quer vender sem depender de marketplace? Loja com Pix e cartão.", en: "Want to sell without relying on marketplaces? A store with Pix and card." },
   },
   {
     id: "sistema",

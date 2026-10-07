@@ -87,7 +87,7 @@ export default function SearchHint({
   expanded = true,
 }: {
   delay?: number;
-  variant?: "hero" | "compact";
+  variant?: "hero" | "compact" | "icon";
   /** Só no `hero`: barra completa (Início) ou só o atalho (outras sessões). */
   expanded?: boolean;
 }) {
@@ -113,14 +113,15 @@ export default function SearchHint({
     transition: { delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
   };
 
-  if (variant === "hero" && touch) {
+  if (variant === "icon" || (variant === "hero" && touch)) {
     return (
       <motion.button
         type="button"
         onClick={open}
         aria-label={label}
+        title={variant === "icon" ? `${label} (${keys.join(" + ")})` : undefined}
         {...enter}
-        className="search-pulse relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant bg-surface/90 text-on-surface backdrop-blur"
+        className={`${variant === "hero" ? "search-pulse " : ""}relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-outline-variant bg-surface/90 text-on-surface backdrop-blur transition-colors hover:border-on-surface/40`}
       >
         <Search size={18} />
       </motion.button>

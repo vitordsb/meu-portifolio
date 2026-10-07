@@ -25,10 +25,10 @@ export function Section({
     <section
       id={id}
       data-home-section
-      className={`scroll-mt-4 py-20 md:py-28 ${className}`}
+      className={`scroll-mt-20 py-20 md:py-28 ${className}`}
     >
       {aliases?.map((a) => (
-        <span key={a} id={a} aria-hidden className="block scroll-mt-4" />
+        <span key={a} id={a} aria-hidden className="block scroll-mt-20" />
       ))}
       <div className={FRAME}>{children}</div>
     </section>
@@ -74,7 +74,7 @@ export function SectionHeader({
 }) {
   return (
     <Reveal className={`mb-10 max-w-2xl md:mb-14 ${className}`}>
-      <h2 className="text-balance text-[2rem] font-extrabold leading-[1.05] tracking-[-0.035em] md:text-5xl">
+      <h2 className="text-balance text-[2rem] font-semibold leading-[1.05] tracking-[-0.04em] md:text-5xl">
         {title}
       </h2>
       {lead && (

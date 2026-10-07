@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { MessageCircle, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { FONT_LABELS, useFontScale } from "@/lib/font-scale";
 import { BRAND, CNPJ } from "@/lib/site";
 import { WORK_LINKS, l } from "@/lib/deck-content";
 import { whatsappHref } from "@/lib/home-links";
@@ -10,7 +12,9 @@ import { FRAME, Reveal } from "./ui";
 
 /** Convite final + rodapé de empresa (marca, CNPJ, contato, links). */
 export default function HomeFooter() {
-  const { language } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
+  const { theme, cycleTheme } = useTheme();
+  const font = useFontScale();
   const pt = language === "pt";
   const year = new Date().getFullYear();
 
@@ -96,7 +100,17 @@ export default function HomeFooter() {
           <p>
             © {year} {BRAND.name}. {pt ? "Todos os direitos reservados." : "All rights reserved."}
           </p>
-          <p className="flex gap-5">
+          <p className="flex flex-wrap gap-x-5 gap-y-2">
+            {/* Letra, tema e idioma também aqui (no topo ficam tema e idioma) */}
+            <button type="button" onClick={font.cycle} className="hover:underline">
+              {pt ? "Tamanho da letra" : "Text size"}: {FONT_LABELS[language][font.index]}
+            </button>
+            <button type="button" onClick={cycleTheme} className="hover:underline">
+              {t("common.theme.label")}: {t(`common.theme.${theme}`)}
+            </button>
+            <button type="button" onClick={() => setLanguage(pt ? "en" : "pt")} className="hover:underline">
+              {pt ? "English" : "Português"}
+            </button>
             <Link href="/privacidade" className="hover:underline">
               {pt ? "Política de Privacidade" : "Privacy Policy"}
             </Link>

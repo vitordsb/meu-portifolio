@@ -36,6 +36,9 @@ export type Company = {
   sector: L10n;
   /** O que a empresa é. Sem stack: tecnologia mora em Especializações. */
   about: L10n;
+  /** Título da linha editorial: a história do projeto numa frase (problema
+   *  e saída), como os cases do apparicio.com. Sem número que não seja real. */
+  headline?: L10n;
   /** A situação do cliente antes: o card abre pelo problema (06/out/2026). */
   problem?: L10n;
   /** O que a gente fez (voz da empresa). Sem nome de tecnologia: o card fala
@@ -56,6 +59,10 @@ export const COMPANIES: Company[] = [
     about: {
       pt: "Plataforma de criação e venda de infoprodutos, com checkout próprio, painel do produtor e programa de afiliados.",
       en: "Platform for creating and selling digital products, with its own checkout, producer dashboard and affiliate program.",
+    },
+    headline: {
+      pt: "Checkouts que o próprio produtor edita, pra perder menos venda no último passo.",
+      en: "Checkouts creators edit themselves, to lose fewer sales at the last step.",
     },
     problem: {
       pt: "Quem vende curso e produto digital perde venda a cada passo complicado no pagamento, e o produtor precisa enxergar suas vendas e seus afiliados sem depender de planilha.",
@@ -84,6 +91,10 @@ export const COMPANIES: Company[] = [
     about: {
       pt: "Mesa proprietária de trading. Os traders contratam planos e acompanham certificados, benefícios, financeiro e a academy numa área de membros.",
       en: "Proprietary trading firm. Traders subscribe to plans and follow certificates, benefits, payouts and the academy in a members area.",
+    },
+    headline: {
+      pt: "Plano, certificados, pagamentos e cursos do trader numa área só, em vez de espalhados.",
+      en: "Plans, certificates, payouts and courses in one place for traders, instead of scattered.",
     },
     problem: {
       pt: "Os traders acompanhavam plano, certificados, pagamentos e cursos em lugares diferentes, e cada dúvida virava mensagem pro suporte.",
@@ -120,6 +131,10 @@ export const COMPANIES: Company[] = [
       pt: "Plataforma que formaliza a relação entre arquitetos e clientes: propostas, contratos em PDF, comunicação e pagamentos num lugar só, na web e no celular.",
       en: "Platform that formalizes the relationship between architects and clients: proposals, PDF contracts, messaging and payments in one place, on web and mobile.",
     },
+    headline: {
+      pt: "De acordo na conversa a contrato assinado e pagamento combinado, pra arquitetos.",
+      en: "From verbal agreements to signed contracts and agreed payments, for architects.",
+    },
     problem: {
       pt: "Arquitetos fechavam projetos na conversa, sem contrato, e tinham dificuldade de cobrar e de organizar a relação com o cliente.",
       en: "Architects closed projects verbally, without contracts, and struggled to get paid and keep the client relationship organized.",
@@ -154,6 +169,10 @@ export const COMPANIES: Company[] = [
     about: {
       pt: "Fabricante de equipamentos eletrônicos de segurança, como alarmes, portões e fechaduras, com plataforma IoT própria pra controle remoto.",
       en: "Manufacturer of electronic security equipment such as alarms, gates and locks, with its own IoT platform for remote control.",
+    },
+    headline: {
+      pt: "Alarmes e portões controlados à distância, e os processos internos fora do papel.",
+      en: "Alarms and gates controlled remotely, and internal processes off paper.",
     },
     problem: {
       pt: "O fabricante precisava que os clientes controlassem alarmes e portões à distância, e os processos internos ainda dependiam de controles manuais.",
