@@ -1,5 +1,4 @@
 import { SITE } from "@/lib/email-layout";
-import { isBotRequest } from "@/lib/security/bot";
 import { takeDaily } from "@/lib/security/daily-cap";
 import { guard, json } from "@/lib/estimate/guard";
 import { newQuoteCode } from "@/lib/estimate/quote-code";
@@ -13,6 +12,11 @@ import { findPackage } from "@/lib/payments/packages";
  * `externalReference` = "<pedido>:<pacote>": o webhook tira dali o número do
  * pedido e o pacote. Os callbacks apontam pro domínio de produção, que é o
  * cadastrado na conta Asaas (inclusive no sandbox).
+ *
+ * Sem BotID (14/out/2026): ele barrava cliente de verdade em alguns navegadores
+ * (sem dizer por quê) e esta rota não gasta dinheiro, porque
+ * checkout sem pagamento não gera cobrança. Sobram a origem, o limite por IP
+ * e o teto diário.
  */
 
 export async function POST(req: Request) {
@@ -20,7 +24,6 @@ export async function POST(req: Request) {
   if (blocked) return blocked;
 
   if (!hasAsaas()) return json({ error: "unavailable" }, 503);
-  if (await isBotRequest()) return json({ error: "forbidden" }, 403);
 
   const body = await req.json().catch(() => null);
   const pkg = findPackage(String(body?.packageId ?? ""));
