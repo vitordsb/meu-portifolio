@@ -150,6 +150,9 @@ export default function RaioXPage() {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) setSaved(JSON.parse(raw) as Saved);
     } catch {}
+    // Link da prospecção (?site=empresa.com.br): já chega com o site no campo
+    const site = normalizeSiteUrl(new URLSearchParams(window.location.search).get("site"));
+    if (site) setInput(displayUrl(site));
   }, []);
 
   const persist = (s: Saved | null) => {
