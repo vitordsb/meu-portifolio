@@ -119,3 +119,7 @@ docs/
 # public/projects/. Estas são as originais e não vão pro repo (evita duplicar).
 # ─────────────────────────────────────────────────────────────────────────────
 app/(public)/images/projects/
+
+# Prospecção (pnpm prospectar): listas, propostas e histórico de contatos.
+# Tem e-mail de terceiros: fica só na máquina.
+prospeccao/

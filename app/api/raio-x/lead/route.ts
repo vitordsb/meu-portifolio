@@ -3,7 +3,7 @@ import { z } from "zod";
 import { deliverContact } from "@/lib/contact-delivery";
 import { describeAttribution } from "@/lib/attribution-server";
 import { guard, json } from "@/lib/estimate/guard";
-import { sendEmail } from "@/lib/mailer";
+import { ownerEmails, sendEmail } from "@/lib/mailer";
 import { buildRaioXEmail } from "@/lib/raio-x/client-email";
 import { issueFromId } from "@/lib/raio-x/report";
 import { CATEGORIES, type Issue } from "@/lib/raio-x/types";
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
       subject: mail.subject,
       text: mail.text,
       html: mail.html,
-      replyTo: process.env.CONTACT_TO_EMAIL ?? undefined,
+      replyTo: ownerEmails()[0],
     });
   }
 
