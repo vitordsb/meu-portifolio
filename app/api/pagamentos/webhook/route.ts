@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { after } from "next/server";
-import { sendEmail } from "@/lib/mailer";
+import { ownerEmails, sendEmail } from "@/lib/mailer";
 import {
   getCustomer,
   getInstallment,
@@ -96,7 +96,7 @@ async function notify(p: AsaasPayment) {
   };
 
   await sendEmail({
-    to: process.env.CONTACT_TO_EMAIL ?? "vitordsb2019@gmail.com",
+    to: ownerEmails(),
     replyTo: info.email ?? undefined,
     ...ownerPaidEmail(info),
   });

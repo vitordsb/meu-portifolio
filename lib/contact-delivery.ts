@@ -1,5 +1,5 @@
 import * as db from "./db";
-import { sendEmail } from "./mailer";
+import { ownerEmails, sendEmail } from "./mailer";
 
 /**
  * Entrega de um contato: grava no banco (aparece no /admin) e manda e-mail
@@ -31,7 +31,7 @@ export async function deliverContact(
 
   // 2) Avisa o Vitor por e-mail (Resend)
   const mailed = await sendEmail({
-    to: process.env.CONTACT_TO_EMAIL ?? "vitordsb2019@gmail.com",
+    to: ownerEmails(),
     replyTo: payload.email ?? undefined,
     attachments: attachments?.length ? attachments : undefined,
     subject: `[Portfolio] ${payload.subject || "Novo contato"} de ${payload.name}`,

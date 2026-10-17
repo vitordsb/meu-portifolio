@@ -4,7 +4,7 @@
  * Resend). Nunca lança: devolve se o envio foi aceito.
  */
 export type Email = {
-  to: string;
+  to: string | string[];
   subject: string;
   text: string;
   html?: string;
@@ -12,6 +12,19 @@ export type Email = {
   /** Anexos já validados (ex.: imagens do orçamento, regravadas pelo sharp). */
   attachments?: { filename: string; content: Buffer }[];
 };
+
+/**
+ * Quem recebe os avisos do site (orçamento, Raio-X, contato, pagamento).
+ * CONTACT_TO_EMAIL aceita vários, separados por vírgula: cada um recebe o
+ * mesmo e-mail (17/out/2026: vitordsb2019 + vantywork).
+ */
+export function ownerEmails(): string[] {
+  const list = (process.env.CONTACT_TO_EMAIL ?? "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+  return list.length ? list : ["vitordsb2019@gmail.com", "vantywork@gmail.com"];
+}
 
 export function senderAddress() {
   return process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>";
