@@ -32,7 +32,6 @@ export const PROJECT_SHOTS: Record<string, ProjectShots> = {
   arqdoor: fresh("arqdoor"),
   "mtcprop-site": fresh("mtcprop-site"),
   "egp-industria": fresh("egp-industria"),
-  florenza: fresh("florenza"),
   "negritude-junior": fresh("negritude-junior"),
   zynta: fresh("zynta"),
   bioathos: fresh("bioathos"),

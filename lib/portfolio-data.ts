@@ -113,30 +113,6 @@ export const allWork: Work[] = [
     featured: false,
   },
   {
-    slug: "florenza",
-    title: "Instituto Florenza",
-    company: "Cliente",
-    category: "Site institucional",
-    description:
-      "Site institucional em WordPress com tema custom, com foco em apresentação da marca, captação de leads e SEO.",
-    stack: ["WordPress", "Tema custom", "SEO"],
-    liveLink: "https://institutoflorenza.com.br",
-    coverImageUrl: "/projects/florenza.png",
-    featured: false,
-  },
-  {
-    slug: "jma",
-    title: "JMA Serralheria",
-    company: "Cliente",
-    category: "Site institucional",
-    description:
-      "Portfolio de serviços de serralheria com galeria e captação de orçamentos.",
-    stack: ["Next.js", "Express", "Tailwind"],
-    liveLink: null,
-    coverImageUrl: null,
-    featured: false,
-  },
-  {
     slug: "oncoliving",
     title: "Oncoliving",
     company: "Cliente, Andressa Semionatto",
@@ -245,12 +221,12 @@ type SkillSeed = {
 
 const skillSeeds: SkillSeed[] = [
   // Frontend
-  { title: "React",            category: "Frontend",         iconSlug: "react",            level: 5, projects: ["arqdoor","mtcprop-members","girob2b","oncoliving","jma","bioathos","zynta","egp-iot"] },
-  { title: "Next.js",          category: "Frontend",         iconSlug: "nextdotjs",        level: 5, projects: ["zuptos","mtcprop-members","girob2b","florenza","jma","oncoliving","bioathos","zynta"] },
+  { title: "React",            category: "Frontend",         iconSlug: "react",            level: 5, projects: ["arqdoor","mtcprop-members","girob2b","oncoliving","bioathos","zynta","egp-iot"] },
+  { title: "Next.js",          category: "Frontend",         iconSlug: "nextdotjs",        level: 5, projects: ["zuptos","mtcprop-members","girob2b","oncoliving","bioathos","zynta"] },
   { title: "TypeScript",       category: "Frontend",         iconSlug: "typescript",       level: 5, projects: ["arqdoor","zuptos","mtcprop-members","girob2b"] },
   { title: "JavaScript",       category: "Frontend",         iconSlug: "javascript",       level: 5, projects: ["dbl","norte-premium","negritude-junior","gap-ads"] },
   { title: "React Native",     category: "Frontend",         iconSlug: "react",            level: 4, projects: ["egp-iot"] },
-  { title: "Tailwind CSS",     category: "Frontend",         iconSlug: "tailwindcss",      level: 5, projects: ["arqdoor","zuptos","mtcprop-members","girob2b","jma","oncoliving"] },
+  { title: "Tailwind CSS",     category: "Frontend",         iconSlug: "tailwindcss",      level: 5, projects: ["arqdoor","zuptos","mtcprop-members","girob2b","oncoliving"] },
   { title: "Styled Components",category: "Frontend",         iconSlug: "styledcomponents", level: 3, projects: [] },
   { title: "Vue.js",           category: "Frontend",         iconSlug: "vuedotjs",         level: 2, projects: [] },
   // State / Patterns
@@ -262,8 +238,8 @@ const skillSeeds: SkillSeed[] = [
   { title: "Clean Architecture",category:"Estado & Padrões", iconSlug: null,               level: 4, projects: ["mtcprop-members","egp-iot"] },
   { title: "SOLID",            category: "Estado & Padrões", iconSlug: null,               level: 4, projects: ["mtcprop-members","egp-iot"] },
   // Backend
-  { title: "Node.js",          category: "Backend",          iconSlug: "nodedotjs",        level: 4, projects: ["arqdoor","egp-iot","oncoliving","jma"] },
-  { title: "Express",          category: "Backend",          iconSlug: "express",          level: 3, projects: ["arqdoor","oncoliving","jma"] },
+  { title: "Node.js",          category: "Backend",          iconSlug: "nodedotjs",        level: 4, projects: ["arqdoor","egp-iot","oncoliving"] },
+  { title: "Express",          category: "Backend",          iconSlug: "express",          level: 3, projects: ["arqdoor","oncoliving"] },
   { title: "NestJS",           category: "Backend",          iconSlug: "nestjs",           level: 3, projects: ["mtcprop-members"] },
   { title: "Fastify",          category: "Backend",          iconSlug: "fastify",          level: 3, projects: ["egp-iot"] },
   { title: "REST API",         category: "Backend",          iconSlug: null,               level: 4, projects: ["arqdoor","egp-iot","mtcprop-members"] },
@@ -286,10 +262,10 @@ const skillSeeds: SkillSeed[] = [
   { title: "GitLab",           category: "DevOps",           iconSlug: "gitlab",           level: 3, projects: [] },
   // Quality
   { title: "Jest",             category: "Qualidade",        iconSlug: "jest",             level: 3, projects: [] },
-  { title: "SEO",              category: "Qualidade",        iconSlug: "googlesearchconsole", level: 4, projects: ["florenza","egp-iot","jma"] },
+  { title: "SEO",              category: "Qualidade",        iconSlug: "googlesearchconsole", level: 4, projects: ["egp-iot"] },
   // Design / Process
   { title: "Figma",            category: "Design & Processo",iconSlug: "figma",            level: 4, projects: ["arqdoor","zuptos","mtcprop-members"] },
-  { title: "UI/UX",            category: "Design & Processo",iconSlug: null,               level: 4, projects: ["arqdoor","zuptos","mtcprop-members","florenza"] },
+  { title: "UI/UX",            category: "Design & Processo",iconSlug: null,               level: 4, projects: ["arqdoor","zuptos","mtcprop-members"] },
   { title: "Scrum",            category: "Design & Processo",iconSlug: null,               level: 4, projects: [] },
   { title: "Kanban",           category: "Design & Processo",iconSlug: null,               level: 4, projects: [] },
   // AI tooling
@@ -790,20 +766,6 @@ export const aboutContent = {
       description: "Aplicação web com autenticação e persistência via Supabase.",
     },
     {
-      name: "Instituto Florenza",
-      type: "Site institucional",
-      stack: "WordPress, Tema custom, SEO",
-      description:
-        "Site institucional com tema custom focado em performance, captação de leads e SEO.",
-    },
-    {
-      name: "JMA Serralheria",
-      type: "Portfolio / Site institucional",
-      stack: "Next.js, Express, Tailwind",
-      description:
-        "Portfolio de serviços de serralheria com galeria e captação de orçamentos.",
-    },
-    {
       name: "Oncoliving",
       type: "Plataforma de saúde",
       stack: "Next.js, Express, Prisma, Tailwind",
@@ -897,7 +859,7 @@ const timelineSeeds: TimelineSeed[] = [
     sortDate: "2025-05-01",
     title: "Primeiros sites e landings de clientes",
     description:
-      "Instituto Florenza, JMA Serralheria, Norte Premium, DBL Conexões, Negritude Junior, GAP-ADS. Atendimento direto a clientes finais.",
+      "Norte Premium, DBL Conexões, Negritude Junior, GAP-ADS. Atendimento direto a clientes finais.",
     category: "Cliente",
     icon: "Globe",
   },
