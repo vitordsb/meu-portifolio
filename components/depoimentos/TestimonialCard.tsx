@@ -29,18 +29,24 @@ function initials(name: string) {
 export default function TestimonialCard({
   t,
   pt,
+  compact = false,
 }: {
   t: Pick<PublicTestimonial, "name" | "role" | "projectName" | "photoUrl" | "quote" | "rating" | "verified">;
   pt: boolean;
+  /** Versão menor, por cima da imagem do case. */
+  compact?: boolean;
 }) {
   const sub = [t.role, t.projectName].filter(Boolean).join(" · ");
+  const avatar = compact ? "h-9 w-9 text-xs" : "h-11 w-11 text-sm";
   return (
-    <figure className="flex h-full flex-col border border-outline-variant bg-surface p-6">
-      <Stars value={t.rating} />
-      <blockquote className="mt-4 flex-1 whitespace-pre-line break-words text-base leading-relaxed">
+    <figure className={`flex h-full flex-col border border-outline-variant bg-surface ${compact ? "p-4" : "p-6"}`}>
+      <Stars value={t.rating} size={compact ? 13 : 16} />
+      <blockquote
+        className={`flex-1 whitespace-pre-line break-words leading-relaxed ${compact ? "mt-2.5 text-sm" : "mt-4 text-base"}`}
+      >
         {t.quote}
       </blockquote>
-      <figcaption className="mt-6 flex items-center gap-3">
+      <figcaption className={`flex items-center gap-3 ${compact ? "mt-3" : "mt-6"}`}>
         {t.photoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -49,19 +55,21 @@ export default function TestimonialCard({
             width={44}
             height={44}
             loading="lazy"
-            className="h-11 w-11 shrink-0 rounded-full object-cover"
+            className={`${avatar} shrink-0 rounded-full object-cover`}
           />
         ) : (
           <span
             aria-hidden
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface-low text-sm font-semibold text-on-surface-variant"
+            className={`${avatar} flex shrink-0 items-center justify-center rounded-full bg-surface-low font-semibold text-on-surface-variant`}
           >
             {initials(t.name) || "?"}
           </span>
         )}
         <span className="min-w-0">
-          <span className="block truncate font-semibold">{t.name}</span>
-          {sub && <span className="block truncate text-sm text-on-surface-variant">{sub}</span>}
+          <span className={`block truncate font-semibold ${compact ? "text-sm" : ""}`}>{t.name}</span>
+          {sub && (
+            <span className={`block truncate text-on-surface-variant ${compact ? "text-xs" : "text-sm"}`}>{sub}</span>
+          )}
           {t.verified && (
             <span className="mt-0.5 inline-flex items-center gap-1 text-xs text-on-surface-variant">
               <BadgeCheck size={13} aria-hidden />

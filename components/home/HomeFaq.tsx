@@ -38,6 +38,10 @@ export default function HomeFaq({ prices }: { prices: Record<string, StartingPri
           q: "Tem contrato e nota fiscal?",
           a: `Sim. A empresa tem CNPJ ativo (${CNPJ}) e o projeto tem contrato e nota fiscal.`,
         },
+        {
+          q: "E se não ficar como o combinado?",
+          a: "A gente ajusta sem custo extra. O que vale é o escopo escrito na proposta: se a entrega não bate com ele, a correção é por nossa conta.",
+        },
       ]
     : [
         {
@@ -59,6 +63,10 @@ export default function HomeFaq({ prices }: { prices: Record<string, StartingPri
         {
           q: "Is there a contract and invoice?",
           a: `Yes. The company is registered (CNPJ ${CNPJ}) and every project has a contract and an invoice.`,
+        },
+        {
+          q: "What if it isn't what we agreed?",
+          a: "We fix it at no extra cost. The written scope in the proposal is the reference: if the delivery doesn't match it, the fix is on us.",
         },
       ];
 

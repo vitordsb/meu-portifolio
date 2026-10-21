@@ -1,11 +1,17 @@
 import { priceScope } from "@/lib/estimate/pricing";
 import type { Scope } from "@/lib/estimate/scope";
+import { findPackage } from "@/lib/payments/packages";
 
 /**
  * Projetos típicos do guia "Quanto custa um site ou app". O preço NÃO é
  * digitado: sai da mesma tabela do orçamento com IA (lib/estimate/pricing.ts),
  * então o guia nunca contradiz o orçamento e acompanha qualquer mudança de
  * preço automaticamente.
+ *
+ * Exceção do piso: se existe pacote de preço fechado do mesmo tipo
+ * (lib/payments/packages, mesmo id) mais barato que a tabela, o "a partir de"
+ * é o pacote. Senão a home dizia "landing a partir de R$ 800" com o pacote
+ * vendido a R$ 790 em /servicos (21/out/2026).
  */
 
 const BASE: Scope = {
@@ -163,7 +169,7 @@ export const GUIDE_EXAMPLES: GuideExample[] = DEFS.map((d) => {
     title: d.title,
     forWho: d.forWho,
     includes: d.includes,
-    min: estimate.min,
+    min: Math.min(estimate.min, findPackage(d.id)?.price ?? Infinity),
     max: estimate.max,
     weeksMin: estimate.weeksMin,
     weeksMax: estimate.weeksMax,
