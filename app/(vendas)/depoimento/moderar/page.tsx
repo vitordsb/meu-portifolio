@@ -25,13 +25,16 @@ async function remove(form: FormData) {
   if (!checkModerationSig(id, s)) return;
   await removeTestimonial(id);
   revalidateTag(TESTIMONIALS_TAG);
-  redirect(`/depoimento/moderar?id=${encodeURIComponent(id)}&s=${encodeURIComponent(s)}`);
+  // `removido=1`: a leitura logo depois da gravação às vezes ainda devolve o
+  // estado antigo, e a página mostrava "No ar no site" até recarregar
+  redirect(`/depoimento/moderar?id=${encodeURIComponent(id)}&s=${encodeURIComponent(s)}&removido=1`);
 }
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ id?: string; s?: string }> }) {
-  const { id = "", s = "" } = await searchParams;
+export default async function Page({ searchParams }: { searchParams: Promise<{ id?: string; s?: string; removido?: string }> }) {
+  const { id = "", s = "", removido } = await searchParams;
   const ok = checkModerationSig(id, s);
-  const t = ok ? await readTestimonial(id) : null;
+  const read = ok ? await readTestimonial(id) : null;
+  const t = read && removido === "1" ? { ...read, status: "removido" as const, photoUrl: null } : read;
 
   return (
     <main className="mx-auto min-h-dvh w-full max-w-xl bg-surface px-5 py-16 text-on-surface">
