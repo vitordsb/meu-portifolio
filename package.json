@@ -13,6 +13,7 @@
     "db:seed:portfolio": "tsx scripts/seed-portfolio.ts",
     "cobrar": "tsx scripts/cobrar.ts",
     "prospectar": "tsx scripts/prospectar.ts",
+    "depoimento": "tsx scripts/depoimento.ts",
     "seg:ia": "node scripts/security/ia.mjs",
     "seg:api": "node scripts/security/api.mjs"
   },
@@ -45,6 +46,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "2.8.1",
     "botid": "^1.5.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

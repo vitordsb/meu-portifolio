@@ -3,6 +3,7 @@ import CompanyHome from "@/components/home/CompanyHome";
 import JsonLd from "@/components/seo/JsonLd";
 import { GUIDE_EXAMPLES } from "@/lib/guide/examples";
 import { buildCatalog } from "@/lib/projects-catalog";
+import { getPublishedTestimonials } from "@/lib/testimonials/store";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
@@ -15,16 +16,19 @@ const prices = Object.fromEntries(
 // Projetos entregues por tipo (vitrine dos serviços e abas de projetos).
 const projects = buildCatalog();
 
-// Home é landing: conteúdo fixo, sem banco. Sai estática no build.
+// Home é landing: conteúdo fixo, sem banco. Sai estática no build; só os
+// depoimentos (Blob) se renovam, quando chega ou sai um (revalidateTag).
 // A home anterior (deck de sessões) segue em components/deck/HomeDeck: pra
 // voltar, troque <CompanyHome .../> por <HomeDeck />.
-export default function HomePage() {
+export default async function HomePage() {
+  const testimonials = await getPublishedTestimonials();
   return (
     <main>
       <JsonLd />
       <CompanyHome
         prices={prices}
         projects={projects}
+        testimonials={testimonials}
       />
     </main>
   );

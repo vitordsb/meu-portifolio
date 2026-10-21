@@ -20,7 +20,8 @@ export type CapName =
   | "contraproposta"
   | "raiox"
   | "raiox_lead"
-  | "novidades";
+  | "novidades"
+  | "depoimento";
 
 /** Limites padrão por dia; sobrescreva com CAP_<NOME>_DIA na Vercel. */
 const DEFAULTS: Record<CapName, number> = {
@@ -34,6 +35,8 @@ const DEFAULTS: Record<CapName, number> = {
   raiox: 300,
   raiox_lead: 80,
   novidades: 100,
+  // Depoimento publica na hora: o teto segura enxurrada no formulário aberto
+  depoimento: 20,
 };
 
 function limitFor(name: CapName) {

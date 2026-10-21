@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  * mudar, esta página muda junto. Prazos de guarda definidos pelo Vitor.
  */
 
-const UPDATED = "6 de outubro de 2026";
+const UPDATED = "21 de outubro de 2026";
 
 const sections: LegalSection[] = [
   {
@@ -67,6 +67,11 @@ const sections: LegalSection[] = [
               quem pede.
             </>,
             <>
+              <strong>Depoimentos:</strong> nome, cargo e empresa (se quiser), foto (se quiser), avaliação de 1 a 5
+              estrelas, o projeto e o texto do depoimento. Aparecem publicamente no site, como explicado em{" "}
+              <a href="#depoimentos">Depoimentos</a>.
+            </>,
+            <>
               <strong>Pagamentos:</strong> o pagamento acontece na página do Asaas. Os dados do cartão são digitados
               lá e nunca passam pelo nosso site. Para cobrar um pedido combinado, informamos ao Asaas seu nome,
               CPF ou CNPJ, e-mail e telefone.
@@ -94,8 +99,8 @@ const sections: LegalSection[] = [
               etapas que você mesmo pediu antes de contratar.
             </>,
             <>
-              <strong>Consentimento</strong> (art. 7º, I): a caixa que você marca no orçamento e no Raio-X, e o
-              pedido de novidades. Você pode retirar quando quiser.
+              <strong>Consentimento</strong> (art. 7º, I): a caixa que você marca no orçamento, no Raio-X e no
+              depoimento, e o pedido de novidades. Você pode retirar quando quiser.
             </>,
             <>
               <strong>Execução de contrato e obrigação legal</strong> (art. 7º, II e V): cobrança, nota fiscal e
@@ -107,6 +112,24 @@ const sections: LegalSection[] = [
             </>,
           ]}
         />
+      </>
+    ),
+  },
+  {
+    id: "depoimentos",
+    title: "Depoimentos",
+    body: (
+      <>
+        <p>
+          Quem foi nosso cliente pode deixar um depoimento em <Link href="/depoimento">/depoimento</Link> ou por um
+          link que mandamos. Ele é publicado no site na hora, com o nome, o cargo e a foto que você informar, a
+          avaliação e o projeto. Isso só acontece se você marcar a autorização no formulário.
+        </p>
+        <p>
+          Para mudar ou tirar o seu depoimento do site, peça pelo e-mail{" "}
+          <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a> ou pelo WhatsApp. Ele sai na hora e a foto é apagada.
+          Depoimentos que não pareçam verdadeiros ou que ofendam alguém também podem ser retirados por nós.
+        </p>
       </>
     ),
   },
@@ -168,7 +191,8 @@ const sections: LegalSection[] = [
         <Bullets
           items={[
             <>
-              <strong>Vercel</strong> (Estados Unidos): hospedagem do site, estatísticas e proteção contra robôs.
+              <strong>Vercel</strong> (Estados Unidos): hospedagem do site, estatísticas, proteção contra robôs e
+              armazenamento dos depoimentos e das fotos.
             </>,
             <>
               <strong>DeepSeek</strong> (China): processa o texto da conversa do orçamento com IA. As imagens
@@ -215,6 +239,7 @@ const sections: LegalSection[] = [
         items={[
           "Orçamentos, Raio-X e mensagens de contato: até 2 anos depois do último contato com você.",
           "Lista de novidades: até você pedir para sair.",
+          "Depoimentos: enquanto estiverem publicados. Se você pedir a retirada, saem do site e a foto é apagada na hora; guardamos só o registro de que você autorizou.",
           "Pagamentos, contratos e notas fiscais: pelo prazo que a lei exige (em geral, 5 anos).",
           "Depois disso, os dados são apagados ou anonimizados.",
         ]}
