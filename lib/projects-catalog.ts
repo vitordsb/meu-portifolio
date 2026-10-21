@@ -38,7 +38,6 @@ const TYPE_BY_SLUG: Record<string, ProjectType> = {
   "egp-iot": "app",
   bioathos: "app",
   "mtcprop-site": "site",
-  jma: "site",
   dbl: "site",
   "norte-premium": "site",
   "negritude-junior": "site",
