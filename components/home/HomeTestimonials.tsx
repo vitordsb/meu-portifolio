@@ -3,23 +3,34 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { COMPANIES } from "@/lib/companies";
 import TestimonialCard from "@/components/depoimentos/TestimonialCard";
 import type { PublicTestimonial } from "@/lib/testimonials/types";
 import { Reveal, Section, SectionHeader } from "./ui";
 
 const MAX = 6;
 
+/** Clientes com linha própria em Projetos: o depoimento deles já aparece no case. */
+const IN_CASES = new Set(COMPANIES.map((c) => c.id));
+
+/** Depoimentos que vão no carrossel do case (já vêm verificados e mais novos primeiro). */
+export function caseTestimonials(testimonials: PublicTestimonial[], companyId: string) {
+  return testimonials.filter((t) => t.project === companyId);
+}
+
 /**
  * "O que os clientes dizem": depoimentos reais, entre Projetos e Como
  * funciona. Só existe com pelo menos 1 publicado (seção vazia pesa contra).
- * Cliente verificado vem primeiro. Sem marcação de estrelas pro Google:
+ * Cliente verificado vem primeiro. Depoimento de cliente com case próprio
+ * fica no carrossel do case e não repete aqui. Sem marcação de estrelas pro Google:
  * depoimento escolhido pela própria empresa não vale estrela lá e pode dar
  * penalidade.
  */
 export default function HomeTestimonials({ testimonials }: { testimonials: PublicTestimonial[] }) {
   const { language } = useLanguage();
   const pt = language === "pt";
-  if (testimonials.length === 0) return null;
+  const list = testimonials.filter((t) => !IN_CASES.has(t.project));
+  if (list.length === 0) return null;
 
   return (
     <Section id="depoimentos">
@@ -28,7 +39,7 @@ export default function HomeTestimonials({ testimonials }: { testimonials: Publi
         lead={pt ? "Escrito por quem contratou, do jeito que mandou." : "Written by the people who hired us, as they sent it."}
       />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {testimonials.slice(0, MAX).map((t, i) => (
+        {list.slice(0, MAX).map((t, i) => (
           <Reveal key={t.id} delay={Math.min(i, 2) * 0.06} className="h-full">
             <TestimonialCard t={t} pt={pt} />
           </Reveal>

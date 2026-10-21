@@ -11,9 +11,9 @@ import { FRAME } from "./ui";
 import ClayMockup from "./ClayMockup";
 import { PROJECT_SHOTS } from "@/lib/project-shots";
 
-const TRUST_ICONS = { clients: BadgeCheck, contract: FileSignature, price: HandCoins };
+const TRUST_ICONS = { projects: BadgeCheck, contract: FileSignature, price: HandCoins };
 
-export default function HomeHero() {
+export default function HomeHero({ delivered }: { delivered: number }) {
   const { language } = useLanguage();
   const pt = language === "pt";
 
@@ -70,6 +70,13 @@ export default function HomeHero() {
               </span>
             </a>
           </motion.div>
+          {/* Promessa de resposta (21/out/2026): quem responde em até 1 hora
+              fecha muito mais conversa que quem demora (HBR, 2011) */}
+          <motion.p {...enter(2)} className="mt-3 text-sm text-on-surface-variant">
+            {pt
+              ? "A gente responde no WhatsApp em até 1 hora, em horário comercial."
+              : "We reply on WhatsApp within 1 hour during business hours."}
+          </motion.p>
 
           <motion.ul
             {...enter(3)}
@@ -81,8 +88,8 @@ export default function HomeHero() {
                 <li key={t.key} className="flex items-center gap-2">
                   <Icon size={18} className="shrink-0 text-on-surface" />
                   <span>
-                    {t.key === "clients" && (
-                      <strong className="font-semibold text-on-surface">{COMPANIES.length} </strong>
+                    {t.key === "projects" && (
+                      <strong className="font-semibold text-on-surface">{delivered} </strong>
                     )}
                     {t.label[language]}
                   </span>

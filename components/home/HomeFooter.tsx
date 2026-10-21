@@ -28,8 +28,8 @@ export default function HomeFooter() {
             </h2>
             <p className="mt-4 max-w-xl text-lg opacity-75">
               {pt
-                ? "Cada semana com site lento ou pedido perdido é cliente indo pro concorrente. Faça o orçamento grátis ou chame no WhatsApp."
-                : "Every week with a slow site or lost orders is customers going to a competitor. Get a free quote or message us on WhatsApp."}
+                ? "Cada semana com site lento ou pedido perdido é cliente indo pro concorrente. Faça o orçamento grátis ou chame no WhatsApp: a gente responde em até 1 hora, em horário comercial."
+                : "Every week with a slow site or lost orders is customers going to a competitor. Get a free quote or message us on WhatsApp: we reply within 1 hour during business hours."}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link

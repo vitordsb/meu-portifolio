@@ -41,7 +41,9 @@ export const HOME_HERO = {
 
 /** Selos de confiança logo abaixo do banner. */
 export const TRUST = [
-  { key: "clients", label: { pt: "empresas atendidas", en: "companies served" } },
+  // "4 empresas atendidas" saiu em 21/out/2026: número pequeno joga contra.
+  // O número de projetos entregues vem do catálogo (app/page.tsx).
+  { key: "projects", label: { pt: "projetos entregues", en: "delivered projects" } },
   { key: "contract", label: { pt: "Contrato e nota fiscal", en: "Contract and invoice" } },
   { key: "price", label: { pt: "Preço combinado antes", en: "Price agreed upfront" } },
 ] as const;
@@ -195,6 +197,7 @@ export const PROCESS: { title: L10n; text: L10n }[] = [
 export const GUARANTEES: L10n[] = [
   { pt: "Empresa com CNPJ ativo", en: "Registered company (CNPJ)" },
   { pt: "Contrato e nota fiscal", en: "Contract and invoice" },
-  { pt: "Pix, boleto ou cartão", en: "Pix, bank slip or card" },
+  // Garantia decidida pelo Vitor em 21/out/2026 (só retrabalho, sem devolução)
+  { pt: "Ajuste sem custo se não ficar como o combinado", en: "Free fixes if it isn't what we agreed" },
   { pt: "Atendimento direto com quem desenvolve", en: "Direct contact with the developer" },
 ];

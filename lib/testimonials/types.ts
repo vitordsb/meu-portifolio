@@ -1,6 +1,8 @@
 /** O que aparece no card do site (vai pro navegador). */
 export type PublicTestimonial = {
   id: string;
+  /** Id do projeto (lib/testimonials/projects): liga o depoimento ao case. */
+  project: string;
   name: string;
   role: string | null;
   projectName: string | null;
@@ -16,7 +18,6 @@ export type TestimonialStatus = "publicado" | "removido";
 
 /** O registro inteiro, guardado no Blob (`depoimentos/dados/<id>.json`). */
 export type StoredTestimonial = PublicTestimonial & {
-  project: string;
   status: TestimonialStatus;
   /** Versão do texto de autorização que a pessoa marcou. */
   consentVersion: string;

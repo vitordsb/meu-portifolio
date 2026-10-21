@@ -108,8 +108,9 @@ async function loadPublished(): Promise<PublicTestimonial[]> {
       .filter((t): t is StoredTestimonial => t?.status === "publicado")
       // Cliente verificado primeiro; dentro de cada grupo, o mais novo
       .sort((a, b) => Number(b.verified) - Number(a.verified) || b.createdAt.localeCompare(a.createdAt))
-      .map(({ id, name, role, projectName, photoUrl, quote, rating, verified }) => ({
+      .map(({ id, project, name, role, projectName, photoUrl, quote, rating, verified }) => ({
         id,
+        project,
         name,
         role,
         projectName,
@@ -125,7 +126,7 @@ async function loadPublished(): Promise<PublicTestimonial[]> {
 }
 
 /** Depoimentos no ar, com cache até o próximo envio ou remoção (ou 1 hora). */
-export const getPublishedTestimonials = unstable_cache(loadPublished, ["depoimentos-publicados"], {
+export const getPublishedTestimonials = unstable_cache(loadPublished, ["depoimentos-publicados-v2"], {
   tags: [TESTIMONIALS_TAG],
   revalidate: 3600,
 });

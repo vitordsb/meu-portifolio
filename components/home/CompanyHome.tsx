@@ -104,11 +104,11 @@ export default function CompanyHome({
 
       <div data-home-scroll className="bg-surface text-on-surface">
         <TopBar current={current} onSelect={select} />
-        <HomeHero />
+        <HomeHero delivered={projects.length} />
         <HomeProblems />
         <HomeServices prices={prices} projects={projects} />
         <HomeEngagements />
-        <HomeProjects projects={projects} />
+        <HomeProjects testimonials={testimonials} />
         <HomeTestimonials testimonials={testimonials} />
         <HomeProcess />
         <HomeFaq prices={prices} />
