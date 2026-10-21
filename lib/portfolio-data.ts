@@ -160,17 +160,6 @@ export const allWork: Work[] = [
     featured: false,
   },
   {
-    slug: "norte-premium",
-    title: "Norte Premium Topografia",
-    company: "Cliente",
-    category: "Site institucional",
-    description: "Site comercial estático com seção de projetos.",
-    stack: ["HTML", "CSS", "JS"],
-    liveLink: "https://www.nortepremiumtopografia.com.br",
-    coverImageUrl: "/projects/norte-premium.png",
-    featured: false,
-  },
-  {
     slug: "negritude-junior",
     title: "Negritude Junior",
     company: "Cliente, Artista (samba)",
@@ -224,7 +213,7 @@ const skillSeeds: SkillSeed[] = [
   { title: "React",            category: "Frontend",         iconSlug: "react",            level: 5, projects: ["arqdoor","mtcprop-members","girob2b","oncoliving","bioathos","zynta","egp-iot"] },
   { title: "Next.js",          category: "Frontend",         iconSlug: "nextdotjs",        level: 5, projects: ["zuptos","mtcprop-members","girob2b","oncoliving","bioathos","zynta"] },
   { title: "TypeScript",       category: "Frontend",         iconSlug: "typescript",       level: 5, projects: ["arqdoor","zuptos","mtcprop-members","girob2b"] },
-  { title: "JavaScript",       category: "Frontend",         iconSlug: "javascript",       level: 5, projects: ["dbl","norte-premium","negritude-junior","gap-ads"] },
+  { title: "JavaScript",       category: "Frontend",         iconSlug: "javascript",       level: 5, projects: ["dbl","negritude-junior","gap-ads"] },
   { title: "React Native",     category: "Frontend",         iconSlug: "react",            level: 4, projects: ["egp-iot"] },
   { title: "Tailwind CSS",     category: "Frontend",         iconSlug: "tailwindcss",      level: 5, projects: ["arqdoor","zuptos","mtcprop-members","girob2b","oncoliving"] },
   { title: "Styled Components",category: "Frontend",         iconSlug: "styledcomponents", level: 3, projects: [] },
@@ -786,12 +775,6 @@ export const aboutContent = {
         "Site institucional estático para apresentação de produtos e contato comercial.",
     },
     {
-      name: "Norte Premium Topografia",
-      type: "Site institucional",
-      stack: "HTML, CSS, JS",
-      description: "Site comercial estático com seção de projetos.",
-    },
-    {
       name: "Negritude Junior",
       type: "Site artístico",
       stack: "HTML, CSS, JS",
@@ -859,7 +842,7 @@ const timelineSeeds: TimelineSeed[] = [
     sortDate: "2025-05-01",
     title: "Primeiros sites e landings de clientes",
     description:
-      "Norte Premium, DBL Conexões, Negritude Junior, GAP-ADS. Atendimento direto a clientes finais.",
+      "DBL Conexões, Negritude Junior, GAP-ADS. Atendimento direto a clientes finais.",
     category: "Cliente",
     icon: "Globe",
   },

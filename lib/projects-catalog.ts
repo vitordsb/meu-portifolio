@@ -39,7 +39,6 @@ const TYPE_BY_SLUG: Record<string, ProjectType> = {
   bioathos: "app",
   "mtcprop-site": "site",
   dbl: "site",
-  "norte-premium": "site",
   "negritude-junior": "site",
   "egp-industria": "site",
   zynta: "landing",
