@@ -75,6 +75,11 @@ export default function HomeFooter() {
                   {pt ? "Quanto custa" : "Pricing guide"}
                 </Link>
               </li>
+              <li>
+                <Link href="/depoimento" className="hover:underline">
+                  {pt ? "Avaliar meu projeto" : "Rate my project"}
+                </Link>
+              </li>
             </ul>
           </nav>
           <div>

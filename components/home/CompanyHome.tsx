@@ -22,6 +22,8 @@ import HomeProblems from "./HomeProblems";
 import HomeServices, { type StartingPrice } from "./HomeServices";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import HomeProjects from "./HomeProjects";
+import HomeTestimonials from "./HomeTestimonials";
+import type { PublicTestimonial } from "@/lib/testimonials/types";
 import HomeEngagements from "./HomeEngagements";
 import NewsletterPrompt from "./NewsletterPrompt";
 import HomeProcess from "./HomeProcess";
@@ -50,9 +52,11 @@ const ICONS: Record<string, LucideIcon> = {
 export default function CompanyHome({
   prices,
   projects,
+  testimonials,
 }: {
   prices: Record<string, StartingPrice>;
   projects: CatalogProject[];
+  testimonials: PublicTestimonial[];
 }) {
   const { language } = useLanguage();
   const pt = language === "pt";
@@ -105,6 +109,7 @@ export default function CompanyHome({
         <HomeServices prices={prices} projects={projects} />
         <HomeEngagements />
         <HomeProjects projects={projects} />
+        <HomeTestimonials testimonials={testimonials} />
         <HomeProcess />
         <HomeFaq prices={prices} />
         <HomeFooter />
