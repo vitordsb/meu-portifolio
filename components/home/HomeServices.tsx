@@ -21,6 +21,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { HOME_SECTIONS, SERVICE_TYPES } from "@/lib/home-content";
 import type { CatalogProject } from "@/lib/projects-catalog";
 import ProjectTile from "./ProjectTile";
+import { servicePageHref } from "@/lib/service-pages";
 import { Reveal, Section, SectionHeader } from "./ui";
 
 export type StartingPrice = { min: number; weeksMin: number; weeksMax: number };
@@ -359,6 +360,16 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                           {pt ? "Orçar um projeto assim" : "Get a quote for one like this"}
                         </span>
                       </Link>
+                      {/* Página do serviço é só em português (feita pro Google daqui) */}
+                      {pt && open && servicePageHref(open.id) && (
+                        <Link
+                          href={servicePageHref(open.id)!}
+                          onClick={close}
+                          className="inline-flex min-h-12 items-center gap-1.5 px-2 text-base font-medium underline underline-offset-4 hover:no-underline"
+                        >
+                          Tudo sobre este serviço <ArrowRight size={16} />
+                        </Link>
+                      )}
                     </div>
                   </motion.div>
                 </motion.div>

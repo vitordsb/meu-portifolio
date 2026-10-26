@@ -80,6 +80,11 @@ export default function HomeFooter() {
                   {pt ? "Avaliar meu projeto" : "Rate my project"}
                 </Link>
               </li>
+              <li>
+                <Link href="/indique" className="hover:underline">
+                  {pt ? "Indique e ganhe" : "Refer and earn"}
+                </Link>
+              </li>
             </ul>
           </nav>
           <div>

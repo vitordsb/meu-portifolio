@@ -5,7 +5,7 @@ import { C, esc, FONT, noLinks, SITE } from "@/lib/email-layout";
 import { ownerEmails, sendEmail } from "@/lib/mailer";
 import { cleanLine, cleanText } from "@/lib/sanitize";
 import { takeDaily } from "@/lib/security/daily-cap";
-import { OTHER_PROJECT, projectName } from "@/lib/testimonials/projects";
+import { OTHER_PROJECT, projectName, requestProjectName } from "@/lib/testimonials/projects";
 import {
   blobConfigured,
   createTestimonial,
@@ -84,16 +84,19 @@ export async function POST(req: Request) {
   // Link único: confere assinatura, prazo e se já foi usado
   let id: string;
   let project: string;
+  let label: string | null;
   let verified = false;
   if (d.token) {
     const request = readRequestToken(d.token);
     if (!request || (await testimonialExists(request.id))) return json({ error: "link" }, 410);
     id = request.id;
     project = request.project;
+    label = requestProjectName(request);
     verified = true;
   } else {
     project = d.project ?? "";
     if (project !== OTHER_PROJECT && !projectName(project)) return json({ error: "invalid" }, 400);
+    label = projectName(project);
     id = newTestimonialId();
   }
 
@@ -113,7 +116,7 @@ export async function POST(req: Request) {
   const record: StoredTestimonial = {
     id,
     project,
-    projectName: projectName(project),
+    projectName: label,
     name: d.name,
     role: d.role || null,
     photoUrl,

@@ -24,3 +24,8 @@ export function projectName(id: string): string | null {
   if (id === OTHER_PROJECT) return null;
   return testimonialProjects().find((p) => p.id === id)?.name ?? null;
 }
+
+/** Nome do projeto de um link único: o do portfólio ou, em `outro`, o do link. */
+export function requestProjectName(req: { project: string; label?: string }): string | null {
+  return projectName(req.project) ?? (req.project === OTHER_PROJECT ? req.label ?? null : null);
+}

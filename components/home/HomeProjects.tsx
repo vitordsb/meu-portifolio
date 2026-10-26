@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -19,6 +20,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { COMPANIES, type Company, type CompanyLink } from "@/lib/companies";
 import { HOME_SECTIONS } from "@/lib/home-content";
+import { whatsappCaseHref } from "@/lib/home-links";
 import { PROJECT_SHOTS } from "@/lib/project-shots";
 import { localizedStoreLink, storeCta, storeOf } from "@/lib/store-links";
 import CaseTestimonials from "@/components/depoimentos/CaseTestimonials";
@@ -101,15 +103,20 @@ function LinksAside({ links, pt }: { links: RowLink[]; pt: boolean }) {
  * primeiro a imagem grande, no desktop e no celular; embaixo a história
  * (problema, o que a gente fez) e, à direita, os links do projeto e do
  * cliente. Link que não existe não aparece.
+ *
+ * `standalone`: a página própria do case (/cases/<id>), com o nome no h1 e
+ * sem o link pra ela mesma. Na home é um item da lista.
  */
-function ProjectRow({
+export function ProjectRow({
   company,
   pt,
   testimonials,
+  standalone = false,
 }: {
   company: Company;
   pt: boolean;
   testimonials: PublicTestimonial[];
+  standalone?: boolean;
 }) {
   const language = pt ? "pt" : "en";
   // Abre no primeiro produto com imagem: o case começa sempre pela imagem
@@ -118,9 +125,14 @@ function ProjectRow({
   );
   const product = company.products[active];
   const links = rowLinks(company, language);
+  const Root = standalone ? "div" : "li";
+  const Name = standalone ? "h1" : "h3";
 
   return (
-    <li id={`case-${company.id}`} className="scroll-mt-20 border-t border-outline-variant py-12 md:py-16">
+    <Root
+      id={standalone ? undefined : `case-${company.id}`}
+      className={standalone ? "" : "scroll-mt-20 border-t border-outline-variant py-12 md:py-16"}
+    >
       {company.products.length > 1 && (
         <div className="mb-4 inline-flex border border-outline-variant p-0.5">
           {company.products.map((p, i) => (
@@ -165,7 +177,7 @@ function ProjectRow({
 
       <div className="mt-8 grid gap-10 md:mt-10 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <h3 className="text-3xl font-semibold tracking-[-0.03em] md:text-4xl">{company.name}</h3>
+          <Name className="text-3xl font-semibold tracking-[-0.03em] md:text-4xl">{company.name}</Name>
           <p className="mt-2 text-base text-on-surface-variant">
             {company.sector[language]} · {company.period}
           </p>
@@ -190,11 +202,37 @@ function ProjectRow({
               </div>
             )}
           </dl>
+
+          {/* Quem termina de ler o case é quem mais quer um igual (21/out/2026) */}
+          <div data-origem={`case-${company.id}`} className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a
+              href={whatsappCaseHref(pt, company.name)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-filled h-auto min-h-12 rounded-none px-6 py-3 text-base"
+            >
+              <span className="inline-flex items-center gap-2">
+                <MessageCircle size={18} className="shrink-0" />
+                {pt ? "Quero um projeto assim" : "I want a project like this"}
+              </span>
+            </a>
+            <Link href="/orcamento" className="text-base font-medium underline underline-offset-4 hover:no-underline">
+              {pt ? "Ou veja quanto custaria" : "Or see what it would cost"}
+            </Link>
+            {!standalone && (
+              <Link
+                href={`/cases/${company.id}`}
+                className="text-base text-on-surface-variant underline underline-offset-4 hover:text-on-surface hover:no-underline"
+              >
+                {pt ? "Página do case" : "Case page"}
+              </Link>
+            )}
+          </div>
         </div>
 
         <LinksAside links={links} pt={pt} />
       </div>
-    </li>
+    </Root>
   );
 }
 

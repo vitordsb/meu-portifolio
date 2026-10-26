@@ -13,6 +13,7 @@
  */
 import { config } from "dotenv";
 import { OTHER_PROJECT, projectName, testimonialProjects } from "@/lib/testimonials/projects";
+import { testimonialRequestMessage } from "@/lib/testimonials/request-message";
 import { createRequestToken } from "@/lib/testimonials/token";
 
 config({ path: ".env.local" });
@@ -37,18 +38,7 @@ if (!process.env.TESTIMONIAL_SECRET || process.env.TESTIMONIAL_SECRET.length < 3
 
 const { token } = createRequestToken({ project, name: name || undefined });
 const link = `${SITE}/depoimento/${token}`;
-const firstName = name.split(/\s+/)[0];
-const label = projectName(project);
-
 console.log(`\nLink (1 envio, vale 30 dias):\n${link}\n`);
 console.log("Mensagem pro WhatsApp:\n");
-console.log(
-  [
-    `Oi${firstName ? `, ${firstName}` : ""}! Tudo bem?`,
-    `Queria te pedir um favor rápido: um depoimento sobre ${label ? `o projeto ${label}` : "o projeto que fizemos"}.`,
-    "Leva uns 2 minutos e você vê como vai ficar antes de enviar:",
-    link,
-    "Obrigado!",
-  ].join("\n"),
-);
+console.log(testimonialRequestMessage(link, name, projectName(project)));
 console.log();

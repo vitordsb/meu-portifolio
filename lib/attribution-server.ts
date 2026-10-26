@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { REFERRAL_REWARD, referrerName } from "@/lib/referral";
 import { cleanLine } from "@/lib/sanitize";
 
 /**
@@ -51,7 +52,9 @@ export function describeAttribution(raw: unknown): string {
   }
 
   const parts: string[] = [];
-  if (a.ref) parts.push(`link ?ref=${a.ref}`);
+  const who = referrerName(a.ref);
+  if (who) parts.push(`INDICAÇÃO de ${who} (fechou: ${REFERRAL_REWARD.percent}% no Pix pra quem indicou)`);
+  else if (a.ref) parts.push(`link ?ref=${a.ref}`);
   if (a.source) {
     parts.push(
       [a.source, a.medium, a.campaign].filter(Boolean).join(" / ") +
