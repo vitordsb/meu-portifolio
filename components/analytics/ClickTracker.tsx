@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { linkEvent, trackEvent } from "@/lib/analytics";
-import { captureAttribution } from "@/lib/attribution";
+import { captureAttribution, readAttribution } from "@/lib/attribution";
+import { withReferral } from "@/lib/referral";
 
 /**
  * Mede os cliques que levam a um lead: WhatsApp, redes, e-mail e entradas no
@@ -26,6 +27,11 @@ export default function ClickTracker() {
       if (!(a instanceof HTMLAnchorElement)) return;
       const ev = linkEvent(a.href);
       if (!ev) return;
+      // Veio de indicação: o WhatsApp já sai dizendo de quem (lib/referral)
+      if (ev.name === "clique_whatsapp") {
+        const href = withReferral(a.href, readAttribution()?.ref);
+        if (href !== a.href) a.href = href;
+      }
       const origem =
         a.closest<HTMLElement>("[data-origem]")?.dataset.origem ?? "pagina";
       trackEvent(ev.name, {

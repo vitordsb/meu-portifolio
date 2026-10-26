@@ -21,6 +21,9 @@ export type TestimonialRequest = {
   project: string;
   /** Nome de quem vai preencher, pra já vir no campo. */
   name?: string;
+  /** Nome do projeto quando ele não está no portfólio (`outro`), como o
+   *  pacote que o cliente pagou. */
+  label?: string;
   /** Validade, em segundos desde 1970. */
   exp: number;
 };
@@ -51,7 +54,10 @@ export function newTestimonialId(): string {
   return randomBytes(9).toString("base64url");
 }
 
-export function createRequestToken(req: Omit<TestimonialRequest, "exp" | "id">): {
+export function createRequestToken(
+  req: Omit<TestimonialRequest, "exp" | "id">,
+  days = DAYS_VALID,
+): {
   token: string;
   request: TestimonialRequest;
 } {
@@ -59,7 +65,8 @@ export function createRequestToken(req: Omit<TestimonialRequest, "exp" | "id">):
     id: newTestimonialId(),
     project: req.project,
     ...(req.name ? { name: req.name } : {}),
-    exp: Math.floor(Date.now() / 1000) + DAYS_VALID * 86400,
+    ...(req.label ? { label: req.label.slice(0, 60) } : {}),
+    exp: Math.floor(Date.now() / 1000) + days * 86400,
   };
   const body = Buffer.from(JSON.stringify(request)).toString("base64url");
   return { token: `${body}.${sign(`pedido:${body}`)}`, request };
@@ -74,6 +81,7 @@ export function readRequestToken(token: string): TestimonialRequest | null {
     const r = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as TestimonialRequest;
     if (typeof r.id !== "string" || !/^[\w-]{6,24}$/.test(r.id)) return null;
     if (typeof r.project !== "string" || typeof r.exp !== "number") return null;
+    if (r.label !== undefined && (typeof r.label !== "string" || r.label.length > 60)) return null;
     if (r.exp < Date.now() / 1000) return null;
     return r;
   } catch {

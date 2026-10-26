@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import TestimonialPage from "@/components/depoimentos/TestimonialPage";
 import { blobConfigured, testimonialExists } from "@/lib/testimonials/store";
-import { projectName } from "@/lib/testimonials/projects";
+import { requestProjectName } from "@/lib/testimonials/projects";
 import { readRequestToken } from "@/lib/testimonials/token";
 
 // O token é pessoal: fora do Google e sem guardar a página em cache
@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ token: string
     <TestimonialPage
       mode="link"
       token={decodeURIComponent(token)}
-      projectName={projectName(request.project)}
+      projectName={requestProjectName(request)}
       name={request.name}
     />
   );

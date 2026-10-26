@@ -4,6 +4,7 @@ import PageHeader from "@/components/payments/PageHeader";
 import { CNPJ } from "@/lib/email-layout";
 import { PRICING } from "@/lib/estimate/pricing";
 import { GUIDE_EXAMPLES } from "@/lib/guide/examples";
+import { servicePageHref } from "@/lib/service-pages";
 
 /**
  * Guia "Quanto custa um site ou aplicativo" (/quanto-custa). Conteúdo pra
@@ -192,6 +193,14 @@ export default function PriceGuide() {
                     </li>
                   ))}
                 </ul>
+                {servicePageHref(e.id) && (
+                  <Link
+                    href={servicePageHref(e.id)!}
+                    className="mt-auto inline-flex min-h-11 items-center gap-1.5 pt-4 text-sm font-medium underline underline-offset-4 hover:no-underline"
+                  >
+                    Projetos e perguntas sobre {e.title.toLowerCase()} <ArrowRight size={14} />
+                  </Link>
+                )}
               </li>
             ))}
             <li

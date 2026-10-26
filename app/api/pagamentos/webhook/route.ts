@@ -10,8 +10,13 @@ import {
   clientPaidEmail,
   ownerPaidEmail,
   type PaidInfo,
+  type TestimonialAsk,
 } from "@/lib/payments/emails";
 import { findPackage } from "@/lib/payments/packages";
+import { SITE } from "@/lib/email-layout";
+import { OTHER_PROJECT } from "@/lib/testimonials/projects";
+import { testimonialRequestMessage } from "@/lib/testimonials/request-message";
+import { createRequestToken, hasTestimonialSecret } from "@/lib/testimonials/token";
 
 /**
  * Webhook do Asaas: avisa o Vitor e o cliente quando um pagamento confirma.
@@ -52,6 +57,41 @@ function shouldNotify(event: string, p: AsaasPayment) {
 /** "Parcela 1 de 3. Site institucional" -> "Site institucional" */
 function cleanDescription(d: string | null | undefined) {
   return (d ?? "").replace(/^Parcela \d+ de \d+\.\s*/i, "").trim();
+}
+
+/** O link precisa durar até a entrega, que pode levar semanas. */
+const TESTIMONIAL_DAYS = 90;
+
+/** "(11) 99999-9999" -> "5511999999999"; null se não parece celular BR. */
+function whatsappNumber(phone: string | null): string | null {
+  const d = (phone ?? "").replace(/\D/g, "");
+  if (d.length === 10 || d.length === 11) return `55${d}`;
+  if ((d.length === 12 || d.length === 13) && d.startsWith("55")) return d;
+  return null;
+}
+
+/**
+ * Link único de depoimento, já no aviso de pagamento: o Vitor não precisa
+ * lembrar de rodar `pnpm depoimento` quando entregar. Nada vai pro cliente
+ * daqui; o Vitor manda quando o projeto estiver pronto.
+ */
+function testimonialAsk(info: PaidInfo, firstOfOrder: boolean): TestimonialAsk | null {
+  if (!firstOfOrder || !hasTestimonialSecret()) return null;
+  const name = info.name === "Cliente" ? undefined : info.name;
+  const label = info.description === "Pagamento" ? undefined : info.description;
+  const { token } = createRequestToken(
+    { project: OTHER_PROJECT, name, label },
+    TESTIMONIAL_DAYS,
+  );
+  const link = `${SITE}/depoimento/${token}`;
+  const message = testimonialRequestMessage(link, name, label);
+  const number = whatsappNumber(info.phone);
+  return {
+    link,
+    message,
+    whatsapp: number ? `https://wa.me/${number}?text=${encodeURIComponent(message)}` : null,
+    days: TESTIMONIAL_DAYS,
+  };
 }
 
 async function notify(p: AsaasPayment) {
@@ -98,7 +138,8 @@ async function notify(p: AsaasPayment) {
   await sendEmail({
     to: ownerEmails(),
     replyTo: info.email ?? undefined,
-    ...ownerPaidEmail(info),
+    // Parcela 2 em diante do pedido combinado não gera outro link
+    ...ownerPaidEmail(info, testimonialAsk(info, (p.installmentNumber ?? 1) === 1)),
   });
   if (info.email) {
     await sendEmail({ to: info.email, ...clientPaidEmail(info) });

@@ -40,7 +40,16 @@ export type PaidInfo = {
   invoiceUrl: string;
 };
 
-export function ownerPaidEmail(p: PaidInfo) {
+/** Pedido de depoimento pronto, pra mandar quando o projeto for entregue. */
+export type TestimonialAsk = {
+  link: string;
+  message: string;
+  /** WhatsApp do cliente com a mensagem já escrita, quando ele deu telefone. */
+  whatsapp: string | null;
+  days: number;
+};
+
+export function ownerPaidEmail(p: PaidInfo, ask?: TestimonialAsk | null) {
   return {
     subject: `[Portfolio] Pagamento confirmado #${p.code}: ${brl.format(p.value)}`,
     text: [
@@ -54,6 +63,17 @@ export function ownerPaidEmail(p: PaidInfo) {
       `Telefone: ${p.phone ?? "(não informado)"}`,
       "",
       `Fatura no Asaas: ${p.invoiceUrl}`,
+      ...(ask
+        ? [
+            "",
+            "-----",
+            `PEDIR DEPOIMENTO (quando entregar o projeto; o link vale ${ask.days} dias e 1 envio):`,
+            ...(ask.whatsapp ? [`Abrir o WhatsApp do cliente com a mensagem pronta: ${ask.whatsapp}`, ""] : []),
+            "Mensagem pra copiar:",
+            "",
+            ask.message,
+          ]
+        : []),
     ].join("\n"),
   };
 }

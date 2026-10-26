@@ -42,6 +42,7 @@ export const INDEXED_PAGES: { path: string; priority: number }[] = [
   { path: "/orcamento", priority: 0.9 },
   { path: "/raio-x", priority: 0.9 },
   { path: "/quanto-custa", priority: 0.8 },
+  { path: "/indique", priority: 0.5 },
   { path: "/privacidade", priority: 0.3 },
   { path: "/termos", priority: 0.3 },
 ];
