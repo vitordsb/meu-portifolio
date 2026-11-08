@@ -54,7 +54,7 @@ export default function HomeFooter() {
 
         <div className="mt-16 grid gap-10 border-t border-outline-variant pt-10 sm:grid-cols-2 lg:grid-cols-3">
           <div>
-            <p className="text-lg font-extrabold tracking-[-0.03em]">{BRAND.name}</p>
+            <p className="text-lg font-extrabold tracking-[-0.03em]">{BRAND.company}</p>
             <p className="mt-1 text-sm text-on-surface-variant">{BRAND.descriptor[language]}</p>
             <p className="mt-4 text-sm text-on-surface-variant">CNPJ {CNPJ}</p>
           </div>
@@ -108,7 +108,7 @@ export default function HomeFooter() {
 
         <div className="mt-10 flex flex-col gap-3 text-sm text-on-surface-variant sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {BRAND.name}. {pt ? "Todos os direitos reservados." : "All rights reserved."}
+            © {year} {BRAND.company}. {pt ? "Todos os direitos reservados." : "All rights reserved."}
           </p>
           <p className="flex flex-wrap gap-x-5 gap-y-2">
             {/* Letra, tema e idioma também aqui (no topo ficam tema e idioma) */}

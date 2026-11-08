@@ -14,8 +14,8 @@ export const BRAND = {
   name: "Vitor de Souza",
   /**
    * Nome da empresa no CNPJ (razão social VSOUZA SERVICOS DE TECNOLOGIA LTDA,
-   * sem nome fantasia). Vai no topo do site, pedido do Vitor em 08/nov/2026;
-   * o resto (título da aba, rodapé, e-mails, dados estruturados) segue em `name`.
+   * sem nome fantasia). Vai no topo e no rodapé do site, pedido do Vitor em
+   * 08/nov/2026; título da aba, e-mails e dados estruturados seguem em `name`.
    */
   company: "Vsouza",
   /** Razão social como está na Receita: nos Termos e na Privacidade. */
