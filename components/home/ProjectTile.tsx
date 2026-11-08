@@ -38,6 +38,8 @@ export default function ProjectTile({
         shots={project.shots}
         label={title}
         className="ring-1 ring-outline-variant"
+        // Grade de 1, 2 ou 3 colunas (serviços da home e páginas de serviço)
+        sizes="(min-width: 1024px) 430px, (min-width: 640px) 50vw, 100vw"
       />
       <div className={`flex items-start justify-between gap-3 ${compact ? "mt-2.5" : "mt-4"}`}>
         <div className="min-w-0">

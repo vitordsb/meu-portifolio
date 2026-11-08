@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/payments/PageHeader";
+import PortugueseOnly from "@/components/PortugueseOnly";
 import { BRAND, CNPJ } from "@/lib/site";
 
 export type LegalSection = { id: string; title: string; body: ReactNode };
@@ -27,6 +28,7 @@ export default function LegalPage({
 }) {
   return (
     <>
+      <PortugueseOnly />
       <PageHeader />
       <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-24 pt-10 sm:pt-14 [&>*]:max-w-3xl">
         <p className="text-sm text-on-surface-variant">Atualizado em {updated}</p>

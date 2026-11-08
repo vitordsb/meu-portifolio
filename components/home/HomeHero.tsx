@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, BadgeCheck, FileSignature, HandCoins, MessageCircle, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { HOME_HERO, TRUST } from "@/lib/home-content";
@@ -17,12 +16,6 @@ export default function HomeHero({ delivered }: { delivered: number }) {
   const { language } = useLanguage();
   const pt = language === "pt";
 
-  const enter = (i: number) => ({
-    initial: { opacity: 0, y: 18 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.55, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] as const },
-  });
-
   return (
     <section id="inicio" data-home-section className="relative overflow-hidden">
       {/* Brilho discreto: o mesmo acento violeta da prévia de link */}
@@ -33,22 +26,19 @@ export default function HomeHero({ delivered }: { delivered: number }) {
 
       <div className={FRAME}>
         {/* Editorial (referências apparicio e ajota): frase grande em peso
-            médio, botões, selos e o projeto em mockup de argila embaixo */}
+            médio, botões, selos e o projeto em mockup de argila embaixo.
+            Título e abertura sem animação de entrada: aparecem na primeira
+            pintura, que é o que o Google mede (LCP). O resto sobe em CSS
+            (.hero-enter), sem esperar o JavaScript (08/nov/2026). */}
         <div className="max-w-5xl pb-12 pt-14 md:pb-16 md:pt-20">
-          <motion.h1
-            {...enter(0)}
-            className="text-balance text-[clamp(2.4rem,min(6.5vw,14vh),5.2rem)] font-semibold leading-[1.02] tracking-[-0.045em]"
-          >
+          <h1 className="text-balance text-[clamp(2.4rem,min(6.5vw,14vh),5.2rem)] font-semibold leading-[1.02] tracking-[-0.045em]">
             {HOME_HERO.title[language]}
-          </motion.h1>
-          <motion.p
-            {...enter(1)}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-on-surface-variant sm:text-xl"
-          >
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-on-surface-variant sm:text-xl">
             {HOME_HERO.lead[language]}
-          </motion.p>
+          </p>
 
-          <motion.div {...enter(2)} className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <div className="hero-enter mt-9 flex flex-col gap-3 [--enter:1] sm:flex-row sm:flex-wrap">
             <Link
               href="/orcamento"
               className="btn btn-filled h-auto min-h-14 whitespace-normal rounded-none px-7 py-3 text-center text-base sm:whitespace-nowrap"
@@ -69,19 +59,16 @@ export default function HomeHero({ delivered }: { delivered: number }) {
                 {pt ? "Falar no WhatsApp" : "Chat on WhatsApp"}
               </span>
             </a>
-          </motion.div>
+          </div>
           {/* Promessa de resposta (21/out/2026): quem responde em até 1 hora
               fecha muito mais conversa que quem demora (HBR, 2011) */}
-          <motion.p {...enter(2)} className="mt-3 text-sm text-on-surface-variant">
+          <p className="hero-enter mt-3 text-sm text-on-surface-variant [--enter:1]">
             {pt
               ? "A gente responde no WhatsApp em até 1 hora, em horário comercial."
               : "We reply on WhatsApp within 1 hour during business hours."}
-          </motion.p>
+          </p>
 
-          <motion.ul
-            {...enter(3)}
-            className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm text-on-surface-variant"
-          >
+          <ul className="hero-enter mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm text-on-surface-variant [--enter:2]">
             {TRUST.map((t) => {
               const Icon = TRUST_ICONS[t.key];
               return (
@@ -96,18 +83,13 @@ export default function HomeHero({ delivered }: { delivered: number }) {
                 </li>
               );
             })}
-          </motion.ul>
+          </ul>
         </div>
 
         {/* Case em destaque: é chamada de efeito, então o card é arredondado */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="pb-16 md:pb-24"
-        >
+        <div className="hero-enter pb-16 [--enter:3] md:pb-24">
           <FeaturedCase pt={pt} />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -174,7 +156,15 @@ function FeaturedCase({ pt }: { pt: boolean }) {
           </div>
         </div>
         <div className="lg:col-span-7">
-          <ClayMockup bare tallOnMobile shots={PROJECT_SHOTS.arqdoor} label="ArqDoor" className="scale-[1.04] lg:scale-[1.1]" />
+          <ClayMockup
+            bare
+            tallOnMobile
+            shots={PROJECT_SHOTS.arqdoor}
+            label="ArqDoor"
+            className="scale-[1.04] lg:scale-[1.1]"
+            // 7 de 12 colunas no desktop, já com a escala de 1.1
+            sizes="(min-width: 1536px) 920px, (min-width: 1024px) 760px, 100vw"
+          />
         </div>
       </div>
     </article>

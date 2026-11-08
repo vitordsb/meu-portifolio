@@ -9,9 +9,11 @@ import { findPackage } from "@/lib/payments/packages";
  * preço automaticamente.
  *
  * Exceção do piso: se existe pacote de preço fechado do mesmo tipo
- * (lib/payments/packages, mesmo id) mais barato que a tabela, o "a partir de"
- * é o pacote. Senão a home dizia "landing a partir de R$ 800" com o pacote
- * vendido a R$ 790 em /servicos (21/out/2026).
+ * (lib/payments/packages, mesmo id), o "a partir de" é o preço do pacote, pra
+ * cima ou pra baixo da tabela. É o menor valor que dá pra contratar de fato.
+ * Mais barato: a home dizia "landing a partir de R$ 800" com o pacote a
+ * R$ 790 (21/out/2026). Mais caro: a página de site dizia "a partir de
+ * R$ 1.300" logo acima de "Contratar por R$ 1.490" (08/nov/2026).
  */
 
 const BASE: Scope = {
@@ -164,13 +166,15 @@ const DEFS: {
 
 export const GUIDE_EXAMPLES: GuideExample[] = DEFS.map((d) => {
   const { estimate } = priceScope({ ...BASE, ...d.scope });
+  const min = findPackage(d.id)?.price ?? estimate.min;
   return {
     id: d.id,
     title: d.title,
     forWho: d.forWho,
     includes: d.includes,
-    min: Math.min(estimate.min, findPackage(d.id)?.price ?? Infinity),
-    max: estimate.max,
+    min,
+    // Pacote acima do teto da tabela não pode virar faixa invertida
+    max: Math.max(estimate.max, min),
     weeksMin: estimate.weeksMin,
     weeksMax: estimate.weeksMax,
   };

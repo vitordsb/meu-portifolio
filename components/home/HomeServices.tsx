@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -195,16 +196,29 @@ onClick={(e) => openFor(s.id, e.currentTarget)}
                         {list
                           .filter((x) => x.cover)
                           .slice(0, 3)
-                          .map((x) => (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              key={x.slug}
-                              src={x.cover!}
-                              alt=""
-                              loading="lazy"
-                              className="h-10 w-14 rounded-none object-cover object-top ring-2 ring-surface-low"
-                            />
-                          ))}
+                          .map((x) =>
+                            // Miniatura de 56x40: pelo otimizador, não o print
+                            // inteiro de 1260x900 (eram ~1 MB na home, 08/nov/2026)
+                            x.cover!.startsWith("/") ? (
+                              <Image
+                                key={x.slug}
+                                src={x.cover!}
+                                alt=""
+                                width={56}
+                                height={40}
+                                className="h-10 w-14 rounded-none object-cover object-top ring-2 ring-surface-low"
+                              />
+                            ) : (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                key={x.slug}
+                                src={x.cover!}
+                                alt=""
+                                loading="lazy"
+                                className="h-10 w-14 rounded-none object-cover object-top ring-2 ring-surface-low"
+                              />
+                            ),
+                          )}
                       </span>
                     )}
                     <span className="inline-flex items-center gap-1.5 text-base font-semibold">

@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { hasBooted } from "./boot";
 import { LEAVE_MS, useLeaveTransition } from "./useLeaveTransition";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -11,6 +12,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * Transição a cada navegação. A `key={pathname}` força o remount do bloco
  * quando a rota muda, re-disparando o fade + slide-up. Na saída (link pra
  * outra rota, inclusive o voltar pra home) a página desvanece antes de ir.
+ * Na primeira carga entra sem animação, já visível (ver motion/boot).
  * Respeita prefers-reduced-motion (renderiza estático).
  */
 export function PageTransition({ children }: { children: ReactNode }) {
@@ -31,7 +33,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     >
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 12 }}
+        initial={hasBooted() ? { opacity: 0, y: 12 } : false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: EASE }}
       >

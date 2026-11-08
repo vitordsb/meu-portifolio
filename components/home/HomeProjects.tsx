@@ -163,6 +163,8 @@ export function ProjectRow({
               shots={product.slug ? PROJECT_SHOTS[product.slug] : undefined}
               label={`${company.name}: ${product.title}`}
               tallOnMobile
+              // Largura da moldura (max-w-6xl, que cresce com a fonte da tela grande)
+              sizes="(min-width: 1536px) 1440px, (min-width: 1152px) 1152px, 100vw"
             />
           </motion.div>
         </AnimatePresence>
