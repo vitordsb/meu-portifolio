@@ -142,7 +142,7 @@ export function clientPaidEmail(p: PaidInfo) {
     `WhatsApp: ${whatsapp}`,
     "",
     BRAND.name,
-    "Engenheiro de software · UI/UX e Front-end",
+    BRAND.descriptor.pt,
   ].join("\n");
 
   return { subject: t.subject, html, text };

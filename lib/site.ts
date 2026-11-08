@@ -6,18 +6,13 @@
 export const SITE_URL = "https://www.vitordsb.com.br";
 
 /**
- * Marca da empresa. Enquanto não houver nome fantasia (out/2026), a marca é o
- * nome do fundador: quando o nome sair, troca aqui e o site inteiro acompanha
- * (home, rodapé, dados estruturados).
+ * Marca da empresa: VSouza, o nome do CNPJ (razão social VSOUZA SERVICOS DE
+ * TECNOLOGIA LTDA, sem nome fantasia). Até 08/nov/2026 era o nome do fundador,
+ * "Vitor de Souza". Troca aqui e o site inteiro acompanha (topo, rodapé, título
+ * da aba, e-mails, prévia de link, dados estruturados).
  */
 export const BRAND = {
-  name: "Vitor de Souza",
-  /**
-   * Nome da empresa no CNPJ (razão social VSOUZA SERVICOS DE TECNOLOGIA LTDA,
-   * sem nome fantasia). Vai no topo e no rodapé do site, pedido do Vitor em
-   * 08/nov/2026; título da aba, e-mails e dados estruturados seguem em `name`.
-   */
-  company: "Vsouza",
+  name: "VSouza",
   /** Razão social como está na Receita: nos Termos e na Privacidade. */
   legalName: "VSOUZA SERVICOS DE TECNOLOGIA LTDA",
   descriptor: { pt: "Estúdio de software", en: "Software studio" },

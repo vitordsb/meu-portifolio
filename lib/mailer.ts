@@ -1,6 +1,6 @@
 /**
  * Envio de e-mail pelo Resend. Remetente vem de CONTACT_FROM_EMAIL (hoje
- * `Vitor de Souza <orcamento@vitordsb.com.br>`, domínio verificado no
+ * `VSouza <orcamento@vitordsb.com.br>`, domínio verificado no
  * Resend). Nunca lança: devolve se o envio foi aceito.
  */
 export type Email = {

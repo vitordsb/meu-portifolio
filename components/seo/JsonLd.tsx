@@ -18,6 +18,7 @@ const business = {
   "@id": BUSINESS_ID,
   name: BRAND.name,
   alternateName: `${BRAND.name} · ${BRAND.descriptor.pt}`,
+  legalName: BRAND.legalName,
   taxID: CNPJ,
   email: BRAND.email,
   description:
