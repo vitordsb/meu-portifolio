@@ -24,7 +24,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
             href="/"
             className="pointer-events-auto text-base font-extrabold tracking-[-0.03em] transition-opacity hover:opacity-70"
           >
-            {BRAND.company}
+            {BRAND.name}
           </Link>
           <div className="pointer-events-auto flex items-center gap-2">
             <FontSizeButton />
