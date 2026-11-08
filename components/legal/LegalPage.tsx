@@ -72,7 +72,7 @@ export default function LegalPage({
 
         <footer className="mt-16 border-t border-outline-variant pt-8 text-base text-on-surface-variant">
           <p>
-            {BRAND.name} · CNPJ {CNPJ} ·{" "}
+            {BRAND.legalName} · CNPJ {CNPJ} ·{" "}
             <a href={`mailto:${BRAND.email}`} className="underline">
               {BRAND.email}
             </a>
