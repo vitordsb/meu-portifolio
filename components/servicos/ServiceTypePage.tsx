@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
 import PageHeader from "@/components/payments/PageHeader";
+import PortugueseOnly from "@/components/PortugueseOnly";
 import ProjectTile from "@/components/home/ProjectTile";
 import { COMPANIES } from "@/lib/companies";
 import { CNPJ } from "@/lib/email-layout";
@@ -57,6 +58,7 @@ export default function ServiceTypePage({ data: d }: { data: ServicePageData }) 
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
+      <PortugueseOnly />
       <PageHeader />
 
       <main className="mx-auto w-full max-w-6xl px-5 pb-24 pt-10 sm:px-8 sm:pt-14 lg:px-12">

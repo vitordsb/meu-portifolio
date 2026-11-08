@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Lock } from "lucide-react";
 import type { ProjectShots } from "@/lib/project-shots";
 
@@ -8,14 +9,38 @@ import type { ProjectShots } from "@/lib/project-shots";
  * Tudo em porcentagem: o mesmo desenho serve no card grande e na miniatura.
  *
  * Sem print (projeto privado): a tela fica neutra, com cadeado.
+ *
+ * Os prints passam pelo next/image no tamanho em que aparecem. Antes iam
+ * inteiros (1260x900) até pra miniatura, e a home baixava 1,3 MB de imagem
+ * (PageSpeed, 08/nov/2026). `sizes` é a largura do mockup inteiro; cada tela
+ * usa uma fração dela (ver scaleSizes).
  */
+
+/** Largura do mockup quando quem usa não diz: nunca baixa imagem pequena demais. */
+const DEFAULT_SIZES = "100vw";
+
+/** Tela do notebook e do celular ocupam no máximo isso da largura do mockup. */
+const LAPTOP_SHARE = 0.9;
+const PHONE_SHARE = 0.3;
+
+/** "(min-width: 1024px) 760px, 100vw" vezes 0.3 -> cada largura vira calc(... * 0.3). */
+function scaleSizes(sizes: string, share: number) {
+  return sizes
+    .split(",")
+    .map((part) => {
+      const tokens = part.trim().split(/\s+/);
+      const length = tokens.pop();
+      return [...tokens, `calc(${length} * ${share})`].join(" ");
+    })
+    .join(", ");
+}
 
 const CLAY = "#f1ede7";
 const CLAY_SHADE = "#ddd6cb";
 const SHADOW =
   "inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 -3px 6px rgba(60,45,30,.10), 0 22px 44px -18px rgba(45,32,20,.45)";
 
-function Screen({ src, focus, label }: { src?: string; focus?: string; label: string }) {
+function Screen({ src, focus, label, sizes }: { src?: string; focus?: string; label: string; sizes: string }) {
   if (!src) {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-[6%] bg-gradient-to-br from-neutral-200 to-neutral-300 text-neutral-500">
@@ -24,24 +49,38 @@ function Screen({ src, focus, label }: { src?: string; focus?: string; label: st
       </div>
     );
   }
+  // O otimizador só aceita arquivo do próprio site (next.config, remotePatterns)
+  if (!src.startsWith("/")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        draggable={false}
+        className="h-full w-full select-none object-cover"
+        style={{ objectPosition: focus ?? "top" }}
+      />
+    );
+  }
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={src}
       alt=""
-      loading="lazy"
+      fill
+      sizes={sizes}
       draggable={false}
-      className="h-full w-full select-none object-cover"
+      className="select-none object-cover"
       style={{ objectPosition: focus ?? "top" }}
     />
   );
 }
 
-function Phone({ src, focus, label }: { src?: string; focus?: string; label: string }) {
+function Phone({ src, focus, label, sizes }: { src?: string; focus?: string; label: string; sizes: string }) {
   return (
     <div className="relative h-full w-full rounded-[17%/7.8%] p-[4%]" style={{ background: CLAY, boxShadow: SHADOW }}>
-      <div className="h-full w-full overflow-hidden rounded-[13%/6%] bg-neutral-200">
-        <Screen src={src} focus={focus} label={label} />
+      <div className="relative h-full w-full overflow-hidden rounded-[13%/6%] bg-neutral-200">
+        <Screen src={src} focus={focus} label={label} sizes={sizes} />
       </div>
       <span
         className="absolute left-1/2 top-[3.2%] aspect-[4/1] w-[30%] -translate-x-1/2 rounded-full"
@@ -57,6 +96,7 @@ export default function ClayMockup({
   className = "",
   bare = false,
   tallOnMobile = false,
+  sizes = DEFAULT_SIZES,
 }: {
   shots?: ProjectShots;
   /** Nome do projeto, pra leitor de tela. */
@@ -66,7 +106,11 @@ export default function ClayMockup({
   bare?: boolean;
   /** No celular, caixa mais alta e aparelhos maiores (cases: imagem sempre grande). */
   tallOnMobile?: boolean;
+  /** Largura do mockup na tela, no formato do atributo sizes. */
+  sizes?: string;
 }) {
+  const laptopSizes = scaleSizes(sizes, LAPTOP_SHARE);
+  const phoneSizes = scaleSizes(sizes, PHONE_SHARE);
   const desktop = shots?.desktop;
   const mobile = shots?.mobile;
   const mobileAlt = shots?.mobileAlt;
@@ -100,8 +144,8 @@ export default function ClayMockup({
           }`}
         >
           <div className="rounded-[3.2%/5.2%] p-[2.4%]" style={{ background: CLAY, boxShadow: SHADOW }}>
-            <div className="aspect-[16/10] overflow-hidden rounded-[1.2%/1.9%] bg-neutral-200">
-              <Screen src={desktop} label={label} />
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[1.2%/1.9%] bg-neutral-200">
+              <Screen src={desktop} label={label} sizes={laptopSizes} />
             </div>
           </div>
           {/* Base do notebook, com o entalhe no meio */}
@@ -120,7 +164,7 @@ export default function ClayMockup({
           aria-hidden
           className="absolute bottom-[11%] right-[52%] aspect-[9/19.5] h-[78%] transition-transform duration-500 group-hover:-translate-y-[1.5%]"
         >
-          <Phone src={mobileAlt} label={label} />
+          <Phone src={mobileAlt} label={label} sizes={phoneSizes} />
         </div>
       )}
 
@@ -137,7 +181,7 @@ export default function ClayMockup({
                 : "bottom-[7%] left-1/2 h-[86%] -translate-x-1/2"
           }`}
         >
-          <Phone src={mobile} focus={shots?.mobileFocus} label={label} />
+          <Phone src={mobile} focus={shots?.mobileFocus} label={label} sizes={phoneSizes} />
         </div>
       )}
     </div>

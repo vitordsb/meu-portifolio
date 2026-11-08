@@ -827,10 +827,15 @@
 
 .animate-fade-in { animation: fadeIn var(--dur-long) var(--ease-decelerate); }
 .animate-rise-in { animation: riseIn var(--dur-long) var(--ease-decelerate); }
+/* Entrada do topo da home em CSS: roda na primeira pintura, sem esperar o
+   JavaScript (em framer-motion o HTML saía com opacidade 0 até hidratar).
+   O título e a frase de abertura não usam: aparecem de cara, porque é por
+   eles que o Google mede o carregamento (LCP). --enter é a ordem (80 ms cada). */
+.hero-enter { animation: riseIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--enter, 0) * 80ms); }
 .animate-float { animation: floatY 3s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-float { animation: none; }
+  .animate-float, .hero-enter { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, ScanSearch, Sparkles } from "lucide-react";
 import PageHeader from "@/components/payments/PageHeader";
+import PortugueseOnly from "@/components/PortugueseOnly";
 import { CNPJ } from "@/lib/email-layout";
 import { PRICING } from "@/lib/estimate/pricing";
 import { GUIDE_EXAMPLES } from "@/lib/guide/examples";
@@ -123,6 +124,7 @@ const card = "border border-outline-variant bg-surface-low p-6";
 export default function PriceGuide() {
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
+      <PortugueseOnly />
       <PageHeader />
 
       <main className="mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12 pb-24 pt-10 sm:pt-14 [@media(max-height:500px)]:pt-6">
