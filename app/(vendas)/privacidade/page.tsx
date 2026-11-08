@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  * mudar, esta página muda junto. Prazos de guarda definidos pelo Vitor.
  */
 
-const UPDATED = "21 de outubro de 2026";
+const UPDATED = "8 de novembro de 2026";
 
 const sections: LegalSection[] = [
   {
@@ -31,7 +31,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          O responsável pelos seus dados (o &quot;controlador&quot;, na LGPD) é {BRAND.name}, empresa inscrita no
+          O responsável pelos seus dados (o &quot;controlador&quot;, na LGPD) é {BRAND.legalName}, empresa inscrita no
           CNPJ {CNPJ}, dona do site vitordsb.com.br.
         </p>
         <p>

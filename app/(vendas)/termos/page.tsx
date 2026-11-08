@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  * contrato, não aqui: o Vitor ainda não definiu uma regra única pra isso.
  */
 
-const UPDATED = "6 de outubro de 2026";
+const UPDATED = "8 de novembro de 2026";
 
 const sections: LegalSection[] = [
   {
@@ -31,7 +31,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          Este site é de {BRAND.name}, empresa inscrita no CNPJ {CNPJ}, que cria sites, sistemas e aplicativos.
+          Este site é de {BRAND.legalName}, empresa inscrita no CNPJ {CNPJ}, que cria sites, sistemas e aplicativos.
         </p>
         <p>
           Estes termos explicam as regras para usar o site e os serviços oferecidos nele. Ao usar o site, você
@@ -164,7 +164,7 @@ const sections: LegalSection[] = [
     title: "Conteúdo e marcas",
     body: (
       <p>
-        Os textos, o design e o código deste site pertencem a {BRAND.name}. Os projetos de clientes aparecem
+        Os textos, o design e o código deste site pertencem a {BRAND.legalName}. Os projetos de clientes aparecem
         como portfólio e as marcas e telas deles pertencem aos respectivos donos. Não é permitido copiar o
         conteúdo do site para uso comercial sem autorização.
       </p>

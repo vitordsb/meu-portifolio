@@ -18,6 +18,8 @@ export const BRAND = {
    * o resto (título da aba, rodapé, e-mails, dados estruturados) segue em `name`.
    */
   company: "Vsouza",
+  /** Razão social como está na Receita: nos Termos e na Privacidade. */
+  legalName: "VSOUZA SERVICOS DE TECNOLOGIA LTDA",
   descriptor: { pt: "Estúdio de software", en: "Software studio" },
   email: "orcamento@vitordsb.com.br",
 } as const;
