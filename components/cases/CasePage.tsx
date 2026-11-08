@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { COMPANIES } from "@/lib/companies";
+import { nichePageOfCase } from "@/lib/service-pages";
 import type { PublicTestimonial } from "@/lib/testimonials/types";
 import PageHeader from "@/components/payments/PageHeader";
 import { ProjectRow } from "@/components/home/HomeProjects";
@@ -18,6 +19,8 @@ export default function CasePage({ id, testimonials }: { id: string; testimonial
   const pt = language === "pt";
   const company = COMPANIES.find((c) => c.id === id)!;
   const others = COMPANIES.filter((c) => c.id !== id);
+  // Página de nicho que usa este case como prova (só em português, como as de serviço)
+  const niche = pt ? nichePageOfCase(id) : null;
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
@@ -32,6 +35,19 @@ export default function CasePage({ id, testimonials }: { id: string; testimonial
         </Link>
 
         <ProjectRow company={company} pt={pt} testimonials={testimonials} standalone />
+
+        {niche && (
+          <Link
+            href={`/servicos/${niche.slug}`}
+            className="mt-10 flex items-center justify-between gap-4 border border-outline-variant bg-surface-low p-5 transition-colors hover:border-on-surface/40 sm:p-6"
+          >
+            <span>
+              <span className="block text-sm text-on-surface-variant">{niche.niche?.ask}</span>
+              <span className="mt-1 block text-lg font-semibold">{niche.name}</span>
+            </span>
+            <ArrowRight size={20} className="shrink-0" />
+          </Link>
+        )}
 
         <section className="mt-20 border-t border-outline-variant pt-10">
           <h2 className="text-2xl font-semibold tracking-[-0.02em]">{pt ? "Outros projetos" : "Other projects"}</h2>

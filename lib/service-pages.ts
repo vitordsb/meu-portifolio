@@ -13,8 +13,10 @@ import type { ProjectType } from "@/lib/projects-catalog";
  * Este arquivo é leve (vai pro navegador pelos cards da home); a montagem
  * com preço e projetos fica em lib/service-pages-data, só no servidor.
  *
- * Sem página de nicho ("site pra arquiteto") por enquanto (23/out/2026): só
- * vale quando houver case real do nicho, senão é promessa vazia.
+ * Página de nicho só com case real do setor, senão é promessa vazia
+ * (23/out/2026). A primeira é a de arquitetos, com o ArqDoor (08/nov/2026).
+ * Poucas e com conteúdo próprio: várias no mesmo modelo o Google trata como
+ * spam (doorway, scaled content abuse).
  */
 
 export type ServicePage = {
@@ -28,6 +30,21 @@ export type ServicePage = {
   lead: string;
   /** "É pra você se...": situações do cliente, sem número inventado. */
   signs: string[];
+  /** Página de nicho: só existe com case real do setor (ver o topo). */
+  niche?: {
+    /** Público, pro dado estruturado (audience). */
+    audience: string;
+    /** Pergunta que chama pra página nos links (case e página geral). */
+    ask: string;
+    /** Case do setor em lib/companies, mostrado como prova. */
+    caseId: string;
+    /** Por que dá pra confiar: o que o case mostra sobre o setor. */
+    proof: string;
+    /** O que o projeto tem pra esse público. */
+    needs: { title: string; text: string }[];
+    /** Perguntas do setor, somadas às comuns. */
+    faq: { q: string; a: string }[];
+  };
 };
 
 export const SERVICE_PAGES: ServicePage[] = [
@@ -79,7 +96,70 @@ export const SERVICE_PAGES: ServicePage[] = [
       "A ideia precisa de recursos do celular, como câmera, localização ou uso fora da internet.",
     ],
   },
+  // Nicho com case real (ArqDoor). Foco em site e portfólio, não em sistema:
+  // sistema pra escritório concorreria com o ArqDoor, que é cliente (Vitor, 08/nov/2026).
+  {
+    slug: "site-para-arquitetos",
+    noun: "um site para escritório de arquitetura",
+    type: "site",
+    name: "Site para escritório de arquitetura",
+    lead: "Um site que mostra as suas obras do jeito que elas merecem: fotos grandes que abrem rápido no celular, projetos organizados por tipo e um caminho direto pro cliente pedir orçamento.",
+    signs: [
+      "O seu portfólio vive só no Instagram, e quem procura arquiteto no Google não te encontra.",
+      "As fotos das obras são pesadas e o site atual demora pra abrir no celular.",
+      "O cliente chega sem entender como você trabalha, e a primeira conversa vira explicação de processo.",
+    ],
+    niche: {
+      audience: "Escritórios de arquitetura e arquitetos autônomos",
+      ask: "Tem escritório de arquitetura?",
+      caseId: "arqdoor",
+      proof:
+        "A gente construiu o ArqDoor, a plataforma de propostas, contratos e pagamentos para arquitetos, na web e no app publicado na loja. Foi um ano no dia a dia do arquiteto: como ele apresenta um projeto, fecha com o cliente e cobra.",
+      needs: [
+        {
+          title: "Portfólio organizado",
+          text: "As obras com fotos, tipo de projeto (residencial, comercial, interiores) e o desafio de cada uma.",
+        },
+        {
+          title: "Fotos leves, sem perder qualidade",
+          text: "As imagens são preparadas pra abrir rápido no celular, que é onde a maior parte dos clientes vai ver.",
+        },
+        {
+          title: "Como você trabalha",
+          text: "As etapas, do briefing à entrega do projeto, pro cliente chegar sabendo o que esperar.",
+        },
+        {
+          title: "Contato que já qualifica",
+          text: "WhatsApp e formulário que perguntam o que você precisa saber: tipo de projeto, cidade e prazo.",
+        },
+      ],
+      faq: [
+        {
+          q: "Vocês já trabalharam com arquitetura?",
+          a: "Sim. A gente construiu o ArqDoor, plataforma de propostas, contratos e pagamentos para arquitetos, na web e no celular. O case completo está na página do ArqDoor.",
+        },
+        {
+          q: "Posso usar as fotos que já tenho das obras?",
+          a: "Pode. A gente prepara o tamanho das imagens pra abrirem rápido sem perder qualidade. Se ainda não tiver fotos boas, vale fotografar as obras antes: o site depende delas.",
+        },
+        {
+          q: "O Instagram não basta?",
+          a: "O Instagram mostra o dia a dia, mas não aparece quando alguém procura arquiteto no Google, e as obras se perdem no meio dos posts. O site junta os projetos organizados num endereço seu.",
+        },
+      ],
+    },
+  },
 ];
+
+/** Páginas de nicho de um tipo de serviço (pra linkar da página geral). */
+export function nichePagesOf(type: string): ServicePage[] {
+  return SERVICE_PAGES.filter((p) => p.niche && p.type === type);
+}
+
+/** Página de nicho que usa um case como prova (pra linkar da página do case). */
+export function nichePageOfCase(caseId: string): ServicePage | null {
+  return SERVICE_PAGES.find((p) => p.niche?.caseId === caseId) ?? null;
+}
 
 export function findServicePage(slug: string) {
   return SERVICE_PAGES.find((p) => p.slug === slug) ?? null;
@@ -87,6 +167,6 @@ export function findServicePage(slug: string) {
 
 /** Página do serviço de um tipo (pra linkar dos cards da home e do guia). */
 export function servicePageHref(type: string): string | null {
-  const page = SERVICE_PAGES.find((p) => p.type === type);
+  const page = SERVICE_PAGES.find((p) => p.type === type && !p.niche);
   return page ? `/servicos/${page.slug}` : null;
 }

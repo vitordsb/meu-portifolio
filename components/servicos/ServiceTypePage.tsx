@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, Check, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Check, MessageCircle, ShieldCheck, Sparkles } from "lucide-react";
 import PageHeader from "@/components/payments/PageHeader";
 import ProjectTile from "@/components/home/ProjectTile";
+import { COMPANIES } from "@/lib/companies";
 import { CNPJ } from "@/lib/email-layout";
+import { GUARANTEE, GUARANTEE_ANSWER } from "@/lib/guarantee";
 import { whatsappHref } from "@/lib/home-links";
+import { nichePagesOf } from "@/lib/service-pages";
 import type { ServicePageData } from "@/lib/service-pages-data";
 
 /**
@@ -17,7 +20,7 @@ const brl = (n: number) =>
 
 const card = "border border-outline-variant bg-surface-low p-6";
 
-/** Perguntas da página: preço e prazo do serviço, e as respostas das Dúvidas da home. */
+/** Perguntas da página: preço e prazo do serviço, as do nicho (se houver) e as respostas das Dúvidas da home. */
 export function serviceFaq(d: ServicePageData): { q: string; a: string }[] {
   const g = d.guide;
   return [
@@ -29,6 +32,7 @@ export function serviceFaq(d: ServicePageData): { q: string; a: string }[] {
       q: "Quanto tempo leva?",
       a: `De ${g.weeksMin} a ${g.weeksMax} semanas na maior parte dos casos. O prazo do seu projeto vem por escrito na proposta.`,
     },
+    ...(d.niche?.faq ?? []),
     // Mesmo texto das Dúvidas da home (components/home/HomeFaq): mudar lá, mudar aqui
     {
       q: "Preciso entender de tecnologia?",
@@ -40,14 +44,16 @@ export function serviceFaq(d: ServicePageData): { q: string; a: string }[] {
     },
     {
       q: "E se não ficar como o combinado?",
-      a: "A gente ajusta sem custo extra. O que vale é o escopo escrito na proposta: se a entrega não bate com ele, a correção é por nossa conta.",
+      a: GUARANTEE_ANSWER.pt,
     },
   ];
 }
 
 export default function ServiceTypePage({ data: d }: { data: ServicePageData }) {
   const g = d.guide;
-  const origem = `servico-${d.type}`;
+  const origem = d.niche ? `nicho-${d.slug}` : `servico-${d.type}`;
+  const niches = d.niche ? [] : nichePagesOf(d.type);
+  const nicheCase = d.niche ? COMPANIES.find((c) => c.id === d.niche!.caseId) : null;
 
   return (
     <div className="min-h-dvh bg-surface text-on-surface">
@@ -95,6 +101,17 @@ export default function ServiceTypePage({ data: d }: { data: ServicePageData }) 
                 </li>
               ))}
             </ul>
+            {niches.map((n) => (
+              <p key={n.slug} className="mt-6 text-base">
+                <span className="text-on-surface-variant">{n.niche?.ask} </span>
+                <Link
+                  href={`/servicos/${n.slug}`}
+                  className="inline-flex min-h-11 items-center gap-1.5 font-medium underline underline-offset-4 hover:no-underline"
+                >
+                  {n.name} <ArrowRight size={16} />
+                </Link>
+              </p>
+            ))}
           </div>
 
           <div className={`${card} self-start`}>
@@ -104,6 +121,10 @@ export default function ServiceTypePage({ data: d }: { data: ServicePageData }) 
             </p>
             <p className="mt-1.5 text-sm text-on-surface-variant">
               Prazo: {g.weeksMin} a {g.weeksMax} semanas
+            </p>
+            <p className="mt-3 flex items-center gap-2 text-sm font-medium">
+              <ShieldCheck size={16} className="shrink-0" />
+              {GUARANTEE.pt}
             </p>
             <p className="mt-5 text-sm font-semibold">O que vem</p>
             <ul className="mt-2 space-y-2 text-sm">
@@ -129,6 +150,33 @@ export default function ServiceTypePage({ data: d }: { data: ServicePageData }) 
             </div>
           </div>
         </section>
+
+        {/* ── Nicho: o que o projeto tem e a prova do setor ───────────────── */}
+        {d.niche && (
+          <section className="mt-20" aria-labelledby="o-que-tem">
+            <h2 id="o-que-tem" className="text-2xl font-extrabold tracking-[-0.02em] sm:text-3xl">
+              O que o seu site tem
+            </h2>
+            <ul className="mt-8 grid gap-6 sm:grid-cols-2">
+              {d.niche.needs.map((n) => (
+                <li key={n.title} className="border-t border-outline-variant pt-4">
+                  <p className="text-lg font-semibold">{n.title}</p>
+                  <p className="mt-1 leading-relaxed text-on-surface-variant">{n.text}</p>
+                </li>
+              ))}
+            </ul>
+            <div className={`${card} mt-10`}>
+              <p className="text-sm font-semibold text-on-surface-variant">Quem faz já conhece o setor</p>
+              <p className="mt-2 max-w-3xl text-lg leading-relaxed">{d.niche.proof}</p>
+              <Link
+                href={`/cases/${d.niche.caseId}`}
+                className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-base font-medium underline underline-offset-4 hover:no-underline"
+              >
+                Ver o case {nicheCase?.name} <ArrowRight size={16} />
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* ── Projetos entregues ──────────────────────────────────────── */}
         {d.projects.length > 0 && (

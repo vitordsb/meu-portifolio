@@ -13,6 +13,8 @@
  * o componente em app/page.tsx.
  */
 
+import { GUARANTEE } from "./guarantee";
+
 type L10n = { pt: string; en: string };
 
 /** Sessões da página, na ordem. `aliases` são os # da home antiga (deck):
@@ -197,7 +199,7 @@ export const PROCESS: { title: L10n; text: L10n }[] = [
 export const GUARANTEES: L10n[] = [
   { pt: "Empresa com CNPJ ativo", en: "Registered company (CNPJ)" },
   { pt: "Contrato e nota fiscal", en: "Contract and invoice" },
-  // Garantia decidida pelo Vitor em 21/out/2026 (só retrabalho, sem devolução)
-  { pt: "Ajuste sem custo se não ficar como o combinado", en: "Free fixes if it isn't what we agreed" },
+  // Regra e histórico em lib/guarantee
+  GUARANTEE,
   { pt: "Atendimento direto com quem desenvolve", en: "Direct contact with the developer" },
 ];

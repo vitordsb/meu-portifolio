@@ -24,6 +24,8 @@ export type ServicePackage = {
   delivery?: L10n;
   /** Destaque visual (um por vez). */
   featured?: boolean;
+  /** Projeto que vai ao ar: o card mostra a garantia de ajustes (lib/guarantee). */
+  guarantee?: boolean;
 };
 
 export const PACKAGES: ServicePackage[] = [
@@ -74,6 +76,7 @@ export const PACKAGES: ServicePackage[] = [
       en: "A responsive page with a contact form or WhatsApp, published on your domain.",
     },
     delivery: { pt: "Pronta em até 1 semana", en: "Ready within 1 week" },
+    guarantee: true,
   },
   {
     id: "site",
@@ -91,6 +94,7 @@ export const PACKAGES: ServicePackage[] = [
     },
     // Mesmo prazo do guia de preços (lib/guide/examples, site institucional)
     delivery: { pt: "Pronto em 1 a 2 semanas", en: "Ready in 1 to 2 weeks" },
+    guarantee: true,
   },
 ];
 
