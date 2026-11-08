@@ -2,6 +2,7 @@
 
 import { Plus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { GUARANTEE_ANSWER } from "@/lib/guarantee";
 import { CNPJ } from "@/lib/site";
 import { brl, type StartingPrice } from "./HomeServices";
 import { Reveal, Section, SectionHeader } from "./ui";
@@ -40,7 +41,7 @@ export default function HomeFaq({ prices }: { prices: Record<string, StartingPri
         },
         {
           q: "E se não ficar como o combinado?",
-          a: "A gente ajusta sem custo extra. O que vale é o escopo escrito na proposta: se a entrega não bate com ele, a correção é por nossa conta.",
+          a: GUARANTEE_ANSWER.pt,
         },
       ]
     : [
@@ -66,7 +67,7 @@ export default function HomeFaq({ prices }: { prices: Record<string, StartingPri
         },
         {
           q: "What if it isn't what we agreed?",
-          a: "We fix it at no extra cost. The written scope in the proposal is the reference: if the delivery doesn't match it, the fix is on us.",
+          a: GUARANTEE_ANSWER.en,
         },
       ];
 

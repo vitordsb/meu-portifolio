@@ -42,6 +42,7 @@ export default async function Page({ params }: { params: Promise<{ tipo: string 
       description: d.lead,
       url,
       areaServed: { "@type": "Country", name: "Brasil" },
+      ...(d.niche && { audience: { "@type": "Audience", audienceType: d.niche.audience } }),
       provider: { "@type": "Organization", name: BRAND.name, url: SITE_URL },
       offers: {
         "@type": "AggregateOffer",

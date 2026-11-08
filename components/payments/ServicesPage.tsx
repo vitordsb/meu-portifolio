@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SOCIALS } from "@/lib/deck-content";
 import { CNPJ } from "@/lib/email-layout";
+import { GUARANTEE } from "@/lib/guarantee";
 import { WhatsappIcon } from "@/components/deck/SocialIcons";
 import { PACKAGES, type ServicePackage } from "@/lib/payments/packages";
 import PageHeader from "./PageHeader";
@@ -135,6 +136,12 @@ export default function ServicesPage() {
                   <p className="mt-4 flex items-center gap-2 text-sm text-on-surface-variant">
                     <Clock size={16} className="shrink-0" />
                     {pkg.delivery[language]}
+                  </p>
+                )}
+                {pkg.guarantee && (
+                  <p className="mt-2 flex items-center gap-2 text-sm text-on-surface-variant">
+                    <ShieldCheck size={16} className="shrink-0" />
+                    {GUARANTEE[language]}
                   </p>
                 )}
 
