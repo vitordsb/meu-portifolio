@@ -78,7 +78,7 @@ export default function TopBar({
           onClick={() => select("inicio")}
           className="shrink-0 whitespace-nowrap text-lg font-extrabold tracking-[-0.03em]"
         >
-          {BRAND.name}
+          {BRAND.company}
         </button>
 
         <nav aria-label={pt ? "Sessões" : "Sections"} className="ml-auto hidden @min-[64rem]:block">
@@ -148,7 +148,7 @@ export default function TopBar({
               <Dialog.Overlay className="fixed inset-0 z-[90] bg-scrim/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in" />
               <Dialog.Content className="fixed inset-0 z-[91] flex flex-col overflow-y-auto bg-surface px-5 pb-8 pt-4 text-on-surface data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-4 sm:px-8">
                 <div className="flex h-12 items-center justify-between">
-                  <Dialog.Title className="text-lg font-extrabold tracking-[-0.03em]">{BRAND.name}</Dialog.Title>
+                  <Dialog.Title className="text-lg font-extrabold tracking-[-0.03em]">{BRAND.company}</Dialog.Title>
                   <Dialog.Close asChild>
                     <button
                       type="button"
