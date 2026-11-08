@@ -12,6 +12,12 @@ export const SITE_URL = "https://www.vitordsb.com.br";
  */
 export const BRAND = {
   name: "Vitor de Souza",
+  /**
+   * Nome da empresa no CNPJ (razão social VSOUZA SERVICOS DE TECNOLOGIA LTDA,
+   * sem nome fantasia). Vai no topo do site, pedido do Vitor em 08/nov/2026;
+   * o resto (título da aba, rodapé, e-mails, dados estruturados) segue em `name`.
+   */
+  company: "Vsouza",
   descriptor: { pt: "Estúdio de software", en: "Software studio" },
   email: "orcamento@vitordsb.com.br",
 } as const;
